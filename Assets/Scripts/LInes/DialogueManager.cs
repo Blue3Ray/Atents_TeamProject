@@ -5,13 +5,26 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour
 {
 
-	private string[] DialogueLines;
+	private string[] dialogueLines;
 	TextAsset dialogueText;
+
+	private string[] DialogueLines
+	{
+		get => dialogueLines;
+	}
 
 	private void Awake()
 	{
-		dialogueText = Resources.Load<TextAsset>("Dialogue");
-		DialogueLines = dialogueText.text.Split('\n');
-		
+		if (dialogueLines == null)
+		{
+
+			dialogueText = Resources.Load<TextAsset>("Dialogue");
+			dialogueLines = dialogueText.text.Split('\n');
+		}
+		else
+		{
+			Debug.Log("이미 dialogueLines가 생성되었습니다.");
+		}
 	}
 }
+

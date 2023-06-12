@@ -40,7 +40,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""name"": ""Mouse_Position"",
                     ""type"": ""PassThrough"",
                     ""id"": ""8f853f65-1b29-41f9-9907-7259192f105b"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -60,7 +60,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3df90d83-4167-4a4e-a4df-791aacf587d7"",
+                    ""id"": ""2cf77e72-27eb-4a41-a483-ea56335efc92"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",

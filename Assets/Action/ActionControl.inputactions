@@ -6,9 +6,18 @@
             "id": "da6c30d1-972d-4ba2-9871-23c675552815",
             "actions": [
                 {
-                    "name": "Mouse",
-                    "type": "PassThrough",
+                    "name": "Mouse_Left",
+                    "type": "Button",
                     "id": "aab923d3-f35f-47a6-a0ce-a69259214274",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Mouse_Position",
+                    "type": "PassThrough",
+                    "id": "8f853f65-1b29-41f9-9907-7259192f105b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -18,23 +27,23 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "499e40c4-604e-4780-b91b-007c70c88a9e",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Click",
-                    "action": "Mouse",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "739b21b2-8c5c-4d07-8bb5-5b32b9793a88",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Click",
-                    "action": "Mouse",
+                    "action": "Mouse_Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3df90d83-4167-4a4e-a4df-791aacf587d7",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse_Position",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

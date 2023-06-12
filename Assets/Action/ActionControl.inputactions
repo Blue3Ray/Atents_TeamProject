@@ -1,0 +1,51 @@
+{
+    "name": "ActionControl",
+    "maps": [
+        {
+            "name": "ClickAction",
+            "id": "da6c30d1-972d-4ba2-9871-23c675552815",
+            "actions": [
+                {
+                    "name": "Mouse",
+                    "type": "PassThrough",
+                    "id": "aab923d3-f35f-47a6-a0ce-a69259214274",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "499e40c4-604e-4780-b91b-007c70c88a9e",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Click",
+                    "action": "Mouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "739b21b2-8c5c-4d07-8bb5-5b32b9793a88",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Click",
+                    "action": "Mouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Click",
+            "bindingGroup": "Click",
+            "devices": []
+        }
+    ]
+}

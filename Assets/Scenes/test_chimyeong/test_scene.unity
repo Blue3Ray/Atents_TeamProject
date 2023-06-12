@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 425828674}
   - component: {fileID: 425828673}
   - component: {fileID: 425828672}
+  - component: {fileID: 425828675}
   m_Layer: 0
   m_Name: Bringer-of-Death-SpritSheet_no-Effect_29
   m_TagString: Untagged
@@ -412,13 +413,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 425828671}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.85943025, y: 20.3, z: 0}
+  m_LocalPosition: {x: -0.09, y: 20.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &425828675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425828671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9436ab4ff56e375488462b03c3fda4f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &495866578
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPCbase : MonoBehaviour
+public class NPCbase : DialogueParse
 {
-	
+
 	ActionControl actionControle;
 
 	Vector3 NewMousePosition;
@@ -14,10 +14,10 @@ public class NPCbase : MonoBehaviour
 	Vector2 mousePosition;
 
 	private Collider2D myCollider;
-	
 
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		myCollider = GetComponent<Collider2D>();
 		actionControle = new ActionControl();
 	}
@@ -57,7 +57,15 @@ public class NPCbase : MonoBehaviour
 
 	private void OnDialogue()
 	{
-		Debug.Log("안녕하세요 리안입니다");
+		print(dataDialog[1]["Event Name"].ToString());
+
+		//print(dataDialog[1]["Lines"].ToString());
+
+		//print(dataDialog[2]["Lines"].ToString());
+
+		//print(dataDialog[3]["Lines"].ToString());
+
+		//print(dataDialog[1]["Event Name"].ToString());
 		NewMousePosition = Vector2.zero;
 
 	}

@@ -37,10 +37,10 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Mouse_Position"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""8f853f65-1b29-41f9-9907-7259192f105b"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""52e25fe6-c7f7-4b13-ac1b-567d6681ab44"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -60,12 +60,56 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2cf77e72-27eb-4a41-a483-ea56335efc92"",
-                    ""path"": ""<Mouse>/position"",
+                    ""id"": ""be159371-4559-49da-a3dd-d03ee338a458"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Mouse_Position"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f7aaff1-e66a-4f89-98bb-93080ca48a48"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af4700aa-05dc-48d2-907a-a2de4655feed"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f0c3895-22ec-4bd7-9208-78af28d211d4"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2fff761-4fe0-472d-b604-85a8298c2001"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -83,7 +127,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         // ClickAction
         m_ClickAction = asset.FindActionMap("ClickAction", throwIfNotFound: true);
         m_ClickAction_Mouse_Left = m_ClickAction.FindAction("Mouse_Left", throwIfNotFound: true);
-        m_ClickAction_Mouse_Position = m_ClickAction.FindAction("Mouse_Position", throwIfNotFound: true);
+        m_ClickAction_Attack = m_ClickAction.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -146,13 +190,13 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_ClickAction;
     private List<IClickActionActions> m_ClickActionActionsCallbackInterfaces = new List<IClickActionActions>();
     private readonly InputAction m_ClickAction_Mouse_Left;
-    private readonly InputAction m_ClickAction_Mouse_Position;
+    private readonly InputAction m_ClickAction_Attack;
     public struct ClickActionActions
     {
         private @ActionControl m_Wrapper;
         public ClickActionActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
         public InputAction @Mouse_Left => m_Wrapper.m_ClickAction_Mouse_Left;
-        public InputAction @Mouse_Position => m_Wrapper.m_ClickAction_Mouse_Position;
+        public InputAction @Attack => m_Wrapper.m_ClickAction_Attack;
         public InputActionMap Get() { return m_Wrapper.m_ClickAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -165,9 +209,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Mouse_Left.started += instance.OnMouse_Left;
             @Mouse_Left.performed += instance.OnMouse_Left;
             @Mouse_Left.canceled += instance.OnMouse_Left;
-            @Mouse_Position.started += instance.OnMouse_Position;
-            @Mouse_Position.performed += instance.OnMouse_Position;
-            @Mouse_Position.canceled += instance.OnMouse_Position;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
         }
 
         private void UnregisterCallbacks(IClickActionActions instance)
@@ -175,9 +219,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Mouse_Left.started -= instance.OnMouse_Left;
             @Mouse_Left.performed -= instance.OnMouse_Left;
             @Mouse_Left.canceled -= instance.OnMouse_Left;
-            @Mouse_Position.started -= instance.OnMouse_Position;
-            @Mouse_Position.performed -= instance.OnMouse_Position;
-            @Mouse_Position.canceled -= instance.OnMouse_Position;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
         }
 
         public void RemoveCallbacks(IClickActionActions instance)
@@ -207,6 +251,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     public interface IClickActionActions
     {
         void OnMouse_Left(InputAction.CallbackContext context);
-        void OnMouse_Position(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

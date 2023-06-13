@@ -6,19 +6,13 @@ using UnityEngine;
 
 public class DialogueParse : MonoBehaviour
 {
-    
-	private void Awake()
+	protected List<Dictionary<string, object>> dataDialog;
+
+
+	protected virtual void Awake()
 	{
-		List<Dictionary<string, object>> dataDialog = CSVReader.Read("Lines");
+		dataDialog = CSVReader.Read("Lines");
 		
-		for(int i = 0; i < dataDialog.Count; i++)
-		{
-		
-			print(dataDialog[i]["Event Name"].ToString());
-
-		}
-		
-
 
 	}
 }

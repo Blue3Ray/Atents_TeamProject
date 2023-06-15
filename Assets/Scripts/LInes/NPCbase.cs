@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPCbase : DialogueParse
+public class NPCbase : MonoBehaviour
 {
+	DialogParse Dia;
 
 	ActionControl actionControle;
 
@@ -15,9 +16,9 @@ public class NPCbase : DialogueParse
 
 	private Collider2D myCollider;
 
-	protected override void Awake()
+	protected void Awake()
 	{
-		base.Awake();
+		Dia = FindAnyObjectByType<DialogParse>();
 		myCollider = GetComponent<Collider2D>();
 		actionControle = new ActionControl();
 	}
@@ -50,24 +51,31 @@ public class NPCbase : DialogueParse
 		
 		if (myCollider.bounds.Contains(NewMousePosition))
 		{
-			OnDialogue();
+			Speak();
 		}
 
 	}
 
-	private void OnDialogue()
+	private void Speak()
 	{
-		print(dataDialog[1]["Event Name"].ToString());
-
-		//print(dataDialog[1]["Lines"].ToString());
-
-		//print(dataDialog[2]["Lines"].ToString());
-
-		//print(dataDialog[3]["Lines"].ToString());
-
-		//print(dataDialog[1]["Event Name"].ToString());
-		NewMousePosition = Vector2.zero;
-
+		
+		//Dia.OnDialog("Lines", 0);
 	}
+
+
+	//private void OnDialogue()
+	//{
+	//	print(dataDialog[0]["Event Name"].ToString());
+
+	//	//print(dataDialog[1]["Lines"].ToString());
+
+	//	//print(dataDialog[2]["Lines"].ToString());
+
+	//	//print(dataDialog[3]["Lines"].ToString());
+
+	//	//print(dataDialog[1]["Event Name"].ToString());
+	//	NewMousePosition = Vector2.zero;
+
+	//}
 
 }

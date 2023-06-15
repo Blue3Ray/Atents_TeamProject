@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class NewDialogue : MonoBehaviour
 {
     float rightMax = 20.0f;
     float leftMax = -20.0f;  

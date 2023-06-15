@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class NPCbase : MonoBehaviour
 {
-	DialogParse Dia;
+	//DialogParse Dia;
 
 	ActionControl actionControle;
 
@@ -18,7 +18,7 @@ public class NPCbase : MonoBehaviour
 
 	protected void Awake()
 	{
-		Dia = FindAnyObjectByType<DialogParse>();
+		//Dia = FindAnyObjectByType<DialogParse>();
 		myCollider = GetComponent<Collider2D>();
 		actionControle = new ActionControl();
 	}
@@ -42,13 +42,7 @@ public class NPCbase : MonoBehaviour
 		mousePosition = Mouse.current.position.value;
 		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 		NewMousePosition = new Vector3(mousePosition.x, mousePosition.y, 0);
-		Debug.Log($"{NewMousePosition}");
-	}
-
-
-	private void Update()
-	{
-		
+		//Debug.Log($"{NewMousePosition}");
 		if (myCollider.bounds.Contains(NewMousePosition))
 		{
 			Speak();
@@ -56,9 +50,11 @@ public class NPCbase : MonoBehaviour
 
 	}
 
+
+
 	private void Speak()
 	{
-		
+		Debug.Log($"HI");
 		//Dia.OnDialog("Lines", 0);
 	}
 

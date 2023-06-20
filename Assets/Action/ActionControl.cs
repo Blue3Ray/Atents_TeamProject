@@ -114,6 +114,34 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MouseEvent"",
+            ""id"": ""3ba1f31d-c944-46f7-9eb2-06fe98d5b2b2"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6c5589c-4128-4a6a-9838-011676f6931c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c175f29e-1eed-487d-b357-9f1ff7943f6d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Click"",
+                    ""action"": ""MouseClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -128,6 +156,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_ClickAction = asset.FindActionMap("ClickAction", throwIfNotFound: true);
         m_ClickAction_Mouse_Left = m_ClickAction.FindAction("Mouse_Left", throwIfNotFound: true);
         m_ClickAction_Attack = m_ClickAction.FindAction("Attack", throwIfNotFound: true);
+        // MouseEvent
+        m_MouseEvent = asset.FindActionMap("MouseEvent", throwIfNotFound: true);
+        m_MouseEvent_MouseClick = m_MouseEvent.FindAction("MouseClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -239,6 +270,52 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         }
     }
     public ClickActionActions @ClickAction => new ClickActionActions(this);
+
+    // MouseEvent
+    private readonly InputActionMap m_MouseEvent;
+    private List<IMouseEventActions> m_MouseEventActionsCallbackInterfaces = new List<IMouseEventActions>();
+    private readonly InputAction m_MouseEvent_MouseClick;
+    public struct MouseEventActions
+    {
+        private @ActionControl m_Wrapper;
+        public MouseEventActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseClick => m_Wrapper.m_MouseEvent_MouseClick;
+        public InputActionMap Get() { return m_Wrapper.m_MouseEvent; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MouseEventActions set) { return set.Get(); }
+        public void AddCallbacks(IMouseEventActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MouseEventActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MouseEventActionsCallbackInterfaces.Add(instance);
+            @MouseClick.started += instance.OnMouseClick;
+            @MouseClick.performed += instance.OnMouseClick;
+            @MouseClick.canceled += instance.OnMouseClick;
+        }
+
+        private void UnregisterCallbacks(IMouseEventActions instance)
+        {
+            @MouseClick.started -= instance.OnMouseClick;
+            @MouseClick.performed -= instance.OnMouseClick;
+            @MouseClick.canceled -= instance.OnMouseClick;
+        }
+
+        public void RemoveCallbacks(IMouseEventActions instance)
+        {
+            if (m_Wrapper.m_MouseEventActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMouseEventActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MouseEventActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MouseEventActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MouseEventActions @MouseEvent => new MouseEventActions(this);
     private int m_ClickSchemeIndex = -1;
     public InputControlScheme ClickScheme
     {
@@ -252,5 +329,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     {
         void OnMouse_Left(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+    }
+    public interface IMouseEventActions
+    {
+        void OnMouseClick(InputAction.CallbackContext context);
     }
 }

@@ -19,7 +19,7 @@ public class NewDialogue : MonoBehaviour
 
      private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = UnityEngine.GameObject.FindGameObjectWithTag("Player").transform;
     }
     // Start is called before the first frame update
     void Start()

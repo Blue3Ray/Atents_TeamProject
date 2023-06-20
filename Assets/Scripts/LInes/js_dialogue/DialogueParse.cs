@@ -9,7 +9,7 @@ public class DialogueParse : MonoBehaviour
 
     List<Dialogue> dialogues;
 
-    List<OneDialogueEvent> finalDialogues;
+    //List<OneDialogueEvent> finalDialogues;
     
 
     //List<Dialogue> dialoguesList;
@@ -62,24 +62,30 @@ public class DialogueParse : MonoBehaviour
         
     }
 
-    private void eventParse()
-    {
-
-    }
+    //private void eventParse()
+    //{
+    //    for (int i = 0; i < dialogues.Count; i++)
+    //    {
+    //        if (dialogues[i].Event != "")
+    //        {
+    //            OneDialogueEvent tmpOnDialogueEvent = new
+    //        }
+    //    }
+    //}
 
 
 	private void Awake()
 	{
 		dialogues = new List<Dialogue>();
 		contextList = new List<string>();
-
+        //finalDialogues = new List<OneDialogueEvent>();
 
 	}
 
 	private void Start()
 	{
         Parse("Lines");
-        eventParse();
+        //eventParse();
 
         //      foreach (Dialogue tdialogue in dialogues)
         //      {

@@ -37,16 +37,19 @@ public class EnemyBase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Dir = Vector3.right;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        // 월드에 방향 
+       // Dir = Vector3.right;
+        // 원하는 대상을 이름으로 찾고싶으면 GameObject.Find
+      // 원하는 대상을 태그로 찾기 위할때 쓰는 
+        player = GameObject.FindGameObjectWithTag("Player").transform; 
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Time.deltaTime*Dir*speed);
+        transform.Translate(Time.deltaTime*Dir*speed); 
 
-        if ((player.position.x - transform.position.x)<range) //플레이어 추적
+        if (Vector3.Distance(player.position, transform.position)<range) //플레이어 추적
         {
             Dir = (player.position - transform.position); //플레이어 위치와 몬스터 위치를 통해 거리 계산
             Dir.Normalize(); //플레이어 추적 시 부자연스럽게 따라오는 걸 방지하기 위해 속도 정함

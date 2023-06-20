@@ -9,7 +9,7 @@ public class DialogueParse : MonoBehaviour
 
     List<Dialogue> dialogues;
 
-    //List<OneDialogueEvent> finalDialogues;
+    List<OneDialogueEvent> finalDialogues;
     
 
     //List<Dialogue> dialoguesList;
@@ -62,23 +62,48 @@ public class DialogueParse : MonoBehaviour
         
     }
 
-    //private void eventParse()
-    //{
-    //    for (int i = 0; i < dialogues.Count; i++)
-    //    {
-    //        if (dialogues[i].Event != "")
-    //        {
-    //            OneDialogueEvent tmpOnDialogueEvent = new
-    //        }
-    //    }
-    //}
+	private void eventParse()
+	{
+		for (int i = 0; i < dialogues.Count; i++)
+		{
+
+            //무조건 대사집의 두 번째 줄 이벤트 네임은 공백이면 안된다.
+			if (dialogues[i].Event != "")
+			{
+                OneDialogueEvent tmpOnDialogueEvent = new OneDialogueEvent();
+                tmpOnDialogueEvent.EventName = dialogues[i].Event;
+
+			 
+                tmpOnDialogueEvent.EventDialogues[i] = dialogues[i];
+
+                do
+                {
+
+                    if (++i < dialogues.Count)
+                    {
+                        tmpOnDialogueEvent.EventDialogues[i] = dialogues[i];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                } while (dialogues[i+1].Event != "end");
+
+
+            }
+			else
+			{
+
+			}
+		}
+	}
 
 
 	private void Awake()
 	{
 		dialogues = new List<Dialogue>();
 		contextList = new List<string>();
-        //finalDialogues = new List<OneDialogueEvent>();
+        finalDialogues = new List<OneDialogueEvent>();
 
 	}
 

@@ -37,7 +37,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
                 T singleton = FindObjectOfType<T>();
                 if (singleton == null)  // 씬에도 없으면 새로 오브젝트 생성
                 {
-                    GameObject obj = new GameObject();
+                    UnityEngine.GameObject obj = new UnityEngine.GameObject();
                     obj.name = $"{typeof(T).Name} Singleton";
                     singleton = obj.AddComponent<T>();
                 }

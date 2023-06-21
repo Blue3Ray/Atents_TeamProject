@@ -23,3 +23,6 @@ public class OneDialogueEvent
 
     public List<Dialogue> EventDialogues;
 }
+
+
+

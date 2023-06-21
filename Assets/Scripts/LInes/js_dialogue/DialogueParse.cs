@@ -35,12 +35,15 @@ public class DialogueParse : MonoBehaviour
         //새로운 char배열 즉 csv에서 한 줄씩 일단 빼온다.
         string[] stringData = csvData.text.Split(new char[] { '\n' });
 
+		//dialogues = new List<Dialogue>();
+
         //위에서 한 행 씩 쪼갰으니
         //여기서는 그 행에서 콤마별로 쪼갠다.
         for(int i= 1; i < stringData.Length;)
         {
             
             string[] row = stringData[i].Split(new char[] { ',' });
+            contextList.Clear();
             Dialogue temp = new Dialogue();
             temp.Event = row[0];
             temp.name = row[1];
@@ -51,7 +54,8 @@ public class DialogueParse : MonoBehaviour
 				//Debug.Log($"두와일: {row[2]}");
 				if (++i < stringData.Length)
 				{
-					row = stringData[i].Split(new char[] { ',' });
+                    
+                    row = stringData[i].Split(new char[] { ',' });
 				}
                 else
                 {
@@ -63,45 +67,43 @@ public class DialogueParse : MonoBehaviour
 			dialogues.Add(temp);
 		}
 
-        dialogueCount = dialogues.Count;
+       // dialogueCount = dialogues.Count;
 		return dialogues.ToArray();
         
     }
 
 
 
-    private void eventParse()
-    {
-        for (int i = 0; i < dialogues.Count;)
-        {
-            OneDialogueEvent tmpOnDialogueEvent = new OneDialogueEvent();
+	private void eventParse()
+	{
+		for (int i = 0; i < dialogues.Count; i++)
+		{
+			OneDialogueEvent tmpOnDialogueEvent = new OneDialogueEvent();
 
-            if (dialogues[i].Event.ToString() != "")
-            {
-                Debug.Log(i);
-                tmpOnDialogueEvent.EventName = dialogues[i].Event;
-                Debug.Log($"{tmpOnDialogueEvent.EventName}");
+			if (dialogues[i].Event.ToString() != "")
+			{
+				tmpOnDialogueEvent.EventName = dialogues[i].Event;
+				tmpOnDialogueEvent.EventDialogues = new List<Dialogue>();
 
-                do
-                {
-                    //count 기준으로 dialogue를 세니까 null exeption이 덨어
-                    tmpOnDialogueEvent.EventDialogues.Add(dialogues[i]);
-                    i++;
-                    if (i >= dialogues.Count)
-                    {
-                        break;
-                    }
+				do
+				{
+					tmpOnDialogueEvent.EventDialogues.Add(dialogues[i]);
+					i++;
+					if (i >= dialogues.Count)
+					{
+						break;
+					}
 
-                } while (dialogues[i].Event.ToString() == "");
+				} while (dialogues[i].Event.ToString() == "");
 
-            }
+			}
 
-            finalDialogues.Add(tmpOnDialogueEvent);
+			finalDialogues.Add(tmpOnDialogueEvent);
 
-        }
-    }
+		}
+	}
 
-    private void Awake()
+	private void Awake()
 	{
 		dialogues = new List<Dialogue>();
 		contextList = new List<string>();
@@ -112,12 +114,26 @@ public class DialogueParse : MonoBehaviour
 	private void Start()
 	{
         Parse("NewDialogue");
-        eventParse();
+		eventParse();
+		//for(int i = 0; i < finalDialogues.Count; i++)
+		//{
+		//	Debug.Log($"{finalDialogues[i].EventName}");
+		//	Debug.Log($"{finalDialogues[i].EventDialogues[0].contexts[0]}");
 
-        //for (int j = 0; j < dialogues.Count; j++)
-        //{
-        //    Debug.Log($"{dialogues[j].name}");
-        //}
-		
+		//}
+
+
+		for (int j = 0; j < dialogues.Count; j++)
+		{
+			Debug.Log($"{j}");
+
+			Debug.Log($"{dialogues[j].Event}");
+			Debug.Log($"{dialogues[j].name}");
+			for (int i = 0; i < dialogues[j].contexts.Length; i++)
+			{
+				Debug.Log($"{dialogues[j].contexts[i]}");
+			}
+		}
+
 	}
 }

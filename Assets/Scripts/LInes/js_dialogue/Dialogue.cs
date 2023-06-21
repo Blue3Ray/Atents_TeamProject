@@ -21,5 +21,8 @@ public class OneDialogueEvent
 {
     public string EventName;
 
-    List<Dialogue> EventDialogues;
+    public List<Dialogue> EventDialogues;
 }
+
+
+

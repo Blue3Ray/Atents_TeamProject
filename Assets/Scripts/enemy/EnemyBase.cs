@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -11,6 +13,10 @@ public class EnemyBase : MonoBehaviour
     public float hp = 1000.0f;
     public float maxhp = 1000.0f;
     public float exp = 0;
+    public float maxexp = 0;
+    public float df = 50;
+    public float atttack = 50;
+   
 
     SpriteRenderer spriteRenderer;
      // public Vector3(변수타입) dir(변수); <-변수문
@@ -47,13 +53,14 @@ public class EnemyBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Time.deltaTime*Dir*speed); 
-
+        // 플레이어,몬스터 거리계산 후 몬스터 거리 보다 낮을때 추적 x 
         if (Vector3.Distance(player.position, transform.position)<range) //플레이어 추적
         {
             Dir = (player.position - transform.position); //플레이어 위치와 몬스터 위치를 통해 거리 계산
-            Dir.Normalize(); //플레이어 추적 시 부자연스럽게 따라오는 걸 방지하기 위해 속도 정함
-        //  Dir = (player.position < transform.position(spriteRenderer.flipX = false);
+                                                          //Dir.normalized 플레이어 추적 시 부자연스럽게 따라오는 걸 방지하기 위해 속도 정함 (속도 1)
+
+
+            //  Dir = (player.position < transform.position(spriteRenderer.flipX = false);
         }
         else
         {
@@ -69,5 +76,14 @@ public class EnemyBase : MonoBehaviour
             }
         }
 
+        transform.Translate(Time.deltaTime * speed * Dir.normalized);
+    }
+
+    public void Hit(float damage)
+    {
+        hp -= damage; // hp는 맞은 데미지 만큼 깎인다.
+        Console.WriteLine("-00hp"); 
+
     }
 }
+

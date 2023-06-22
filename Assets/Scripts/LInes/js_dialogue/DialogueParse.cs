@@ -57,38 +57,27 @@ public class DialogueParse : MonoBehaviour
 
 	private void eventParse()
 	{
+		OneDialogueEvent tmpOnDialogueEvent = new OneDialogueEvent();
+
 		for (int i = 0; i < dialogues.Count; i++)
 		{
-			OneDialogueEvent tmpOnDialogueEvent = new OneDialogueEvent();
-
-			while (dialogues[i].Event.ToString() != "")
+			if (!dialogues[i].Event.Equals("")) // 만약 내용에 이벤트가 있으면
 			{
+				// 이벤트 새로 선언
 				tmpOnDialogueEvent = new OneDialogueEvent();
 				tmpOnDialogueEvent.EventName = dialogues[i].Event;
-				tmpOnDialogueEvent.EventDialogues = new List<Dialogue>();
-
-				do
-				{
-					tmpOnDialogueEvent.EventDialogues.Add(dialogues[i]);
-					i++;
-					if (i >= dialogues.Count)
-					{
-						break;
-					}
-
-				} while (dialogues[i].Event.ToString() == "");
-
-				finalDialogues.Add(tmpOnDialogueEvent);
-				if (i >= dialogues.Count)
-				{
-					break;
-				}
-
 			}
+			tmpOnDialogueEvent.EventDialogues.Add(dialogues[i]);
 
-
+			if(i+1 < dialogues.Count && !dialogues[i + 1].Event.Equals(""))
+			{
+				finalDialogues.Add(tmpOnDialogueEvent);
+			}
+			
 		}
+		finalDialogues.Add(tmpOnDialogueEvent);
 	}
+
 
 	private void Awake()
 	{

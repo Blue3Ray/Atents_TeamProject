@@ -19,6 +19,11 @@ public class Dialogue
 [System.Serializable]
 public class OneDialogueEvent
 {
+    public OneDialogueEvent()
+    {
+        EventDialogues = new List<Dialogue>();
+    }
+        
     public string EventName;
 
     public List<Dialogue> EventDialogues;

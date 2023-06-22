@@ -19,7 +19,15 @@ public class Dialogue
 [System.Serializable]
 public class OneDialogueEvent
 {
+    public OneDialogueEvent()
+    {
+        EventDialogues = new List<Dialogue>();
+    }
+        
     public string EventName;
 
-    List<Dialogue> EventDialogues;
+    public List<Dialogue> EventDialogues;
 }
+
+
+

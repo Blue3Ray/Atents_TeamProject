@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class NPCbase : MonoBehaviour
 {
 	//DialogParse Dia;
+
+	Canvas talkCavas;
 
 	ActionControl actionControle;
 
@@ -21,6 +24,11 @@ public class NPCbase : MonoBehaviour
 		//Dia = FindAnyObjectByType<DialogParse>();
 		myCollider = GetComponent<Collider2D>();
 		actionControle = new ActionControl();
+		talkCavas = GetComponent<Canvas>();
+		if(talkCavas == null)
+		{
+			Debug.Log("talkcanvas가 비었습니다");
+		}
 	}
 
 	private void OnEnable()
@@ -55,6 +63,9 @@ public class NPCbase : MonoBehaviour
 	private void Speak()
 	{
 		Debug.Log($"HI");
+
+		//talkCavas.gameObject.SetActive(true);
+		
 		//Dia.OnDialog("Lines", 0);
 	}
 

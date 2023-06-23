@@ -47,12 +47,18 @@ public class EnemyBase : MonoBehaviour
        // Dir = Vector3.right;
         // 원하는 대상을 이름으로 찾고싶으면 GameObject.Find
       // 원하는 대상을 태그로 찾기 위할때 쓰는 
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
+       
+
     }
 
     // Update is called once per frame
     void Update()
     {
+       
+        
+        
         // 플레이어,몬스터 거리계산 후 몬스터 거리 보다 낮을때 추적 x 
         if (Vector3.Distance(player.position, transform.position)<range) //플레이어 추적
         {
@@ -74,7 +80,11 @@ public class EnemyBase : MonoBehaviour
                 Dir = Vector3.right;
                 spriteRenderer.flipX = true; // 왼쪽으로 최대한 간 뒤 오른쪽으로 돌아갔을때 자연스럽게 가기 위해 좌우반전을 줌
             }
+
+
         }
+
+
 
         transform.Translate(Time.deltaTime * speed * Dir.normalized);
     }

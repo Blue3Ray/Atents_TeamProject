@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public class MapGenerator : MonoBehaviour
+public class TileLayer : MonoBehaviour
 {
-    // 맵 생성을 관리하는 클래스
+    
+
 }

@@ -88,43 +88,43 @@ public class DialogueParse : Singleton<DialogueParse>
 		dialogues = new List<Dialogue>();
 		contextList = new List<string>();
         finalDialogues = new List<OneDialogueEvent>();
-
-	}
-
-	private void Start()
-	{
         Parse("EventDialogue");
 		eventParse();
 
-		//***아래는 finalDialogues의 모든 요소를 디버그해주는 삼중중첩 반복문입니다.
-		//Test가 아닐 때는 꼭 가려주세요
-		//for (int i = 0; i < finalDialogues.Count; i++)
-		//{
-		//	Debug.Log($"{finalDialogues[i].EventName}");
-
-		//	for (int j = 0; j < finalDialogues[i].EventDialogues.Count; j++)
-		//	{
-
-		//		for (int z = 0; z < finalDialogues[i].EventDialogues[j].contexts.Length; z++)
-		//		{
-		//			Debug.Log($"{finalDialogues[i].EventDialogues[j].contexts[z]}");
-		//		}
-		//	}
-
-		//}
-
-		//*** 아래는 dialogues의 요소를 하나씩 디버그 해주는 코드입니다
-		//for (int j = 0; j < dialogues.Count; j++)
-		//{
-		//	Debug.Log($"{j}");
-
-		//	Debug.Log($"{dialogues[j].Event}");
-		//	Debug.Log($"{dialogues[j].name}");
-		//	for (int i = 0; i < dialogues[j].contexts.Length; i++)
-		//	{
-		//		Debug.Log($"{dialogues[j].contexts[i]}");
-		//	}
-		//}
-
 	}
+
+	//private void Start()
+	//{
+
+	//	//***아래는 finalDialogues의 모든 요소를 디버그해주는 삼중중첩 반복문입니다.
+	//	//Test가 아닐 때는 꼭 가려주세요
+	//	//for (int i = 0; i < finalDialogues.Count; i++)
+	//	//{
+	//	//	Debug.Log($"{finalDialogues[i].EventName}");
+
+	//	//	for (int j = 0; j < finalDialogues[i].EventDialogues.Count; j++)
+	//	//	{
+
+	//	//		for (int z = 0; z < finalDialogues[i].EventDialogues[j].contexts.Length; z++)
+	//	//		{
+	//	//			Debug.Log($"{finalDialogues[i].EventDialogues[j].contexts[z]}");
+	//	//		}
+	//	//	}
+
+	//	//}
+
+	//	//*** 아래는 dialogues의 요소를 하나씩 디버그 해주는 코드입니다
+	//	//for (int j = 0; j < dialogues.Count; j++)
+	//	//{
+	//	//	Debug.Log($"{j}");
+
+	//	//	Debug.Log($"{dialogues[j].Event}");
+	//	//	Debug.Log($"{dialogues[j].name}");
+	//	//	for (int i = 0; i < dialogues[j].contexts.Length; i++)
+	//	//	{
+	//	//		Debug.Log($"{dialogues[j].contexts[i]}");
+	//	//	}
+	//	//}
+
+	//}
 }

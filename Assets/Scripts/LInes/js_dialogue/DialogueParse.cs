@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueParse : MonoBehaviour
+public class DialogueParse : Singleton<DialogueParse>
 {
+
+
 
     List<string> contextList;
 
     List<Dialogue> dialogues;
 
-    List<OneDialogueEvent> finalDialogues;
+	//접근자 꼭 써주기
+    public List<OneDialogueEvent> finalDialogues;
+
 
 
 	//List<Dialogue> dialoguesList;
@@ -89,19 +93,19 @@ public class DialogueParse : MonoBehaviour
 
 	private void Start()
 	{
-        Parse("NewDialogue");
+        Parse("EventDialogue");
 		eventParse();
-		
-		// *** 아래는 finalDialogues의 모든 요소를 디버그해주는 삼중중첩 반복문입니다.
+
+		//***아래는 finalDialogues의 모든 요소를 디버그해주는 삼중중첩 반복문입니다.
 		//Test가 아닐 때는 꼭 가려주세요
 		//for (int i = 0; i < finalDialogues.Count; i++)
 		//{
 		//	Debug.Log($"{finalDialogues[i].EventName}");
 
-		//	for(int j = 0; j < finalDialogues[i].EventDialogues.Count; j++)
+		//	for (int j = 0; j < finalDialogues[i].EventDialogues.Count; j++)
 		//	{
 
-		//		for(int z = 0; z < finalDialogues[i].EventDialogues[j].contexts.Length; z++)
+		//		for (int z = 0; z < finalDialogues[i].EventDialogues[j].contexts.Length; z++)
 		//		{
 		//			Debug.Log($"{finalDialogues[i].EventDialogues[j].contexts[z]}");
 		//		}

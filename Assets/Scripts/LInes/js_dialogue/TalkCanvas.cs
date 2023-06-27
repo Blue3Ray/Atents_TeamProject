@@ -20,21 +20,25 @@ public class TalkCanvas : MonoBehaviour
 	public float talkAnimSpeed = 1.0f;
 	bool IsTalking = false;
 	private List<OneDialogueEvent> finalDialogues;
+	NPCbase npcBase;
 
 
 
 	private void Awake()
 	{
+		GameObject gameObjecttmp = GameObject.Find("Rian");
+		npcBase = gameObjecttmp.GetComponent<NPCbase>();
 		actionControle = new ActionControl();
 		Transform tmp = transform.GetChild(0);
 		Transform tmpLine = tmp.GetChild(1);
 		Transform tmpCharactor = tmp.GetChild(0);
 		character = tmpCharactor.GetComponent<TextMeshProUGUI>();
 		talkLine = tmpLine.GetComponent<TextMeshProUGUI>();
-			
+		npcBase.IsClick += OnTalking;
+		
 	}
 
-	
+
 
 	private void OnEnable()
 	{

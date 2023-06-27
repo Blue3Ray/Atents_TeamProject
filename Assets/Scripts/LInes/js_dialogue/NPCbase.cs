@@ -7,9 +7,7 @@ using UnityEngine.InputSystem;
 
 public class NPCbase : MonoBehaviour
 {
-	//DialogParse Dia;
-
-	Canvas talkCavas;
+	public Action IsClick;
 
 	ActionControl actionControle;
 
@@ -21,14 +19,8 @@ public class NPCbase : MonoBehaviour
 
 	protected void Awake()
 	{
-		//Dia = FindAnyObjectByType<DialogParse>();
 		myCollider = GetComponent<Collider2D>();
 		actionControle = new ActionControl();
-		talkCavas = GetComponent<Canvas>();
-		if(talkCavas == null)
-		{
-			Debug.Log("talkcanvas가 비었습니다");
-		}
 	}
 
 	private void OnEnable()
@@ -50,7 +42,6 @@ public class NPCbase : MonoBehaviour
 		mousePosition = Mouse.current.position.value;
 		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 		NewMousePosition = new Vector3(mousePosition.x, mousePosition.y, 0);
-		//Debug.Log($"{NewMousePosition}");
 		if (myCollider.bounds.Contains(NewMousePosition))
 		{
 			Speak();
@@ -58,31 +49,10 @@ public class NPCbase : MonoBehaviour
 
 	}
 
-
-
 	private void Speak()
 	{
-		Debug.Log($"HI");
-
-		//talkCavas.gameObject.SetActive(true);
-		
-		//Dia.OnDialog("Lines", 0);
+		Debug.Log("HI");
+		IsClick?.Invoke();
 	}
-
-
-	//private void OnDialogue()
-	//{
-	//	print(dataDialog[0]["Event Name"].ToString());
-
-	//	//print(dataDialog[1]["Lines"].ToString());
-
-	//	//print(dataDialog[2]["Lines"].ToString());
-
-	//	//print(dataDialog[3]["Lines"].ToString());
-
-	//	//print(dataDialog[1]["Event Name"].ToString());
-	//	NewMousePosition = Vector2.zero;
-
-	//}
 
 }

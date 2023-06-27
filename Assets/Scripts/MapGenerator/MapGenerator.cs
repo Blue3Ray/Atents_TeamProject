@@ -8,15 +8,17 @@ using UnityEngine.Tilemaps;
 /// </summary>
 public class MapGenerator : MonoBehaviour
 {
+    public Tile backgroundTile;
+
     /// <summary>
     /// 맵데이터 불러올 배열들
     /// </summary>
-    public Tilemap[] tilemaps;
+    public Tilemap[] tilemapSamples;
 
     /// <summary>
-    /// 자기 자신의 타일 맵
+    /// 타일 맵들(0 배경, 1 플랫폼)
     /// </summary>
-    Tilemap m_tileMap;
+    Tilemap[] m_tileMaps;
 
     /// <summary>
     /// 타일 그리는 위치
@@ -25,34 +27,46 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        m_tileMap = GetComponent<Tilemap>();
+        m_tileMaps = new Tilemap[transform.childCount];
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            m_tileMaps[i] = transform.GetChild(i).GetComponent<Tilemap>();
+        }
     }
 
     private void Start()
     {
         cursor = new Vector3Int(0,0);
-        GeneratingMap(tilemaps[0]);
+
+        GeneratingMap(tilemapSamples[0]);
         for (int i = 0; i < 10; i++)
         {
-            cursor += new Vector3Int(tilemaps[0].cellBounds.size.x, 0);
-            GeneratingMap(tilemaps[0]);
+            cursor += new Vector3Int(tilemapSamples[0].cellBounds.size.x, 0);
+
+            GeneratingMap(tilemapSamples[0]);
         }
 
     }
 
+    /// <summary>
+    /// 받아온 타일맵을 커서 위치 기준으로 그리기(배경도 함께)
+    /// </summary>
+    /// <param name="targetTileMap">샘플 타일맵</param>
     void GeneratingMap(Tilemap targetTileMap)
     {
-        for (int y = targetTileMap.cellBounds.yMin; y <= targetTileMap.cellBounds.yMax; y++)
+        for (int y = targetTileMap.cellBounds.yMin; y < targetTileMap.cellBounds.yMax; y++)
         {
-            for (int x = targetTileMap.cellBounds.xMin; x <= targetTileMap.cellBounds.xMax; x++)
+            for (int x = targetTileMap.cellBounds.xMin; x < targetTileMap.cellBounds.xMax; x++)
             {
-                if (targetTileMap.HasTile(new Vector3Int(x, y)))
+                Vector3Int targetTile = cursor + new Vector3Int(x, y);
+
+                if (targetTileMap.HasTile(new Vector3Int(x, y)))        // 복제할 위치에 타일이 있다면
                 {
-                    Vector3Int targetTile = cursor + new Vector3Int(x, y);
-                    m_tileMap.SetTile(targetTile, targetTileMap.GetTile(new Vector3Int(x,y)));
+                    m_tileMaps[1].SetTile(targetTile, targetTileMap.GetTile(new Vector3Int(x,y)));  // 해당 타일과 동일한 타일을 설정
 
                     //Debug.Log(targetTileMap.GetTile(new Vector3Int(x, y)));
                 }
+                m_tileMaps[0].SetTile(targetTile, backgroundTile);      // 배경 타일맵에 배경을
             }
         }
     }

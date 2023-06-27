@@ -49,17 +49,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""739b21b2-8c5c-4d07-8bb5-5b32b9793a88"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Click"",
-                    ""action"": ""Mouse_Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""be159371-4559-49da-a3dd-d03ee338a458"",
                     ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
@@ -110,6 +99,17 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4214d9b8-bf96-46b0-9701-1dea818c4015"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Click"",
+                    ""action"": ""Mouse_Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }

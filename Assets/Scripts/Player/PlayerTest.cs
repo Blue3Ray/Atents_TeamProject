@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // 플레이어 스크립트 임시로 만듬, 기본적으로 점프, 이동만 구현되어있음.
 public class PlayerTest : MonoBehaviour
 {
+    public Action<Vector3> ClickPosition;
+
     public float moveSpeed = 10;
 
     float currentSpeed;
@@ -35,16 +39,40 @@ public class PlayerTest : MonoBehaviour
     private void OnEnable()
     {
         ac.PlayerTest.Enable();
+        ac.ClickAction.Enable();
         ac.PlayerTest.Move.performed += OnMove;
         ac.PlayerTest.Move.canceled += OnMove;
         ac.PlayerTest.Jump.performed += OnJump;
+        ac.ClickAction.Mouse_Left.performed += OnClickMouse_Left;
     }
 
-    private void OnDisable()
+	private void OnClickMouse_Left(UnityEngine.InputSystem.InputAction.CallbackContext _)
+	{
+        //Vector3 mousePosition = new(Mouse.current.position.x.value, Mouse.current.position.y.value, 0);
+        Vector3 mousePosition = Input.mousePosition;
+
+		Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+
+		Debug.Log(ray.origin);
+
+		RaycastHit hit;
+
+		if (Physics.Raycast(ray, out hit, 50.0f))
+        {
+            Debug.Log($"{hit.transform.name} 부딪힘");
+        }
+
+		ClickPosition?.Invoke(mousePosition);
+
+        //Ray ray = Camera.main.ScreenPointToRay(_);
+	}
+
+	private void OnDisable()
     {
         ac.PlayerTest.Jump.performed -= OnJump;
         ac.PlayerTest.Move.canceled -= OnMove;
         ac.PlayerTest.Move.performed -= OnMove;
+        ac.ClickAction.Disable();
         ac.PlayerTest.Disable();
     }
     private void OnJump(UnityEngine.InputSystem.InputAction.CallbackContext obj)

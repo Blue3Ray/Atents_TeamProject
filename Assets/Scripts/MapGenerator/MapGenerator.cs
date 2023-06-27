@@ -11,9 +11,14 @@ public class MapGenerator : MonoBehaviour
     public Tile backgroundTile;
 
     /// <summary>
-    /// 맵데이터 불러올 배열들
+    /// 방 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
     /// </summary>
-    public Tilemap[] tilemapSamples;
+    public Tilemap[] roomSamples;
+
+    /// <summary>
+    /// 복도 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
+    /// </summary>
+    public Tilemap[] passRoomSamples;
 
     /// <summary>
     /// 타일 맵들(0 배경, 1 플랫폼)
@@ -24,6 +29,11 @@ public class MapGenerator : MonoBehaviour
     /// 타일 그리는 위치
     /// </summary>
     Vector3Int cursor;
+
+    /// <summary>
+    /// 통로로 나가는 위치(맵 하나 생성할때마다 임시로 지정)
+    /// </summary>
+    List<Vector3Int> passwayPos;
 
     private void Awake()
     {
@@ -38,13 +48,19 @@ public class MapGenerator : MonoBehaviour
     {
         cursor = new Vector3Int(0,0);
 
-        GeneratingMap(tilemapSamples[0]);
-        for (int i = 0; i < 10; i++)
-        {
-            cursor += new Vector3Int(tilemapSamples[0].cellBounds.size.x, 0);
+        passwayPos = new();
 
-            GeneratingMap(tilemapSamples[0]);
-        }
+        GeneratingMap(roomSamples[0]);
+
+        Debug.Log(passwayPos.Count);
+
+
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    cursor += new Vector3Int(roomSamples[0].cellBounds.size.x, 0);
+
+        //    GeneratingMap(roomSamples[0]);
+        //}
 
     }
 
@@ -54,6 +70,8 @@ public class MapGenerator : MonoBehaviour
     /// <param name="targetTileMap">샘플 타일맵</param>
     void GeneratingMap(Tilemap targetTileMap)
     {
+        passwayPos.Clear();
+
         for (int y = targetTileMap.cellBounds.yMin; y < targetTileMap.cellBounds.yMax; y++)
         {
             for (int x = targetTileMap.cellBounds.xMin; x < targetTileMap.cellBounds.xMax; x++)
@@ -66,8 +84,33 @@ public class MapGenerator : MonoBehaviour
 
                     //Debug.Log(targetTileMap.GetTile(new Vector3Int(x, y)));
                 }
+                else if(x == targetTileMap.cellBounds.xMin || x == targetTileMap.cellBounds.xMax || y == targetTileMap.cellBounds.yMin || y == targetTileMap.cellBounds.yMax)
+                {
+                    if(CheckIsPassway(new Vector3Int(x,y), targetTileMap))
+                    {
+                        passwayPos.Add(targetTile);
+                        Debug.Log($"{x}, {y}");
+                    }
+                }
                 m_tileMaps[0].SetTile(targetTile, backgroundTile);      // 배경 타일맵에 배경을
             }
         }
+    }
+
+    bool CheckIsPassway(Vector3Int targetPos, Tilemap targetMap)
+    {
+        int check = 5;
+        for(int y = targetPos.y - 1; y <= targetPos.y + 1; y++)
+        {
+            for(int x = targetPos.x -1; x <= targetPos.x +1; x++)
+            {
+                if(targetMap.HasTile(new Vector3Int(x,y)))
+                {
+                    check--;
+                }
+            }
+        }
+
+        return check == 0;
     }
 }

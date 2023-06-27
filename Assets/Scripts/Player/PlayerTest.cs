@@ -55,9 +55,9 @@ public class PlayerTest : MonoBehaviour
 
 		Debug.Log(ray.origin);
 
-		RaycastHit hit;
+		RaycastHit2D hit;
 
-		if (Physics.Raycast(ray, out hit, 50.0f))
+		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
         {
             Debug.Log($"{hit.transform.name} ºÎµúÈû");
         }

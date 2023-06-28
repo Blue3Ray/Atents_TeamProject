@@ -49,17 +49,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""739b21b2-8c5c-4d07-8bb5-5b32b9793a88"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Click"",
-                    ""action"": ""Mouse_Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""be159371-4559-49da-a3dd-d03ee338a458"",
                     ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
@@ -112,6 +101,17 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4214d9b8-bf96-46b0-9701-1dea818c4015"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Click"",
+                    ""action"": ""Mouse_Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -142,6 +142,98 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerTest"",
+            ""id"": ""4f01b39a-680a-4ec5-b285-f6f695880b26"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""30d87450-9d18-40a9-8b8c-68fec1a2f884"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""19095b0d-fde3-4e81-867b-324b1b049e1d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""624d1b5e-e331-4e01-8b9f-1da609509f21"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""eb4c3dc2-514b-4ed4-954f-497e3cfc3edb"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""bdbdc7ca-1966-4ec8-af40-9007406e80c1"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""cc9625f5-e4a8-4fd6-9444-19b67cc1718b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""8fae359f-c7ce-450b-9a76-95c847eb74d7"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef1e53de-ae35-4841-b6c8-5b8861ef9a5f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -159,6 +251,10 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         // MouseEvent
         m_MouseEvent = asset.FindActionMap("MouseEvent", throwIfNotFound: true);
         m_MouseEvent_MouseClick = m_MouseEvent.FindAction("MouseClick", throwIfNotFound: true);
+        // PlayerTest
+        m_PlayerTest = asset.FindActionMap("PlayerTest", throwIfNotFound: true);
+        m_PlayerTest_Move = m_PlayerTest.FindAction("Move", throwIfNotFound: true);
+        m_PlayerTest_Jump = m_PlayerTest.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -316,6 +412,60 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         }
     }
     public MouseEventActions @MouseEvent => new MouseEventActions(this);
+
+    // PlayerTest
+    private readonly InputActionMap m_PlayerTest;
+    private List<IPlayerTestActions> m_PlayerTestActionsCallbackInterfaces = new List<IPlayerTestActions>();
+    private readonly InputAction m_PlayerTest_Move;
+    private readonly InputAction m_PlayerTest_Jump;
+    public struct PlayerTestActions
+    {
+        private @ActionControl m_Wrapper;
+        public PlayerTestActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_PlayerTest_Move;
+        public InputAction @Jump => m_Wrapper.m_PlayerTest_Jump;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerTest; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerTestActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerTestActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerTestActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerTestActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+        }
+
+        private void UnregisterCallbacks(IPlayerTestActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+        }
+
+        public void RemoveCallbacks(IPlayerTestActions instance)
+        {
+            if (m_Wrapper.m_PlayerTestActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerTestActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerTestActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerTestActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerTestActions @PlayerTest => new PlayerTestActions(this);
     private int m_ClickSchemeIndex = -1;
     public InputControlScheme ClickScheme
     {
@@ -333,5 +483,10 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     public interface IMouseEventActions
     {
         void OnMouseClick(InputAction.CallbackContext context);
+    }
+    public interface IPlayerTestActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

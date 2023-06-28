@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 29009719315735857}
   - component: {fileID: 3989649755935861139}
   m_Layer: 0
-  m_Name: StartRoom
+  m_Name: StartRoomNoExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

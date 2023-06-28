@@ -184,7 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundTile: {fileID: 11400000, guid: e096560c386ca154fa0101b53d52a808, type: 2}
   roomSamples:
-  - {fileID: 413880044757977419, guid: 9a1107315a609ac4991bac31d0140c70, type: 3}
+  - {fileID: 1154950341791056972, guid: 88b05bd84d3d25d4e8bd8f86c4bc2f52, type: 3}
   passRoomSamples: []
 --- !u!1 &8145954
 GameObject:

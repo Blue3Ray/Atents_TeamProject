@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
+
+struct RoomData
+{
+    Tilemap map;
+    Tilemap exit;
+
+    public RoomData(Tilemap map, Tilemap exit)
+    {
+        this.map = map;
+        this.exit = exit;
+    }
+}
 
 /// <summary>
 /// 맵 데이터(프리펩)을 가져와서 맵 생성하는 클래스
@@ -9,6 +22,7 @@ using UnityEngine.Tilemaps;
 public class MapGenerator : MonoBehaviour
 {
     public Tile backgroundTile;
+    public Tile exitTile;
 
     /// <summary>
     /// 방 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
@@ -16,12 +30,12 @@ public class MapGenerator : MonoBehaviour
     public Tilemap[] roomSamples;
 
     /// <summary>
-    /// 복도 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
+    /// 복도 데이터 불러올 샘플들(0 가로, 1 세로)
     /// </summary>
     public Tilemap[] passRoomSamples;
 
     /// <summary>
-    /// 타일 맵들(0 배경, 1 플랫폼)
+    /// 타일 맵들(0 배경, 1 플랫폼, 2 출입구)
     /// </summary>
     Tilemap[] m_tileMaps;
 
@@ -37,7 +51,8 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        m_tileMaps = new Tilemap[transform.childCount];
+        // 타일을 그릴 레이어 불러오는 과정
+        m_tileMaps = new Tilemap[transform.childCount];     
         for (int i = 0; i < transform.childCount; i++)
         {
             m_tileMaps[i] = transform.GetChild(i).GetComponent<Tilemap>();
@@ -52,7 +67,17 @@ public class MapGenerator : MonoBehaviour
 
         GeneratingMap(roomSamples[0]);
 
-        Debug.Log(passwayPos.Count);
+        //List<Vector3Int> temp = new();
+        //Tile[] test = new Tile[4];
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    temp.Add(new Vector3Int(i, i));
+        //    test[i] = backgroundTile;
+        //    Debug.Log($"{i}, {i}");
+        //}
+        
+        
+        //m_tileMaps[0].SetTiles(temp.ToArray(),test);
 
 
         //for (int i = 0; i < 3; i++)
@@ -63,6 +88,12 @@ public class MapGenerator : MonoBehaviour
         //}
 
     }
+
+    void GeneratingPassway(int passSize, Vector3Int passStartPos)
+    {
+
+    }
+
 
     /// <summary>
     /// 받아온 타일맵을 커서 위치 기준으로 그리기(배경도 함께)
@@ -84,12 +115,12 @@ public class MapGenerator : MonoBehaviour
 
                     //Debug.Log(targetTileMap.GetTile(new Vector3Int(x, y)));
                 }
-                else if(x == targetTileMap.cellBounds.xMin || x == targetTileMap.cellBounds.xMax || y == targetTileMap.cellBounds.yMin || y == targetTileMap.cellBounds.yMax)
+                else if(x == targetTileMap.cellBounds.xMin || x == targetTileMap.cellBounds.xMax - 1 || y == targetTileMap.cellBounds.yMin || y == targetTileMap.cellBounds.yMax - 1)
                 {
                     if(CheckIsPassway(new Vector3Int(x,y), targetTileMap))
                     {
                         passwayPos.Add(targetTile);
-                        Debug.Log($"{x}, {y}");
+                        Debug.Log($"{x}, {y} is passway!");
                     }
                 }
                 m_tileMaps[0].SetTile(targetTile, backgroundTile);      // 배경 타일맵에 배경을
@@ -99,14 +130,14 @@ public class MapGenerator : MonoBehaviour
 
     bool CheckIsPassway(Vector3Int targetPos, Tilemap targetMap)
     {
-        int check = 5;
+        int check = 9;
         for(int y = targetPos.y - 1; y <= targetPos.y + 1; y++)
         {
-            for(int x = targetPos.x -1; x <= targetPos.x +1; x++)
+            for(int x = targetPos.x -1; x <= targetPos.x + 1; x++)
             {
-                if(targetMap.HasTile(new Vector3Int(x,y)))
+                if(!targetMap.HasTile(new Vector3Int(x,y)))
                 {
-                    check--;
+                    check--;   
                 }
             }
         }

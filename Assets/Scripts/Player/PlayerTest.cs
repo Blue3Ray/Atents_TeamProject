@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 // 플레이어 스크립트 임시로 만듬, 기본적으로 점프, 이동만 구현되어있음.
 public class PlayerTest : MonoBehaviour
 {
+    public Action<Transform> ClickedObject;
+
     public Action<Vector3> ClickPosition;
 
     public float moveSpeed = 10;
@@ -59,7 +61,7 @@ public class PlayerTest : MonoBehaviour
 
 		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
         {
-            Debug.Log($"{hit.transform.name} 부딪힘");
+            ClickedObject(hit.transform);
         }
 
 		ClickPosition?.Invoke(mousePosition);

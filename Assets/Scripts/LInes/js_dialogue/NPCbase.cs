@@ -1,3 +1,4 @@
+using Mono.CompilerServices.SymbolWriter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,37 +8,29 @@ using UnityEngine.InputSystem;
 
 public class NPCbase : MonoBehaviour
 {
-	public Action IsClick;
+	//플레이어에게서 입력을 받아와야 하므로 플레이어에 접근
+	PlayerTest playerTest;
 
-	//Vector3 NewMousePosition;
-	
-	//Vector2 mousePosition;
+	//캔버스의 자식에 접근해서 활성화를 해줘야 하므로 캔버스에 접근
+	Canvas canvas;
 
-	//private Collider2D myCollider;
-
-	protected void Awake()
+	private void Awake()
 	{
-		//myCollider = GetComponent<Collider2D>();
+		canvas = FindAnyObjectByType<Canvas>();
+		playerTest = FindAnyObjectByType<PlayerTest>();
+
+		//플레이어Test에서 클릭했을 때 invoke되는 액션에 CanvaOn 실행
+		playerTest.ClickedObject = CanvasOn;
 		
 	}
 
-
-	//private void OnClick(InputAction.CallbackContext _)
-	//{
-	//	mousePosition = Mouse.current.position.value;
-	//	mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-	//	NewMousePosition = new Vector3(mousePosition.x, mousePosition.y, 0);
-	//	if (myCollider.bounds.Contains(NewMousePosition))
-	//	{
-	//		Speak();
-	//	}
-
-	//}
-
-	//private void Speak()
-	//{
-	//	Debug.Log("HI");
-	//	IsClick?.Invoke();
-	//}
-
+	private void CanvasOn(Transform clickTransform)
+	{
+		
+		if(clickTransform == transform)
+		{
+			Transform canvasTransform = canvas.transform.GetChild(0);
+			canvasTransform.gameObject.SetActive(true);	
+		}
+	}
 }

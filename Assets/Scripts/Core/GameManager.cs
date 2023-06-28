@@ -18,10 +18,10 @@ public class Player : MonoBehaviour
 
 public class GameManager : Singleton<GameManager>
 {
-    Player player;
+    PlayerTest playerTest;
 
     private void Awake()
     {
-        player = new Player();
+        playerTest = new PlayerTest();
     }
 }

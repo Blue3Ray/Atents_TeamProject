@@ -40,7 +40,7 @@ public class PlayerTest : MonoBehaviour
 
     private void OnEnable()
     {
-        ac.PlayerTest.Enable();
+        ac.PlayerTest.Enable(); 
         ac.ClickAction.Enable();
         ac.PlayerTest.Move.performed += OnMove;
         ac.PlayerTest.Move.canceled += OnMove;

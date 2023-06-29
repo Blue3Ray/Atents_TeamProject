@@ -6,13 +6,21 @@ using UnityEngine.UIElements;
 
 struct RoomData
 {
-    Tilemap map;
-    Tilemap exit;
+    /// <summary>
+    /// 맵 레이어(0 플랫폼, 1 출입구)
+    /// </summary>
+    List<Tilemap> mapLayers;
 
-    public RoomData(Tilemap map, Tilemap exit)
+    /// <summary>
+    /// 출입구 위치
+    /// </summary>
+    List<Vector3Int> exitPos;
+
+    public RoomData(List<Tilemap> map, List<Vector3Int> exit)
     {
-        this.map = map;
-        this.exit = exit;
+        this.mapLayers = map;
+        
+        this.exitPos = exit;
     }
 }
 
@@ -21,7 +29,14 @@ struct RoomData
 /// </summary>
 public class MapGenerator : MonoBehaviour
 {
+    /// <summary>
+    /// 배경을 그릴 타일
+    /// </summary>
     public Tile backgroundTile;
+
+    /// <summary>
+    /// 출구를 구별하기위한 기준 타일
+    /// </summary>
     public Tile exitTile;
 
     /// <summary>
@@ -30,12 +45,17 @@ public class MapGenerator : MonoBehaviour
     public Tilemap[] roomSamples;
 
     /// <summary>
+    /// 방 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
+    /// </summary>
+    public GameObject[] roomSamplesWithExit;
+
+    /// <summary>
     /// 복도 데이터 불러올 샘플들(0 가로, 1 세로)
     /// </summary>
     public Tilemap[] passRoomSamples;
 
     /// <summary>
-    /// 타일 맵들(0 배경, 1 플랫폼, 2 출입구)
+    /// 타일을 그릴 맵들(0 배경, 1 플랫폼, 2 출입구)
     /// </summary>
     Tilemap[] m_tileMaps;
 
@@ -48,6 +68,8 @@ public class MapGenerator : MonoBehaviour
     /// 통로로 나가는 위치(맵 하나 생성할때마다 임시로 지정)
     /// </summary>
     List<Vector3Int> passwayPos;
+
+    Tilemap[] mapsData;
 
     private void Awake()
     {
@@ -65,7 +87,7 @@ public class MapGenerator : MonoBehaviour
 
         passwayPos = new();
 
-        GeneratingMap(roomSamples[0]);
+        //GeneratingMap(roomSamples[0]);
 
         //List<Vector3Int> temp = new();
         //Tile[] test = new Tile[4];
@@ -75,23 +97,26 @@ public class MapGenerator : MonoBehaviour
         //    test[i] = backgroundTile;
         //    Debug.Log($"{i}, {i}");
         //}
+
         
+                
         
         //m_tileMaps[0].SetTiles(temp.ToArray(),test);
-
-
-        //for (int i = 0; i < 3; i++)
-        //{
-        //    cursor += new Vector3Int(roomSamples[0].cellBounds.size.x, 0);
-
-        //    GeneratingMap(roomSamples[0]);
-        //}
 
     }
 
     void GeneratingPassway(int passSize, Vector3Int passStartPos)
     {
 
+    }
+
+    void ScaneMapData(List<Tilemap> targetTileMaps)
+    {
+        mapsData = new Tilemap[targetTileMaps.Count];
+        for(int i = 0; i < mapsData.Length; i++)
+        {
+            mapsData[i] = targetTileMaps[i];
+        }
     }
 
 
@@ -112,8 +137,6 @@ public class MapGenerator : MonoBehaviour
                 if (targetTileMap.HasTile(new Vector3Int(x, y)))        // 복제할 위치에 타일이 있다면
                 {
                     m_tileMaps[1].SetTile(targetTile, targetTileMap.GetTile(new Vector3Int(x,y)));  // 해당 타일과 동일한 타일을 설정
-
-                    //Debug.Log(targetTileMap.GetTile(new Vector3Int(x, y)));
                 }
                 else if(x == targetTileMap.cellBounds.xMin || x == targetTileMap.cellBounds.xMax - 1 || y == targetTileMap.cellBounds.yMin || y == targetTileMap.cellBounds.yMax - 1)
                 {

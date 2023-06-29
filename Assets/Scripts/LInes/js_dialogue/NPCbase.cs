@@ -6,31 +6,32 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPCbase : MonoBehaviour
+public class NPCbase : MonoBehaviour, IClickable
 {
-	//플레이어에게서 입력을 받아와야 하므로 플레이어에 접근
-	PlayerTest playerTest;
 
 	//캔버스의 자식에 접근해서 활성화를 해줘야 하므로 캔버스에 접근
 	Canvas canvas;
 
+
+	public void OnClicking(IClickable tmp)
+	{
+		if(tmp as NPCbase != null)
+		{
+			CanvasOn();
+		}
+	}
+
 	private void Awake()
 	{
 		canvas = FindAnyObjectByType<Canvas>();
-		playerTest = FindAnyObjectByType<PlayerTest>();
-
-		//플레이어Test에서 클릭했을 때 invoke되는 액션에 CanvaOn 실행
-		playerTest.ClickedObject = CanvasOn;
 		
 	}
 
-	private void CanvasOn(Transform clickTransform)
+	private void CanvasOn()
 	{
-		
-		if(clickTransform == transform)
-		{
-			Transform canvasTransform = canvas.transform.GetChild(0);
-			canvasTransform.gameObject.SetActive(true);	
-		}
+
+		Transform canvasTransform = canvas.transform.GetChild(0);
+		canvasTransform.gameObject.SetActive(true);
+
 	}
 }

@@ -22,6 +22,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
-        playerTest = new PlayerTest();
+        //playerTest = new PlayerTest();
     }
 }

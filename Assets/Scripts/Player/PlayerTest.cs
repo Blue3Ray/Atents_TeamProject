@@ -5,11 +5,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // 플레이어 스크립트 임시로 만듬, 기본적으로 점프, 이동만 구현되어있음.
-public class PlayerTest : MonoBehaviour
+public class PlayerTest : Singleton<PlayerTest>
 {
-    public Action<Transform> ClickedObject;
-
-    public Action<Vector3> ClickPosition;
+    public Action MouseJustclick_Left;
 
     public float moveSpeed = 10;
 
@@ -50,21 +48,26 @@ public class PlayerTest : MonoBehaviour
 
 	private void OnClickMouse_Left(UnityEngine.InputSystem.InputAction.CallbackContext _)
 	{
-        //Vector3 mousePosition = new(Mouse.current.position.x.value, Mouse.current.position.y.value, 0);
+
         Vector3 mousePosition = Input.mousePosition;
 
-		Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        MouseJustclick_Left?.Invoke();
+        
 
-		Debug.Log(ray.origin);
+		Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
 		RaycastHit2D hit;
 
 		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
         {
-            ClickedObject(hit.transform);
+            Debug.Log($"{hit.transform.name}");
+			if (hit.transform.TryGetComponent<IClickable>(out IClickable temp))
+            {
+                Debug.Log("클릭커블이 눌리긴 함");
+                temp.OnClicking(temp);
+            }
         }
 
-		ClickPosition?.Invoke(mousePosition);
 
         //Ray ray = Camera.main.ScreenPointToRay(_);
 	}

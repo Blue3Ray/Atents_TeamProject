@@ -10,13 +10,16 @@ public class EnemyBase : MonoBehaviour
     public Transform player;
     public float speed;
     float range =20;
-    public float hp = 1000.0f;
+    public float nowhp = 1000.0f;
     public float maxhp = 1000.0f;
+    public int atkDmg;
+    public float atkSpeed = 1;
+   // public Image nowHpbar;
     public float exp = 0;
     public float maxexp = 0;
     public float df = 50;
-    public float atttack = 50;
-   
+    
+    
 
     SpriteRenderer spriteRenderer;
      // public Vector3(변수타입) dir(변수); <-변수문
@@ -48,15 +51,23 @@ public class EnemyBase : MonoBehaviour
         // 원하는 대상을 이름으로 찾고싶으면 GameObject.Find
       // 원하는 대상을 태그로 찾기 위할때 쓰는 
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        maxhp = 1000;
+        nowhp = 1000;
+        atkDmg = 10;
 
-       
+        transform.position = new Vector3(0, 0, 0);
+       // animator = GetComponent<Animator>();
+       // SetAttackSpeed(1.5f);
+        
+       // 임시 짜놨고 추후에 보완할 예정 (빨간줄도 추후 수정 예정입니다)
 
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+       //nowHpbar.fillAmount = (float)nowhp / (float)maxhp;
+
         
         
         // 플레이어,몬스터 거리계산 후 몬스터 거리 보다 낮을때 추적 x 
@@ -91,7 +102,7 @@ public class EnemyBase : MonoBehaviour
 
     public void Hit(float damage)
     {
-        hp -= damage; // hp는 맞은 데미지 만큼 깎인다.
+       // hp -= damage; // hp는 맞은 데미지 만큼 깎인다.
         Console.WriteLine("-00hp"); 
 
     }

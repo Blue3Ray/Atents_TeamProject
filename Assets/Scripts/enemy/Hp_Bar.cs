@@ -10,6 +10,15 @@ public class Hp_Bar : MonoBehaviour
     public float maxHp;
     public float currenthp;
 
+
+    private void Awake()
+    {
+        Camera.main.WorldToScreenPoint(Enemy.position);
+    }
+  
+
+
+
     // Start is called before the first frame update
     void Start()
     {

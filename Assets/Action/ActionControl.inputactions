@@ -94,34 +94,6 @@
             ]
         },
         {
-            "name": "MouseEvent",
-            "id": "3ba1f31d-c944-46f7-9eb2-06fe98d5b2b2",
-            "actions": [
-                {
-                    "name": "MouseClick",
-                    "type": "Button",
-                    "id": "d6c5589c-4128-4a6a-9838-011676f6931c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "c175f29e-1eed-487d-b357-9f1ff7943f6d",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Click",
-                    "action": "MouseClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
             "name": "PlayerTest",
             "id": "4f01b39a-680a-4ec5-b285-f6f695880b26",
             "actions": [
@@ -212,13 +184,47 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MouseClickMenu",
+            "id": "2eaeaca6-2da3-4afd-8531-480979a86e0a",
+            "actions": [
+                {
+                    "name": "MouesEvent",
+                    "type": "Button",
+                    "id": "df7ba992-74ee-4ad8-90a7-a8e9e597f8d4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9d526c54-c944-4ef1-88b2-4441c140a108",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Click",
+                    "action": "MouesEvent",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
         {
             "name": "Click",
             "bindingGroup": "Click",
-            "devices": []
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         }
     ]
 }

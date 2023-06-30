@@ -83,21 +83,24 @@ public class RoomGenerator : MonoBehaviour
     {
         foreach (Vector3Int pos in targetRoomData.tilesPos[index])
         {
-            if (index == targetRoomData.tilesPos.Count - 1)
+            if (index == targetRoomData.tilesPos.Count - 1)     // 만약 출입구 레이어면
             {
-                Debug.Log($"{exitSamples[0].width}, {exitSamples[0].height} : 출구크기");
-                for (int i = 2; i < exitSamples[0].height - 2; i++)
+                for (int i = -2; i < exitSamples[0].height - 2; i++)    // 문 높이 만큼
                 {
                     for (int j = 0; j < exitSamples[0].width; j++)
                     {
-                        if (targetRoomData.mapLayers[1].HasTile(pos))
+                        if (exitSamples[0].mapLayers[1].HasTile(new Vector3Int(exitSamples[0].min.x + j, exitSamples[0].min.y + i + 2)))
                         {
-                            m_tileMaps[3].SetTile(pos + cursor + new Vector3Int(j, i), targetRoomData.mapLayers[1].GetTile(pos));
+                            m_tileMaps[1].SetTile(pos + cursor + new Vector3Int(j, i), targetRoomData.mapLayers[1].GetTile(pos));
+                            //m_tileMaps[3].SetTile(pos + cursor + new Vector3Int(j, i), targetRoomData.mapLayers[1].GetTile(pos));
+                            Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
                         }
                         else
                         {
-                            Debug.Log("asd");
+                            m_tileMaps[1].SetTile(pos + cursor + new Vector3Int(j, i), null);
+                            
                         }
+
                         
                     }
                 }
@@ -114,3 +117,4 @@ public class RoomGenerator : MonoBehaviour
 
 
 }
+

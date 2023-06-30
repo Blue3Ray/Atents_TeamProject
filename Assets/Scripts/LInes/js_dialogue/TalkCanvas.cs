@@ -8,9 +8,10 @@ using UnityEngine.InputSystem;
 
 public class TalkCanvas : MonoBehaviour
 {
-	//인스펙터 창에서 이 인덱스만 고쳐주면 알아서 대화가 실행됩니다!
+	/// <summary>
+	/// 이벤트 인덱스에 따라 대화가 진행
+	/// </summary>
 	public int eventIndex = 0;
-	ActionControl actionControle;
 	TextMeshProUGUI character;
 	TextMeshProUGUI talkLine;
 	int talkIndex = 0;
@@ -20,49 +21,45 @@ public class TalkCanvas : MonoBehaviour
 	public float talkAnimSpeed = 1.0f;
 	bool IsTalking = false;
 	private List<OneDialogueEvent> finalDialogues;
-	NPCbase npcBase;
-
+	bool IsTalkStart = false;
 
 
 	private void Awake()
 	{
-		GameObject gameObjecttmp = GameObject.Find("Rian");
-		npcBase = gameObjecttmp.GetComponent<NPCbase>();
-		actionControle = new ActionControl();
-		Transform tmp = transform.GetChild(0);
-		Transform tmpLine = tmp.GetChild(1);
-		Transform tmpCharactor = tmp.GetChild(0);
-		character = tmpCharactor.GetComponent<TextMeshProUGUI>();
-		talkLine = tmpLine.GetComponent<TextMeshProUGUI>();
-		npcBase.IsClick += OnTalking;
-		
+		Transform talker = transform.GetChild(0);
+		Transform talking = transform.GetChild(1);
+		character = talker.GetComponent<TextMeshProUGUI>();
+		talkLine = talking.GetComponent<TextMeshProUGUI>();
+		PlayerTest.Ins.MouseJustclick_Left += OnClick;
+		finalDialogues = DialogueParse.Ins.finalDialogues;
 	}
 
 
 
 	private void OnEnable()
 	{
-		
-		finalDialogues = DialogueParse.Ins.finalDialogues;
-		actionControle.ClickAction.Enable();
-		actionControle.ClickAction.Mouse_Left.performed += OnClick;
-
+		IsTalkStart = true;
 		OnTalking();
 	}
 
 	private void OnDisable()
 	{
-
-		actionControle.ClickAction.Mouse_Left.performed -= OnClick;
-		actionControle.ClickAction.Disable();
+		IsTalkStart = false;
 	}
 
 
 
-	private void OnClick(InputAction.CallbackContext _)
+	private void OnClick()
 	{
-		if(!IsTalking)
-		SetIndex();
+		if (IsTalkStart)
+		{
+			
+			if (!IsTalking)
+			{
+				SetIndex();
+			}
+
+		}
 	}
 
 	private void SetIndex()
@@ -110,4 +107,5 @@ public class TalkCanvas : MonoBehaviour
 		}
 		IsTalking = false;
 	}
+
 }

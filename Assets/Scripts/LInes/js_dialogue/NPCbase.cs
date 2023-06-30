@@ -1,3 +1,4 @@
+using Mono.CompilerServices.SymbolWriter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,39 +6,32 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPCbase : MonoBehaviour
+public class NPCbase : MonoBehaviour, IClickable
 {
-	public Action IsClick;
 
-	//Vector3 NewMousePosition;
-	
-	//Vector2 mousePosition;
+	//캔버스의 자식에 접근해서 활성화를 해줘야 하므로 캔버스에 접근
+	Canvas canvas;
 
-	//private Collider2D myCollider;
 
-	protected void Awake()
+	public void OnClicking(IClickable tmp)
 	{
-		//myCollider = GetComponent<Collider2D>();
+		if(tmp as NPCbase != null)
+		{
+			CanvasOn();
+		}
+	}
+
+	private void Awake()
+	{
+		canvas = FindAnyObjectByType<Canvas>();
 		
 	}
 
+	private void CanvasOn()
+	{
 
-	//private void OnClick(InputAction.CallbackContext _)
-	//{
-	//	mousePosition = Mouse.current.position.value;
-	//	mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-	//	NewMousePosition = new Vector3(mousePosition.x, mousePosition.y, 0);
-	//	if (myCollider.bounds.Contains(NewMousePosition))
-	//	{
-	//		Speak();
-	//	}
+		Transform canvasTransform = canvas.transform.GetChild(0);
+		canvasTransform.gameObject.SetActive(true);
 
-	//}
-
-	//private void Speak()
-	//{
-	//	Debug.Log("HI");
-	//	IsClick?.Invoke();
-	//}
-
+	}
 }

@@ -47,7 +47,7 @@ public class MapGenerator : MonoBehaviour
     /// <summary>
     /// 방 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
     /// </summary>
-    public GameObject[] roomSamplesWithExit;
+    public SampleRoomData[] roomSamplesWithExit;
 
     /// <summary>
     /// 복도 데이터 불러올 샘플들(0 가로, 1 세로)
@@ -87,29 +87,19 @@ public class MapGenerator : MonoBehaviour
 
         passwayPos = new();
 
-        //GeneratingMap(roomSamples[0]);
-
-        //List<Vector3Int> temp = new();
-        //Tile[] test = new Tile[4];
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    temp.Add(new Vector3Int(i, i));
-        //    test[i] = backgroundTile;
-        //    Debug.Log($"{i}, {i}");
-        //}
+        
 
         
                 
         
-        //m_tileMaps[0].SetTiles(temp.ToArray(),test);
+        //m_tileMaps[0].SetTiles(temp.ToArray(),test[]);
 
     }
 
-    void GeneratingPassway(int passSize, Vector3Int passStartPos)
-    {
-
-    }
-
+    /// <summary>
+    /// 샘플로 가지고 있는 데이터를 가져오기
+    /// </summary>
+    /// <param name="targetTileMaps"></param>
     void ScaneMapData(List<Tilemap> targetTileMaps)
     {
         mapsData = new Tilemap[targetTileMaps.Count];
@@ -119,6 +109,10 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    void GeneratingPassway(int passSize, Vector3Int passStartPos)
+    {
+
+    }
 
     /// <summary>
     /// 받아온 타일맵을 커서 위치 기준으로 그리기(배경도 함께)
@@ -164,7 +158,6 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-
         return check == 0;
     }
 }

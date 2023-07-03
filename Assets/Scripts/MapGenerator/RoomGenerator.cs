@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 public class RoomGenerator : MonoBehaviour
 {
@@ -65,7 +66,7 @@ public class RoomGenerator : MonoBehaviour
             GenerateMapLayer(roomSamplesWithExit[0], 0);
             GenerateMapLayer(roomSamplesWithExit[0], 1);
             GenerateMapLayer(roomSamplesWithExit[0], 2);
-            GenerateMapLayer(roomSamplesWithExit[0], 3);
+            GenerateExit(roomSamplesWithExit[0]);
         }
     }
 
@@ -79,38 +80,52 @@ public class RoomGenerator : MonoBehaviour
     //    }
     //}
 
-    void GenerateMapLayer(SampleRoomData targetRoomData, int index)
-    {
-        foreach (Vector3Int pos in targetRoomData.tilesPos[index])
-        {
-            if (index == targetRoomData.tilesPos.Count - 1)     // 만약 출입구 레이어면
-            {
-                for (int i = -2; i < exitSamples[0].height - 2; i++)    // 문 높이 만큼
-                {
-                    for (int j = 0; j < exitSamples[0].width; j++)
-                    {
-                        if (exitSamples[0].mapLayers[1].HasTile(new Vector3Int(exitSamples[0].min.x + j, exitSamples[0].min.y + i + 2)))
-                        {
-                            m_tileMaps[1].SetTile(pos + cursor + new Vector3Int(j, i), targetRoomData.mapLayers[1].GetTile(pos));
-                            //m_tileMaps[3].SetTile(pos + cursor + new Vector3Int(j, i), targetRoomData.mapLayers[1].GetTile(pos));
-                            Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
-                        }
-                        else
-                        {
-                            m_tileMaps[1].SetTile(pos + cursor + new Vector3Int(j, i), null);
-                            
-                        }
 
-                        
+    /// <summary>
+    /// 맵을 레이어별로 생성하는 메서드
+    /// </summary>
+    /// <param name="targetRoomData">맵 생성할 샘플 데이터</param>
+    /// <param name="index">샘플에서 생성할 레이어</param>
+    void GenerateMapLayer(SampleRoomData targetRoomData, int layer)
+    {
+        foreach (Vector3Int pos in targetRoomData.tilesPos[layer])      // 레이어가 가지고 있는 각 타일을 하나씩 꺼냄
+        {
+            m_tileMaps[layer].SetTile(pos + cursor, targetRoomData.mapLayers[layer].GetTile(pos));
+        }
+    }
+
+    void GenerateExit(SampleRoomData targetRoomData)
+    {
+        foreach(Exit temp in targetRoomData.exitPos)
+        {
+            int x = 0, y = 0;
+            if(temp.Direction == ExitDirection.Left|| temp.Direction == ExitDirection.Right)
+            {
+                y = -2;
+            }
+            else if(temp.Direction == ExitDirection.Up || temp.Direction == ExitDirection.Down)
+            {
+                x = -2;
+            }
+
+            for (int i = y; i < exitSamples[0].height + y; i++)    // 문 높이 만큼
+            {
+                for (int j = x; j < exitSamples[0].width + x; j++)
+                {
+                    if (exitSamples[0].mapLayers[1].HasTile(new Vector3Int(exitSamples[0].min.x + j, exitSamples[0].min.y + i + 2)))
+                    {
+                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j, i), targetRoomData.mapLayers[1].GetTile(temp.Pos));
+                        //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
+                    }
+                    else       // 빈 타일이면 null(빈타일)로 바꾸기
+                    {
+                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j, i), null);
                     }
                 }
             }
-            else
-            {
-                m_tileMaps[index].SetTile(pos + cursor, targetRoomData.mapLayers[index].GetTile(pos));
-            }
-        }
 
+
+        }
     }
 
 

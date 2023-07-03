@@ -2,6 +2,7 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ElemanterType
 {
@@ -12,11 +13,20 @@ public enum ElemanterType
 }
 public class ElemanterMenu : MonoBehaviour
 {
-   public ElemanterType eTpye;
-  
+    public ElemanterType eTpye;
 
-   public void ElemanterSelct() 
-   {
+    Button button1;
+    Button button2;
+    Button button3;
+    Button button4;
+
+    private void Awake()
+    {
+        
+    }
+
+    public void ElemanterSelct() 
+    {
         switch(eTpye)
         {
             case ElemanterType.button1:
@@ -32,6 +42,6 @@ public class ElemanterMenu : MonoBehaviour
                 Debug.Log("button4 º±≈√");
                 break;
         }
-   }
+    }
 
 }

@@ -39,7 +39,7 @@ public class RoomGenerator : MonoBehaviour
 
     private void Awake()
     {
-        // 타일을 그릴 레이어 불러오는 과정
+        // 타일을 작성할 레이어 불러오는 과정
         m_tileMaps = new Tilemap[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -68,6 +68,16 @@ public class RoomGenerator : MonoBehaviour
             GenerateMapLayer(roomSamplesWithExit[0], 2);
             GenerateExit(roomSamplesWithExit[0]);
         }
+
+        cursor = new Vector3Int(15, 0);
+
+        for (int i = 0; i < roomSamplesWithExit[1].mapLayers.Count; i++)
+        {
+            GenerateMapLayer(roomSamplesWithExit[1], 0);
+            GenerateMapLayer(roomSamplesWithExit[1], 1);
+            GenerateMapLayer(roomSamplesWithExit[1], 2);
+            GenerateExit(roomSamplesWithExit[1]);
+        }
     }
 
     //void GeneratePassExit(SampleRoomData targetRoomData)
@@ -88,7 +98,7 @@ public class RoomGenerator : MonoBehaviour
     /// <param name="index">샘플에서 생성할 레이어</param>
     void GenerateMapLayer(SampleRoomData targetRoomData, int layer)
     {
-        foreach (Vector3Int pos in targetRoomData.tilesPos[layer])      // 레이어가 가지고 있는 각 타일을 하나씩 꺼냄
+        foreach (Vector3Int pos in targetRoomData.tilesPos[layer])      // 레이어(배경, 플랫폼 등)가 가지고 있는 각 타일을 하나씩 꺼냄
         {
             m_tileMaps[layer].SetTile(pos + cursor, targetRoomData.mapLayers[layer].GetTile(pos));
         }
@@ -98,7 +108,7 @@ public class RoomGenerator : MonoBehaviour
     {
         foreach(Exit temp in targetRoomData.exitPos)
         {
-            int x = 0, y = 0;
+            int x = 0, y = 0,index = 0;
             if(temp.Direction == ExitDirection.Left|| temp.Direction == ExitDirection.Right)
             {
                 y = -2;
@@ -106,21 +116,23 @@ public class RoomGenerator : MonoBehaviour
             else if(temp.Direction == ExitDirection.Up || temp.Direction == ExitDirection.Down)
             {
                 x = -2;
+                index = 1;
             }
 
-            for (int i = y; i < exitSamples[0].height + y; i++)    // 문 높이 만큼
+            for (int i = 0; i < exitSamples[index].height; i++)    // 문 높이 만큼
             {
-                for (int j = x; j < exitSamples[0].width + x; j++)
+                for (int j = 0; j < exitSamples[index].width; j++)  // 문 너비 만큼
                 {
-                    if (exitSamples[0].mapLayers[1].HasTile(new Vector3Int(exitSamples[0].min.x + j, exitSamples[0].min.y + i + 2)))
+                    if (exitSamples[index].mapLayers[1].HasTile(new Vector3Int(exitSamples[index].min.x + j, exitSamples[index].min.y + i)))
                     {
-                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j, i), targetRoomData.mapLayers[1].GetTile(temp.Pos));
+                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), targetRoomData.mapLayers[1].GetTile(temp.Pos));
                         //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
                     }
                     else       // 빈 타일이면 null(빈타일)로 바꾸기
                     {
-                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j, i), null);
+                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);
                     }
+                    
                 }
             }
 

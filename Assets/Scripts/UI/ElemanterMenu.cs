@@ -2,6 +2,7 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ElemanterType
 {
@@ -13,23 +14,50 @@ public enum ElemanterType
 public class ElemanterMenu : MonoBehaviour
 {
    public ElemanterType eTpye;
-  
 
-   public void ElemanterSelct() 
+    public Button elemanterbutton1;
+    public Button elemanterbutton2;
+    public Button elemanterbutton3;
+    public Button elemanterbutton4;
+
+    Elemanter1 elemanter1;
+    Elemanter2 elemanter2;
+    Elemanter3 elemanter3;
+    Elemanter4 elemanter4;
+
+
+    private void Awake()
+    {
+        elemanterbutton1 = gameObject.AddComponent<Button>();
+        elemanterbutton2 = gameObject.AddComponent<Button>();
+        elemanterbutton3 = gameObject.AddComponent<Button>();
+        elemanterbutton4 = gameObject.AddComponent<Button>();
+
+        elemanter1 = new Elemanter1();
+        elemanter2 = new Elemanter2();
+        elemanter3 = new Elemanter3();
+        elemanter4 = new Elemanter4();
+    }
+
+    public void ElemanterSelct() 
    {
-        switch(eTpye)
+        GameObject result;
+
+       switch(eTpye)
         {
             case ElemanterType.button1:
-                Debug.Log("button1 선택");
+                elemanterbutton1.Select();
                 break;
             case ElemanterType.button2:
-                Debug.Log("button2 선택");
+                elemanterbutton2.Select();
                 break;
             case ElemanterType.button3:
-                Debug.Log("button3 선택");
-                break;
+                elemanterbutton3.Select();
+                 break;
             case ElemanterType.button4:
-                Debug.Log("button4 선택");
+                 elemanterbutton4.Select();
+                 break;
+            default:
                 break;
         }
    }

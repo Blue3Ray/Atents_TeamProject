@@ -5,6 +5,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
 
+
+public struct RoomData
+{
+    public Vector3 pos;
+    public SampleRoomData roomData;
+}
+
+
+
 public class RoomGenerator : MonoBehaviour
 {
     /// <summary>
@@ -36,6 +45,9 @@ public class RoomGenerator : MonoBehaviour
     /// 타일 그리는 위치
     /// </summary>
     Vector3Int cursor;
+
+    Stack<Vector3Int> cursorPosStack;
+    Stack<RoomData> roomStack;
 
     private void Awake()
     {
@@ -132,11 +144,8 @@ public class RoomGenerator : MonoBehaviour
                     {
                         m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);
                     }
-                    
                 }
             }
-
-
         }
     }
 

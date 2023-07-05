@@ -36,10 +36,10 @@ public struct Exit
 
 public class SampleRoomData : MonoBehaviour
 {
+    
     public List<Tilemap> mapLayers;
 
     public List<List<Vector3Int>> tilesPos;
-    
 
     public List<Exit> exitPos;
 

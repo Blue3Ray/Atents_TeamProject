@@ -75,62 +75,72 @@ public class RoomGenerator : MonoBehaviour
         }
         // 생성
 
-        ExitDirection exit = (ExitDirection)Random.Range(0, 4);
+        //ExitDirection exit = (ExitDirection)Random.Range(0, 4);
 
-        Debug.Log(exit);
+        //Debug.Log(exit);
 
-        roomStack.Push(roomSamplesWithExit[0]);
+        //roomStack.Push(roomSamplesWithExit[0]);
 
-        for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
-        {
-            GenerateMapLayer(roomSamplesWithExit[0], 0);
-            GenerateMapLayer(roomSamplesWithExit[0], 1);
-            GenerateMapLayer(roomSamplesWithExit[0], 2);
-            GenerateExit(roomSamplesWithExit[0], exit);
-        }
+        //for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
+        //{
+        //    GenerateMapLayer(roomSamplesWithExit[0], 0);
+        //    GenerateMapLayer(roomSamplesWithExit[0], 1);
+        //    GenerateMapLayer(roomSamplesWithExit[0], 2);
+        //    GenerateExit(roomSamplesWithExit[0], exit);
+        //}
 
-        cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
+        //cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
 
-        exit = (ExitDirection)Random.Range(0, 4);
+        Exit start = new Exit(new Vector3Int(0, 0), ExitDirection.Up);
+        Exit end = new Exit(new Vector3Int(10, 20), ExitDirection.Down);
 
-        Debug.Log(exit);
-
-        roomStack.Push(roomSamplesWithExit[1]);
-
-        for (int i = 0; i < roomSamplesWithExit[1].mapLayers.Count; i++)
-        {
-            GenerateMapLayer(roomSamplesWithExit[1], 0);
-            GenerateMapLayer(roomSamplesWithExit[1], 1);
-            GenerateMapLayer(roomSamplesWithExit[1], 2);
-            GenerateExit(roomSamplesWithExit[1], exit);
-        }
-
-        cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
-
-        exit = (ExitDirection)Random.Range(0, 4);
-
-        Debug.Log(exit);
-
-        roomStack.Push(roomSamplesWithExit[2]);
-
-        for (int i = 0; i < roomSamplesWithExit[2].mapLayers.Count; i++)
-        {
-            GenerateMapLayer(roomSamplesWithExit[2], 0);
-            GenerateMapLayer(roomSamplesWithExit[2], 1);
-            GenerateMapLayer(roomSamplesWithExit[2], 2);
-            GenerateExit(roomSamplesWithExit[2], exit);
-        }
+        GeneratePassway(start, end);
+        
     }
 
-    //void GeneratePassExit(SampleRoomData targetRoomData)
-    //{
-    //    int index = targetRoomData.tilesPos.Count - 1;
+    void GeneratePassway(Exit startPos, Exit endPos)
+    {
+        cursor = startPos.Pos;
 
-    //    foreach (Vector3Int pos in targetRoomData.tilesPos[index])
-    //    {
-    //        m_tileMaps[index].SetTile(pos + cursor, targetRoomData.mapLayers[index].GetTile(pos));
-    //    }
-    //}
+        int xDir = 0, yDir = 0;
+        switch (startPos.Direction) 
+        { 
+            case ExitDirection.Up:
+                yDir = 1;
+                break;
+            case ExitDirection.Down:
+                yDir = -1;
+                break;
+            case ExitDirection.Right:
+                xDir = 1;
+                break;
+            case ExitDirection.Left:
+                xDir = -1;
+                break;
+            default:
+                break;
+        }
+
+        int i = 0;
+        while (i < 50 && cursor != endPos.Pos)
+        {
+            cursor += new Vector3Int(xDir, yDir);
+            GeneratePass(cursor, new Vector3Int(xDir, yDir));
+            if(cursor.y == endPos.Pos.y && yDir != 0)
+            {
+                yDir = 0;
+                xDir = cursor.x < endPos.Pos.x ? 1 : -1;
+                GeneratePass(cursor, new Vector3Int(xDir, yDir));
+            }
+            else if(cursor.x == endPos.Pos.x && xDir != 0)
+            {
+                xDir = 0;
+                yDir = cursor.y < endPos.Pos.y ? 1 : -1;
+            }
+            i++;
+        }
+
+    }
 
 
     /// <summary>
@@ -144,6 +154,33 @@ public class RoomGenerator : MonoBehaviour
         {
             m_tileMaps[layer].SetTile(pos + cursor, targetRoomData.mapLayers[layer].GetTile(pos));
         }
+    }
+
+    void GeneratePass(Vector3Int pos, Vector3Int dir)
+    {
+        int exitIndex = 0;      // 좌우로 그릴건지 상하로 그릴건지 구분
+        if (dir.x == 0)
+        {
+            exitIndex = 1;
+        }
+
+        for (int i = 0; i < exitSamples[exitIndex].height; i++)    // 문 높이 만큼
+        {
+            for (int j = 0; j < exitSamples[exitIndex].width; j++)  // 문 너비 만큼
+            {
+                if (exitSamples[exitIndex].mapLayers[1].HasTile(new Vector3Int(exitSamples[exitIndex].min.x + j, exitSamples[exitIndex].min.y + i)))
+                {
+                    m_tileMaps[1].SetTile(cursor + new Vector3Int(j, i), exitSamples[exitIndex].mapLayers[1].GetTile(new Vector3Int(j, i)));
+                    //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
+                }
+                else
+                {
+                    //m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);   // 빈 타일이면 null(빈타일)로 바꾸기
+                }
+            }
+        }
+
+
     }
 
     void GenerateExit(SampleRoomData targetRoomData, ExitDirection exitDir)

@@ -79,6 +79,8 @@ public class TalkCanvas : MonoBehaviour
 
 		OnTalking();
 	}
+	Shader dfg;
+	Vector2 ve;
 
 	private void OnTalking()
 	{

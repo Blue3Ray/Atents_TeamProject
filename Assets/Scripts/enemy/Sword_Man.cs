@@ -23,13 +23,15 @@ public class Sword_Man : MonoBehaviour
         {
             transform.localScale = new Vector3(-1, 1, 1);
             animator.SetBool("moving", true);
+            transform.Translate(Vector3.right * Time.deltaTime);
         }
         else if (h < 0)
         {
             transform.localScale = new Vector3(1, 1, 1);
             animator.SetBool("moving", true);
+            transform.Translate(Vector3.left * Time.deltaTime);
         }
         else animator.SetBool("moving", false);
-        transform.Translate(new Vector3(h,0,0) * Time.deltaTime);
+        transform.Translate(new Vector3(h,0,0) * Time.deltaTime);      
     }
 }

@@ -75,34 +75,32 @@ public class RoomGenerator : MonoBehaviour
         }
         // 생성
 
-        //ExitDirection exit = (ExitDirection)Random.Range(0, 4);
 
-        //Debug.Log(exit);
+        roomStack.Push(roomSamplesWithExit[0]);
 
-        //roomStack.Push(roomSamplesWithExit[0]);
+        for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
+        {
+            GenerateMapLayer(roomSamplesWithExit[0], 0);
+            GenerateMapLayer(roomSamplesWithExit[0], 1);
+            GenerateMapLayer(roomSamplesWithExit[0], 2);
+            GenerateExit(roomSamplesWithExit[0], ExitDirection.Right);
+        }
 
-        //for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
-        //{
-        //    GenerateMapLayer(roomSamplesWithExit[0], 0);
-        //    GenerateMapLayer(roomSamplesWithExit[0], 1);
-        //    GenerateMapLayer(roomSamplesWithExit[0], 2);
-        //    GenerateExit(roomSamplesWithExit[0], exit);
-        //}
+        // 여기까지가 시작 방 생성(출구 포함)
 
-        //cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
+        cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
 
         Exit start = new Exit(new Vector3Int(0, 0), ExitDirection.Up);
         Exit end = new Exit(new Vector3Int(10, 20), ExitDirection.Down);
 
         GeneratePassway(start, end);
-        
     }
 
     void GeneratePassway(Exit startPos, Exit endPos)
     {
         cursor = startPos.Pos;
 
-        int xDir = 0, yDir = 0;
+        int xDir = 0, yDir = 0;             // 통로가 만들어지는 방향(대각선 경우는 없음)
         switch (startPos.Direction) 
         { 
             case ExitDirection.Up:
@@ -122,10 +120,12 @@ public class RoomGenerator : MonoBehaviour
         }
 
         int i = 0;
+
         while (i < 50 && cursor != endPos.Pos)
         {
             cursor += new Vector3Int(xDir, yDir);
             GeneratePass(cursor, new Vector3Int(xDir, yDir));
+
             if(cursor.y == endPos.Pos.y && yDir != 0)
             {
                 yDir = 0;

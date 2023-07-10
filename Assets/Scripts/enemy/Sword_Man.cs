@@ -10,7 +10,7 @@ public class Sword_Man : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        objSwordMan.transform.position = new Vector3(0,0,0);
+        transform.position = new Vector3(0,0,0);
         animator = GetComponent<Animator>();
         
     }
@@ -32,6 +32,12 @@ public class Sword_Man : MonoBehaviour
             transform.Translate(Vector3.left * Time.deltaTime);
         }
         else animator.SetBool("moving", false);
-        transform.Translate(new Vector3(h,0,0) * Time.deltaTime);      
+        transform.Translate(new Vector3(h,0,0) * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.A) &&
+            !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            animator.SetTrigger("attack");
+        }
     }
 }

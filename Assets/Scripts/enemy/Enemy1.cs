@@ -8,7 +8,7 @@ public class Enemy1 : MonoBehaviour
 
     public GameObject prfHpBar;
     public GameObject canvas;
-    
+    Animator animator;
 
     RectTransform hpBar;
 
@@ -26,5 +26,12 @@ public class Enemy1 : MonoBehaviour
         Vector3 _hpBarPos =
             Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + height, 0));
         hpBar.position = _hpBarPos;
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+            animator.SetBool("moving", true);
+
+        }
     }
 }

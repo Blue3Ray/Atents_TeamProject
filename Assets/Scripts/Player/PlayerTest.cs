@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 // 플레이어 스크립트 임시로 만듬, 기본적으로 점프, 이동만 구현되어있음.
@@ -58,18 +59,18 @@ public class PlayerTest : Singleton<PlayerTest>
 
 		RaycastHit2D hit;
 
+
 		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
-        {
-            Debug.Log($"{hit.transform.name}");
+		{
+			Debug.Log($"{hit.transform.name}");
 			if (hit.transform.TryGetComponent<IClickable>(out IClickable temp))
-            {
-                Debug.Log("클릭커블이 눌리긴 함");
-                temp.OnClicking(temp);
-            }
-        }
+			{
+				temp.OnClicking(temp);
+			}
+		}
 
 
-        //Ray ray = Camera.main.ScreenPointToRay(_);
+		//Ray ray = Camera.main.ScreenPointToRay(_);
 	}
 
 	private void OnDisable()

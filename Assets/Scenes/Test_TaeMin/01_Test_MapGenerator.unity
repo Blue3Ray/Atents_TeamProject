@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &610971
 Grid:
   m_ObjectHideFlags: 0
@@ -449,6 +449,54 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &620452934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 620452936}
+  - component: {fileID: 620452935}
+  m_Layer: 0
+  m_Name: TestMap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &620452935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620452934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c468d2daca7eecc43b9217e5d0bbca52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 100
+  height: 100
+  mapFillRate: 0.8
+  boxes: 
+--- !u!4 &620452936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620452934}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 26.405672, y: 11.809446, z: -0.17184594}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &627858047
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,6 +687,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 906368833}
     m_Modifications:
+    - target: {fileID: 947898778503993003, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1929328145318890007, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5034119551250388288, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_Name
       value: StartRoom
@@ -649,7 +705,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6105058282255814837, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6105058282255814837, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_LocalPosition.x

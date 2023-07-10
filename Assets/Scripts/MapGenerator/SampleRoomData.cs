@@ -61,8 +61,8 @@ public class SampleRoomData : MonoBehaviour
         min = new Vector3Int(mapLayers[1].cellBounds.xMin, mapLayers[1].cellBounds.yMin);
         max = new Vector3Int(mapLayers[1].cellBounds.xMax, mapLayers[1].cellBounds.yMax);
 
-        height = max.y - min.y;
-        width = max.x - min.x;
+        height = mapLayers[1].size.y;
+        width = mapLayers[1].size.x;
 
         CheckExitPos(mapLayers[mapLayers.Count - 1]);
     }

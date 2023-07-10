@@ -20,14 +20,14 @@ public class UIPlayer : MonoBehaviour
     {
         actionControl = new ActionControl();
 
-        elemanter = new ElemanterMenu();
+
         // UIPlayer 자식인 elemanterMenu 
         //elemanterMenu = transform.GetChild(0).gameObject;
         
         // elemanterMenu 위치를 uiplayer 위치로 받아오기
-        elemanterMenu.transform.position = transform.position;
+       // elemanterMenu.transform.position = transform.position;
 
-        elemanter = GetComponent<ElemanterMenu>();
+        elemanter = new ElemanterMenu();
     }
 
     private void OnEnable()
@@ -45,7 +45,18 @@ public class UIPlayer : MonoBehaviour
     private void Onclick(InputAction.CallbackContext _)
     {
         elemanterMenu.SetActive(true);
+        actionControl.MouseClickMenu.MouesEvent.Enable();
+        actionControl.MouseClickMenu.MouesEvent.performed += Onclick;
+        actionControl.MouseClickMenu.MouesEvent.canceled += ElemanterSelect;
     }
 
+ 
+
+    
+
+    private void ElemanterSelect(InputAction.CallbackContext _)
+    {
+        elemanter.ElemanterSelct();
+    }
 
 }

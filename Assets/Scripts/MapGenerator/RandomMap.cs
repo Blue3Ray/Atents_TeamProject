@@ -7,17 +7,21 @@ public class RandomMap : MonoBehaviour
     public int width;
     public int Width
     {
-        get { return width; }
-        set { width = value; 
-        ResetMap();
+        get => width;
+        set 
+        { 
+            width = value; 
+            ResetMap();
         }
     }
     public int height;
     public int Height
     {
         get => height;
-        set { height = value;
-        ResetMap() ;
+        set 
+        { 
+            height = value;
+            ResetMap() ;
         }
     }
 
@@ -28,15 +32,22 @@ public class RandomMap : MonoBehaviour
 
     List<List<Vector2Int>> rooms = new();
 
+    /// <summary>
+    /// 초기 랜덤 bool 채우는 정도 (대충 0.45 ~ 0.47 적당)
+    /// </summary>
     [Range(0,1)]
     public float mapFillRate = 0.8f;
 
+    /// <summary>
+    /// 집약화 시키는 횟수
+    /// </summary>
     public int collectBoxBoolCount = 3;
 
 
     private void OnValidate()
     {
         ResetMap();
+
         for (int i = 0; i < collectBoxBoolCount; i++)
         {
             GatherData();

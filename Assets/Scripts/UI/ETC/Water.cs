@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Water : MonoBehaviour
 {
-    public void OnClick()
+    private void Start()
     {
         Debug.Log("¹° »ý¼º");
     }

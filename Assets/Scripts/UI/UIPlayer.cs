@@ -13,22 +13,21 @@ public class UIPlayer : MonoBehaviour
     // elematerMenu 객체 생성
    public  GameObject elemanterSlot;
 
-    //ElemanterMenu 클래스 가져오기
-    ElemanterMenu elemanter;
+  
 
     private void Awake()
     {
         actionControl = new ActionControl();
 
-        elemanterSlot = new GameObject();
+        
 
         // UIPlayer 자식인 elemanterMenu 
-        elemanterSlot = transform.GetChild(0).gameObject;
+        
         
         // elemanterMenu 위치를 uiplayer 위치로 받아오기
          //elemanterSlot.transform.position = transform.position;
 
-        elemanter = new ElemanterMenu();
+        
     }
 
     private void OnEnable()
@@ -52,9 +51,12 @@ public class UIPlayer : MonoBehaviour
         elemanterSlot.SetActive(true);
     }
 
-    private void ElemanterSelect(InputAction.CallbackContext _)
+    private void ElemanterSelect(InputAction.CallbackContext context)
     {
-        elemanter.ElemanterSelct();
+        
+       Vector2 mousepostion = Mouse.current.position.ReadValue();
+        
+        Debug.Log($"{mousepostion}");
     }
 
 }

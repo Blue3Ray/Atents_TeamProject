@@ -213,12 +213,12 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""MouesEvent"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""df7ba992-74ee-4ad8-90a7-a8e9e597f8d4"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [

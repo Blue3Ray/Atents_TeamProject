@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Thunder : MonoBehaviour
 {
-    public void OnClick()
+    private void Start()
     {
         Debug.Log("번개 생성");
     }

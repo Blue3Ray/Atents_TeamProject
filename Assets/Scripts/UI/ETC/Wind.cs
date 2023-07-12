@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour
 {
-    public void OnClick()
+    private void Start()
     {
         Debug.Log("바람 생성");
     }

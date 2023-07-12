@@ -15,10 +15,7 @@ public class TestP : MonoBehaviour
     GameObject windSelect;
     GameObject thunderSelect;
 
-    Fire fire;
-    Water water;
-    Thunder thunder;
-    Wind wind;
+    
 
     private void Awake()
     {
@@ -33,10 +30,7 @@ public class TestP : MonoBehaviour
         windSelect = elemanterMenu.transform.GetChild(2).gameObject;
         thunderSelect = elemanterMenu.transform.GetChild(3).gameObject;
 
-        fire = GetComponent<Fire>();
-        water = GetComponent<Water>();
-        thunder = GetComponent<Thunder>();
-        wind = GetComponent<Wind>();
+        
 
     }
 
@@ -81,23 +75,5 @@ public class TestP : MonoBehaviour
         }
     }
 
-    private void Onclick()
-    {
-        if (fire != null)
-        {
-           fire.OnClick();
-        }
-        else if (water != null)
-        {
-            water.OnClick();
-        }
-        else if (wind != null)
-        {
-            wind.OnClick();
-        }
-        else if (thunder != null)
-        {
-            thunder.OnClick();
-        }
-    }
+   
 }

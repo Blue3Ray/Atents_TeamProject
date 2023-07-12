@@ -11,7 +11,7 @@ public class UIPlayer : MonoBehaviour
     ActionControl actionControl;
 
     // elematerMenu 객체 생성
-    GameObject elemanterMenu;
+   public  GameObject elemanterSlot;
 
     //ElemanterMenu 클래스 가져오기
     ElemanterMenu elemanter;
@@ -20,11 +20,13 @@ public class UIPlayer : MonoBehaviour
     {
         actionControl = new ActionControl();
 
+        elemanterSlot = new GameObject();
+
         // UIPlayer 자식인 elemanterMenu 
-        elemanterMenu = transform.GetChild(0).gameObject;
+        elemanterSlot = transform.GetChild(0).gameObject;
         
         // elemanterMenu 위치를 uiplayer 위치로 받아오기
-       // elemanterMenu.transform.position = transform.position;
+         //elemanterSlot.transform.position = transform.position;
 
         elemanter = new ElemanterMenu();
     }
@@ -47,7 +49,7 @@ public class UIPlayer : MonoBehaviour
 
     private void Onclick(InputAction.CallbackContext _)
     {
-        elemanterMenu.SetActive(true);
+        elemanterSlot.SetActive(true);
     }
 
     private void ElemanterSelect(InputAction.CallbackContext _)

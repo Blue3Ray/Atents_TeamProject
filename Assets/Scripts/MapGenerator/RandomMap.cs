@@ -84,18 +84,20 @@ public class RandomMap : MonoBehaviour
     bool CheckNearNodesBool(int x, int y)
     {
         int count = 0;
-        int boolCount = 0;
+        int boolTCount = 0;
         for(int a = -1; a <= 1; a++)
         {
             for(int b = -1; b <= 1; b++)
             {
+                // ¸Ê ¹Ù±ùÀÏ ¶§ false·Î Ã³¸®
                 if((x + b < 0 || x + b >= width)||(y + a < 0 || y + a >= height))
                 {
-                    boolCount++;
+                    //boolCount++;
                 }
                 else
                 {
-                    if (nodes[GetIndex(x + b, y + a)]) boolCount++;
+                    // ±ÙÃ³ Å¸°Ù ³ëµå°¡ true ÀÏ¶§ ture Ä«¿îÆ® Áõ°¡
+                    if (nodes[GetIndex(x + b, y + a)]) boolTCount++;
                 }
 
                 //if((x + b >= 0 && x + b < width) && (y + a >= 0 && y + a < height))
@@ -107,7 +109,7 @@ public class RandomMap : MonoBehaviour
             }
         }
 
-        return (boolCount - (count * 0.5f)) > 0f;
+        return (boolTCount - (count * 0.5f)) > 0f;
     }
 
 
@@ -117,6 +119,7 @@ public class RandomMap : MonoBehaviour
 
         for (int i = 0; i < nodes.Length; i++)
         {
+            // fiilrateº¸´Ù ÀÛÀ¸¸é true(ºóÄ­) ¾Æ´Ï¸é false(°ËÀºÄ­)
             nodes[i] = Random.Range(0.0f, 1.0f) < mapFillRate;
         }
     }
@@ -130,6 +133,7 @@ public class RandomMap : MonoBehaviour
                 for (int x = 0; x < width; x++)
                 {
                     Gizmos.color = Color.black;
+                    // false¸é °ËÀºÄ­, true¸é ºóÄ­
                     if (!nodes[GetIndex(x, y)]) Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
                 }
             }

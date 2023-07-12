@@ -98,7 +98,7 @@ public class DialogueParse : Singleton<DialogueParse>
 		dialogues = new List<Dialogue>();
 		contextList = new List<string>();
         finalDialogues = new List<OneDialogueEvent>();
-        Parse("EventDialogue");
+        Parse("Lines0705");
 		eventParse();
 
 	}

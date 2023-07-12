@@ -23,6 +23,7 @@ public class TalkCanvas : MonoBehaviour
 	private List<OneDialogueEvent> finalDialogues;
 	bool IsTalkStart = false;
 
+	public Action EndTalk;
 
 	private void Awake()
 	{
@@ -78,6 +79,8 @@ public class TalkCanvas : MonoBehaviour
 
 		OnTalking();
 	}
+	Shader dfg;
+	Vector2 ve;
 
 	private void OnTalking()
 	{
@@ -92,6 +95,7 @@ public class TalkCanvas : MonoBehaviour
 		else
 		{
 			this.gameObject.SetActive(false);
+			EndTalk?.Invoke();
 		}
 	}
 

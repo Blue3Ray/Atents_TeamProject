@@ -1,9 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
+
+
+public struct RoomData
+{
+    public Vector3 pos;
+    public SampleRoomData roomData;
+}
 
 public class RoomGenerator : MonoBehaviour
 {
@@ -27,6 +32,12 @@ public class RoomGenerator : MonoBehaviour
     /// </summary>
     public SampleRoomData[] roomSamplesWithExit;
 
+
+    /// <summary>
+    /// 생성된 방들이 쌓여있을 스택
+    /// </summary>
+    public Stack<SampleRoomData> roomStack;
+
     /// <summary>
     /// 타일을 그릴 맵들(0 배경, 1 플랫폼, 2 반플랫폼, ... n-1 출입구)
     /// </summary>
@@ -36,6 +47,7 @@ public class RoomGenerator : MonoBehaviour
     /// 타일 그리는 위치
     /// </summary>
     Vector3Int cursor;
+    
 
     private void Awake()
     {
@@ -45,6 +57,8 @@ public class RoomGenerator : MonoBehaviour
         {
             m_tileMaps[i] = transform.GetChild(i).GetComponent<Tilemap>();
         }
+        
+        roomStack = new Stack<SampleRoomData>();
     }
 
     private void Start()
@@ -61,34 +75,72 @@ public class RoomGenerator : MonoBehaviour
         }
         // 생성
 
+
+        roomStack.Push(roomSamplesWithExit[0]);
+
         for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
         {
             GenerateMapLayer(roomSamplesWithExit[0], 0);
             GenerateMapLayer(roomSamplesWithExit[0], 1);
             GenerateMapLayer(roomSamplesWithExit[0], 2);
-            GenerateExit(roomSamplesWithExit[0]);
+            GenerateExit(roomSamplesWithExit[0], ExitDirection.Right);
         }
 
-        cursor = new Vector3Int(15, 0);
+        // 여기까지가 시작 방 생성(출구 포함)
 
-        for (int i = 0; i < roomSamplesWithExit[1].mapLayers.Count; i++)
-        {
-            GenerateMapLayer(roomSamplesWithExit[1], 0);
-            GenerateMapLayer(roomSamplesWithExit[1], 1);
-            GenerateMapLayer(roomSamplesWithExit[1], 2);
-            GenerateExit(roomSamplesWithExit[1]);
-        }
+        cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
+
+        Exit start = new Exit(new Vector3Int(0, 0), ExitDirection.Up);
+        Exit end = new Exit(new Vector3Int(10, 20), ExitDirection.Down);
+
+        GeneratePassway(start, end);
     }
 
-    //void GeneratePassExit(SampleRoomData targetRoomData)
-    //{
-    //    int index = targetRoomData.tilesPos.Count - 1;
+    void GeneratePassway(Exit startPos, Exit endPos)
+    {
+        cursor = startPos.Pos;
 
-    //    foreach (Vector3Int pos in targetRoomData.tilesPos[index])
-    //    {
-    //        m_tileMaps[index].SetTile(pos + cursor, targetRoomData.mapLayers[index].GetTile(pos));
-    //    }
-    //}
+        int xDir = 0, yDir = 0;             // 통로가 만들어지는 방향(대각선 경우는 없음)
+        switch (startPos.Direction) 
+        { 
+            case ExitDirection.Up:
+                yDir = 1;
+                break;
+            case ExitDirection.Down:
+                yDir = -1;
+                break;
+            case ExitDirection.Right:
+                xDir = 1;
+                break;
+            case ExitDirection.Left:
+                xDir = -1;
+                break;
+            default:
+                break;
+        }
+
+        int i = 0;
+
+        while (i < 50 && cursor != endPos.Pos)
+        {
+            cursor += new Vector3Int(xDir, yDir);
+            GeneratePass(cursor, new Vector3Int(xDir, yDir));
+
+            if(cursor.y == endPos.Pos.y && yDir != 0)
+            {
+                yDir = 0;
+                xDir = cursor.x < endPos.Pos.x ? 1 : -1;
+                GeneratePass(cursor, new Vector3Int(xDir, yDir));
+            }
+            else if(cursor.x == endPos.Pos.x && xDir != 0)
+            {
+                xDir = 0;
+                yDir = cursor.y < endPos.Pos.y ? 1 : -1;
+            }
+            i++;
+        }
+
+    }
 
 
     /// <summary>
@@ -104,11 +156,40 @@ public class RoomGenerator : MonoBehaviour
         }
     }
 
-    void GenerateExit(SampleRoomData targetRoomData)
+    void GeneratePass(Vector3Int pos, Vector3Int dir)
+    {
+        int exitIndex = 0;      // 좌우로 그릴건지 상하로 그릴건지 구분
+        if (dir.x == 0)
+        {
+            exitIndex = 1;
+        }
+
+        for (int i = 0; i < exitSamples[exitIndex].height; i++)    // 문 높이 만큼
+        {
+            for (int j = 0; j < exitSamples[exitIndex].width; j++)  // 문 너비 만큼
+            {
+                if (exitSamples[exitIndex].mapLayers[1].HasTile(new Vector3Int(exitSamples[exitIndex].min.x + j, exitSamples[exitIndex].min.y + i)))
+                {
+                    m_tileMaps[1].SetTile(cursor + new Vector3Int(j, i), exitSamples[exitIndex].mapLayers[1].GetTile(new Vector3Int(j, i)));
+                    //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
+                }
+                else
+                {
+                    //m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);   // 빈 타일이면 null(빈타일)로 바꾸기
+                }
+            }
+        }
+
+
+    }
+
+    void GenerateExit(SampleRoomData targetRoomData, ExitDirection exitDir)
     {
         foreach(Exit temp in targetRoomData.exitPos)
         {
-            int x = 0, y = 0,index = 0;
+            if (temp.Direction != exitDir) continue;            // 만약 선택한 출입구가 받은 파라미터 방향과 같지 않으면 스킵
+            int x = 0, y = 0;   // 방향이 좌우에 따라 출입구 그려지는 시작위치
+            int index = 0;      // 0은 좌우 출입구, 1은 상하 출입구
             if(temp.Direction == ExitDirection.Left|| temp.Direction == ExitDirection.Right)
             {
                 y = -2;
@@ -128,19 +209,21 @@ public class RoomGenerator : MonoBehaviour
                         m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), targetRoomData.mapLayers[1].GetTile(temp.Pos));
                         //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
                     }
-                    else       // 빈 타일이면 null(빈타일)로 바꾸기
+                    else       
                     {
-                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);
+                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);   // 빈 타일이면 null(빈타일)로 바꾸기
                     }
-                    
                 }
             }
-
-
         }
     }
 
-
+    private Vector3Int GetRoomGap(int num)
+    {
+        int x = Random.Range(3, num);
+        int y = Random.Range(-num, num);
+        return new Vector3Int(x,y);
+    }
 
 
 }

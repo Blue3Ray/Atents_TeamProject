@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2478457272621322767}
   - component: {fileID: 864742819015761921}
   - component: {fileID: 2633709595987950140}
+  - component: {fileID: 7208508138358006945}
+  - component: {fileID: 3191272176946046809}
   m_Layer: 0
   m_Name: PlatformHalf
   m_TagString: Untagged
@@ -179,8 +181,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1841097545
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -202,7 +204,7 @@ TilemapCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 1
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
@@ -225,6 +227,75 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!50 &7208508138358006945
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178604479507002610}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!66 &3191272176946046809
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178604479507002610}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 864742819015761921}
+    m_ColliderPaths:
+    - - X: 120000000
+        Y: 34571428
+      - X: 120000000
+        Y: 39571428
+      - X: 119571432
+        Y: 40000000
+      - X: 80428568
+        Y: 40000000
+      - X: 80000000
+        Y: 39571428
+      - X: 80000000
+        Y: 34571428
+      - X: 80714280
+        Y: 34000000
+      - X: 119285720
+        Y: 34000000
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 11.928563, y: 3.4}
+      - {x: 12, y: 3.4571557}
+      - {x: 11.999992, y: 3.9571505}
+      - {x: 11.957133, y: 4}
+      - {x: 8.04285, y: 3.9999924}
+      - {x: 8, y: 3.957132}
+      - {x: 8.00001, y: 3.4571352}
+      - {x: 8.071437, y: 3.4}
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
 --- !u!1 &5077547466861519822
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,8 +2282,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -375359173
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -2398,6 +2469,8 @@ GameObject:
   - component: {fileID: 3057399800238457149}
   - component: {fileID: 4098417972316237565}
   - component: {fileID: 2653325453256225435}
+  - component: {fileID: 8998932746192854665}
+  - component: {fileID: 8253380811567577143}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Untagged
@@ -2433,7 +2506,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileSpriteIndex: 15
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2623,7 +2696,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 13
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2733,7 +2806,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 7
+      m_TileSpriteIndex: 13
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2743,7 +2816,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 1
+      m_TileSpriteIndex: 7
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -3396,10 +3469,10 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileSpriteArray:
-  - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 3e20ee4eb603ec24f890b026b7859a72, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 2bfc0894f41aad2479e2e5ea97a67acb, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 36
     m_Data: {fileID: 21300000, guid: 97c04814a960ce645becd6d86f5f708e, type: 3}
   - m_RefCount: 0
@@ -3411,7 +3484,7 @@ Tilemap:
   - m_RefCount: 24
     m_Data: {fileID: 21300000, guid: 9b73db16b05cce6409f0d098dc9c9e81, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 630dcc0ca67321243b0ef5408dae9571, type: 3}
+    m_Data: {fileID: 21300000, guid: 2bfc0894f41aad2479e2e5ea97a67acb, type: 3}
   - m_RefCount: 6
     m_Data: {fileID: 21300000, guid: 3f60120b12be4ca4b9230506774964e5, type: 3}
   - m_RefCount: 1
@@ -3423,11 +3496,11 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 1aeaebe8bf07da54e81402be61a5bfd3, type: 3}
   - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 630dcc0ca67321243b0ef5408dae9571, type: 3}
+  - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: f930af1fd8eb6d94998c8b6f94f96d42, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 3e20ee4eb603ec24f890b026b7859a72, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 96
     m_Data:
@@ -3512,8 +3585,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1841097545
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -3535,7 +3608,88 @@ TilemapCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
+--- !u!50 &8998932746192854665
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897774766515937774}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!66 &8253380811567577143
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897774766515937774}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 2653325453256225435}
+    m_ColliderPaths:
+    - - X: 200000000
+        Y: 90000000
+      - X: 0
+        Y: 90000000
+      - X: 0
+        Y: 0
+      - X: 200000000
+        Y: 0
+    - - X: 10000000
+        Y: 10000000
+      - X: 10000000
+        Y: 40000000
+      - X: 50000000
+        Y: 40000000
+      - X: 50000000
+        Y: 70000000
+      - X: 150000000
+        Y: 70000000
+      - X: 150000000
+        Y: 40000000
+      - X: 190000000
+        Y: 40000000
+      - X: 190000000
+        Y: 10000000
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 19.999971, y: 0}
+      - {x: 19.999971, y: 9}
+      - {x: 0, y: 8.99997}
+      - {x: 0.000029300001, y: 0}
+    - - {x: 19, y: 1.0000294}
+      - {x: 1, y: 1.0000294}
+      - {x: 1.0000294, y: 4}
+      - {x: 5, y: 4.000029}
+      - {x: 5.0000296, y: 7}
+      - {x: 15, y: 6.9999704}
+      - {x: 15.000029, y: 4}
+      - {x: 19, y: 3.9999704}
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005

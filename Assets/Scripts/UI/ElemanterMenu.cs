@@ -15,6 +15,7 @@ public class ElemanterMenu : MonoBehaviour
 {
    public ElemanterType eTpye;
 
+
     public Button elemanterbutton1;
     public Button elemanterbutton2;
     public Button elemanterbutton3;
@@ -26,40 +27,50 @@ public class ElemanterMenu : MonoBehaviour
     Elemanter4 elemanter4;
 
 
+    public Button button1;
+    public Button button2;
+    public Button button3;
+    public Button button4;
+
+    Fire fire;
+    Water water;
+    Thunder thunder;
+    Wind wind;
+
     private void Awake()
     {
-        elemanterbutton1 = gameObject.AddComponent<Button>();
-        elemanterbutton2 = gameObject.AddComponent<Button>();
-        elemanterbutton3 = gameObject.AddComponent<Button>();
-        elemanterbutton4 = gameObject.AddComponent<Button>();
+        button1 = GetComponent<Button>();
+        button2 = GetComponent<Button>();
+        button3 = GetComponent<Button>();
+        button4 = GetComponent<Button>();
 
-        elemanter1 = new Elemanter1();
-        elemanter2 = new Elemanter2();
-        elemanter3 = new Elemanter3();
-        elemanter4 = new Elemanter4();
+        fire = GetComponent<Fire>();
+        water = GetComponent<Water>();
+        thunder = GetComponent<Thunder>();
+        wind = GetComponent<Wind>();
     }
+
 
     public void ElemanterSelct() 
    {
-        GameObject result;
-
-       switch(eTpye)
+      if( fire != null )
         {
-            case ElemanterType.button1:
-                elemanterbutton1.Select();
-                break;
-            case ElemanterType.button2:
-                elemanterbutton2.Select();
-                break;
-            case ElemanterType.button3:
-                elemanterbutton3.Select();
-                 break;
-            case ElemanterType.button4:
-                 elemanterbutton4.Select();
-                 break;
-            default:
-                break;
+            fire.OnClick();
         }
+      else if( water != null )
+        { 
+            water.OnClick();
+        }
+      else if ( wind != null )
+        {
+            wind.OnClick();
+        }
+      else if (thunder != null)
+        {
+            thunder.OnClick();
+        }
+
    }
 
+   
 }

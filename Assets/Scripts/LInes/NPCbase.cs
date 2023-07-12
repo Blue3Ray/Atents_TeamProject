@@ -15,7 +15,7 @@ public class NPCbase : MonoBehaviour, IClickable
 
 	public void OnClicking(IClickable tmp)
 	{
-		if(tmp as NPCbase != null)
+		if(tmp as NPCbase != null)					//클릭된 것이 NPCbase 일 때만
 		{
 			CanvasOn();
 		}
@@ -29,9 +29,7 @@ public class NPCbase : MonoBehaviour, IClickable
 
 	private void CanvasOn()
 	{
-
 		Transform canvasTransform = canvas.transform.GetChild(0);
 		canvasTransform.gameObject.SetActive(true);
-
 	}
 }

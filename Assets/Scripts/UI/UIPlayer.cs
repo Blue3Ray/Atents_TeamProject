@@ -9,12 +9,10 @@ using UnityEngine.UI;
 
 public class UIPlayer : MonoBehaviour
 {
-    //ActionControl actionControl;
-
-    // elematerMenu °´Ã¼ »ý¼º
+    
    public  GameObject elemanterSlot;
 
-    // ElemanterMenu elemanterMenu;
+   
     public Button elemanterbutton1;
     public Button elemanterbutton2;
     public Button elemanterbutton3;
@@ -25,12 +23,28 @@ public class UIPlayer : MonoBehaviour
       
         elemanterbutton1 = GetComponent<Button>();
         
+
+    public GameObject elemanterMenu;
+
+    
+    ElemanterMenu elemanter;
+
+    private void Awake()
+    {
+        actionControl = new ActionControl();
+
+
+        
+
+        elemanter = new ElemanterMenu();
+
     }
 
     
 
     private void Update()
     {
+
         if (Input.GetMouseButtonDown(1))
         {
             elemanterSlot.SetActive(true);
@@ -42,19 +56,11 @@ public class UIPlayer : MonoBehaviour
             Vector3 mousepostion = Mouse.current.position.ReadValue();
             Debug.Log(mousepostion);
 
-           if(elemanterbutton1 != null )
-            {
-                elemanterbutton1.onClick.Invoke();
-                
-            }
-
             elemanterSlot.SetActive(false);
 
         }
+
+       
     }
-
-    
-
-
 
 }

@@ -4,56 +4,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+public enum ElemanterType
+{
+    button1,
+    button2,
+    button3,
+    button4
+}
 public class ElemanterMenu : MonoBehaviour
 {
- 
+    public ElemanterType eTpye;
 
-
-    public Button elemanterbutton1;
-    public Button elemanterbutton2;
-    public Button elemanterbutton3;
-    public Button elemanterbutton4;
-
-
-    Fire fire;
-    Water water;
-    Thunder thunder;
-    Wind wind;
+    Button button1;
+    Button button2;
+    Button button3;
+    Button button4;
 
     private void Awake()
     {
-
-        fire = GetComponentInChildren<Fire>();
-        water = GetComponentInChildren<Water>();
-        thunder = GetComponentInChildren<Thunder>();
-        wind = GetComponentInChildren<Wind>();
+        
     }
-
 
     public void ElemanterSelct() 
-   {
-        Vector3 mousepostion = Mouse.current.position.ReadValue();
-
-        if(mousepostion == elemanterbutton1.transform.position)
+    {
+        switch(eTpye)
         {
-            Debug.Log("1");
+            case ElemanterType.button1:
+                Debug.Log("button1 선택");
+                break;
+            case ElemanterType.button2:
+                Debug.Log("button2 선택");
+                break;
+            case ElemanterType.button3:
+                Debug.Log("button3 선택");
+                break;
+            case ElemanterType.button4:
+                Debug.Log("button4 선택");
+                break;
         }
-        else if(mousepostion == elemanterbutton2.transform.position)
-        {
-            Debug.Log("2");
-        }
-        else if(mousepostion == elemanterbutton3.transform.position)
-        {
-            Debug.Log("3");
-        }
-        else if(mousepostion == elemanterbutton4.transform.position)
-        {
-            Debug.Log("4");
-        }
-       
-
     }
 
-   
 }

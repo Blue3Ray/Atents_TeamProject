@@ -930,6 +930,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elemanterSlot: {fileID: 1080778528}
+  elemanterbutton1: {fileID: 1335881911}
+  elemanterbutton2: {fileID: 873877337}
+  elemanterbutton3: {fileID: 1479806021}
+  elemanterbutton4: {fileID: 1543410342}
 --- !u!212 &1182911631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1193,9 +1197,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.3801888, g: 0.6792453, b: 0.16981132, a: 1}
+    m_HighlightedColor: {r: 0.7264151, g: 0.12677999, b: 0.12677999, a: 1}
+    m_PressedColor: {r: 0.25035602, g: 0.2705952, b: 0.5471698, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1

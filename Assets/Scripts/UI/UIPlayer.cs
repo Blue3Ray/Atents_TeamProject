@@ -13,13 +13,14 @@ public class UIPlayer : MonoBehaviour
     // elematerMenu 객체 생성
    public  GameObject elemanterSlot;
 
-  
+    ElemanterMenu elemanterMenu;
+
 
     private void Awake()
     {
         actionControl = new ActionControl();
 
-        
+        elemanterMenu = new ElemanterMenu();    
 
         // UIPlayer 자식인 elemanterMenu 
         
@@ -53,10 +54,8 @@ public class UIPlayer : MonoBehaviour
 
     private void ElemanterSelect(InputAction.CallbackContext context)
     {
-        
-       Vector2 mousepostion = Mouse.current.position.ReadValue();
-        
-        Debug.Log($"{mousepostion}");
+        elemanterMenu.ElemanterSelct();
+       
     }
 
 }

@@ -10,10 +10,10 @@ public class TestP : MonoBehaviour
     // elematerMenu 按眉 积己
     GameObject elemanterMenu;
 
-    GameObject fireSelect;
-    GameObject waterSelect;
-    GameObject windSelect;
-    GameObject thunderSelect;
+    private GameObject fireSelect;
+    private GameObject waterSelect;
+    private GameObject windSelect;
+    private GameObject thunderSelect;
 
     
 
@@ -55,25 +55,34 @@ public class TestP : MonoBehaviour
         elemanterMenu.SetActive(true);
     }
 
-    private void ElemanterSelect(InputAction.CallbackContext _)
+    private void ElemanterSelect(InputAction.CallbackContext context)
     {
-        if (fireSelect != null)
-        {
-            Debug.Log("阂 积己");
-        }
-        else if (waterSelect != null)
-        {
-            Debug.Log("拱 积己");
-        }
-        else if (windSelect != null)
-        {
-            Debug.Log("官恩 积己");
-        }
-        else if (thunderSelect != null)
-        {
-            Debug.Log("锅俺 积己");
-        }
+        Vector3 mousepostion = Mouse.current.position.ReadValue();
+        
+        
+
+
     }
 
-   
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    Vector3 mousepostion = Mouse.current.position.ReadValue();
+    //    if (collision.gameObject.CompareTag("RingMenu1"))
+    //    {
+
+    //    }
+    //    else if(collision.gameObject.CompareTag("RingMenu2"))
+    //    {
+
+    //    }
+    //    else if(collision.gameObject.CompareTag("RingMenu3"))
+    //    {
+
+    //    }
+    //    else if(collision.gameObject.CompareTag("RingMenu4"))
+    //    {
+
+    //    }
+    //}
+
 }

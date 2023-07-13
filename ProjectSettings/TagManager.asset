@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - NPC
+  - RingMenu
+  - RingMenu1
+  - RingMenu2
+  - RingMenu3
+  - RingMenu4
   layers:
   - Default
   - TransparentFX

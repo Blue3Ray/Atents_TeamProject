@@ -33,9 +33,27 @@ public class ElemanterMenu : MonoBehaviour
 
     public void ElemanterSelct() 
    {
-     
+        Vector3 mousepostion = Mouse.current.position.ReadValue();
 
-   }
+        if(mousepostion == elemanterbutton1.transform.position)
+        {
+            Debug.Log("1");
+        }
+        else if(mousepostion == elemanterbutton2.transform.position)
+        {
+            Debug.Log("2");
+        }
+        else if(mousepostion == elemanterbutton3.transform.position)
+        {
+            Debug.Log("3");
+        }
+        else if(mousepostion == elemanterbutton4.transform.position)
+        {
+            Debug.Log("4");
+        }
+       
+
+    }
 
    
 }

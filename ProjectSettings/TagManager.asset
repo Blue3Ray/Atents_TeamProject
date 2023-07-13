@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - NPC
+  - RingMenu
+  - RingMenu1
+  - RingMenu2
+  - RingMenu3
+  - RingMenu4
   layers:
   - Default
   - TransparentFX
@@ -42,12 +47,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: NPC
-    uniqueID: 3738815177
+  - name: Background
+    uniqueID: 3919608123
     locked: 0
   - name: Platform
     uniqueID: 1841097545
     locked: 0
-  - name: Background
-    uniqueID: 3919608123
+  - name: NPC
+    uniqueID: 3738815177
     locked: 0

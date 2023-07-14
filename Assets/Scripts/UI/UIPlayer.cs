@@ -9,10 +9,10 @@ using UnityEngine.UI;
 
 public class UIPlayer : MonoBehaviour
 {
-    
-   public  GameObject elemanterSlot;
 
-   
+    public GameObject elemanterSlot;
+
+
     public Button elemanterbutton1;
     public Button elemanterbutton2;
     public Button elemanterbutton3;
@@ -20,27 +20,8 @@ public class UIPlayer : MonoBehaviour
 
     private void Awake()
     {
-      
         elemanterbutton1 = GetComponent<Button>();
-        
-
-    public GameObject elemanterMenu;
-
-    
-    ElemanterMenu elemanter;
-
-    private void Awake()
-    {
-        actionControl = new ActionControl();
-
-
-        
-
-        elemanter = new ElemanterMenu();
-
     }
-
-    
 
     private void Update()
     {
@@ -60,7 +41,8 @@ public class UIPlayer : MonoBehaviour
 
         }
 
-       
+
     }
+
 
 }

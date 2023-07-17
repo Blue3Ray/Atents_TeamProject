@@ -34,55 +34,25 @@ public class TestP : MonoBehaviour
 
     }
 
-    private void OnEnable()
+  
+
+    private void Update()
     {
-        actionControl.MouseClickMenu.MouesEvent.Enable();
-        actionControl.MouseClickMenu.MouesEvent.performed += Onclick;
-        actionControl.MouseClickMenu.MouesEvent.canceled += ElemanterSelect;
+        if(Input.GetMouseButtonDown(0))
+        {
+            elemanterMenu.SetActive(true);
+
+            
+        }
+        else if(Input.GetMouseButtonUp(0)) 
+        {
+            Vector3 mousepostion = Mouse.current.position.ReadValue();
+           
+
+            elemanterMenu.SetActive(false); 
+        }
     }
 
-
-
-    private void OnDisable()
-    {
-        actionControl.MouseClickMenu.MouesEvent.canceled -= ElemanterSelect;
-        actionControl.MouseClickMenu.MouesEvent.performed -= Onclick;
-        actionControl.MouseClickMenu.MouesEvent.Disable();
-    }
-
-    private void Onclick(InputAction.CallbackContext _)
-    {
-        elemanterMenu.SetActive(true);
-    }
-
-    private void ElemanterSelect(InputAction.CallbackContext context)
-    {
-        Vector3 mousepostion = Mouse.current.position.ReadValue();
-        
-        
-
-
-    }
-
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    Vector3 mousepostion = Mouse.current.position.ReadValue();
-    //    if (collision.gameObject.CompareTag("RingMenu1"))
-    //    {
-
-    //    }
-    //    else if(collision.gameObject.CompareTag("RingMenu2"))
-    //    {
-
-    //    }
-    //    else if(collision.gameObject.CompareTag("RingMenu3"))
-    //    {
-
-    //    }
-    //    else if(collision.gameObject.CompareTag("RingMenu4"))
-    //    {
-
-    //    }
-    //}
+  
 
 }

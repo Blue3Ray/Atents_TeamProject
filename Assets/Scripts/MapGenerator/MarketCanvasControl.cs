@@ -11,9 +11,9 @@ public class MarketCanvasControl : MonoBehaviour
 
 	private void Awake()
 	{
-		Transform transformT = transform.GetChild(0);
+		Transform transformT = transform.GetChild(1);
 		talkCanvas = transformT.GetComponent<TalkCanvas>();
-		Transform transformM = transform.GetChild(1);
+		Transform transformM = transform.GetChild(2);
 		marketWindow = transformM.gameObject;
 		//Transform transformB = transformM.GetChild(1);
 		//exitButton = transformB.GetComponent<ExitButton>();

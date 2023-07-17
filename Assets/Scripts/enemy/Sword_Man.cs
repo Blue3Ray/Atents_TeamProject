@@ -40,15 +40,15 @@ public class Sword_Man : MonoBehaviour
 
             animator = GetComponent<Animator>();
             maxHp = 50;
-        //    nowHp = 50;
-        //    atkDmg = 10;
+            //    nowHp = 50;
+            //    atkDmg = 10;
 
             transform.position = new Vector3(0, 0, 0);
             animator = GetComponent<Animator>();
-        //    SetAttackSpeed(1.5)f
+            //    SetAttackSpeed(1.5)f
         }
 
-   
+    }
 
     // Update is called once per frame
     void Update()

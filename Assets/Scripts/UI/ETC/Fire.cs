@@ -5,12 +5,18 @@ using UnityEngine.UI;
 
 public class Fire : MonoBehaviour
 {
-    Button btn;
-    private void Start()
-    {
-        Debug.Log("阂 积己");
-        
-    }
     
+   
 
-}
+
+    public void OnClickBuuton()
+    {
+         //Input.GetMouseButton(1);
+         Debug.Log("阂 积己");
+
+       
+    }
+
+  }
+
+

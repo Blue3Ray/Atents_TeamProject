@@ -327,7 +327,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.10071856, y: 0.18825167}
+  m_Offset: {x: -0.10071874, y: 0.051393747}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -338,7 +338,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8093952, y: 3.2054935}
+  m_Size: {x: 1.666776, y: 2.9317775}
   m_EdgeRadius: 0
 --- !u!1 &1375764105
 GameObject:
@@ -400,10 +400,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 6dc6f4d131c174f4eabced511f3d15d1, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -828,8 +828,9 @@ GameObject:
   - component: {fileID: 2058441972}
   - component: {fileID: 2058441971}
   - component: {fileID: 2058441970}
-  - component: {fileID: 2058441973}
   - component: {fileID: 2058441974}
+  - component: {fileID: 2058441975}
+  - component: {fileID: 2058441976}
   m_Layer: 0
   m_Name: Knight_attack_01
   m_TagString: Untagged
@@ -925,19 +926,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2058441973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2058441969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de2226a45e3db6a4fafb733100dccb63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objSwordMan: {fileID: 0}
 --- !u!61 &2058441974
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -951,7 +939,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.045867145, y: -2.6436036}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -962,5 +950,45 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 12, y: 12}
+  m_Size: {x: 3.8361926, y: 6.712793}
   m_EdgeRadius: 0
+--- !u!114 &2058441975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058441969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de2226a45e3db6a4fafb733100dccb63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objSwordMan: {fileID: 0}
+  maxHp: 0
+  nowHp: 0
+  atkDmg: 0
+  atkSpeed: 1
+  attacked: 0
+  nowHpbar: {fileID: 1686398253}
+--- !u!50 &2058441976
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058441969}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

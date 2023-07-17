@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-/* 임시주석처리 
-
+using UnityEngine.UI;
 
 public class Sword_Man : MonoBehaviour
 {
@@ -15,6 +12,7 @@ public class Sword_Man : MonoBehaviour
     public int atkDmg;
     public float atkSpeed = 1;
     public bool attacked = false;
+    // attacked 여러번 공격 방지용
     public Image nowHpbar;
 
     void AttackTrue()
@@ -35,8 +33,6 @@ public class Sword_Man : MonoBehaviour
     // Start is called before the first frame update
 
     void Start()
-
-
     {
 
         animator = GetComponent<Animator>();
@@ -55,6 +51,7 @@ public class Sword_Man : MonoBehaviour
     void Update()
     {
         nowHpbar.fillAmount = (float)nowHp / (float)maxHp;
+        //현재 남은 피의 양에 따라 달라지게 설정 
         if (Input.GetKey(KeyCode.RightArrow));
         
         float h = Input.GetAxis("Horizontal");
@@ -62,7 +59,7 @@ public class Sword_Man : MonoBehaviour
 
 
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(1, 1, 1);
             animator.SetBool("moving", true);
             transform.Translate(Vector3.right * Time.deltaTime);
         }
@@ -83,4 +80,4 @@ public class Sword_Man : MonoBehaviour
     }
 
 
-}   */
+}   

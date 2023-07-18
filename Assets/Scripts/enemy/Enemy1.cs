@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-/* 임시주석처리 
+using UnityEngine.UI;
 
 public class Enemy1 : MonoBehaviour
 {
-
+    
     public GameObject prfHpBar;
     public GameObject canvas;
     Animator animator;
@@ -23,6 +23,8 @@ public class Enemy1 : MonoBehaviour
     void Start()
     {
         hpBar = Instantiate(prfHpBar, canvas.transform).GetComponent<RectTransform>();
+        // 체력바를 생성하되 canvas의 자식으로 생성하고,체력바의 위치 변경을 쉽게 하기 위해 hpBar에 저장한다.
+        // Instantiate(게임오브젝트,부모의transform)
         if (name.Equals("Enemy1"))
         {
             SetEnemyStatus("Enemy1", 100, 10, 1);        
@@ -74,4 +76,4 @@ public class Enemy1 : MonoBehaviour
         }
     }
 }
-  */
+  

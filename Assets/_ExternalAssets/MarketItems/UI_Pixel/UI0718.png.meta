@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 070451e43d12d0845aabf4ecff3fd92c
+guid: dacf6271982c38a42ac0775183435ec4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Itemdisplay
+      name: nitemBackground
       rect:
         serializedVersion: 2
         x: 97
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec1e07f47b759884193074a88dba662b
-      internalID: 1975845364
+      spriteID: 73527f90f7a7b3043851b1976130fb81
+      internalID: -797171091
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: background
+      name: nBackground
       rect:
         serializedVersion: 2
         x: 301
@@ -152,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4d1591ba0a04e24a88001e18fa58798
-      internalID: 2049544054
+      spriteID: 6d9aeddebc40d3746bf1d03f5267cc0a
+      internalID: 404528478
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: button_off
+      name: nbutton_off
       rect:
         serializedVersion: 2
         x: 139
@@ -173,14 +173,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2eb004d3ea2cf734980c041af72eac08
-      internalID: 1696695318
+      spriteID: a36c4a2e37974984883412b2f350240b
+      internalID: 2116940414
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: button_on
+      name: nbutton_of
       rect:
         serializedVersion: 2
         x: 186
@@ -194,14 +194,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e64ba54b2ac12f0418057315f9bfad12
-      internalID: 90448126
+      spriteID: 03485dada0a68ad45b7e39278785ad36
+      internalID: 99378979
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ItemDisplayWindow
+      name: nitemWindow
       rect:
         serializedVersion: 2
         x: 296
@@ -215,14 +215,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 66b04b204559fa84eb56a22ec5613207
-      internalID: 1950293824
+      spriteID: 331329051c6e49a499d43e9ced8034dd
+      internalID: 1969653445
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Itemimage
+      name: nimagebox
       rect:
         serializedVersion: 2
         x: 359
@@ -236,14 +236,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d766e04f12f66845a8c8b3811702833
-      internalID: 1077197602
+      spriteID: dace260b0f90c874d9389e67003a155d
+      internalID: 1238458648
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScrollBar
+      name: nScroolbar
       rect:
         serializedVersion: 2
         x: 102
@@ -257,14 +257,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc987612925e7eb49b4d8a4a6f071d7f
-      internalID: -1277338455
+      spriteID: 6bd1e25e5dad6c0459c4d1f2408f5338
+      internalID: -1613400906
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Scrollhandle
+      name: nhandle
       rect:
         serializedVersion: 2
         x: 103
@@ -278,8 +278,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d27190d5791a0f74c92b07d935a9c484
-      internalID: 234679745
+      spriteID: e4f9318d8c8686f47ad61b4239bb87c0
+      internalID: -1538494050
       vertices: []
       indices: 
       edges: []
@@ -295,14 +295,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ItemDisplayWindow: 1950293824
-      Itemdisplay: 1975845364
-      Itemimage: 1077197602
-      ScrollBar: -1277338455
-      Scrollhandle: 234679745
-      background: 2049544054
-      button_off: 1696695318
-      button_on: 90448126
+      nBackground: 404528478
+      nScroolbar: -1613400906
+      nbutton_of: 99378979
+      nbutton_off: 2116940414
+      nhandle: -1538494050
+      nimagebox: 1238458648
+      nitemBackground: -797171091
+      nitemWindow: 1969653445
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

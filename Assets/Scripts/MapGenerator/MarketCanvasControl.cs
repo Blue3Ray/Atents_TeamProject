@@ -5,19 +5,20 @@ using UnityEngine;
 using UnityEngine.UI;
 public class MarketCanvasControl : MonoBehaviour
 {
-	//ExitButton exitButton;
+	ExitButton exitButton;
 	GameObject marketWindow;
 	TalkCanvas talkCanvas;
 
 	private void Awake()
 	{
-		Transform transformT = transform.GetChild(1);
+		Transform transformT = transform.GetChild(0);
 		talkCanvas = transformT.GetComponent<TalkCanvas>();
-		Transform transformM = transform.GetChild(2);
+		Transform transformM = transform.GetChild(1);
 		marketWindow = transformM.gameObject;
-		//Transform transformB = transformM.GetChild(1);
-		//exitButton = transformB.GetComponent<ExitButton>();
+		Transform transformB = transformM.GetChild(4);
+		exitButton = transformB.GetComponent<ExitButton>();
 		talkCanvas.EndTalk += MarketOn;
+		exitButton.IsExitMarket += ExitMarket;
 		
 	}
 

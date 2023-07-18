@@ -29,7 +29,7 @@ public class NPCbase : MonoBehaviour, IClickable
 
 	private void CanvasOn()
 	{
-		Transform canvasTransform = canvas.transform.GetChild(0);
+		Transform canvasTransform = canvas.transform.GetChild(1);
 		canvasTransform.gameObject.SetActive(true);
 	}
 }

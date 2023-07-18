@@ -5,12 +5,23 @@ using UnityEngine.UI;
 
 public class Fire : MonoBehaviour
 {
-    Button btn;
-    private void Start()
-    {
-        Debug.Log("阂 积己");
-        
-    }
-    
 
-}
+    TestPlayer testPlayer;
+
+    private void Awake()
+    {
+        testPlayer = FindObjectOfType<TestPlayer>();
+    }
+
+    public void OnClickBuuton()
+    {
+         //Input.GetMouseButton(1);
+         Debug.Log("阂 积己");
+
+        testPlayer.element = Element.Fire;
+       
+    }
+
+  }
+
+

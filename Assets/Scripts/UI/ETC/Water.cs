@@ -4,8 +4,19 @@ using UnityEngine;
 
 public class Water : MonoBehaviour
 {
-    private void Start()
+    TestPlayer testPlayer;
+
+    private void Awake()
     {
-        Debug.Log("拱 积己");
+        testPlayer = FindObjectOfType<TestPlayer>();
     }
-}
+
+    public void OnClickBuuton()
+    {
+  
+        Debug.Log("拱 积己");
+        testPlayer.element = Element.Water;
+
+    }
+
+    }

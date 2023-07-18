@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class Thunder : MonoBehaviour
 {
-    private void Start()
+    TestPlayer testPlayer;
+
+    private void Awake()
     {
-        Debug.Log("锅俺 积己");
+        testPlayer = FindObjectOfType<TestPlayer>();
     }
-}
+
+    public void OnClickBuuton()
+    {
+        //Input.GetMouseButton(1);
+        Debug.Log("锅俺 积己");
+        testPlayer.element = Element.Thunder;
+
+     }
+
+  
+    }

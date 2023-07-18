@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 873877339}
   - component: {fileID: 873877338}
   - component: {fileID: 873877337}
+  - component: {fileID: 873877340}
   m_Layer: 5
   m_Name: EMenu2
   m_TagString: Untagged
@@ -477,13 +478,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: d101c42bc32d8994eaf913499f6eed83, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 873877340}
+        m_TargetAssemblyTypeName: Thunder, Assembly-CSharp
+        m_MethodName: OnClickBuuton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -527,6 +528,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873877335}
   m_CullTransparentMesh: 1
+--- !u!114 &873877340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873877335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d101c42bc32d8994eaf913499f6eed83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &920930420
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,10 +908,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2445054e51d65704ea14d82bbe438d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elemanterbutton1: {fileID: 1335881911}
-  elemanterbutton2: {fileID: 873877337}
-  elemanterbutton3: {fileID: 1479806021}
-  elemanterbutton4: {fileID: 1543410342}
+--- !u!1 &1101440623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1101440625}
+  - component: {fileID: 1101440624}
+  m_Layer: 0
+  m_Name: Test_Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1101440624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101440623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9a8e7c2e1a40f24083331740d8046e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: 0
+--- !u!4 &1101440625
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101440623}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.240903, y: 0.93637216, z: -0.057003133}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1182911629
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,10 +984,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elemanterSlot: {fileID: 1080778528}
-  elemanterbutton1: {fileID: 1335881911}
-  elemanterbutton2: {fileID: 873877337}
-  elemanterbutton3: {fileID: 1479806021}
-  elemanterbutton4: {fileID: 1543410342}
 --- !u!212 &1182911631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1148,6 +1198,7 @@ GameObject:
   - component: {fileID: 1335881913}
   - component: {fileID: 1335881912}
   - component: {fileID: 1335881911}
+  - component: {fileID: 1335881914}
   m_Layer: 5
   m_Name: EMenu1
   m_TagString: Untagged
@@ -1220,13 +1271,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 770e93b6acea97347b8d4b8bf4e8d67e, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1335881914}
+        m_TargetAssemblyTypeName: Fire, Assembly-CSharp
+        m_MethodName: OnClickBuuton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1270,6 +1321,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335881909}
   m_CullTransparentMesh: 1
+--- !u!114 &1335881914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335881909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770e93b6acea97347b8d4b8bf4e8d67e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1479806019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1282,6 +1345,7 @@ GameObject:
   - component: {fileID: 1479806023}
   - component: {fileID: 1479806022}
   - component: {fileID: 1479806021}
+  - component: {fileID: 1479806024}
   m_Layer: 5
   m_Name: EMenu3
   m_TagString: Untagged
@@ -1354,13 +1418,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: a98bf209ef0b7584498e5c6fcf1c5740, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1479806024}
+        m_TargetAssemblyTypeName: Water, Assembly-CSharp
+        m_MethodName: OnClickBuuton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1404,6 +1468,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479806019}
   m_CullTransparentMesh: 1
+--- !u!114 &1479806024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479806019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98bf209ef0b7584498e5c6fcf1c5740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1543410340
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,6 +1492,7 @@ GameObject:
   - component: {fileID: 1543410344}
   - component: {fileID: 1543410343}
   - component: {fileID: 1543410342}
+  - component: {fileID: 1543410345}
   m_Layer: 5
   m_Name: EMenu4
   m_TagString: Untagged
@@ -1488,13 +1565,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: f79848057d3535f48bcb6a2c2cc377bc, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1543410345}
+        m_TargetAssemblyTypeName: Wind, Assembly-CSharp
+        m_MethodName: OnClickBuuton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1538,6 +1615,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543410340}
   m_CullTransparentMesh: 1
+--- !u!114 &1543410345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543410340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f79848057d3535f48bcb6a2c2cc377bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2115785433
 GameObject:
   m_ObjectHideFlags: 0

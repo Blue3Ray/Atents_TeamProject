@@ -3,43 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
-
-
-
 public class UIPlayer : MonoBehaviour
 {
 
     public GameObject elemanterSlot;
 
-
-    public Button elemanterbutton1;
-    public Button elemanterbutton2;
-    public Button elemanterbutton3;
-    public Button elemanterbutton4;
-
     private void Awake()
     {
-        elemanterbutton1 = GetComponent<Button>();
+       
     }
 
     private void Update()
     {
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))  // 마우스 오른쪽 버튼 누를 시 속성 선택 메뉴 활성화
         {
             elemanterSlot.SetActive(true);
-
-
         }
-        else if (Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1)) // 마우스 오른쪽 버튼 놓을 시 속성 선택 메뉴 활성화
         {
-            Vector3 mousepostion = Mouse.current.position.ReadValue();
-            Debug.Log(mousepostion);
-
-            elemanterSlot.SetActive(false);
-
+            
+                    elemanterSlot.SetActive(false);
+               
+           
+            
         }
+       
 
 
     }

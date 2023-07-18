@@ -4,8 +4,21 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour
 {
-    private void Start()
+    TestPlayer testPlayer;
+
+    private void Awake()
     {
-        Debug.Log("官恩 积己");
+        testPlayer =FindObjectOfType<TestPlayer>(); 
     }
-}
+
+
+    public void OnClickBuuton()
+    {
+        //Input.GetMouseButton(1);
+        Debug.Log("官恩 积己");
+
+        testPlayer.element = Element.WInd;
+      }
+
+
+    }

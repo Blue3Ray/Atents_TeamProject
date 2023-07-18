@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Switch;
 
 public class TestPlayer : MonoBehaviour
 {
@@ -10,10 +11,18 @@ public class TestPlayer : MonoBehaviour
         get { return hp; }
         set { hp = value; }
     }
-    
+
+    Fire fire;
+    Wind wind;
+    Water water;
+    Thunder thunder;
+
     public Element element = Element.None;
+    
+    
+    }
 
  
     
    
-}
+

@@ -4,40 +4,20 @@ using UnityEngine;
 
 public class Thunder : MonoBehaviour
 {
-    ActionControl actionControl;
+    TestPlayer testPlayer;
 
     private void Awake()
     {
-        actionControl = new ActionControl();
+        testPlayer = FindObjectOfType<TestPlayer>();
     }
-
-
-    //private void OnEnable()
-    //{
-    //    actionControl.MouseClickMenu.Enable();
-    //    actionControl.MouseClickMenu.MouesEvent.canceled += ElementerSelect;
-    //}
-
-
-
-    //private void OnDisable()
-    //{
-    //    actionControl.MouseClickMenu.MouesEvent.canceled -= ElementerSelect;
-    //    actionControl.MouseClickMenu.Disable();
-    //}
-
 
     public void OnClickBuuton()
     {
         //Input.GetMouseButton(1);
         Debug.Log("번개 생성");
-
+        testPlayer.element = Element.Thunder;
 
      }
 
-        //private void ElementerSelect(UnityEngine.InputSystem.InputAction.CallbackContext context)
-        //{
-        //    OnClickBuuton();
-        //}
-
+  
     }

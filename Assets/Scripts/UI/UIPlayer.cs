@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
-
-
-
 public class UIPlayer : MonoBehaviour
 {
 
@@ -26,8 +22,11 @@ public class UIPlayer : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(1)) // 마우스 오른쪽 버튼 놓을 시 속성 선택 메뉴 활성화
         {
-            //Vector3 mousepostion = Mouse.current.position.ReadValue();
-            elemanterSlot.SetActive(false);
+            
+                    elemanterSlot.SetActive(false);
+               
+           
+            
         }
        
 

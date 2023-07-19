@@ -17,9 +17,7 @@ public class TestPlayer : MonoBehaviour
     Water water;
     Thunder thunder;
 
-    public Element element = Element.None;
-    
-    
+    public Element element;
     }
 
  

@@ -3,25 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum Element
+public enum Element : byte
 { 
-    None,
-    Fire,
-    WInd,
-    Water,
-    Thunder
-}
-
-
-
-public class Player : MonoBehaviour
-{
-    int hp = 100;
-    Element element  = Element.None;
-    public int HP
-    {
-        get { return hp; } set {  hp = value; }
-    }
+    Fire = 1,
+    WInd = 2,
+    Water = 4,
+    Thunder = 8
 }
 
 

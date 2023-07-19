@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum Element
+public enum Element : byte
 { 
-    None,
-    Fire,
-    WInd,
-    Water,
-    Thunder
+    Fire = 1,
+    WInd = 2,
+    Water = 4,
+    Thunder = 8
 }
 
 

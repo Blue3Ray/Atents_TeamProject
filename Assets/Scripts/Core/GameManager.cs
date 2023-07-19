@@ -13,9 +13,7 @@ public enum Element
 }
 
 
-/// <summary>
-/// �׽�Ʈ ������ �������� �ӽ� Player Ŭ���� ���߿� ��ξ��� Ŭ���� ����� ���ٰ�
-/// </summary>
+
 public class Player : MonoBehaviour
 {
     int hp = 100;

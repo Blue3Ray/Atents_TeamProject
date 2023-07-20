@@ -5,54 +5,76 @@ using UnityEngine.InputSystem;
 
 public class TestP : MonoBehaviour
 {
-    ActionControl actionControl;
+    ActionControl acionControl;
 
     // elematerMenu 객체 생성
     GameObject elemanterMenu;
 
-    private GameObject fireSelect;
-    private GameObject waterSelect;
-    private GameObject windSelect;
-    private GameObject thunderSelect;
 
-    
+    TestPlayer testPlayer;
+
 
     private void Awake()
     {
-        actionControl = new ActionControl();
+        acionControl = new ActionControl();
 
         // UIPlayer 자식인 elemanterMenu 
         elemanterMenu = transform.GetChild(0).gameObject;
-        elemanterMenu.transform.position = transform.position;
 
-        fireSelect = elemanterMenu.transform.GetChild(0).gameObject;
-        waterSelect = elemanterMenu.transform.GetChild(1).gameObject;
-        windSelect = elemanterMenu.transform.GetChild(2).gameObject;
-        thunderSelect = elemanterMenu.transform.GetChild(3).gameObject;
+        testPlayer = FindObjectOfType<TestPlayer>();
 
-        
 
     }
+    private void OnEnable()
+    {
+        acionControl.MouseClickMenu.Enable();
+        acionControl.MouseClickMenu.MouesEvent.performed += OnElemanterMenu;
+        acionControl.MouseClickMenu.MouesEvent.canceled += OffElemanterMenu;
 
-  
+        acionControl.MouseClickMenu.MousePosition.performed += MousePosition;
+    }
+
+    
+
+    private void OnDisable()
+    {
+        acionControl.MouseClickMenu.MousePosition.performed -= MousePosition;
+
+        acionControl.MouseClickMenu.MouesEvent.canceled -= OffElemanterMenu;
+        acionControl.MouseClickMenu.MouesEvent.performed -= OnElemanterMenu;
+        acionControl.MouseClickMenu.Disable();
+    }
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            elemanterMenu.SetActive(true);
-
-            
-        }
-        else if(Input.GetMouseButtonUp(0)) 
-        {
-            Vector3 mousepostion = Mouse.current.position.ReadValue();
-           
-
-            elemanterMenu.SetActive(false); 
-        }
+        
     }
 
-  
+    private void OnElemanterMenu(InputAction.CallbackContext _)
+    {
+        elemanterMenu.SetActive(true);
+       
+    }
+
+    private void OffElemanterMenu(InputAction.CallbackContext _)
+    {
+        elemanterMenu.SetActive(false);
+    }
+
+    // 마우스 좌표
+    private void MousePosition(InputAction.CallbackContext contect)
+    {
+        Vector3 mousePos = contect.ReadValue<Vector2>();
+
+        
+
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(mousePos);
+        //Vector3 target = Camera.main.WorldToViewportPoint(worldPoint);
+        worldPoint.z= 0;
+        elemanterMenu.transform.position = worldPoint;
+
+    }
+
+
 
 }

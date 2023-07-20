@@ -39,7 +39,7 @@ public class Sword_Man : MonoBehaviour
     void Start()
     {
         {
-            hpBar = Instantiate(prfHpBar).GetComponent<RectTransform>();
+        //임시 주석처리     hpBar = Instantiate(prfHpBar).GetComponent<RectTransform>();
             // Instantiate = 복사,복제 코드 
             // canvas= worldspace에 두면 자동적으로 플레이어 or 몬스터를 따라다님
             animator = GetComponent<Animator>();

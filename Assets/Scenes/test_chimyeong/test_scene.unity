@@ -313,6 +313,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7175755483096774145, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
   m_PrefabInstance: {fileID: 5617688709652448303}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1231963349 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 242440763171244476, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
+  m_PrefabInstance: {fileID: 5617688709652448303}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1236526582
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,7 +835,7 @@ MonoBehaviour:
   atkDmg: 0
   atkSpeed: 1
   attacked: 0
-  nowHpbar: {fileID: 0}
+  nowHpbar: {fileID: 1231963349}
 --- !u!50 &2058441976
 Rigidbody2D:
   serializedVersion: 4

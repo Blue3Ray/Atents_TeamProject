@@ -11,8 +11,6 @@ public class ElemanterMenu : MonoBehaviour
 
     Transform elemanterMenu;
 
-    Element element = Element.None;
-
     private void Awake()
     {
         acionControl = new ActionControl();

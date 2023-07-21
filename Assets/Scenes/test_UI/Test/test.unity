@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 469456484}
   - component: {fileID: 469456483}
   m_Layer: 0
-  m_Name: Image
+  m_Name: RingMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

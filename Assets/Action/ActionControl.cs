@@ -219,15 +219,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""MousePosition"",
-                    ""type"": ""Button"",
-                    ""id"": ""57d3b6b3-8535-4799-8252-eb059148ba39"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -239,17 +230,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Click"",
                     ""action"": ""MouesEvent"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c682632a-8eaa-4366-a5ee-09853c527ad0"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Click"",
-                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -437,7 +417,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         // MouseClickMenu
         m_MouseClickMenu = asset.FindActionMap("MouseClickMenu", throwIfNotFound: true);
         m_MouseClickMenu_MouesEvent = m_MouseClickMenu.FindAction("MouesEvent", throwIfNotFound: true);
-        m_MouseClickMenu_MousePosition = m_MouseClickMenu.FindAction("MousePosition", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -619,13 +598,11 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MouseClickMenu;
     private List<IMouseClickMenuActions> m_MouseClickMenuActionsCallbackInterfaces = new List<IMouseClickMenuActions>();
     private readonly InputAction m_MouseClickMenu_MouesEvent;
-    private readonly InputAction m_MouseClickMenu_MousePosition;
     public struct MouseClickMenuActions
     {
         private @ActionControl m_Wrapper;
         public MouseClickMenuActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
         public InputAction @MouesEvent => m_Wrapper.m_MouseClickMenu_MouesEvent;
-        public InputAction @MousePosition => m_Wrapper.m_MouseClickMenu_MousePosition;
         public InputActionMap Get() { return m_Wrapper.m_MouseClickMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -638,9 +615,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @MouesEvent.started += instance.OnMouesEvent;
             @MouesEvent.performed += instance.OnMouesEvent;
             @MouesEvent.canceled += instance.OnMouesEvent;
-            @MousePosition.started += instance.OnMousePosition;
-            @MousePosition.performed += instance.OnMousePosition;
-            @MousePosition.canceled += instance.OnMousePosition;
         }
 
         private void UnregisterCallbacks(IMouseClickMenuActions instance)
@@ -648,9 +622,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @MouesEvent.started -= instance.OnMouesEvent;
             @MouesEvent.performed -= instance.OnMouesEvent;
             @MouesEvent.canceled -= instance.OnMouesEvent;
-            @MousePosition.started -= instance.OnMousePosition;
-            @MousePosition.performed -= instance.OnMousePosition;
-            @MousePosition.canceled -= instance.OnMousePosition;
         }
 
         public void RemoveCallbacks(IMouseClickMenuActions instance)
@@ -822,7 +793,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     public interface IMouseClickMenuActions
     {
         void OnMouesEvent(InputAction.CallbackContext context);
-        void OnMousePosition(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {

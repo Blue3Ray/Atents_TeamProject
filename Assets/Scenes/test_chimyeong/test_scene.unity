@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 1236526583}
   - component: {fileID: 1236526586}
   - component: {fileID: 1236526587}
+  - component: {fileID: 1236526588}
   m_Layer: 0
   m_Name: Ememy1
   m_TagString: Untagged
@@ -445,7 +446,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.10071874, y: 0.051393747}
+  m_Offset: {x: -0.21493936, y: -0.7607243}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -456,7 +457,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.666776, y: 2.9317775}
+  m_Size: {x: 3.7798524, y: 11.409235}
   m_EdgeRadius: 0
 --- !u!114 &1236526587
 MonoBehaviour:
@@ -479,6 +480,27 @@ MonoBehaviour:
   atkSpeed: 0
   height: 8.3
   sword_man: {fileID: 2058441975}
+--- !u!50 &1236526588
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236526582}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1668494712
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,6 +702,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2003961458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2003961459}
+  - component: {fileID: 2003961460}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2003961459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003961458}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2058441972}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &2003961460
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003961458}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 3.83
 --- !u!1 &2058441969
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +766,7 @@ GameObject:
   - component: {fileID: 2058441976}
   m_Layer: 0
   m_Name: Knight_attack_01
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -782,10 +852,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058441969}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.27, y: 3.31, z: 0}
+  m_LocalPosition: {x: 0.04, y: 3.31, z: 0}
   m_LocalScale: {x: 0.9277, y: 0.9174, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2003961459}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -832,9 +903,9 @@ MonoBehaviour:
   prfHpBar: {fileID: 3297518004114427187, guid: c0e03bcf87898e041affe83f8f830958, type: 3}
   canvas: {fileID: 0}
   nowHp: 100
-  atkDmg: 50
+  atkDmg: 10
   atkSpeed: 1
-  attacked: 1
+  attacked: 0
   nowHpbar: {fileID: 1231963349}
 --- !u!50 &2058441976
 Rigidbody2D:
@@ -966,11 +1037,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7175755483096774145, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -431.1
+      value: -258
       objectReference: {fileID: 0}
     - target: {fileID: 7175755483096774145, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -251.6
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 7175755483096774145, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

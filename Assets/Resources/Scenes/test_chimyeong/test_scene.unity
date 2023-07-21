@@ -473,8 +473,8 @@ MonoBehaviour:
   prfHpBar: {fileID: 3100996950898246504, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
   canvas: {fileID: 3625188}
   enemyName: 
-  maxHp: 0
-  nowHp: 0
+  maxHp: 100
+  nowHp: 100
   atkDmg: 0
   atkSpeed: 0
   height: 8.3
@@ -828,13 +828,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objSwordMan: {fileID: 0}
-  maxHp: 0
+  maxHp: 100
   prfHpBar: {fileID: 3297518004114427187, guid: c0e03bcf87898e041affe83f8f830958, type: 3}
   canvas: {fileID: 0}
-  nowHp: 0
-  atkDmg: 0
+  nowHp: 100
+  atkDmg: 50
   atkSpeed: 1
-  attacked: 0
+  attacked: 1
   nowHpbar: {fileID: 1231963349}
 --- !u!50 &2058441976
 Rigidbody2D:
@@ -869,12 +869,32 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 358867279761047502, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
-      propertyPath: m_AnchoredPosition.x
+      propertyPath: m_Pivot.x
+      value: 0.5206777
+      objectReference: {fileID: 0}
+    - target: {fileID: 358867279761047502, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 358867279761047502, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 358867279761047502, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 358867279761047502, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 358867279761047502, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -71.898346
+      objectReference: {fileID: 0}
+    - target: {fileID: 358867279761047502, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3100996950898246504, guid: 2b6ec06b47b8fff4b94e24429929cf1a, type: 3}
       propertyPath: m_Name

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Sword_Man : MonoBehaviour
@@ -17,6 +18,21 @@ public class Sword_Man : MonoBehaviour
     public float atkSpeed = 1;
     public bool attacked = false;  
     public Image nowHpbar;
+
+    ActionControl ac;
+
+    private void Awake()
+    {
+        ac = new ActionControl();
+        ac.chimyeongtest.Enable();
+        ac.chimyeongtest.Attack.performed += OnAttack;
+
+    }
+
+    private void OnAttack(InputAction.CallbackContext obj)
+    {
+        animator.SetTrigger("attack");
+    }
 
     void AttackTrue()
     {
@@ -89,10 +105,6 @@ public class Sword_Man : MonoBehaviour
         transform.Translate(new Vector3(h,0,0) * Time.deltaTime);
         //방향 값을 가지고 있는 h변수에 따라 움직이도록 설정.
 
-        if (Input.GetKeyDown(KeyCode.A) &&
-            !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            animator.SetTrigger("attack");
-        }
+
     }
 }

@@ -45,22 +45,24 @@ public class Enemy1 : MonoBehaviour
         atkDmg = +atkDmg;
         atkSpeed = _atkSpeed;
     }
+
     private void OnTriggerEnter2D(Collider2D col)
         //OnTriggerEnter : 이 스크립트가 붙어있는 오브젝트에 Trigger가 닿았을 때 실행되는 이벤트.
     {
         if (col.CompareTag("Player"))
         {
-            if (sword_man.attacked)
+            nowHp -= sword_man.atkDmg;
+            Debug.Log(nowHp);
+            sword_man.attacked = false;
+            if (nowHp <= 0) // 적 사망 
             {
-                nowHp -= sword_man.atkDmg;
-                Debug.Log(nowHp);
-                sword_man.attacked = false;
-                if (nowHp <= 0) // 적 사망 
-                {
-                    Destroy(gameObject);
-                    Destroy(hpBar.gameObject);
-                }
+                Destroy(gameObject);
+                Destroy(hpBar.gameObject);
             }
+            //if (sword_man.attacked)
+            //{
+            
+            //}
         }
     }
 

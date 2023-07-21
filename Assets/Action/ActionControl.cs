@@ -362,6 +362,34 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""chimyeongtest"",
+            ""id"": ""9c2570fc-c294-4ff4-a286-a802051298e1"",
+            ""actions"": [
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9c4d2cf-7e1f-48a3-9a21-54f7d6aafd5b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3472a09a-4174-4f4d-be31-2cd1676133cd"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -397,6 +425,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_Test_Test4 = m_Test.FindAction("Test4", throwIfNotFound: true);
         m_Test_Test5 = m_Test.FindAction("Test5", throwIfNotFound: true);
         m_Test_TestClick = m_Test.FindAction("TestClick", throwIfNotFound: true);
+        // chimyeongtest
+        m_chimyeongtest = asset.FindActionMap("chimyeongtest", throwIfNotFound: true);
+        m_chimyeongtest_Attack = m_chimyeongtest.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -694,6 +725,52 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         }
     }
     public TestActions @Test => new TestActions(this);
+
+    // chimyeongtest
+    private readonly InputActionMap m_chimyeongtest;
+    private List<IChimyeongtestActions> m_ChimyeongtestActionsCallbackInterfaces = new List<IChimyeongtestActions>();
+    private readonly InputAction m_chimyeongtest_Attack;
+    public struct ChimyeongtestActions
+    {
+        private @ActionControl m_Wrapper;
+        public ChimyeongtestActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Attack => m_Wrapper.m_chimyeongtest_Attack;
+        public InputActionMap Get() { return m_Wrapper.m_chimyeongtest; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ChimyeongtestActions set) { return set.Get(); }
+        public void AddCallbacks(IChimyeongtestActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ChimyeongtestActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ChimyeongtestActionsCallbackInterfaces.Add(instance);
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+        }
+
+        private void UnregisterCallbacks(IChimyeongtestActions instance)
+        {
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+        }
+
+        public void RemoveCallbacks(IChimyeongtestActions instance)
+        {
+            if (m_Wrapper.m_ChimyeongtestActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IChimyeongtestActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ChimyeongtestActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ChimyeongtestActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ChimyeongtestActions @chimyeongtest => new ChimyeongtestActions(this);
     private int m_ClickSchemeIndex = -1;
     public InputControlScheme ClickScheme
     {
@@ -725,5 +802,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         void OnTest4(InputAction.CallbackContext context);
         void OnTest5(InputAction.CallbackContext context);
         void OnTestClick(InputAction.CallbackContext context);
+    }
+    public interface IChimyeongtestActions
+    {
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

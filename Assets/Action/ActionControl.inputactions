@@ -340,6 +340,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "chimyeongtest",
+            "id": "9c2570fc-c294-4ff4-a286-a802051298e1",
+            "actions": [
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "c9c4d2cf-7e1f-48a3-9a21-54f7d6aafd5b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3472a09a-4174-4f4d-be31-2cd1676133cd",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

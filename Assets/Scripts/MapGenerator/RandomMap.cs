@@ -30,7 +30,12 @@ public class RandomMap : MonoBehaviour
     /// </summary>
     public bool[] nodes;
 
-    List<List<Vector2Int>> rooms = new();
+    List<Room> rooms = new();
+
+    public class Room
+    {
+        public List<Vector2> nodes = new List<Vector2>();
+    }
 
     /// <summary>
     /// 초기 랜덤 bool 채우는 정도 (대충 0.45 ~ 0.47 적당)
@@ -43,6 +48,8 @@ public class RandomMap : MonoBehaviour
     /// </summary>
     public int collectBoxBoolCount = 3;
 
+    public int smallRoomLimt = 20;
+
 
     private void OnValidate()
     {
@@ -52,26 +59,40 @@ public class RandomMap : MonoBehaviour
         {
             GatherData();
         }
-    }
 
-    void CheckSmallNodes()
-    {
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                if (nodes[GetIndex(x,y)])
+                if (nodes[GetIndex(x, y)])
                 {
-                    Stack nodeStack = new Stack();
-                    nodeStack.Push(nodes[GetIndex(x,y)]);
+                    CheckSmallRoom(x, y);
                 }
             }
         }
     }
 
-    void IsAlreadySteak(int x, int y)
+    void CheckSmallRoom(int x, int y)
     {
-        
+        Stack<Vector2Int> nodeStack = new Stack<Vector2Int>();
+        nodeStack.Push(new Vector2Int(x,y));
+        Room room = new Room();
+
+        Test(room, nodeStack);
+    }
+
+    List<Vector2Int> Test(Room room, Stack<Vector2Int> stack)
+    {
+        Vector2Int temp = stack.Pop();
+        stack.Pop();
+        return null;
+    }
+
+    bool IsAlreadyStack(int x, int y)
+    {
+        bool result = false;
+
+        return result;
     }
 
     void GatherData()
@@ -101,7 +122,7 @@ public class RandomMap : MonoBehaviour
             for(int b = -1; b <= 1; b++)
             {
                 // 맵 바깥일 때 false로 처리
-                if((x + b < 0 || x + b >= width)||(y + a < 0 || y + a >= height))
+                if(CheckInMap(x + b, y + a))
                 {
                     //boolCount++;
                 }
@@ -149,6 +170,11 @@ public class RandomMap : MonoBehaviour
                 }
             }
         }
+    }
+
+    bool CheckInMap(int x, int y)
+    {
+        return (x < 0 || x >= width) || (y < 0 || y >= height);
     }
 
     int GetIndex(int x, int y)

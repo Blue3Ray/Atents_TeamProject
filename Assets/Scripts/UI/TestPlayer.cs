@@ -12,12 +12,8 @@ public class TestPlayer : MonoBehaviour
         set { hp = value; }
     }
 
-    Fire fire;
-    Wind wind;
-    Water water;
-    Thunder thunder;
-
     public Element element;
+
     }
 
  

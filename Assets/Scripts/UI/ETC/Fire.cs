@@ -6,19 +6,22 @@ using UnityEngine.UI;
 public class Fire : MonoBehaviour
 {
 
-    TestPlayer testPlayer;
+    
 
     private void Awake()
     {
-        testPlayer = FindObjectOfType<TestPlayer>();
+      
+    }
+
+    private void Start()
+    {
+        
     }
 
     public void OnClickBuuton()
     {
-         //Input.GetMouseButton(1);
-         Debug.Log("阂 积己");
-
-        testPlayer.element = Element.Fire;
+        Debug.Log("阂 积己");
+  
        
     }
 

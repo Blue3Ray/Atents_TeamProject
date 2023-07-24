@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class Water : MonoBehaviour
 {
-    TestPlayer testPlayer;
+  
 
     private void Awake()
     {
-        testPlayer = FindObjectOfType<TestPlayer>();
+        
+    }
+
+    private void Start()
+    {
+        
     }
 
     public void OnClickBuuton()
     {
   
         Debug.Log("¹° »ý¼º");
-        testPlayer.element = Element.Water;
+
 
     }
 

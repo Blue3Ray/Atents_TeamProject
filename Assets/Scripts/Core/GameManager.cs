@@ -16,9 +16,12 @@ public enum Element : byte
 public class GameManager : Singleton<GameManager>
 {
     PlayerTest playerTest;
+    ItemDataManager itemDataManager;
 
     private void Awake()
     {
+        itemDataManager = GetComponent<ItemDataManager>();
+        
         //playerTest = new PlayerTest();
     }
 }

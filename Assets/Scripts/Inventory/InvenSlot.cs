@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InvenSlot : MonoBehaviour
+public class InvenSlot
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	ItemData itemData = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	readonly int maxSlotCapacity = 99;
 }

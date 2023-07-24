@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	GameObject[] UIslots;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

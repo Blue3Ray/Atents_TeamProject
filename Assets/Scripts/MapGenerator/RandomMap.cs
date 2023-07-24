@@ -66,7 +66,7 @@ public class RandomMap : MonoBehaviour
             {
                 if (nodes[GetIndex(x, y)])
                 {
-                    CheckSmallRoom(x, y);
+                    //CheckSmallRoom(x, y);
                 }
             }
         }

@@ -18,10 +18,12 @@ public class GameManager : Singleton<GameManager>
     PlayerTest playerTest;
     ItemDataManager itemDataManager;
 
+    public ItemDataManager ItemData => itemDataManager;
+
     private void Awake()
     {
         itemDataManager = GetComponent<ItemDataManager>();
         
-        //playerTest = new PlayerTest();
+        playerTest = new PlayerTest();
     }
 }

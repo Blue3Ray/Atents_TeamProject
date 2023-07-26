@@ -8,21 +8,42 @@ public class InvenSlotUI : MonoBehaviour
 {
     Image itemImage = null;
     TextMeshProUGUI itemCount;
-	InvenSlot UIslot;
+	public InvenSlot invenSlot = null;
 
 	private void Awake()
 	{
 		Transform child = transform.GetChild(0);
 		itemImage = child.GetComponent<Image>();
-		itemImage.color = Color.clear;
 		child = transform.GetChild(1);
 		itemCount = child.GetComponent<TextMeshProUGUI>();
-		itemCount.text = string.Empty;
+		refresh();
 	}
 
-	public void InitializeSloutUI(InvenSlot slot)
+	public void refresh()
 	{
-		UIslot = slot;
+		if(invenSlot != null)
+		{
+			if (invenSlot.ItemData == null)
+			{
+				itemImage.color = Color.clear;
+				itemCount.text = string.Empty;
+				itemImage.sprite = null;
+			}
+			else
+			{
+				itemImage.color = Color.white;
+				itemCount.text = invenSlot.ItemData.itemDescription;
+				itemImage.sprite = invenSlot.ItemData.itemIcon;
+
+			}
+		}
+		else
+		{
+			itemImage.color = Color.clear;
+			itemCount.text = string.Empty;
+			itemImage.sprite = null;
+		}
+		
 	}
 
 	

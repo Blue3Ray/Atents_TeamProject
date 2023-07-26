@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
+	Inventory inventory;
 	public InvenSlotUI[] UISlots;
-	Inventory inven;
+	public InvenSlotUI this[int index] => UISlots[index];
+	
 
 	private void Awake()
 	{
@@ -15,5 +17,18 @@ public class InventoryUI : MonoBehaviour
 
 	private void Start()
 	{
+		inventory = GameManager.Ins.inven;
+		ConnetingSlots();
+	}
+
+	public void ConnetingSlots()
+	{
+		for(int i = 0; i < inventory.SlotCount; i++)
+		{
+			UISlots[i].invenSlot = inventory[(uint)i];
+			
+		}
+
+
 	}
 }

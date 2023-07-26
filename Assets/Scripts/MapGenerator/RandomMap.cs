@@ -76,43 +76,63 @@ public class RandomMap : MonoBehaviour
             {
                 if (nodes[GetIndex(x, y)].data)
                 {
-                    //CheckSmallRoom(x, y);
+                    List<Node> list = CheckRoomList(x, y);
+                    if (list != null)
+                    {
+                        roomlist.Add(list);
+                        Debug.Log($"room list : {roomlist.Count} => ({x}, {y}), Count : {list.Count}");
+                    }
                 }
             }
         }
     }
 
     Stack<Node> stack = new();
+
+
     List<List<Node>> roomlist = new List<List<Node>>();
-    List<Node> room = new List<Node>();
+
 
     List<Node> CheckRoomList(int x, int y)
     {
+        if (nodes[GetIndex(x, y)].isChecked) return null;
         stack.Push(nodes[GetIndex(x, y)]);                  // 노드를 스택에 넣는다
+        nodes[GetIndex(x, y)].isChecked = true;
 
-        if (nodes[GetIndex(x, y)].data)                     // 노드가 비어 있으면 검사 한다
+        int a = x;
+        int b = y;
+        List<Node> room = new List<Node>();
+
+        while(stack.Count > 0)
         {
-            room = new List<Node>();
-            Node targetNode = stack.Pop();
-            room.Add(targetNode);
+            Node target = stack.Pop();
+            room.Add(target);
 
-            for(int i = -1; i <= 1; i++)
+            for (int i = -1; i <= 1; i++)
             {
-                for(int j = -1; j <= 1;j++)
+                for (int j = -1; j <= 1; j++)
                 {
-                    if (i == 0 && j == 0) continue;
-                    if(!targetNode.isChecked)
+                    if (i*j == 0 && a + j > -1 && a + j < width && b + i > -1 && b + i < height)
                     {
-                        stack.Push(nodes[GetIndex(x + j, y + i)]);
+                        if (nodes[GetIndex(a + j, b + i)].data && !nodes[GetIndex(a + j, b + i)].isChecked)
+                        {
+                            Debug.Log($"({a + j}, { b + i}) is empty");
+                            stack.Push(nodes[GetIndex(a + j, b + i)]);
+                            nodes[GetIndex(a + j, b + i)].isChecked = true;
+                        }
                     }
                 }
             }
+
+            a += 1;
+            if(a >= width)
+            {
+                a = 0;
+                b += 1;
+            }
         }
-        else    // 노드가 안비어 있으면 바로 뺀다
-        {
-            stack.Pop();
-            room = null;
-        }
+
+        if (room.Count > 0) return room;
         return null;
     }
 
@@ -146,6 +166,7 @@ public class RandomMap : MonoBehaviour
                 {
                     nodes[GetIndex(x, y)].data = false;
                 }
+                nodes[GetIndex(x, y)].isChecked = false;
             }
         }
     }
@@ -203,8 +224,13 @@ public class RandomMap : MonoBehaviour
                 for (int x = 0; x < width; x++)
                 {
                     Gizmos.color = Color.black;
-                    // false면 검은칸, true면 빈칸
+                    // false면 검은칸, 스택 확인된거면 빨강, true면 빈칸
                     if (!nodes[GetIndex(x, y)].data) Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
+                    else if(nodes[GetIndex(x, y)].isChecked)
+                    {
+                        Gizmos.color = Color.red;
+                        Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
+                    }
                 }
             }
         }

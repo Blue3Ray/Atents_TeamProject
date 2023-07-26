@@ -4,7 +4,9 @@ using UnityEngine;
 
 public enum ItemCode
 {
-    Potion = 0
+    Potion = 0,
+    Jewerly,
+
 }
 
 public enum ItemSortBy

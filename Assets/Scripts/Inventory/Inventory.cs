@@ -10,7 +10,7 @@ public class Inventory
     /// <summary>
     /// 인벤토리에 들어있는 인벤 슬롯의 기본 갯수
     /// </summary>
-    public const int Default_Inventory_Size = 6;
+    public const int Default_Inventory_Size = 12;
 
     /// <summary>
     /// 임시슬롯용 인덱스
@@ -45,18 +45,13 @@ public class Inventory
     /// </summary>
     ItemDataManager itemDataManager;
 
-    /// <summary>
-    /// 인벤토리 소유자
-    /// </summary>
-    Player owner;
-    public Player Owner => owner;
 
     /// <summary>
     /// 인벤토리 생성자
     /// </summary>
     /// <param name="owner">인벤토리 소유자</param>
     /// <param name="size">인벤토리의 크기</param>
-    public Inventory(Player owner, uint size = Default_Inventory_Size)
+    public Inventory(uint size = Default_Inventory_Size)
     {
         slots = new InvenSlot[size];
         for(uint i=0;i<size;i++)
@@ -65,7 +60,6 @@ public class Inventory
         }
         tempSlot = new InvenSlot(TempSlotIndex);
         itemDataManager = GameManager.Ins.ItemData;  // 아이템 데이터 메니저 캐싱
-        this.owner = owner;                             // 소유자 기록
     }
 
     /// <summary>

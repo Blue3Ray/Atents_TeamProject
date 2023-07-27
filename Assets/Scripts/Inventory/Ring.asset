@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1230646ae47c5e44693cc57adcb8212f, type: 3}
-  m_Name: Potion
+  m_Name: Ring
   m_EditorClassIdentifier: 
   code: 0
-  itemName: "\uD3EC\uC158"
-  itemIcon: {fileID: 21300000, guid: db005d11213e5da47b9769c2e6c56eee, type: 3}
-  price: 120
-  maxStackCount: 10
-  itemDescription: "\uCCB4\uB825\uC744 30 \uC62C\uB824\uC90D\uB2C8\uB2E4."
+  itemName: "\uC544\uC774\uD15C"
+  itemIcon: {fileID: 21300000, guid: ec3f5c9d06947e7458e9626551938feb, type: 3}
+  price: 1000
+  maxStackCount: 2
+  itemDescription: "\uD761\uD608\uC774 \uAC00\uB2A5\uD55C \uBC18\uC9C0"

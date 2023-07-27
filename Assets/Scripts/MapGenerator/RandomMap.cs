@@ -1,13 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking.Types;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
 
 public class RandomMap : MonoBehaviour
 {
-    public struct Node
+    public class Node
     {
         public bool data;
         public bool isChecked;
+        public Vector2Int gridPos;
     }
 
 
@@ -18,7 +26,6 @@ public class RandomMap : MonoBehaviour
         set 
         { 
             width = value; 
-            ResetMap();
         }
     }
     public int height;
@@ -28,7 +35,6 @@ public class RandomMap : MonoBehaviour
         set 
         { 
             height = value;
-            ResetMap() ;
         }
     }
 
@@ -60,7 +66,7 @@ public class RandomMap : MonoBehaviour
     /// </summary>
     public int smallRoomLimt = 20;
 
-    
+
     private void OnValidate()
     {
         ResetMap();
@@ -77,7 +83,35 @@ public class RandomMap : MonoBehaviour
                 if (nodes[GetIndex(x, y)].data)
                 {
                     List<Node> list = CheckRoomList(x, y);
-                    if (list != null)
+
+                    if (list != null)       // 처음으로 체크 한 녀석이면
+                    {
+                        roomlist.Add(list);
+                        //Debug.Log($"room list : {roomlist.Count} => ({x}, {y}), Count : {list.Count}");
+                    }
+                }
+            }
+        }
+    }
+
+    void Start()
+    {
+        ResetMap();
+
+        for (int i = 0; i < collectBoxBoolCount; i++)
+        {
+            GatherData();
+        }
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (nodes[GetIndex(x, y)].data)
+                {
+                    List<Node> list = CheckRoomList(x, y);
+
+                    if (list != null)       // 처음으로 체크 한 녀석이면
                     {
                         roomlist.Add(list);
                         Debug.Log($"room list : {roomlist.Count} => ({x}, {y}), Count : {list.Count}");
@@ -95,15 +129,16 @@ public class RandomMap : MonoBehaviour
 
     List<Node> CheckRoomList(int x, int y)
     {
+        List<Node> room = new List<Node>();
+
         if (nodes[GetIndex(x, y)].isChecked) return null;
+
         stack.Push(nodes[GetIndex(x, y)]);                  // 노드를 스택에 넣는다
         nodes[GetIndex(x, y)].isChecked = true;
 
-        int a = x;
-        int b = y;
-        List<Node> room = new List<Node>();
 
-        while(stack.Count > 0)
+
+        while (stack.Count > 0)
         {
             Node target = stack.Pop();
             room.Add(target);
@@ -112,28 +147,22 @@ public class RandomMap : MonoBehaviour
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    if (i*j == 0 && a + j > -1 && a + j < width && b + i > -1 && b + i < height)
+                    if (i * j == 0 && target.gridPos.x + j > -1 && target.gridPos.x + j < width && target.gridPos.y + i > -1 && target.gridPos.y + i < height)
                     {
-                        if (nodes[GetIndex(a + j, b + i)].data && !nodes[GetIndex(a + j, b + i)].isChecked)
+                        Node tempTarget = nodes[GetIndex(target.gridPos.x + j, target.gridPos.y + i)];
+                        if (tempTarget.data && !tempTarget.isChecked)
                         {
-                            Debug.Log($"({a + j}, { b + i}) is empty");
-                            stack.Push(nodes[GetIndex(a + j, b + i)]);
-                            nodes[GetIndex(a + j, b + i)].isChecked = true;
+                            //Debug.Log($"({tempTarget.gridPos}) is empty(i : {i}, j : {j})");
+                            stack.Push(tempTarget);
+                            tempTarget.isChecked = true;
                         }
                     }
                 }
             }
-
-            a += 1;
-            if(a >= width)
-            {
-                a = 0;
-                b += 1;
-            }
         }
 
-        if (room.Count > 0) return room;
-        return null;
+        return room;
+
     }
 
     
@@ -209,32 +238,16 @@ public class RandomMap : MonoBehaviour
 
         for (int i = 0; i < nodes.Length; i++)
         {
+            nodes[i] = new Node();
             // fiilrate보다 작으면 true(빈칸) 아니면 false(검은칸)
             nodes[i].data = Random.Range(0.0f, 1.0f) < mapFillRate;
             nodes[i].isChecked = false;
+            nodes[i].gridPos = new Vector2Int(i % Width, i / width);
+            
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (nodes.Length > 0)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    Gizmos.color = Color.black;
-                    // false면 검은칸, 스택 확인된거면 빨강, true면 빈칸
-                    if (!nodes[GetIndex(x, y)].data) Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
-                    else if(nodes[GetIndex(x, y)].isChecked)
-                    {
-                        Gizmos.color = Color.red;
-                        Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
-                    }
-                }
-            }
-        }
-    }
+    
 
     bool CheckInMap(int x, int y)
     {
@@ -245,4 +258,42 @@ public class RandomMap : MonoBehaviour
     {
         return x + y * width;
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 테스트용 리스트 확인 함수
+    /// </summary>
+    public void PrintRoomlist()
+    {
+        Debug.Log($"총 {roomlist.Count}개 방");
+        int i = 0;
+        foreach(List<Node> room in roomlist)
+        {
+            Debug.Log($"{i}번째 {room.Count}개 방");
+        }
+    }
+
+
+
+    private void OnDrawGizmos()
+    {
+        if (nodes != null && nodes.Length > 0)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Gizmos.color = Color.black;
+                    // false면 검은칸, 스택 확인된거면 빨강, true면 빈칸
+                    if (!nodes[GetIndex(x, y)].data) Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
+                    else if (nodes[GetIndex(x, y)].isChecked)
+                    {
+                        Gizmos.color = Color.red;
+                        Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
+                    }
+                }
+            }
+        }
+    }
+#endif
 }

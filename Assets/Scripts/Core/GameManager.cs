@@ -17,11 +17,23 @@ public class GameManager : Singleton<GameManager>
 {
     PlayerTest playerTest;
     ItemDataManager itemDataManager;
+    public Inventory inven;
+
+    public ItemDataManager ItemData => itemDataManager;
+
+    
 
     private void Awake()
     {
         itemDataManager = GetComponent<ItemDataManager>();
-        
-        //playerTest = new PlayerTest();
+        inven = new Inventory(12);
     }
+
+	private void Start()
+	{
+        
+        
+        playerTest = new PlayerTest();
+		
+	}
 }

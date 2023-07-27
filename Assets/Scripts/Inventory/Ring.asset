@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1230646ae47c5e44693cc57adcb8212f, type: 3}
   m_Name: Ring
   m_EditorClassIdentifier: 
-  itemName: "\uACF5\uACA9\uB825 \uBC18\uC9C0"
-  itemSprite: {fileID: 21300000, guid: ec3f5c9d06947e7458e9626551938feb, type: 3}
-  itemCode: 0
-  price: 40
-  itemDes:
-  - "\uCC29\uC6A9 \uC2DC, \uACF5\uACA9\uB825\uC744 \uB192\uC5EC\uC900\uB2E4."
+  code: 0
+  itemName: "\uC544\uC774\uD15C"
+  itemIcon: {fileID: 21300000, guid: ec3f5c9d06947e7458e9626551938feb, type: 3}
+  price: 1000
+  maxStackCount: 2
+  itemDescription: "\uD761\uD608\uC774 \uAC00\uB2A5\uD55C \uBC18\uC9C0"

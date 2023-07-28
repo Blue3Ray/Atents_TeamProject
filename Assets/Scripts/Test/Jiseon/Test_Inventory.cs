@@ -13,26 +13,25 @@ public class Test_Inventory : TestBase
 	private void Start()
 	{
 		inventoryUI = FindAnyObjectByType<InventoryUI>();
-		inven = GameManager.Ins.inven;
 	}
 
 	protected override void Test1(InputAction.CallbackContext context)
 	{
+		base.Test1(context);
+		inven = GameManager.Ins.inven;
 		inven.AddItem(ItemCode.Jewerly);
 	}
 
 	protected override void Test2(InputAction.CallbackContext context)
 	{
-		inventoryUI.UISlots[0].refresh();
+		base.Test2(context);
+		inven.AddItem(ItemCode.Potion, 3);
 		
 	}
 
 	protected override void Test3(InputAction.CallbackContext context)
 	{
-		GameObject gameObject = GameObject.Find("Image");
-		Image image1 = gameObject.GetComponent<Image>();
-		//Image image = gameObject.GetComponent<Image>();
-		image1.sprite = GameManager.Ins.ItemData.itemDatas[0].itemIcon;
+		base.Test3(context);
 	}
 
 	protected override void Test4(InputAction.CallbackContext context)

@@ -234,6 +234,118 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerJM"",
+            ""id"": ""03587eae-bc03-42e2-a43a-3e821e6cffd5"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""3ea11573-e94d-4941-a791-c13fb8ef1412"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""0cbe7188-4034-4b4b-afb6-1b7bb17bd6ab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""d1b3b1c3-f1f6-44ac-8a90-bb424ef4204e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""12f3184e-97ab-4023-97f9-0027d73505ea"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""606fc01a-3792-4e5a-a5ac-2586b93312cb"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""5851078b-fc6d-4bff-89e1-162632f7240b"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""255d7775-2d2b-495e-b49d-855e64cbc87f"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1842198a-0714-4d93-a25a-b794704c999e"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""1b9b9349-c7b0-4c59-b0c3-d033f26b2bc8"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""0a299d1d-37da-4c84-9ee4-9c62011baa5a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -261,6 +373,11 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         // MouseClickMenu
         m_MouseClickMenu = asset.FindActionMap("MouseClickMenu", throwIfNotFound: true);
         m_MouseClickMenu_MouesEvent = m_MouseClickMenu.FindAction("MouesEvent", throwIfNotFound: true);
+        // PlayerJM
+        m_PlayerJM = asset.FindActionMap("PlayerJM", throwIfNotFound: true);
+        m_PlayerJM_Move = m_PlayerJM.FindAction("Move", throwIfNotFound: true);
+        m_PlayerJM_Jump = m_PlayerJM.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerJM_Attack = m_PlayerJM.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -472,6 +589,68 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         }
     }
     public MouseClickMenuActions @MouseClickMenu => new MouseClickMenuActions(this);
+
+    // PlayerJM
+    private readonly InputActionMap m_PlayerJM;
+    private List<IPlayerJMActions> m_PlayerJMActionsCallbackInterfaces = new List<IPlayerJMActions>();
+    private readonly InputAction m_PlayerJM_Move;
+    private readonly InputAction m_PlayerJM_Jump;
+    private readonly InputAction m_PlayerJM_Attack;
+    public struct PlayerJMActions
+    {
+        private @ActionControl m_Wrapper;
+        public PlayerJMActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_PlayerJM_Move;
+        public InputAction @Jump => m_Wrapper.m_PlayerJM_Jump;
+        public InputAction @Attack => m_Wrapper.m_PlayerJM_Attack;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerJM; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerJMActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerJMActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerJMActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerJMActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+        }
+
+        private void UnregisterCallbacks(IPlayerJMActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+        }
+
+        public void RemoveCallbacks(IPlayerJMActions instance)
+        {
+            if (m_Wrapper.m_PlayerJMActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerJMActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerJMActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerJMActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerJMActions @PlayerJM => new PlayerJMActions(this);
     private int m_ClickSchemeIndex = -1;
     public InputControlScheme ClickScheme
     {
@@ -494,5 +673,11 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     public interface IMouseClickMenuActions
     {
         void OnMouesEvent(InputAction.CallbackContext context);
+    }
+    public interface IPlayerJMActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

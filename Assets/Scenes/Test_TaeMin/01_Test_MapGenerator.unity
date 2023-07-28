@@ -480,7 +480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 100
   height: 100
-  mapFillRate: 0.473
+  mapFillRate: 0.45
   collectBoxBoolCount: 6
   smallRoomLimt: 20
 --- !u!4 &620452936

@@ -14,7 +14,5 @@ public class Test_RoomList : TestBase
     protected override void Test1(InputAction.CallbackContext context)
     {
         randomMap.StartMapData();
-        randomMap.LimitRoomCount(8);
-        randomMap.ConnectNearRoom();
     }
 }

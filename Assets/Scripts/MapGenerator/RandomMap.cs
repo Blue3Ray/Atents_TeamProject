@@ -46,6 +46,9 @@ public class RandomMap : MonoBehaviour
         public List<Node> nodes = new List<Node>();
         public List<Room> connectedRooms = new List<Room>();
 
+
+        public float CenterX => (maxX + minX) * 0.5f;
+        public float CenterY => (maxY + minY) * 0.5f;
         public int minX;
         public int minY;
         public int maxX;
@@ -154,11 +157,47 @@ public class RandomMap : MonoBehaviour
     }
 
     /// <summary>
+    /// RoomList를 랜덤하게 생성하는 함수
+    /// </summary>
+    public void StartMapData()
+    {
+        ResetMap();
+
+        for (int i = 0; i < collectBoxBoolCount; i++)
+        {
+            GatherData();
+        }
+
+        roomList = new List<Room>();
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Room tempRoom = CheckRoomList(x, y);
+
+                if (tempRoom != null)       // 정상적으로 검사를 마치면
+                {
+                    roomList.Add(tempRoom);     // 리스트에 추가
+                    //Debug.Log($"room list : {roomList.Count} => ({x}, {y}), Count : {tempRoom.nodes.Count}\n" +
+                    //    $"Min : ({tempRoom.minX}, {tempRoom.minY}), Max : ({tempRoom.maxX}, {tempRoom.maxY})");
+                }
+            }
+        }
+
+        LimitRoomCount(8);
+
+        //roomList.Sort((x, y) => x.CenterX < y.CenterY ? 1 : -1);
+
+        ConnectNearRoom(roomList);
+    }
+
+    /// <summary>
     /// 가장 가까운 방과 연결하기(1개씩)
     /// </summary>
-    public void ConnectNearRoom()
+    public void ConnectNearRoom(List<Room> allRooms)
     {
-        List<Room> allRooms = roomList;
+
         float nearDistance = float.MaxValue;
         bool isPossible = false;
         Room tempA = new();
@@ -166,30 +205,44 @@ public class RandomMap : MonoBehaviour
 
         foreach (Room roomA in allRooms)
         {
-            //isPossible = false; 
+            //if (roomA.connectedRooms.Count > 0) continue;
+            isPossible = false; 
             nearDistance = float.MaxValue;
 
             foreach(Room roomB in allRooms)
             {
                 if (roomA == roomB) continue;   // 같은 방이면 B풀 넘어가기
-                if (roomA.isConnected(roomB))
-                {
-                    //isPossible = false;         // 이미 연결되어 있으면 A풀 넘어가기
-                    break;
-                }
+                
                 float distanceRoom = Mathf.Pow(roomA.minX - roomB.minX,2) + Mathf.Pow(roomA.minY - roomB.minY, 2);
                 if(distanceRoom < nearDistance)
                 {
+                    if (roomA.isConnected(roomB))
+                    {
+                        //isPossible = false;         // 이미 서로 연결되어 있으면 B풀 넘어가기
+                        continue;
+                    }
                     nearDistance = distanceRoom;
-                    //isPossible = true;
+                    isPossible = true;
                     tempA = roomA;
                     tempB = roomB;
                 }
+
+                
             }
+
             if(isPossible)
             {
                 Room.ConnectRooms(tempA, tempB);
-                
+            }
+        }
+
+        // 방과 방 연결된 선 그리는 디버그
+        foreach(Room tempRoom in allRooms)
+        {
+            Debug.Log($"{tempRoom.connectedRooms.Count}");
+            foreach (Room tempBRoom in tempRoom.connectedRooms)
+            {
+                Debug.DrawLine(new Vector3(tempRoom.CenterX, tempRoom.CenterY), new Vector3(tempBRoom.CenterX, tempBRoom.CenterY), Color.blue, 5);
             }
         }
     }
@@ -214,35 +267,7 @@ public class RandomMap : MonoBehaviour
         Debug.Log($" 최종 Room List Count : {roomList.Count}");
     }
 
-    /// <summary>
-    /// RoomList를 랜덤하게 생성하는 함수
-    /// </summary>
-    public void StartMapData()
-    {
-        ResetMap();
-
-        for (int i = 0; i < collectBoxBoolCount; i++)
-        {
-            GatherData();
-        }
-
-        roomList = new List<Room>();
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                Room tempRoom = CheckRoomList(x, y);
-
-                if (tempRoom != null)       // 정상적으로 검사를 마치면
-                {
-                    roomList.Add(tempRoom);     // 리스트에 추가
-                    Debug.Log($"room list : {roomList.Count} => ({x}, {y}), Count : {tempRoom.nodes.Count}\n" +
-                        $"Min : ({tempRoom.minX}, {tempRoom.minY}), Max : ({tempRoom.maxX}, {tempRoom.maxY})");
-                }
-            }
-        }
-    }
+    
 
     /// <summary>
     /// 특정 노드에서 연결되어 있는 노드들을 찾아 방 클래스를 반환하는 함수
@@ -395,41 +420,28 @@ public class RandomMap : MonoBehaviour
                 for (int x = 0; x < width; x++)
                 {
 
-                    //Gizmos.color = Color.white;
-
-                    //foreach(Room room in roomlist)
-                    //{
-                    //    //Vector3[] tempsVec = new Vector3[4];
-                    //    //tempsVec[0] = new Vector3(room.minX, room.minY);
-                    //    //tempsVec[1] = new Vector3(room.minX, room.maxY);
-                    //    //tempsVec[2] = new Vector3(room.maxX, room.maxY);
-                    //    //tempsVec[3] = new Vector3(room.maxX, room.minY);
-                    //    //Handles.DrawLines(tempsVec);
-                    //    //Gizmos.DrawLine(new Vector3(room.minX, room.minY), new Vector3(room.minX, room.maxY));
-                    //    //Gizmos.DrawLine(new Vector3(room.minX, room.maxY), new Vector3(room.maxX, room.maxY));
-                    //    //Gizmos.DrawLine(new Vector3(room.maxX, room.maxY), new Vector3(room.maxX, room.minY));
-                    //    //Gizmos.DrawLine(new Vector3(room.maxX, room.minY), new Vector3(room.minX, room.minY));
-                    //    Gizmos.DrawCube(new Vector3((room.minX + room.maxX) * 0.5f, (room.minY + room.maxY) * 0.5f), new Vector3(room.maxX - room.minX, room.maxY - room.minY));
-                    //}
-
-                    //Gizmos.color = Color.black;
-                    //// false면 검은칸, 스택 확인된거면 빨강, true면 빈칸
-                    //if (!mapNodes[GetIndex(x, y)].data) Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
-                    //else if (mapNodes[GetIndex(x, y)].isChecked)
-                    //{
-                    //    Gizmos.color = Color.red;
-                    //    Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
-                    //}
-
-                    Gizmos.color = Color.blue;
-                    foreach (var roomA in roomList)
+                    Color temp = new Color(255, 255, 255, 0.2f);
+                    Gizmos.color = temp;
+                    // false면 검은칸, 스택 확인된거면 빨강, true면 빈칸
+                    if (!mapNodes[GetIndex(x, y)].data) Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
+                    else if (mapNodes[GetIndex(x, y)].isChecked)
                     {
-                        foreach(Room roomB in roomA.connectedRooms)
-                        {
-                            Gizmos.DrawLine(new Vector3(roomA.minX, roomA.minY), new Vector3(roomB.minX, roomB.minY));
-                        }
+                        Gizmos.color = Color.red;
+                        Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
                     }
-                    
+
+
+
+                    //Gizmos.color = Color.blue;
+                    //foreach (var roomA in roomList)
+                    //{
+                    //    foreach(Room roomB in roomA.connectedRooms)
+                    //    {
+                    //        Gizmos.DrawCube(new Vector3(roomA.minX, roomA.minY), Vector3.one);
+                    //        Gizmos.DrawCube(new Vector3(roomB.minX, roomB.minY), Vector3.one);
+                    //    }
+                    //}
+
                 }
             }
         }

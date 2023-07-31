@@ -24,8 +24,8 @@ public class Sword_Man : MonoBehaviour
     private void Awake()
     {
         ac = new ActionControl();
-        ac.chimyeongtest.Enable();
-        ac.chimyeongtest.Attack.performed += OnAttack;
+        //ac.chimyeongtest.Enable();
+        //ac.chimyeongtest.Attack.performed += OnAttack;
 
     }
 

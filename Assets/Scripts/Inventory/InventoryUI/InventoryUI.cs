@@ -47,6 +47,7 @@ public class InventoryUI : MonoBehaviour
 			UISlots[i].onDragExit += OnDragExit;
 			UISlots[i].onClick += OnClick;
 			UISlots[i].onTrashcan += OnTrashCan;
+			UISlots[i].onSplit += OnSplitItems;
 
 			//UISlots[i].onDragging += OnDragging;
 		}
@@ -55,6 +56,7 @@ public class InventoryUI : MonoBehaviour
 
 
 	}
+
 
 	private void OnTrashCan()
 	{
@@ -89,5 +91,16 @@ public class InventoryUI : MonoBehaviour
 	public void InventoryExit()
 	{
 		this.gameObject.SetActive(false);
+	}
+	private void OnSplitItems(uint slotIndex, uint SplitCount)
+	{
+		//임시 슬롯이 비어져 있고 나누려는 갯수가 ItemCount보다 작을 때만 실행
+		//애초에 SplitCount를 유효한 숫자로 보내자.
+		if (inventory.TempSlot.IsEmpty && SplitCount < inventory[slotIndex].ItemCount)
+		{
+			inventory.SplitItem(slotIndex, SplitCount);
+		}
+	
+			
 	}
 }

@@ -13,7 +13,7 @@ public class SlotUIBase : MonoBehaviour
 	TextMeshProUGUI itemCount;
 	public InvenSlot invenSlot = null;
 
-	private void Awake()
+	protected virtual void Awake()
 	{
 		Transform child = transform.GetChild(0);
 		itemImage = child.GetComponent<Image>();

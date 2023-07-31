@@ -92,15 +92,10 @@ public class InventoryUI : MonoBehaviour
 	{
 		this.gameObject.SetActive(false);
 	}
-	private void OnSplitItems(uint slotIndex, uint SplitCount)
+	private void OnSplitItems(uint slotIndex)
 	{
-		//임시 슬롯이 비어져 있고 나누려는 갯수가 ItemCount보다 작을 때만 실행
-		//애초에 SplitCount를 유효한 숫자로 보내자.
-		if (inventory.TempSlot.IsEmpty && SplitCount < inventory[slotIndex].ItemCount)
-		{
-			inventory.SplitItem(slotIndex, SplitCount);
-		}
-	
-			
+		Debug.Log("temp로 1 이동");
+		inventory.SplitItemToTemp(slotIndex);
+
 	}
 }

@@ -161,6 +161,24 @@ public class InvenSlot
     }
 
     /// <summary>
+    /// Temp slot으로 split 할 때 아무런 제한 없이 옮길 함수
+    /// </summary>
+    /// <param name="SlotIndex"></param>
+    public void IncreaseTempSlotItem(ItemData itemData)
+    {
+        if (IsEmpty)
+        {
+            Debug.Log("템프 아이템 설정");
+            AssignSlotItem(itemData, 1);
+        }
+        else
+        {
+            Debug.Log("템프 아이템 증가");
+            ItemCount++;
+        }
+    }
+
+    /// <summary>
     /// 이 슬롯에 아이템 개수 감소시키는 함수
     /// </summary>
     /// <param name="decreaseCount">감소시킬 아이템 개수</param>

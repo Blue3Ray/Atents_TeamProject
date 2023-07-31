@@ -219,18 +219,20 @@ public class Inventory
         }
     }
 
-    /// <summary>
-    /// 인벤토리 특정 슬롯에서 아이템을 일정량 덜어내어 임시 슬롯으로 보내는 함수
-    /// </summary>
-    /// <param name="slotIndex">아이템을 덜어낼 슬롯</param>
-    /// <param name="count">덜어낼 개수</param>
-    public void SplitItem(uint slotIndex, uint count)
+	/// <summary>
+	/// 슬롯에서 하나 감소시키고, temp에서는 하나 증가 시킨다.
+	/// </summary>
+	/// <param name="slotIndex"></param>
+	/// <param name="count"></param>
+	public void SplitItemToTemp(uint slotIndex, uint count = 1)
     {
         if(IsValidIndex(slotIndex))
         {
             InvenSlot slot = slots[slotIndex];
-            TempSlot.AssignSlotItem(slot.ItemData, count);  // 임시 슬롯에 할당하기
-            slot.DecreaseSlotItem(count);                   // 슬롯에서 덜어내고
+            tempSlot.IncreaseTempSlotItem(slot.ItemData);
+            slot.DecreaseSlotItem(1);                   // 슬롯에서 덜어내고
+           
+            //TempSlot.AssignSlotItem(slot.ItemData, count);  // 임시 슬롯에 할당하기
         }
     }
 

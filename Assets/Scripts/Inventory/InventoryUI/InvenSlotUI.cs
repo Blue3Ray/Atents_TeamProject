@@ -17,25 +17,12 @@ public class InvenSlotUI : SlotUIBase, IDragHandler, IBeginDragHandler, IEndDrag
 	public Action<uint> onDragExit;
 	public Action<uint> onClick;
 	public Action onTrashcan;
-	public Action<uint, uint> onSplit;
+
+	//split count가 하나씩 올라갈 때마다 슬롯과 count를 외친다.
+	public Action<uint> onSplit;
 
 	public float splitCountUpSeconds = 1.0f;
 
-	uint splitCount = 0;
-
-	public uint SplitCount
-	{
-		get => splitCount;
-		set
-		{
-			if(SplitCount != value)
-			{
-				splitCount = value;
-				//count를 하나 만들자
-			}
-		}
-	}
-	
 
 
 	public void OnDrag(PointerEventData eventData)
@@ -68,7 +55,6 @@ public class InvenSlotUI : SlotUIBase, IDragHandler, IBeginDragHandler, IEndDrag
 			else if (gameObjecttmp.TryGetComponent<TrashCan>(out TrashCan _))
 			{
 				onTrashcan?.Invoke();
-				Debug.Log("ray TrashCan");
 			}
 			else
 			{
@@ -85,6 +71,7 @@ public class InvenSlotUI : SlotUIBase, IDragHandler, IBeginDragHandler, IEndDrag
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
+		
 		onClick?.Invoke(this.invenSlot.Index);
 	}
 
@@ -99,17 +86,15 @@ public class InvenSlotUI : SlotUIBase, IDragHandler, IBeginDragHandler, IEndDrag
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		StopAllCoroutines();
-		onSplit?.Invoke(this.invenSlot.Index, splitCount);
 	}
 
 	IEnumerator SplitItemCountUp()
 	{
-		SplitCount = 1;
-		while(splitCount < invenSlot.ItemCount - 1)
+		while(1 < invenSlot.ItemCount)
 		{
+			onSplit?.Invoke(invenSlot.Index);
 			yield return new WaitForSeconds(splitCountUpSeconds);
-			SplitCount++;
-			Debug.Log($"{splitCount}");
 		}
+		
 	}
 }

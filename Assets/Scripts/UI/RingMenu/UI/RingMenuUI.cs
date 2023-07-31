@@ -3,9 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using TMPro;
+using System;
 
 public class RingMenuUI : MonoBehaviour
 {
+    TextMeshProUGUI equippedText;
+
+
     ActionControl acionControl;
 
     // 속성 메뉴
@@ -14,13 +20,12 @@ public class RingMenuUI : MonoBehaviour
     // 속성 메뉴 안에 있는 슬롯
     Transform[] elemanterSlot;
 
-    //속성 클래스
-    Fire fire;
-    Water water;
-    Wind wind;
-    Thunder thunder;
+    RingMenuSlot ringslot;
 
-    TestPlayer testPlayer;
+    // 슬롯 확인용 프로퍼티
+    public RingMenuSlot RingSlot => ringslot;
+
+    public uint Index => ringslot.Index;
 
     private void Awake()
     {
@@ -29,24 +34,12 @@ public class RingMenuUI : MonoBehaviour
         // 링메뉴 자식인 속성 메뉴 호출
         elemanterMenu = transform.GetChild(0);
 
-        // 속성 메뉴 자식인 각 속성 슬롯 호출 
-        elemanterSlot = new Transform[4];
-        elemanterSlot[0] = elemanterMenu.GetChild(0).transform;
-        elemanterSlot[1] = elemanterMenu.GetChild(1).transform;
-        elemanterSlot[2] = elemanterMenu.GetChild(2).transform;
-        elemanterSlot[3] = elemanterMenu.GetChild(3).transform;
-
         // 초기값으로 속성 메뉴가 보이지 않는 상태
         elemanterMenu.gameObject.SetActive(false);
-
-        // 각 속성 클래스 호출
-        fire = new Fire();
-        water = new Water();
-        wind = new Wind();
-        thunder = new Thunder();
-
-        testPlayer = FindObjectOfType<TestPlayer>();
     }
+
+    
+   
     private void OnEnable()
     {
         acionControl.MouseClickMenu.Enable();
@@ -90,36 +83,7 @@ public class RingMenuUI : MonoBehaviour
         Vector3 target = context.ReadValue<Vector2>();
         target = mousePos;
 
-        if (target.y > elemanterMenu.position.y)
-        {
-            fire.OnClickBuuton();
-            testPlayer.element = Element.Fire;
-            elemanterMenu.gameObject.SetActive(false);
-        }
-        else if (target.x > elemanterMenu.position.x)
-        {
-            water.OnClickBuuton();
-            testPlayer.element = Element.Water;
-            elemanterMenu.gameObject.SetActive(false);
-        }
-        else if (target.y < elemanterMenu.position.y)
-        {
-            wind.OnClickBuuton();
-            testPlayer.element = Element.Wind;
-            elemanterMenu.gameObject.SetActive(false);
-        }
-        else if (target.x < elemanterMenu.position.x)
-        {
-            thunder.OnClickBuuton();
-            testPlayer.element = Element.Thunder;
-            elemanterMenu.gameObject.SetActive(false);
-        }
-        else
-        {
-            testPlayer.element = Element.None;
-            elemanterMenu.gameObject.SetActive(false);
-        }
-
-
     }
+
+   
 }

@@ -6,22 +6,35 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
 	Inventory inventory;
+	//인벤토리의 각 UI슬롯들
 	public InvenSlotUI[] UISlots;
+
+	//그 슬롯 배열로부터 index를 입력하면 UIslot을 얻어 올 수 있는 배열 프로퍼티
 	public InvenSlotUI this[int index] => UISlots[index];
-	//InvenSlotUI tempSlotUI;
 
+	TempSlotUI tempSlotUI = null;
 
+	TrashCan trashCan;
+
+	
 
 	private void Awake()
 	{
-		Transform child = transform.GetChild(2);
+		
+		Transform tempSlot = transform.GetChild(2);
 		UISlots = GetComponentsInChildren<InvenSlotUI>();
+		Transform tempTempSlot = transform.GetChild(3);
+		this.tempSlotUI = tempTempSlot.GetComponent<TempSlotUI>();
+		Transform tempTrashCan = transform.GetChild(4);
+		trashCan = tempTrashCan.GetComponent<TrashCan>();
+
 	}
 
 	private void Start()
 	{
 		inventory = GameManager.Ins.inven;
 		ConnetingSlots();
+		trashCan.ClickTrashCan += OnTrashCan;
 	}
 
 	public void ConnetingSlots()
@@ -29,27 +42,52 @@ public class InventoryUI : MonoBehaviour
 		for(int i = 0; i < inventory.SlotCount; i++)
 		{
 			UISlots[i].invenSlot = inventory[(uint)i];
-			//UISlots[i].onDragEnter += OnDragEnter;
-			//UISlots[i].onDragExit += OnDragExit;
+			UISlots[i].InitializeSlot();
+			UISlots[i].onDragEnter += OnDragEnter;
+			UISlots[i].onDragExit += OnDragExit;
+			UISlots[i].onClick += OnClick;
+			UISlots[i].onTrashcan += OnTrashCan;
+
 			//UISlots[i].onDragging += OnDragging;
 		}
-		//tempSlotUI.invenSlot = inventory.tempSlot;
+		tempSlotUI.invenSlot = inventory.TempSlot;
+		tempSlotUI.InitializeSlot();
 
 
 	}
 
-	private void OnDragging()
+	private void OnTrashCan()
 	{
-		throw new NotImplementedException();
+		inventory.TempSlot.ClearSlotItem();
+		
 	}
+
+	private void OnClick(uint obj)
+	{
+		if(tempSlotUI.invenSlot.ItemData != null)
+		{
+			inventory.MoveItem(tempSlotUI.invenSlot.Index, obj);
+		}
+	}
+
+	//private void OnDragging()
+	//{
+	//	int i = 0;
+	//	Debug.Log("드래깅 중");
+	//}
 
 	private void OnDragExit(uint obj)
 	{
-		throw new NotImplementedException();
+		inventory.MoveItem(tempSlotUI.invenSlot.Index, obj);
 	}
 
 	private void OnDragEnter(uint obj)
 	{
-		throw new NotImplementedException();
+		inventory.MoveItem(obj, tempSlotUI.invenSlot.Index);
+	}
+
+	public void InventoryExit()
+	{
+		this.gameObject.SetActive(false);
 	}
 }

@@ -5,9 +5,16 @@ using UnityEngine.InputSystem;
 
 public class Test_RoomList : TestBase
 {
-    public RandomMap randomMap;
+    RandomMap randomMap;
+    private void Start()
+    {
+        randomMap = FindObjectOfType<RandomMap>();
+    }
+
     protected override void Test1(InputAction.CallbackContext context)
     {
-        randomMap.PrintRoomlist();
+        randomMap.StartMapData();
+        randomMap.LimitRoomCount(8);
+        randomMap.ConnectNearRoom();
     }
 }

@@ -47,6 +47,9 @@ public class RoomGenerator : MonoBehaviour
     /// 타일 그리는 위치
     /// </summary>
     Vector3Int cursor;
+
+    RandomMap randomMap;
+
     
 
     private void Awake()
@@ -59,6 +62,10 @@ public class RoomGenerator : MonoBehaviour
         }
         
         roomStack = new Stack<SampleRoomData>();
+
+        randomMap = new RandomMap(100, 100);
+        randomMap.StartMapData();
+        randomMap.LimitRoomCount(8);
     }
 
     private void Start()

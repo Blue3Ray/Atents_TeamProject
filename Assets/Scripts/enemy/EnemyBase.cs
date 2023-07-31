@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
+// 사용하지 않는 스크립트인데 참고용으로 냅두고 있습니다.
+
 public class EnemyBase : MonoBehaviour
 {
     public Transform player;
@@ -14,7 +16,6 @@ public class EnemyBase : MonoBehaviour
     public float maxhp = 1000.0f;
     public int atkDmg;
     public float atkSpeed = 1;
-   // public Image nowHpbar;
     public float exp = 0;
     public float maxexp = 0;
     public float df = 50;
@@ -107,4 +108,5 @@ public class EnemyBase : MonoBehaviour
 
     }
 }
+ 
 

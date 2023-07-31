@@ -1,10 +1,7 @@
-using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
 
 public enum RoomLayer
 {
@@ -39,7 +36,6 @@ public class SampleRoomData : MonoBehaviour
     public List<Tilemap> mapLayers;
 
     public List<List<Vector3Int>> tilesPos;
-    
 
     public List<Exit> exitPos;
 
@@ -65,8 +61,8 @@ public class SampleRoomData : MonoBehaviour
         min = new Vector3Int(mapLayers[1].cellBounds.xMin, mapLayers[1].cellBounds.yMin);
         max = new Vector3Int(mapLayers[1].cellBounds.xMax, mapLayers[1].cellBounds.yMax);
 
-        height = max.y - min.y;
-        width = max.x - min.x;
+        height = mapLayers[1].size.y;
+        width = mapLayers[1].size.x;
 
         CheckExitPos(mapLayers[mapLayers.Count - 1]);
     }
@@ -87,7 +83,7 @@ public class SampleRoomData : MonoBehaviour
                     else if (y == max.y - 1) tempDir = ExitDirection.Up;
                     else
                     {
-                        Debug.LogWarning($"({x}, {y}) 출구 위치가 이상합니다. 샘플 데이터({min} ~ {max}) 확인 필요");
+                        Debug.LogWarning($"({x}, {y}) 출구 위치가 이상합니다. 샘플 데이터({this.gameObject.name}) 확인 필요");
                     }
                     //Debug.Log($"출구 위치 : {x}, {y}, {tempDir}");
                     Exit tempExit = new Exit(new Vector3Int(x, y), tempDir);

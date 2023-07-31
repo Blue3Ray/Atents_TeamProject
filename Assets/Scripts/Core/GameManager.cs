@@ -3,25 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-/// <summary>
-/// �׽�Ʈ ������ �������� �ӽ� Player Ŭ���� ���߿� ��ξ��� Ŭ���� ����� ���ٰ�
-/// </summary>
-public class Player : MonoBehaviour
-{
-    int hp = 100;
-    public int HP
-    {
-        get { return hp; } set {  hp = value; }
-    }
+public enum Element : byte
+{ 
+    None = 0,
+    Fire = 1,
+    Wind = 2,
+    Water = 4,
+    Thunder = 8
 }
 
 
 public class GameManager : Singleton<GameManager>
 {
     PlayerTest playerTest;
+    ItemDataManager itemDataManager;
+    public Inventory inven;
+
+    public ItemDataManager ItemData => itemDataManager;
+
+    
 
     private void Awake()
     {
-        //playerTest = new PlayerTest();
+        itemDataManager = GetComponent<ItemDataManager>();
+        inven = new Inventory(12);
     }
+
+	private void Start()
+	{
+        
+        
+        playerTest = new PlayerTest();
+		
+	}
 }

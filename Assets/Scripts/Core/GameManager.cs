@@ -29,11 +29,4 @@ public class GameManager : Singleton<GameManager>
         inven = new Inventory(12);
     }
 
-	private void Start()
-	{
-        
-        
-        playerTest = new PlayerTest();
-		
-	}
 }

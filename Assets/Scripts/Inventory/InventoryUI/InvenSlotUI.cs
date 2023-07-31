@@ -17,6 +17,7 @@ public class InvenSlotUI : SlotUIBase,  IDragHandler, IBeginDragHandler, IEndDra
 	public Action onDragging;
 	public Action<uint> onDragExit;
 	public Action<uint> onClick;
+	public Action onTrashcan;
 	
 
 	public void OnDrag(PointerEventData eventData)
@@ -34,14 +35,18 @@ public class InvenSlotUI : SlotUIBase,  IDragHandler, IBeginDragHandler, IEndDra
 	{
 		GameObject gameObjecttmp = eventData.pointerCurrentRaycast.gameObject;
 		
-
+		
 		if(gameObjecttmp != null)
 		{
-
 			if (gameObjecttmp.TryGetComponent<InvenSlotUI>(out InvenSlotUI invenSlotUI))
 			{
 				onDragExit?.Invoke(invenSlotUI.invenSlot.Index);
 
+			}
+			else if (gameObjecttmp.TryGetComponent<TrashCan>(out TrashCan _))
+			{
+				onTrashcan?.Invoke();
+				Debug.Log("ray TrashCan");
 			}
 			else
 			{

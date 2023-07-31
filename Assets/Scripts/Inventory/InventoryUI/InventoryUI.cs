@@ -14,13 +14,19 @@ public class InventoryUI : MonoBehaviour
 
 	TempSlotUI tempSlotUI = null;
 
+	TrashCan trashCan;
+
+	
+
 	private void Awake()
 	{
-		Transform child = transform.GetChild(2);
-		UISlots = GetComponentsInChildren<InvenSlotUI>();
-		Transform childTemp = transform.GetChild(3);
-		tempSlotUI = childTemp.GetComponent<TempSlotUI>();
 		
+		Transform tempSlot = transform.GetChild(2);
+		UISlots = GetComponentsInChildren<InvenSlotUI>();
+		Transform tempTempSlot = transform.GetChild(3);
+		this.tempSlotUI = tempTempSlot.GetComponent<TempSlotUI>();
+		Transform tempTrashCan = transform.GetChild(4);
+		trashCan = tempTrashCan.GetComponent<TrashCan>();
 
 	}
 
@@ -28,6 +34,7 @@ public class InventoryUI : MonoBehaviour
 	{
 		inventory = GameManager.Ins.inven;
 		ConnetingSlots();
+		trashCan.ClickTrashCan += OnTrashCan;
 	}
 
 	public void ConnetingSlots()
@@ -39,6 +46,7 @@ public class InventoryUI : MonoBehaviour
 			UISlots[i].onDragEnter += OnDragEnter;
 			UISlots[i].onDragExit += OnDragExit;
 			UISlots[i].onClick += OnClick;
+			UISlots[i].onTrashcan += OnTrashCan;
 
 			//UISlots[i].onDragging += OnDragging;
 		}
@@ -46,6 +54,12 @@ public class InventoryUI : MonoBehaviour
 		tempSlotUI.InitializeSlot();
 
 
+	}
+
+	private void OnTrashCan()
+	{
+		inventory.TempSlot.ClearSlotItem();
+		
 	}
 
 	private void OnClick(uint obj)
@@ -70,5 +84,10 @@ public class InventoryUI : MonoBehaviour
 	private void OnDragEnter(uint obj)
 	{
 		inventory.MoveItem(obj, tempSlotUI.invenSlot.Index);
+	}
+
+	public void InventoryExit()
+	{
+		this.gameObject.SetActive(false);
 	}
 }

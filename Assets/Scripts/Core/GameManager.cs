@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         itemDataManager = GetComponent<ItemDataManager>();
-        inven = new Inventory(12);
+        inven = new Inventory(5);
     }
 
 }

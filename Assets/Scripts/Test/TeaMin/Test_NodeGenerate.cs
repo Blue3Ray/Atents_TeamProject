@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_RoomList : TestBase
+public class Test_NodeGenerate : TestBase
 {
     RandomMap randomMap;
-    public uint roomCount = 8;
 
     private void Start()
     {
@@ -15,6 +14,6 @@ public class Test_RoomList : TestBase
 
     protected override void Test1(InputAction.CallbackContext context)
     {
-        randomMap.StartMapData(roomCount);
+        randomMap.SetUpNodes();
     }
 }

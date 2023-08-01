@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking.Types;
+using static RandomMap;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -45,6 +46,9 @@ public class RandomMap : MonoBehaviour
     {   
         public List<Node> nodes = new List<Node>();
         public List<Room> connectedRooms = new List<Room>();
+
+        public bool isAccessibleMainRoom;
+        public bool isMainRoom;
 
 
         public float CenterX => (maxX + minX) * 0.5f;
@@ -95,8 +99,33 @@ public class RandomMap : MonoBehaviour
             }
         }
 
+        /// <summary>
+        /// MainRoom과 연결시 자신과 연결되어 있는 다른 방들도 연결 속성 부여
+        /// </summary>
+        public void SetAccessibleMainRoom()
+        {
+            if(!isAccessibleMainRoom)
+            {
+                isAccessibleMainRoom = true;
+                foreach(Room room in connectedRooms)
+                {
+                    room.isAccessibleMainRoom = true;
+                }
+            }
+        }
+
         public static void ConnectRooms(Room rA, Room rB)
         {
+            // 연결할 때 둘 중 하나가 메인 룸과 연결이 되어 있으면 둘다 연결 설정
+            if(rA.isAccessibleMainRoom)
+            {
+                rB.SetAccessibleMainRoom();
+            }
+            else if(rB.isAccessibleMainRoom)
+            {
+                rA.SetAccessibleMainRoom();
+            }
+                
             rA.connectedRooms.Add(rB);
             rB.connectedRooms.Add(rA);
         }
@@ -156,10 +185,37 @@ public class RandomMap : MonoBehaviour
         collectBoxBoolCount = collecBoxBoolCount;
     }
 
+    public void SetUpNodes()
+    {
+        ResetMap();
+
+        for (int i = 0; i < collectBoxBoolCount; i++)
+        {
+            GatherData();
+        }
+
+        roomList = new List<Room>();
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Room tempRoom = CheckRoomList(x, y);
+
+                if (tempRoom != null)       // 정상적으로 검사를 마치면
+                {
+                    roomList.Add(tempRoom);     // 리스트에 추가
+                    //Debug.Log($"room list : {roomList.Count} => ({x}, {y}), Count : {tempRoom.nodes.Count}\n" +
+                    //    $"Min : ({tempRoom.minX}, {tempRoom.minY}), Max : ({tempRoom.maxX}, {tempRoom.maxY})");
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// RoomList를 랜덤하게 생성하는 함수
     /// </summary>
-    public void StartMapData()
+    public void StartMapData(uint roomCount)
     {
         ResetMap();
 
@@ -185,65 +241,148 @@ public class RandomMap : MonoBehaviour
             }
         }
 
-        LimitRoomCount(8);
+        LimitRoomCount(roomCount);
 
-        //roomList.Sort((x, y) => x.CenterX < y.CenterY ? 1 : -1);
+        roomList.Sort((x, y) => x.minX < y.minX ? -1 : 1);      // 가장 왼쪽부터 오른쪽으로 정렬
 
-        ConnectNearRoom(roomList);
+        roomList[0].isMainRoom = true;
+        roomList[0].isAccessibleMainRoom = true;
+
+        StartCoroutine(Test(roomList)); 
+
+        //ConnectNearRoom(roomList);
+
+    }
+
+    IEnumerator Test(List<Room> rooms)
+    {
+        yield return new WaitForSeconds(0.5f);
+        ConnectNearRoom(rooms);
+
+        // 방과 방 연결된 선 그리는 디버그
+        foreach (Room tempRoom in roomList)
+        {
+            //Debug.Log($"{tempRoom.connectedRooms.Count}");
+            foreach (Room tempBRoom in tempRoom.connectedRooms)
+            {
+                Debug.DrawLine(new Vector3(tempRoom.CenterX, tempRoom.CenterY), new Vector3(tempBRoom.CenterX, tempBRoom.CenterY), Color.red, 8f);
+            }
+        }
     }
 
     /// <summary>
-    /// 가장 가까운 방과 연결하기(1개씩)
+    /// 메인룸 부터(0번째는 가장 왼쪽에 있는 메인룸) 가장 가까운 방과 연결하기(거짓이면 일단 근처 1개씩, 참이면 메인룸과 연결확인 후 연결)
     /// </summary>
-    public void ConnectNearRoom(List<Room> allRooms)
+    public void ConnectNearRoom(List<Room> allRooms, bool onceChecked = false)
     {
-
-        float nearDistance = float.MaxValue;
-        bool isPossible = false;
         Room tempA = new();
         Room tempB = new();
 
-        foreach (Room roomA in allRooms)
-        {
-            //if (roomA.connectedRooms.Count > 0) continue;
-            isPossible = false; 
-            nearDistance = float.MaxValue;
+        List<Room> roomListA = new();
+        List<Room> roomListB = new();
 
-            foreach(Room roomB in allRooms)
+        bool isPossible = false;
+        float nearDistance = float.MaxValue;
+
+        if (onceChecked)     // 이미 한번 체크 한거 확인
+        {
+            //foreach (Room temp in allRooms)       // bool isMainRoom으로 설정 했음
+            //{
+            //    if (mainRoom == null)
+            //    {
+            //        mainRoom = temp;
+            //        continue;
+            //    }
+
+            //    if (mainRoom.minX > temp.minX)
+            //    {
+            //        mainRoom = temp;
+            //    }
+            //}
+
+            foreach (Room temp in allRooms)      // 모든 방을 검사하면서 
             {
-                if (roomA == roomB) continue;   // 같은 방이면 B풀 넘어가기
-                
-                float distanceRoom = Mathf.Pow(roomA.minX - roomB.minX,2) + Mathf.Pow(roomA.minY - roomB.minY, 2);
-                if(distanceRoom < nearDistance)
+                if (temp.isAccessibleMainRoom)         // 메인 룸이랑 연결 되어 있는지 확인 후 연결 되어 있으면 A리스트 아니면 B리스트
                 {
-                    if (roomA.isConnected(roomB))
-                    {
-                        //isPossible = false;         // 이미 서로 연결되어 있으면 B풀 넘어가기
-                        continue;
-                    }
-                    nearDistance = distanceRoom;
+                    roomListA.Add(temp);
+                }
+                else
+                {
+                    roomListB.Add(temp);
+                }
+            }
+        }
+        else            // 처음 들어온거면 A,B에 모두 넣음
+        {
+            roomListA = allRooms;
+            roomListB = allRooms;
+        }
+
+        foreach (Room roomA in roomListA)
+        {
+            if (!onceChecked) 
+            {
+                nearDistance = float.MaxValue;              // 기본값 설정
+
+                if (roomA.connectedRooms.Count > 0)         // 방이 뭔가 연결 되어 있으면
+                continue;                                   // 패스하기
+            }
+
+            foreach(Room roomB in roomListB)
+            {
+                if (roomA == roomB) continue;   // A와 B가 같은 방이면 스킵(자기자신)
+                
+                float distance = Mathf.Pow(roomA.CenterX - roomB.CenterX,2) + Mathf.Pow(roomA.CenterY - roomB.CenterY, 2);
+
+                if(distance < nearDistance)         // 두 방이 현재 기록되어 있는 최단 거리보다 작으면
+                {
+                    nearDistance = distance;
                     isPossible = true;
                     tempA = roomA;
                     tempB = roomB;
                 }
-
-                
             }
 
-            if(isPossible)
+            if (tempA.isConnected(tempB))       // 가장 가까운 두 방이 이미 서로 연결되어 있으면 넘어가기
+            {
+                continue;
+            }
+            else if(isPossible && !onceChecked)                 // 두 방이 연결 가능하면 연결하기, 처음 모든 방을 비교할 때
             {
                 Room.ConnectRooms(tempA, tempB);
             }
         }
 
-        // 방과 방 연결된 선 그리는 디버그
-        foreach(Room tempRoom in allRooms)
+        if(isPossible && onceChecked)           // 서로 다른 Room리스트에서 가까운 방을 연결하기
         {
-            Debug.Log($"{tempRoom.connectedRooms.Count}");
-            foreach (Room tempBRoom in tempRoom.connectedRooms)
+            Room.ConnectRooms(tempA, tempB);
+        }
+
+        bool isAllRoomConnectedWithMainRoom = true;
+        foreach(Room temp in allRooms)
+        {
+            if(!temp.isAccessibleMainRoom)
             {
-                Debug.DrawLine(new Vector3(tempRoom.CenterX, tempRoom.CenterY), new Vector3(tempBRoom.CenterX, tempBRoom.CenterY), Color.blue, 5);
+                isAllRoomConnectedWithMainRoom = false;
             }
+        }
+
+        if(!onceChecked)
+        {         
+            // 방과 방 연결된 선 그리는 디버그
+            foreach (Room tempRoom in allRooms)
+            {
+                //Debug.Log($"{tempRoom.connectedRooms.Count}");
+                foreach (Room tempBRoom in tempRoom.connectedRooms)
+                {
+                    Debug.DrawLine(new Vector3(tempRoom.CenterX - 1, tempRoom.CenterY - 1), new Vector3(tempBRoom.CenterX - 1, tempBRoom.CenterY - 1), Color.blue, 8f);
+                }
+            }
+        }
+
+        if (!isAllRoomConnectedWithMainRoom)           // 하나라도 연결이 안되어 있으면
+        {
+            ConnectNearRoom(allRooms, true);
         }
     }
 
@@ -251,7 +390,7 @@ public class RandomMap : MonoBehaviour
     /// 제한된 방 개수로 줄이기
     /// </summary>
     /// <param name="roomCount">제한할 방 개수</param>
-    public void LimitRoomCount(int roomCount)
+    public void LimitRoomCount(uint roomCount)
     {
         if(roomCount < roomList.Count)
         {
@@ -261,7 +400,7 @@ public class RandomMap : MonoBehaviour
             {
                 roomList[(roomList.Count - 1) - i].ClearNodes();
             }
-            roomList.RemoveRange(roomCount, roomList.Count - roomCount);
+            roomList.RemoveRange((int)roomCount, (int) (roomList.Count - roomCount));
         }
 
         Debug.Log($" 최종 Room List Count : {roomList.Count}");
@@ -426,7 +565,7 @@ public class RandomMap : MonoBehaviour
                     if (!mapNodes[GetIndex(x, y)].data) Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
                     else if (mapNodes[GetIndex(x, y)].isChecked)
                     {
-                        Gizmos.color = Color.red;
+                        Gizmos.color = new Color(255,0,0,0.2f);
                         Gizmos.DrawCube(new Vector3(x, y), Vector3.one);
                     }
 

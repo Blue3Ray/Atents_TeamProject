@@ -63,9 +63,9 @@ public class RoomGenerator : MonoBehaviour
         
         roomStack = new Stack<SampleRoomData>();
 
-        randomMap = new RandomMap(100, 100);
-        randomMap.StartMapData();
-        randomMap.LimitRoomCount(8);
+        //randomMap = new RandomMap(100, 100);
+        //randomMap.StartMapData();
+        //randomMap.LimitRoomCount(8);
     }
 
     private void Start()

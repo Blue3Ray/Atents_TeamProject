@@ -21,7 +21,7 @@ public class InvenSlotUI : SlotUIBase, IDragHandler, IBeginDragHandler, IEndDrag
 	//split count가 하나씩 올라갈 때마다 슬롯과 count를 외친다.
 	public Action<uint> onSplit;
 
-	public float splitCountUpSeconds = 1.0f;
+	float splitCountUpSeconds = 0.5f;
 
 
 

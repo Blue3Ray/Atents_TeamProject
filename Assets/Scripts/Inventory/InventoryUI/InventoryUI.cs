@@ -94,8 +94,20 @@ public class InventoryUI : MonoBehaviour
 	}
 	private void OnSplitItems(uint slotIndex)
 	{
-		Debug.Log("temp로 1 이동");
-		inventory.SplitItemToTemp(slotIndex);
+		//비어 있을 때는 그냥 옮겨
+		if (tempSlotUI.invenSlot.IsEmpty)
+		{
+			inventory.SplitItemToTemp(slotIndex);
+		}
+		//temp에 뭔가 있을 때는 itemData가 같을 때만
+		else if(inventory[slotIndex].ItemData == tempSlotUI.invenSlot.ItemData)
+		{
+			if(!(tempSlotUI.invenSlot.ItemCount > tempSlotUI.invenSlot.ItemData.maxStackCount))
+			{
+				inventory.SplitItemToTemp(slotIndex);
+			}
+
+		}
 
 	}
 }

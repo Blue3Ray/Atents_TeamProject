@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEditor.PlayerSettings;
 
 
 public struct RoomData
@@ -48,9 +50,17 @@ public class RoomGenerator : MonoBehaviour
     /// </summary>
     Vector3Int cursor;
 
+
+    // 기능 부분 ------------------
     RandomMap randomMap;
 
-    
+    public int width = 100;
+    public int height = 100;
+    public float fillRate = 0.46f;
+    public int collecBoxBoolCount = 3;
+
+    public uint roomCount = 8;
+
 
     private void Awake()
     {
@@ -63,9 +73,7 @@ public class RoomGenerator : MonoBehaviour
         
         roomStack = new Stack<SampleRoomData>();
 
-        //randomMap = new RandomMap(100, 100);
-        //randomMap.StartMapData();
-        //randomMap.LimitRoomCount(8);
+        randomMap = new RandomMap(width, height, fillRate, collecBoxBoolCount);
     }
 
     private void Start()
@@ -83,24 +91,21 @@ public class RoomGenerator : MonoBehaviour
         // 생성
 
 
-        roomStack.Push(roomSamplesWithExit[0]);
+        GenerateMap(roomSamplesWithExit[0]);
 
-        for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
-        {
-            GenerateMapLayer(roomSamplesWithExit[0], 0);
-            GenerateMapLayer(roomSamplesWithExit[0], 1);
-            GenerateMapLayer(roomSamplesWithExit[0], 2);
-            GenerateExit(roomSamplesWithExit[0], ExitDirection.Right);
-        }
+        //roomStack.Push(roomSamplesWithExit[0]);
+
+        //for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
+        //{
+        //    GenerateMapLayer(roomSamplesWithExit[0], 0);
+        //    GenerateMapLayer(roomSamplesWithExit[0], 1);
+        //    GenerateMapLayer(roomSamplesWithExit[0], 2);
+        //    GenerateExit(roomSamplesWithExit[0], ExitDirection.Right);
+        //}
 
         // 여기까지가 시작 방 생성(출구 포함)
 
-        cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
-
-        Exit start = new Exit(new Vector3Int(0, 0), ExitDirection.Up);
-        Exit end = new Exit(new Vector3Int(10, 20), ExitDirection.Down);
-
-        GeneratePassway(start, end);
+        //cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
     }
 
     void GeneratePassway(Exit startPos, Exit endPos)
@@ -146,9 +151,19 @@ public class RoomGenerator : MonoBehaviour
             }
             i++;
         }
-
     }
 
+
+    void GenerateMap(SampleRoomData targetRoomData)
+    {
+        foreach (List<Vector3Int> tilesPos in targetRoomData.tilesPos)
+        {
+            for(int i =0;  i < tilesPos.Count; i++)
+            {
+                m_tileMaps[i].SetTile(tilesPos[i] + cursor, targetRoomData.mapLayers[i].GetTile(tilesPos[i]));
+            }
+        }
+    }
 
     /// <summary>
     /// 맵을 레이어별로 생성하는 메서드

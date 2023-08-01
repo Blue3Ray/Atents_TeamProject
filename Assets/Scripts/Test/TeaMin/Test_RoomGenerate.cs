@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_NodeGenerate : TestBase
+public class Test_RoomGenerate : TestBase
 {
-    RandomMap randomMap;
+    RoomGenerator roomGenerator;
 
     private void Start()
     {
-        randomMap = new ();
+        roomGenerator = FindObjectOfType<RoomGenerator>();
     }
 
     protected override void Test1(InputAction.CallbackContext context)
     {
-        randomMap.SetUpNodes();
+        
     }
 }

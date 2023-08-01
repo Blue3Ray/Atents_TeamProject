@@ -128,6 +128,4 @@ public class SampleRoomData : MonoBehaviour
         //Debug.Log($"타일을 {amount}개 가지고 있음");
         return amount;
     }
-
-    
 }

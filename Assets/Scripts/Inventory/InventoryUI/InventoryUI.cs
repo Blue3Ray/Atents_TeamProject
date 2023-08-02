@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -16,18 +17,36 @@ public class InventoryUI : MonoBehaviour
 
 	TrashCan trashCan;
 
-	
+	CanvasGroup canvasGroup;
+
+	ActionControl inputActions;
 
 	private void Awake()
 	{
-		
+		inputActions = new();
+		canvasGroup = transform.GetComponent<CanvasGroup>();
+		canvasGroup.interactable = false;
+		canvasGroup.blocksRaycasts = false;
 		Transform tempSlot = transform.GetChild(2);
 		UISlots = GetComponentsInChildren<InvenSlotUI>();
 		Transform tempTempSlot = transform.GetChild(3);
 		this.tempSlotUI = tempTempSlot.GetComponent<TempSlotUI>();
 		Transform tempTrashCan = transform.GetChild(4);
 		trashCan = tempTrashCan.GetComponent<TrashCan>();
+	}
 
+	private void OnEnable()
+	{
+		inputActions.Inventory.Inventory.Enable();
+		inputActions.Inventory.Inventory.performed += OnOffInventory;
+	}
+
+
+	private void OnDisable()
+	{
+		inputActions.Inventory.Inventory.performed -= OnOffInventory;
+		inputActions.Inventory.Inventory.Disable();
+		
 	}
 
 	private void Start()
@@ -88,14 +107,47 @@ public class InventoryUI : MonoBehaviour
 		inventory.MoveItem(obj, tempSlotUI.invenSlot.Index);
 	}
 
-	public void InventoryExit()
-	{
-		this.gameObject.SetActive(false);
-	}
 	private void OnSplitItems(uint slotIndex)
 	{
-		Debug.Log("temp로 1 이동");
-		inventory.SplitItemToTemp(slotIndex);
+		//비어 있을 때는 그냥 옮겨
+		if (tempSlotUI.invenSlot.IsEmpty)
+		{
+			inventory.SplitItemToTemp(slotIndex);
+		}
+		//temp에 뭔가 있을 때는 itemData가 같을 때만
+		else if (inventory[slotIndex].ItemData == tempSlotUI.invenSlot.ItemData)
+		{
+			if (!(tempSlotUI.invenSlot.ItemCount > tempSlotUI.invenSlot.ItemData.maxStackCount))
+			{
+				inventory.SplitItemToTemp(slotIndex);
+			}
 
+		}
+
+	}
+
+	private void OnOffInventory(InputAction.CallbackContext obj)
+	{
+		if (canvasGroup.interactable)
+		{
+
+			CloseInventory();
+		}
+		else
+		{
+			OpenInventory();
+		}
+	}
+	private void OpenInventory()
+	{
+		canvasGroup.interactable = true;
+		canvasGroup.blocksRaycasts = true;
+		canvasGroup.alpha = 1;
+	}
+	public void CloseInventory()
+	{
+		canvasGroup.interactable = false;
+		canvasGroup.blocksRaycasts = false;
+		canvasGroup.alpha = 0;
 	}
 }

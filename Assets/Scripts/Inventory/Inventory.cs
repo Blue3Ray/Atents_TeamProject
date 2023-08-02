@@ -23,20 +23,6 @@ public class Inventory
     InvenSlot[] slots;
 
     /// <summary>
-    /// 이 인벤토리에 연결되는 퀵슬롯의 배열
-    /// </summary>
-    InvenSlot[] quickSlots;
-
-    const uint quickSlotSize = 2;
-
-    /// <summary>
-    /// 퀵슬롯의 index는 4444부터 시작한다.
-    /// </summary>
-    public const uint quickSlotIndex = 4444;
-
-    public int QuickSlotCount => quickSlots.Length;
-
-    /// <summary>
     /// 인벤토리 슬롯에 접근하기 위한 인덱서
     /// </summary>
     /// <param name="index">슬롯의 인덱스</param>
@@ -73,11 +59,7 @@ public class Inventory
             slots[i] = new InvenSlot(i);                // 슬롯 만들어서 저장
         }
         tempSlot = new InvenSlot(TempSlotIndex);
-        quickSlots = new InvenSlot[quickSlotSize];
-        for(uint i = 0; i < quickSlotSize; i++)
-        {
-            quickSlots[i] = new InvenSlot(i);
-        }
+        
         itemDataManager = GameManager.Ins.ItemData;  // 아이템 데이터 메니저 캐싱
     }
 

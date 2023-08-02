@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class QuickSlotTest : TestBase
+public class Test_QuickSlotTest : TestBase
 {
 	InventoryUI inventoryUI;
 	Inventory inven;
@@ -25,7 +25,7 @@ public class QuickSlotTest : TestBase
 	protected override void Test2(InputAction.CallbackContext context)
 	{
 		base.Test2(context);
-		inven.AddItem(ItemCode.Potion, 3);
+		inven.AddItem(ItemCode.Potion, 6);
 		
 	}
 

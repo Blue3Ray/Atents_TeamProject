@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour
 {
 	Inventory inventory;
+
+	public List<InvenSlotUI> UISlotsList;
 	//인벤토리의 각 UI슬롯들
 	public InvenSlotUI[] UISlots;
 
@@ -24,11 +27,20 @@ public class InventoryUI : MonoBehaviour
 	private void Awake()
 	{
 		inputActions = new();
+		UISlotsList = new List<InvenSlotUI>();
 		canvasGroup = transform.GetComponent<CanvasGroup>();
 		canvasGroup.interactable = false;
 		canvasGroup.blocksRaycasts = false;
 		Transform tempSlot = transform.GetChild(2);
-		UISlots = GetComponentsInChildren<InvenSlotUI>();
+
+
+		var invenUISlots = GetComponentsInChildren<InvenSlotUI>();
+
+		foreach(var slots in invenUISlots)
+		{
+			UISlotsList.Add(slots);
+		}
+			
 		Transform tempTempSlot = transform.GetChild(3);
 		this.tempSlotUI = tempTempSlot.GetComponent<TempSlotUI>();
 		Transform tempTrashCan = transform.GetChild(4);
@@ -52,6 +64,13 @@ public class InventoryUI : MonoBehaviour
 	private void Start()
 	{
 		inventory = GameManager.Ins.inven;
+		var QuickSlotUIs = GameObject.FindGameObjectsWithTag("QuickSlot");
+		foreach(var QuickSlot in QuickSlotUIs)
+		{
+			InvenSlotUI tmpInvenSlotOfQuickSlot = QuickSlot.transform.GetComponent<InvenSlotUI>();
+			UISlotsList.Add(tmpInvenSlotOfQuickSlot);
+		}
+		UISlots = UISlotsList.ToArray();
 		ConnetingSlots();
 		trashCan.ClickTrashCan += OnTrashCan;
 	}

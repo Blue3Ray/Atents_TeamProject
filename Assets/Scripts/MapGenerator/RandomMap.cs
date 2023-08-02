@@ -46,6 +46,7 @@ public class RandomMap
     {   
         public List<Node> nodes = new List<Node>();
         public List<Room> connectedRooms = new List<Room>();
+        public List<ExitDirection> connectedExit = new List<ExitDirection>();
 
         public bool isAccessibleMainRoom;
         public bool isMainRoom;
@@ -53,6 +54,8 @@ public class RandomMap
 
         public float CenterX => (maxX + minX) * 0.5f;
         public float CenterY => (maxY + minY) * 0.5f;
+
+        // 방 위치에 따라 출구 위치와 방향을 설정하기 위한 변수
         public int minX;
         public int minY;
         public int maxX;
@@ -108,7 +111,10 @@ public class RandomMap
                 isAccessibleMainRoom = true;
                 foreach(Room room in connectedRooms)
                 {
-                    room.isAccessibleMainRoom = true;
+                    if (!room.isAccessibleMainRoom)
+                    {
+                        room.SetAccessibleMainRoom();           // 해당 방과 연결되어 있는 방들도 메인룸과 연결 가능으로 바꿈
+                    }
                 }
             }
         }
@@ -129,9 +135,47 @@ public class RandomMap
             rB.connectedRooms.Add(rA);
         }
 
-        public bool isConnected(Room targetRoom)
+        /// <summary>
+        /// target방과 연결 되어 있는지 확인하는 함수(인접만 확인)
+        /// </summary>
+        /// <param name="targetRoom">확인할 방</param>
+        /// <returns>참이면 연결 되어 있음, 거짓이면 연결 안되어 있음</returns>
+        public bool IsConnected(Room targetRoom)
         {
             return connectedRooms.Contains(targetRoom);
+        }
+
+        public void SetExitList()
+        {
+            ExitDirection exitDir = ExitDirection.Up;
+            foreach(Room room in connectedRooms)
+            {
+                if(room.CenterX > CenterX - 10 && room.CenterX < CenterX + 10)
+                {
+                    if (room.CenterY < CenterY)          // 중심 y좌표가 낮으면 Down방향
+                    {
+                        exitDir = ExitDirection.Down;
+                    }
+                    else
+                    {
+                        exitDir = ExitDirection.Up;
+                    }
+                }
+                else
+                {
+                    if (room.CenterX > CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
+                    {
+                        exitDir = ExitDirection.Right;
+                    }
+
+                    if (room.CenterX < CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
+                    {
+                        exitDir = ExitDirection.Left;
+                    }
+                }
+                connectedExit.Add(exitDir);         // 리스트 순서(연결되어 있는 방과 index가 같아야됨)대로 저장
+                Debug.Log($"{exitDir}");
+            }
         }
     }
 
@@ -265,6 +309,7 @@ public class RandomMap
 
         ConnectNearRoom(roomList);
 
+        CheckExitDir(roomList);
 
         foreach (Room tempRoom in roomList)
         {
@@ -273,6 +318,21 @@ public class RandomMap
             {
                 Debug.DrawLine(new Vector3(tempRoom.CenterX, tempRoom.CenterY), new Vector3(tempBRoom.CenterX, tempBRoom.CenterY), Color.red, 8f);
             }
+        }
+    }
+
+    /// <summary>
+    /// 리스트에 있는 방에 대해서 연결되어 있는 방들에 대해 방향을 지정함
+    /// </summary>
+    /// <param name="rooms">확인할 room 리스트 들</param>
+    public void CheckExitDir(List<Room> rooms)
+    {
+        int i = 0;
+        foreach(Room room in rooms)
+        {
+            Debug.Log($"{i}번째 방");
+            room.SetExitList();
+            i++;
         }
     }
 
@@ -349,7 +409,7 @@ public class RandomMap
                 }
             }
 
-            if (tempA.isConnected(tempB))       // 가장 가까운 두 방이 이미 서로 연결되어 있으면 넘어가기
+            if (tempA.IsConnected(tempB))       // 가장 가까운 두 방이 이미 서로 연결되어 있으면 넘어가기
             {
                 continue;
             }
@@ -388,6 +448,7 @@ public class RandomMap
 
         if (!isAllRoomConnectedWithMainRoom)           // 하나라도 연결이 안되어 있으면
         {
+            Debug.Log($"test1");
             ConnectNearRoom(allRooms, true);
         }
     }

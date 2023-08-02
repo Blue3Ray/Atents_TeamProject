@@ -91,7 +91,7 @@ public class RoomGenerator : MonoBehaviour
         // 생성
 
 
-        GenerateMap(roomSamplesWithExit[0]);
+        //GenerateMap(roomSamplesWithExit[0]);
 
         //roomStack.Push(roomSamplesWithExit[0]);
 
@@ -186,9 +186,9 @@ public class RoomGenerator : MonoBehaviour
             exitIndex = 1;
         }
 
-        for (int i = 0; i < exitSamples[exitIndex].height; i++)    // 문 높이 만큼
+        for (int i = 0; i < exitSamples[exitIndex].Height; i++)    // 문 높이 만큼
         {
-            for (int j = 0; j < exitSamples[exitIndex].width; j++)  // 문 너비 만큼
+            for (int j = 0; j < exitSamples[exitIndex].Width; j++)  // 문 너비 만큼
             {
                 if (exitSamples[exitIndex].mapLayers[1].HasTile(new Vector3Int(exitSamples[exitIndex].min.x + j, exitSamples[exitIndex].min.y + i)))
                 {
@@ -222,9 +222,9 @@ public class RoomGenerator : MonoBehaviour
                 index = 1;
             }
 
-            for (int i = 0; i < exitSamples[index].height; i++)    // 문 높이 만큼
+            for (int i = 0; i < exitSamples[index].Height; i++)    // 문 높이 만큼
             {
-                for (int j = 0; j < exitSamples[index].width; j++)  // 문 너비 만큼
+                for (int j = 0; j < exitSamples[index].Width; j++)  // 문 너비 만큼
                 {
                     if (exitSamples[index].mapLayers[1].HasTile(new Vector3Int(exitSamples[index].min.x + j, exitSamples[index].min.y + i)))
                     {

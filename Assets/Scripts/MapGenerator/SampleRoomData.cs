@@ -42,8 +42,8 @@ public class SampleRoomData : MonoBehaviour
     public Vector3Int min;
     public Vector3Int max;
 
-    public int height;
-    public int width;
+    public int Height => max.y - min.y;
+    public int Width => max.x - min.x;
 
     public void OnInitialize()
     {
@@ -58,11 +58,12 @@ public class SampleRoomData : MonoBehaviour
             mapLayers.Add(temp);
         }
 
-        min = new Vector3Int(mapLayers[1].cellBounds.xMin, mapLayers[1].cellBounds.yMin);
+        // 전체 크기가 될 플랫폼을(자식 1번째) 기준으로 설정
+        min = new Vector3Int(mapLayers[1].cellBounds.xMin, mapLayers[1].cellBounds.yMin);       
         max = new Vector3Int(mapLayers[1].cellBounds.xMax, mapLayers[1].cellBounds.yMax);
 
-        height = mapLayers[1].size.y;
-        width = mapLayers[1].size.x;
+        //height = mapLayers[1].size.y;
+        //width = mapLayers[1].size.x;
 
         CheckExitPos(mapLayers[mapLayers.Count - 1]);
     }

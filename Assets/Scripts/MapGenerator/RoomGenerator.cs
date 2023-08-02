@@ -88,14 +88,16 @@ public class RoomGenerator : MonoBehaviour
         {
             temp.OnInitialize();
         }
+        
+        
+        
         // 생성
-
 
         //GenerateMap(roomSamplesWithExit[0]);
 
         //roomStack.Push(roomSamplesWithExit[0]);
 
-        //for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)
+        //for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)      //레이어 별로 생성하기(비효율적이군)
         //{
         //    GenerateMapLayer(roomSamplesWithExit[0], 0);
         //    GenerateMapLayer(roomSamplesWithExit[0], 1);
@@ -107,6 +109,24 @@ public class RoomGenerator : MonoBehaviour
 
         //cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
     }
+
+
+    public void SetupRooms()
+    {
+        // roomSamplesWithExit 방 샘플
+        // randomMap 랜덤 맵
+
+        List<Vector3Int> roomSpots = new List<Vector3Int>();        // 방을 생성할 기준이 될 스팟들
+        List<Vector3Int> roomsSize = new();
+        for(int i = 0; i < randomMap.roomList.Count; i++)
+        {
+            if (roomSpots.Count == 0) roomSpots.Add(new Vector3Int(0, 0));
+            //Vector3Int targetPoint = 
+        }
+
+
+    }
+
 
     void GeneratePassway(Exit startPos, Exit endPos)
     {

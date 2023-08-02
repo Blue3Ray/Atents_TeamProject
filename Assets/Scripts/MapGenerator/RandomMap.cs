@@ -8,6 +8,146 @@ using static RandomMap;
 using UnityEditor;
 #endif
 
+public class Room
+{
+    public List<Node> nodes = new List<Node>();
+    public List<Room> connectedRooms = new List<Room>();
+    public List<ExitDirection> connectedExit = new List<ExitDirection>();
+
+    public bool isAccessibleMainRoom;
+    public bool isMainRoom;
+
+
+    public float CenterX => (maxX + minX) * 0.5f;
+    public float CenterY => (maxY + minY) * 0.5f;
+
+    // 방 위치에 따라 출구 위치와 방향을 설정하기 위한 변수
+    public int minX;
+    public int minY;
+    public int maxX;
+    public int maxY;
+
+    public void SetXYData()
+    {
+        minX = minY = int.MaxValue;
+        maxX = maxY = -1;
+        if (nodes.Count <= 1)
+        {
+            minX = maxX = nodes[0].gridPos.x;
+            minY = maxY = nodes[0].gridPos.y;
+        }
+
+        foreach (Node item in nodes)
+        {
+            if (item.gridPos.x < minX)
+            {
+                minX = item.gridPos.x;
+            }
+            else if (item.gridPos.x > maxX)
+            {
+                maxX = item.gridPos.x;
+            }
+
+            if (item.gridPos.y < minY)
+            {
+                minY = item.gridPos.y;
+            }
+            else if (item.gridPos.y > maxY)
+            {
+                maxY = item.gridPos.y;
+            }
+        }
+    }
+
+    public void ClearNodes()
+    {
+        foreach (Node node in nodes)
+        {
+            node.data = false;
+        }
+    }
+
+    /// <summary>
+    /// MainRoom과 연결시 자신과 연결되어 있는 다른 방들도 연결 속성 부여
+    /// </summary>
+    public void SetAccessibleMainRoom()
+    {
+        if (!isAccessibleMainRoom)
+        {
+            isAccessibleMainRoom = true;
+            foreach (Room room in connectedRooms)
+            {
+                if (!room.isAccessibleMainRoom)
+                {
+                    room.SetAccessibleMainRoom();           // 해당 방과 연결되어 있는 방들도 메인룸과 연결 가능으로 바꿈
+                }
+            }
+        }
+    }
+
+    public static void ConnectRooms(Room rA, Room rB)
+    {
+        // 연결할 때 둘 중 하나가 메인 룸과 연결이 되어 있으면 둘다 연결 설정
+        if (rA.isAccessibleMainRoom)
+        {
+            rB.SetAccessibleMainRoom();
+        }
+        else if (rB.isAccessibleMainRoom)
+        {
+            rA.SetAccessibleMainRoom();
+        }
+
+        rA.connectedRooms.Add(rB);
+        rB.connectedRooms.Add(rA);
+    }
+
+    /// <summary>
+    /// target방과 연결 되어 있는지 확인하는 함수(인접만 확인)
+    /// </summary>
+    /// <param name="targetRoom">확인할 방</param>
+    /// <returns>참이면 연결 되어 있음, 거짓이면 연결 안되어 있음</returns>
+    public bool IsConnected(Room targetRoom)
+    {
+        return connectedRooms.Contains(targetRoom);
+    }
+
+    public void SetExitList()
+    {
+        ExitDirection exitDir = ExitDirection.Up;
+        foreach (Room room in connectedRooms)
+        {
+            if (room.CenterX > CenterX - 10 && room.CenterX < CenterX + 10)
+            {
+                if (room.CenterY < CenterY)          // 중심 y좌표가 낮으면 Down방향
+                {
+                    exitDir = ExitDirection.Down;
+                }
+                else
+                {
+                    exitDir = ExitDirection.Up;
+                }
+            }
+            else
+            {
+                if (room.CenterX > CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
+                {
+                    exitDir = ExitDirection.Right;
+                }
+
+                if (room.CenterX < CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
+                {
+                    exitDir = ExitDirection.Left;
+                }
+            }
+            connectedExit.Add(exitDir);         // 리스트 순서(연결되어 있는 방과 index가 같아야됨)대로 저장
+            Debug.Log($"{exitDir}");
+        }
+    }
+}
+
+// 여기서부터 기능 구현----------------------------------------------------------------------------------------------
+// 여기서부터 기능 구현----------------------------------------------------------------------------------------------
+
 public class RandomMap
 {
     /// <summary>
@@ -42,142 +182,7 @@ public class RandomMap
         }
     }
 
-    public class Room
-    {   
-        public List<Node> nodes = new List<Node>();
-        public List<Room> connectedRooms = new List<Room>();
-        public List<ExitDirection> connectedExit = new List<ExitDirection>();
-
-        public bool isAccessibleMainRoom;
-        public bool isMainRoom;
-
-
-        public float CenterX => (maxX + minX) * 0.5f;
-        public float CenterY => (maxY + minY) * 0.5f;
-
-        // 방 위치에 따라 출구 위치와 방향을 설정하기 위한 변수
-        public int minX;
-        public int minY;
-        public int maxX;
-        public int maxY;
-
-        public void SetXYData()
-        {
-            minX = minY = int.MaxValue;
-            maxX = maxY = -1;
-            if(nodes.Count <= 1)
-            {
-                minX = maxX = nodes[0].gridPos.x;
-                minY = maxY = nodes[0].gridPos.y;
-            }
-
-            foreach (Node item in nodes)
-            {
-                if (item.gridPos.x < minX)
-                {
-                    minX = item.gridPos.x;
-                }
-                else if (item.gridPos.x > maxX)
-                {
-                    maxX = item.gridPos.x;
-                }
-
-                if (item.gridPos.y < minY)
-                {
-                    minY = item.gridPos.y;
-                }
-                else if (item.gridPos.y > maxY)
-                {
-                    maxY = item.gridPos.y;
-                }
-            }
-        }
-
-        public void ClearNodes()
-        {
-            foreach (Node node in nodes)
-            {
-                node.data = false;
-            }
-        }
-
-        /// <summary>
-        /// MainRoom과 연결시 자신과 연결되어 있는 다른 방들도 연결 속성 부여
-        /// </summary>
-        public void SetAccessibleMainRoom()
-        {
-            if(!isAccessibleMainRoom)
-            {
-                isAccessibleMainRoom = true;
-                foreach(Room room in connectedRooms)
-                {
-                    if (!room.isAccessibleMainRoom)
-                    {
-                        room.SetAccessibleMainRoom();           // 해당 방과 연결되어 있는 방들도 메인룸과 연결 가능으로 바꿈
-                    }
-                }
-            }
-        }
-
-        public static void ConnectRooms(Room rA, Room rB)
-        {
-            // 연결할 때 둘 중 하나가 메인 룸과 연결이 되어 있으면 둘다 연결 설정
-            if(rA.isAccessibleMainRoom)
-            {
-                rB.SetAccessibleMainRoom();
-            }
-            else if(rB.isAccessibleMainRoom)
-            {
-                rA.SetAccessibleMainRoom();
-            }
-                
-            rA.connectedRooms.Add(rB);
-            rB.connectedRooms.Add(rA);
-        }
-
-        /// <summary>
-        /// target방과 연결 되어 있는지 확인하는 함수(인접만 확인)
-        /// </summary>
-        /// <param name="targetRoom">확인할 방</param>
-        /// <returns>참이면 연결 되어 있음, 거짓이면 연결 안되어 있음</returns>
-        public bool IsConnected(Room targetRoom)
-        {
-            return connectedRooms.Contains(targetRoom);
-        }
-
-        public void SetExitList()
-        {
-            ExitDirection exitDir = ExitDirection.Up;
-            foreach(Room room in connectedRooms)
-            {
-                if(room.CenterX > CenterX - 10 && room.CenterX < CenterX + 10)
-                {
-                    if (room.CenterY < CenterY)          // 중심 y좌표가 낮으면 Down방향
-                    {
-                        exitDir = ExitDirection.Down;
-                    }
-                    else
-                    {
-                        exitDir = ExitDirection.Up;
-                    }
-                }
-                else
-                {
-                    if (room.CenterX > CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
-                    {
-                        exitDir = ExitDirection.Right;
-                    }
-
-                    if (room.CenterX < CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
-                    {
-                        exitDir = ExitDirection.Left;
-                    }
-                }
-                connectedExit.Add(exitDir);         // 리스트 순서(연결되어 있는 방과 index가 같아야됨)대로 저장
-                Debug.Log($"{exitDir}");
-            }
-        }
-    }
+    
 
     public int width;
     public int Width

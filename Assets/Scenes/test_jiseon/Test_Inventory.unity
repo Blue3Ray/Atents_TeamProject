@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 140685329}
         m_TargetAssemblyTypeName: InventoryUI, Assembly-CSharp
-        m_MethodName: InventoryExit
+        m_MethodName: CloseInventory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -342,6 +342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 140685328}
   - component: {fileID: 140685329}
+  - component: {fileID: 140685330}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -387,6 +388,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UISlots: []
+--- !u!225 &140685330
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140685327}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &243955043
 GameObject:
   m_ObjectHideFlags: 0

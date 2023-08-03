@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking.Types;
 using static RandomMap;
+using System.Linq;
+using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,7 +18,7 @@ public class Room
 
     public bool isAccessibleMainRoom;
     public bool isMainRoom;
-
+    public bool isBuilt = false;
 
     public float CenterX => (maxX + minX) * 0.5f;
     public float CenterY => (maxY + minY) * 0.5f;
@@ -140,7 +142,7 @@ public class Room
                 }
             }
             connectedExit.Add(exitDir);         // 리스트 순서(연결되어 있는 방과 index가 같아야됨)대로 저장
-            Debug.Log($"{exitDir}");
+            //Debug.Log($"{exitDir}");
         }
     }
 }
@@ -159,10 +161,12 @@ public class RandomMap
         /// 노드가 빈칸인지 아닌지 판별하는 bool
         /// </summary>
         public bool data;
+
         /// <summary>
         /// 노드가 RoomList 생성할 때 이미 검사를 했는지 안했는지 여부
         /// </summary>
         public bool isChecked;
+
         /// <summary>
         /// 노드 위치
         /// </summary>
@@ -307,7 +311,7 @@ public class RandomMap
 
         LimitRoomCount(roomCount);
 
-        roomList.Sort((x, y) => x.minX < y.minX ? -1 : 1);      // 가장 왼쪽부터 오른쪽으로 정렬
+        roomList.Sort((x, y) => x.CenterX < y.CenterX ? -1 : 1);      // 가장 왼쪽부터 오른쪽으로 정렬
 
         roomList[0].isMainRoom = true;                          // 가장 왼쪽에 있는 방을 메인 방으로 설정(시작 방)
         roomList[0].isAccessibleMainRoom = true;
@@ -335,7 +339,7 @@ public class RandomMap
         int i = 0;
         foreach(Room room in rooms)
         {
-            Debug.Log($"{i}번째 방");
+            //Debug.Log($"{i}번째 방");
             room.SetExitList();
             i++;
         }
@@ -453,7 +457,6 @@ public class RandomMap
 
         if (!isAllRoomConnectedWithMainRoom)           // 하나라도 연결이 안되어 있으면
         {
-            Debug.Log($"test1");
             ConnectNearRoom(allRooms, true);
         }
     }
@@ -606,6 +609,25 @@ public class RandomMap
     {
         return x + y * width;
     }
+
+    /// <summary>
+    /// 연결된 순서대로 정렬하는 함수
+    /// </summary>
+    /// <param name="sortRoom">하나씩 정렬해서 새로 반환할 리스트</param>
+    /// <param name="targetRoom">정렬 할 대상(중복이면 추가 안함)</param>
+    public void SortingRoomList(List<Room> sortRoom, Room targetRoom)
+    {
+        sortRoom.Add(targetRoom);
+
+        foreach (Room room in targetRoom.connectedRooms)
+        {
+            if (!sortRoom.Contains(room))
+            {
+                SortingRoomList(sortRoom, room);
+            }
+        }
+    }
+
 
 #if UNITY_EDITOR
     /// <summary>

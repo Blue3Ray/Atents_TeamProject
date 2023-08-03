@@ -28,6 +28,15 @@ public class Test_RoomList : TestBase
     {
         randomMap.StartMapData(roomCount);
         list = randomMap.GetRoomPosList();
+
+        List<Room> testList = new List<Room>();
+        randomMap.SortingRoomList(testList, randomMap.roomList[0]);
+        int i = 0;
+        foreach(Room room in testList)
+        {
+            Debug.Log($"{i}¹øÂ° : {room.CenterX}, {room.CenterY}");
+            i++;
+        }
     }
 
     private void OnDrawGizmos()

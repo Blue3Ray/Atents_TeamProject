@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerJM : MonoBehaviour
+public class PlayerJM_test : MonoBehaviour
 {
     private ActionControl inputActions;
     private Rigidbody2D rb;

@@ -56,7 +56,7 @@ public class EnemyBase : MonoBehaviour
         nowhp = 1000;
         atkDmg = 10;
 
-        transform.position = new Vector3(0, 0, 0);
+        
        // animator = GetComponent<Animator>();
        // SetAttackSpeed(1.5f);
         

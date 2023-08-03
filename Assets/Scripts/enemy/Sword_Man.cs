@@ -63,7 +63,7 @@ public class Sword_Man : MonoBehaviour
             nowHp = 50;
             atkDmg = 10;
 
-            transform.position = new Vector3(0, 0, 0);
+            
             animator = GetComponent<Animator>();
             SetAttackSpeed(1.5f);
         }

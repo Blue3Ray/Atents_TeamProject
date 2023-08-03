@@ -24,6 +24,7 @@ public class InventoryUI : MonoBehaviour
 
 	ActionControl inputActions;
 
+
 	private void Awake()
 	{
 		inputActions = new();
@@ -31,6 +32,7 @@ public class InventoryUI : MonoBehaviour
 		canvasGroup = transform.GetComponent<CanvasGroup>();
 		canvasGroup.interactable = false;
 		canvasGroup.blocksRaycasts = false;
+		canvasGroup.alpha = 0;
 		Transform tempSlot = transform.GetChild(2);
 
 
@@ -128,6 +130,7 @@ public class InventoryUI : MonoBehaviour
 
 	private void OnSplitItems(uint slotIndex)
 	{
+		
 		//비어 있을 때는 그냥 옮겨
 		if (tempSlotUI.invenSlot.IsEmpty)
 		{
@@ -142,7 +145,7 @@ public class InventoryUI : MonoBehaviour
 			}
 
 		}
-
+		
 	}
 
 	private void OnOffInventory(InputAction.CallbackContext obj)

@@ -23,6 +23,21 @@ public class InvenSlotUI : SlotUIBase, IDragHandler, IBeginDragHandler, IEndDrag
 
 	float splitCountUpSeconds = 0.5f;
 
+	//bool isSplit = false;
+
+	//Action<bool> ChangeIsSplit;
+	//protected bool IsSplit
+	//{
+	//	get => isSplit;
+	//	set
+	//	{ 
+	//		isSplit = value;
+	//		ChangeIsSplit?.Invoke(isSplit);
+	//	}
+		
+	//}
+
+
 
 
 	public void OnDrag(PointerEventData eventData)
@@ -79,13 +94,18 @@ public class InvenSlotUI : SlotUIBase, IDragHandler, IBeginDragHandler, IEndDrag
 	{
 		if(eventData.button == PointerEventData.InputButton.Right)
 		{
+			//IsSplit = true;
 			StartCoroutine(SplitItemCountUp());
 		}
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
-		StopAllCoroutines();
+		if(eventData.button == PointerEventData.InputButton.Right)
+		{
+			StopAllCoroutines();
+			//IsSplit = false;
+		}
 	}
 
 	IEnumerator SplitItemCountUp()

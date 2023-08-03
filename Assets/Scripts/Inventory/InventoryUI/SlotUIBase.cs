@@ -13,6 +13,8 @@ public class SlotUIBase : MonoBehaviour
 	TextMeshProUGUI itemCount;
 	public InvenSlot invenSlot = null;
 
+	
+
 	protected virtual void Awake()
 	{
 		Transform child = transform.GetChild(0);

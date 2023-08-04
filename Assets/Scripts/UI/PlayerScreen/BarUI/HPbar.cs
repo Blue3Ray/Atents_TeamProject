@@ -9,7 +9,7 @@ public class HPbar : BarBase
         TestPlayer testPlayer = new TestPlayer();
         maxValue = testPlayer.MaxHP;
         max.text = $"/      {maxValue}";
-        current.text = testPlayer.HP.ToString("NO");
+        current.text = testPlayer.HP.ToString("0");
         slider.value = testPlayer.HP / maxValue;
         testPlayer.onHealthChange += OnValueChange;
     }

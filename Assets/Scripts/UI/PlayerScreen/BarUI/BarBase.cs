@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class BarBase : MonoBehaviour
 {
-    public Color color = Color.white;
 
     protected Slider slider;
     protected TextMeshProUGUI current;
@@ -24,12 +23,12 @@ public class BarBase : MonoBehaviour
 
         child = transform.GetChild(0);
         Image backgroundImage = child.GetComponent<Image>();
-        Color backgroundColor = new Color(color.r, color.g, color.b, color.a * 0.5f);
-        backgroundImage.color = backgroundColor;
+        //Color backgroundColor = new Color(color.r, color.g, color.b, color.a * 0.5f);
+        //backgroundImage.color = backgroundColor;
 
         child = transform.GetChild(1);
         Image fillImage = child.GetComponentInChildren<Image>();
-        fillImage.color = color;
+        
     }
 
     /// <summary>

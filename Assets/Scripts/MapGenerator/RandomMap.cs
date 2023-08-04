@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 using static RandomMap;
-using System.Linq;
-using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -113,36 +110,54 @@ public class Room
         return connectedRooms.Contains(targetRoom);
     }
 
-    public void SetExitList()
+    public void SetExitList(ref int width, ref int height)
     {
         ExitDirection exitDir = ExitDirection.Up;
         foreach (Room room in connectedRooms)
         {
-            if (room.CenterX > CenterX - 10 && room.CenterX < CenterX + 10)
+            if(room.CenterY > CenterY)      // 룸이 위쪽에 있고
             {
-                if (room.CenterY < CenterY)          // 중심 y좌표가 낮으면 Down방향
+                if(room.CenterY - CenterY > Mathf.Abs(room.CenterX - CenterX))     // 룸이 현재 룸 기준으로 X축보다 Y축 쪽으로 올라가 있을 때
                 {
-                    exitDir = ExitDirection.Down;
+                    exitDir = ExitDirection.Up;
+                    height++;
                 }
                 else
                 {
-                    exitDir = ExitDirection.Up;
+                    if (room.CenterX > CenterX)
+                    {
+                        exitDir = ExitDirection.Right;
+                    }
+                    else
+                    {
+                        exitDir = ExitDirection.Left;
+                    }
+                    width++;
                 }
             }
-            else
+            else                            // 룸이 아래쪽에 있고
             {
-                if (room.CenterX > CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
+                if (CenterY - room.CenterY > Mathf.Abs(room.CenterX - CenterX))     // 룸이 현재 룸 기준으로 Y축이 X축보다 더 아래 쪽에 있을 때
                 {
-                    exitDir = ExitDirection.Right;
+                    exitDir = ExitDirection.Down;
+                    height++;
                 }
-
-                if (room.CenterX < CenterX)                // room의 X 중심 좌표가 이 방 X 중심 좌표보다 크면
+                else
                 {
-                    exitDir = ExitDirection.Left;
+                    if (room.CenterX > CenterX)
+                    {
+                        exitDir = ExitDirection.Right;
+                    }
+                    else
+                    {
+                        exitDir = ExitDirection.Left;
+                    }
+                    width++;
                 }
             }
+
             connectedExit.Add(exitDir);         // 리스트 순서(연결되어 있는 방과 index가 같아야됨)대로 저장
-            //Debug.Log($"{exitDir}");
+            Debug.Log($"{exitDir}");
         }
     }
 }
@@ -206,6 +221,9 @@ public class RandomMap
             height = value;
         }
     }
+
+    public int widthCount = 0;
+    public int heightCount = 0;
 
     /// <summary>
     /// 노드들
@@ -318,9 +336,51 @@ public class RandomMap
 
         ConnectNearRoom(roomList);
 
+        widthCount = 0;
+        heightCount = 0;
+
         CheckExitDir(roomList);
 
-        foreach (Room tempRoom in roomList)
+        //mapGrid = new int[widthCount, heightCount];
+
+        //for(int i = 0; i < widthCount; i++)
+        //{
+        //    for(int j = 0; j < heightCount; j++)
+        //    {
+        //        mapGrid[i, j] = -1;
+        //    }
+        //}
+
+        //Vector2Int grid = Vector2Int.zero;
+        //Vector2Int stand = Vector2Int.zero;
+        
+        //for (int i = 0; i < roomList.Count; i++)
+        //{
+        //    mapGrid[grid.x + stand.x, grid.y + stand.y] = i;        // 방 index
+        //    for (int j = 0; j < roomList[i].connectedExit.Count; j++)       // 방과 연결된 방들을 검사
+        //    {
+        //        switch (roomList[i].connectedExit[j])       // 연결된 방들을 하나씩 꺼내서
+        //        {
+        //            case ExitDirection.Up:
+        //                grid.x++;
+        //                break;
+        //            case ExitDirection.Right:
+        //                grid.y++;
+        //                break;
+        //            case ExitDirection.Down:
+        //                // 그리드 전체가 올라가야됨
+        //                if(grid.y == 0) MoveAllGridCell(true);
+
+        //                break;
+        //            case ExitDirection.Left:
+        //                // 그리드 전체가 오른쪽으로 이동해야 됨
+        //                if (grid.x == 0) MoveAllGridCell(false);
+
+        //                break;
+        //        }
+        //    }
+        //}
+        foreach (Room tempRoom in roomList)     // 디버그용
         {
             //Debug.Log($"{tempRoom.connectedRooms.Count}");
             foreach (Room tempBRoom in tempRoom.connectedRooms)
@@ -329,6 +389,34 @@ public class RandomMap
             }
         }
     }
+
+    int[,] mapGrid;
+
+    void MoveAllGridCell(bool isY)
+    {
+        for(int y = 0; y < mapGrid.GetLength(0);y++)
+        {
+            for (int x = 0; x < mapGrid.GetLength(1); x++)
+            {
+                if (mapGrid[x, y] != -1)
+                {
+                    int temp = mapGrid[x, y];
+                    if (isY)
+                    {
+                        mapGrid[x, y + 1] = temp;
+                        mapGrid[x, y] = -1;
+                    }
+                    else
+                    {
+                        mapGrid[x + 1 , y] = temp;
+                        mapGrid[x, y] = -1;
+                    }
+                }
+            }
+        }
+    }
+
+
 
     /// <summary>
     /// 리스트에 있는 방에 대해서 연결되어 있는 방들에 대해 방향을 지정함
@@ -339,8 +427,8 @@ public class RandomMap
         int i = 0;
         foreach(Room room in rooms)
         {
-            //Debug.Log($"{i}번째 방");
-            room.SetExitList();
+            Debug.Log($"{i}번째 방");
+            room.SetExitList(ref widthCount, ref heightCount);
             i++;
         }
     }
@@ -611,7 +699,7 @@ public class RandomMap
     }
 
     /// <summary>
-    /// 연결된 순서대로 정렬하는 함수
+    /// 메인룸[0]으로부터 연결된 순서대로 정렬하는 함수
     /// </summary>
     /// <param name="sortRoom">하나씩 정렬해서 새로 반환할 리스트</param>
     /// <param name="targetRoom">정렬 할 대상(중복이면 추가 안함)</param>

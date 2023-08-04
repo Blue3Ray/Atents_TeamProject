@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Dynamic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class TalkCanvas : MonoBehaviour
+public class TalkCanvas : MonoBehaviour, IPointerClickHandler
 {
 	/// <summary>
 	/// 이벤트 인덱스에 따라 대화가 진행
@@ -22,29 +23,39 @@ public class TalkCanvas : MonoBehaviour
 	bool IsTalking = false;
 	private List<OneDialogueEvent> finalDialogues;
 	bool IsTalkStart = false;
-
+	CanvasGroup canvasGroup;
 	public Action EndTalk;
 
 	private void Awake()
 	{
+		canvasGroup = transform.GetComponent<CanvasGroup>();
 		Transform talker = transform.GetChild(0);
 		Transform talking = transform.GetChild(1);
 		character = talker.GetComponent<TextMeshProUGUI>();
 		talkLine = talking.GetComponent<TextMeshProUGUI>();
-		PlayerTest.Ins.MouseJustclick_Left += OnClick;
+		CanvasLineOff();
+	}
+	private void Start()
+	{
 		finalDialogues = DialogueParse.Ins.finalDialogues;
+		
 	}
 
-
-
-	private void OnEnable()
+	public void CanvasLineOn()
 	{
-		IsTalkStart = true;
+		canvasGroup.alpha = 1;
+		canvasGroup.blocksRaycasts = true;
+		canvasGroup.interactable = true;
+		//SetIndex();
 		OnTalking();
+		IsTalkStart = true;
 	}
-
-	private void OnDisable()
+	
+	public void CanvasLineOff()
 	{
+		canvasGroup.alpha = 0;
+		canvasGroup.blocksRaycasts = false;
+		canvasGroup.interactable = false;
 		IsTalkStart = false;
 	}
 
@@ -54,7 +65,7 @@ public class TalkCanvas : MonoBehaviour
 	{
 		if (IsTalkStart)
 		{
-			
+
 			if (!IsTalking)
 			{
 				SetIndex();
@@ -66,11 +77,12 @@ public class TalkCanvas : MonoBehaviour
 	private void SetIndex()
 	{
 		contextIndex++;
-		if (
-			finalDialogues[eventIndex].EventDialogues[talkIndex].contexts.Length > contextIndex)
+		//문장의 길이보다 context Index가 작을 때
+		if (finalDialogues[eventIndex].EventDialogues[talkIndex].contexts.Length > contextIndex)
 		{
 			
 		}
+		//문장 끝났을 때
 		else
 		{
 			talkIndex++;
@@ -79,12 +91,10 @@ public class TalkCanvas : MonoBehaviour
 
 		OnTalking();
 	}
-	Shader dfg;
-	Vector2 ve;
 
 	private void OnTalking()
 	{
-
+		//이벤트의 대화 숫자보다 talkIndex의 숫자가 작을 때
 		if (finalDialogues[eventIndex].EventDialogues.Count > talkIndex)
 		{
 			character.text = finalDialogues[eventIndex].EventDialogues[talkIndex].name;
@@ -94,7 +104,7 @@ public class TalkCanvas : MonoBehaviour
 		}
 		else
 		{
-			this.gameObject.SetActive(false);
+			CanvasLineOff();
 			EndTalk?.Invoke();
 		}
 	}
@@ -112,4 +122,8 @@ public class TalkCanvas : MonoBehaviour
 		IsTalking = false;
 	}
 
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		OnClick();
+	}
 }

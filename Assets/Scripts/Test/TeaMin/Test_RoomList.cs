@@ -37,6 +37,8 @@ public class Test_RoomList : TestBase
             Debug.Log($"{i}¹øÂ° : {room.CenterX}, {room.CenterY}");
             i++;
         }
+
+        Debug.Log($"Count : {randomMap.widthCount}, {randomMap.heightCount}");
     }
 
     private void OnDrawGizmos()

@@ -900,7 +900,7 @@ MonoBehaviour:
   height: 100
   fillRate: 0.46
   collecBoxBoolCount: 3
-  roomCount: 8
+  roomCount: 5
 --- !u!4 &1612619360
 Transform:
   m_ObjectHideFlags: 0

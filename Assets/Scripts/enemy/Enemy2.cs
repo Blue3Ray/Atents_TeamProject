@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-/* position 에 빨간 줄이 떠서 수정해야됨
+ 
 public class Enemy2 : MonoBehaviour
 {
     public Transform player;  
@@ -44,16 +44,16 @@ public class Enemy2 : MonoBehaviour
         
         player = GameObject.FindGameObjectWithTag("Player").transform;
         
-        transform.position = new Vector3(0, 0, 0);  
+       
     }
 
     // Update is called once per frame
 
     void Update()
     {
-        if (Vector3.Distance(Player.position, transform.position) < range) // 플레이어 추적 
+        if (Vector3.Distance(player.position, transform.position) < range) // 플레이어 추적 
         {
-            Dir = (Player.position - transform.position); //플레이어 위치와 몬스터 위치를 통해 거리 계산
+            Dir = (player.position - transform.position); //플레이어 위치와 몬스터 위치를 통해 거리 계산
                                                           //Dir.normalized 플레이어 추적 시 부자연스럽게 따라오는 걸 방지하기 위해   
 
         }
@@ -76,4 +76,4 @@ public class Enemy2 : MonoBehaviour
     }
 
 }
-    */
+    

@@ -136,6 +136,15 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8b9ee14-453c-456f-b4ba-4ecd553b82c0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -202,6 +211,17 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f30ff75-b7ba-4e7c-8cf2-92399eacb9ac"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -526,6 +546,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_PlayerTest = asset.FindActionMap("PlayerTest", throwIfNotFound: true);
         m_PlayerTest_Move = m_PlayerTest.FindAction("Move", throwIfNotFound: true);
         m_PlayerTest_Jump = m_PlayerTest.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerTest_Click = m_PlayerTest.FindAction("Click", throwIfNotFound: true);
         // MouseClickMenu
         m_MouseClickMenu = asset.FindActionMap("MouseClickMenu", throwIfNotFound: true);
         m_MouseClickMenu_MouesEvent = m_MouseClickMenu.FindAction("MouesEvent", throwIfNotFound: true);
@@ -662,12 +683,14 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     private List<IPlayerTestActions> m_PlayerTestActionsCallbackInterfaces = new List<IPlayerTestActions>();
     private readonly InputAction m_PlayerTest_Move;
     private readonly InputAction m_PlayerTest_Jump;
+    private readonly InputAction m_PlayerTest_Click;
     public struct PlayerTestActions
     {
         private @ActionControl m_Wrapper;
         public PlayerTestActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerTest_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerTest_Jump;
+        public InputAction @Click => m_Wrapper.m_PlayerTest_Click;
         public InputActionMap Get() { return m_Wrapper.m_PlayerTest; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -683,6 +706,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
         }
 
         private void UnregisterCallbacks(IPlayerTestActions instance)
@@ -693,6 +719,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
         }
 
         public void RemoveCallbacks(IPlayerTestActions instance)
@@ -968,6 +997,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
     public interface IMouseClickMenuActions
     {

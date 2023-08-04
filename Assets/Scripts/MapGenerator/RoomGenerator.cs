@@ -13,6 +13,14 @@ public struct RoomData
     public SampleRoomData roomData;
 }
 
+public enum MapLayer
+{
+    Background = 0,
+    PlatForm,
+    HalfPlatForm,
+    Exit
+}
+
 public class RoomGenerator : MonoBehaviour
 {
     /// <summary>
@@ -94,26 +102,7 @@ public class RoomGenerator : MonoBehaviour
         randomMap.StartMapData(10);
         randomMap.SortingRoomList(sortList, randomMap.roomList[0]);
 
-        Test(randomMap.roomList[0], cursor);
-        
-        
-        // 생성
-
-        //GenerateMap(roomSamplesWithExit[0]);
-
-        //roomStack.Push(roomSamplesWithExit[0]);
-
-        //for (int i = 0; i < roomSamplesWithExit[0].mapLayers.Count; i++)      //레이어 별로 생성하기(비효율적이군)
-        //{
-        //    GenerateMapLayer(roomSamplesWithExit[0], 0);
-        //    GenerateMapLayer(roomSamplesWithExit[0], 1);
-        //    GenerateMapLayer(roomSamplesWithExit[0], 2);
-        //    GenerateExit(roomSamplesWithExit[0], ExitDirection.Right);
-        //}
-
-        // 여기까지가 시작 방 생성(출구 포함)
-
-        //cursor += new Vector3Int(roomStack.Peek().width, 0) + GetRoomGap(5);
+        // Test(randomMap.roomList[0], cursor);
     }
 
 
@@ -235,7 +224,15 @@ public class RoomGenerator : MonoBehaviour
 
         SampleRoomData targetRoom = canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
 
-        GenerateRoom(targetRoom, tempCursor);           // 생성
+        if (CheckBuildable(tempCursor, targetRoom))
+        {
+            GenerateRoom(targetRoom, tempCursor);           // 생성
+        }
+        else
+        {
+            Debug.Log("맵 생성이 안됩니다.");
+        }
+        room.isBuilt = true;
 
         for (int j = 0; j < room.connectedRooms.Count; j++)
         {
@@ -254,9 +251,8 @@ public class RoomGenerator : MonoBehaviour
                     tempCursor.y -= 10;
                     break;
             }
-            Test(room.connectedRooms[j], tempCursor);
+            if(!room.connectedRooms[j].isBuilt) Test(room.connectedRooms[j], tempCursor);
         }
-        
     }
 
     // 첫번째 방을 선택한 후에 연결된 자식들 대상으로 다시 실행하기
@@ -267,6 +263,30 @@ public class RoomGenerator : MonoBehaviour
         sizes.Add(roomData.max);
     }
 
+    /// <summary>
+    /// 커서 위치로부터 그리려는 roomData가 그려질수 있는지 체크하는 함수
+    /// </summary>
+    /// <param name="cursor">방의 기준점이 될 위치</param>
+    /// <param name="roomData">그릴 방</param>
+    /// <returns>참이면 해당 범위에 다른 방과 인접한 사항 없음, 거짓이면 다른 방과 곂침</returns>
+    bool CheckBuildable(Vector3Int cursor, SampleRoomData roomData)
+    {
+        bool result = true;
+
+        for(int y = 0; y < roomData.max.y; y++)
+        {
+            for(int x = 0; x  < roomData.max.x; x++)
+            {
+                if (m_tileMaps[(int) MapLayer.PlatForm].HasTile(cursor + new Vector3Int(x, y)))
+                {
+                    result = false; break;
+                }
+            }
+            if (!result) break;
+        }
+
+        return result;
+    }
 
     void GeneratePassway(Exit startPos, Exit endPos)
     {

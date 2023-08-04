@@ -129,4 +129,17 @@ public class SampleRoomData : MonoBehaviour
         //Debug.Log($"타일을 {amount}개 가지고 있음");
         return amount;
     }
+
+    public int GetExitCount(ExitDirection dir)
+    {
+        int result = 0;
+        foreach(Exit exit in exitPos)
+        {
+            if(exit.Direction == dir)
+            {
+                result++;
+            }
+        }
+        return result;
+    }
 }

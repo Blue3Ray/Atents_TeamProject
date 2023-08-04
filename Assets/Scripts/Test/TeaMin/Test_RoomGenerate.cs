@@ -14,6 +14,6 @@ public class Test_RoomGenerate : TestBase
 
     protected override void Test1(InputAction.CallbackContext context)
     {
-        
+        roomGenerator.SetupRooms();
     }
 }

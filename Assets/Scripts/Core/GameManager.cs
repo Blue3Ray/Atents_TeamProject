@@ -15,10 +15,10 @@ public enum Element : byte
 
 public class GameManager : Singleton<GameManager>
 {
-    PlayerTest playerTest;
+	public PlayerJM_test playerTest;
+    
     ItemDataManager itemDataManager;
-    public Inventory inven;
-
+    
     public ItemDataManager ItemData => itemDataManager;
 
     
@@ -26,7 +26,19 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         itemDataManager = GetComponent<ItemDataManager>();
-        inven = new Inventory(7);
+        
     }
+
+	protected override void OnInitalize()
+	{
+		base.OnInitalize();
+        playerTest = FindObjectOfType<PlayerJM_test>();
+        if(playerTest != null)
+        {
+            Debug.Log("Àß Ã£À½");
+        }
+
+	}
+
 
 }

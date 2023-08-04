@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &610971
 Grid:
   m_ObjectHideFlags: 0
@@ -189,10 +189,10 @@ MonoBehaviour:
   - {fileID: 3489038067447228485, guid: 533acce20eb645d4a8f1886e079e8ed0, type: 3}
   - {fileID: 5106308078921462837, guid: 91ac0bfad28f7d54d973873cc40ce1e5, type: 3}
   roomSamplesWithExit:
-  - {fileID: 3956124997088234189, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
   - {fileID: 5766560427034028742, guid: 29c2e39849dca7145a720a470e7953d4, type: 3}
   - {fileID: 6585165216709810614, guid: bc3a2f72420884144acea6e7231d5499, type: 3}
   - {fileID: 6981323047526874953, guid: 3070ea58d0a372b4c87a8aad99f58b83, type: 3}
+  - {fileID: 5766560427034028742, guid: 84f2553c0efd4734aa339ce3af494154, type: 3}
   width: 100
   height: 100
   fillRate: 0.46

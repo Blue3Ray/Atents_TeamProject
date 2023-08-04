@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -21,29 +22,38 @@ public class PlayerJM_test : MonoBehaviour
     //지선 - inventory를 플레이어가 가질 수 있도록 추가
 	public Inventory inven;
 
-	private void OnEnable()
-    {
-        inputActions.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.Disable();
-    }
-
     private void Awake()
     {
 		inputActions = new ActionControl();
+
+    }
+
+	private void OnEnable()
+    {
         inputActions.PlayerJM.Enable();
+        inputActions.PlayerTest.Enable();
+        inputActions.PlayerTest.Click.performed += OnClick;
+
         inputActions.PlayerJM.Move.performed += OnMove;
         inputActions.PlayerJM.Move.canceled += OnMove;
         inputActions.PlayerJM.Jump.performed += OnJump;
         inputActions.PlayerJM.Attack.performed += ctx => Attack();
-
     }
     
-
-    private void OnMove(InputAction.CallbackContext context)
+    
+    private void OnDisable()
+    {
+        
+        inputActions.PlayerJM.Move.performed -= OnMove;
+        inputActions.PlayerJM.Move.canceled -= OnMove;
+        inputActions.PlayerJM.Jump.performed -= OnJump;
+        inputActions.PlayerJM.Attack.performed -= ctx => Attack();
+        inputActions.PlayerTest.Click.performed -= OnClick;
+        
+		inputActions.PlayerTest.Disable();
+		inputActions.PlayerJM.Disable();
+	}
+	private void OnMove(InputAction.CallbackContext context)
     {
         dir = context.ReadValue<Vector2>();
     }
@@ -105,4 +115,28 @@ public class PlayerJM_test : MonoBehaviour
 
         isAttacking = false;
     }
+
+	private void OnClick(InputAction.CallbackContext obj)
+	{
+
+		Vector3 mousePosition = Input.mousePosition;
+
+		//MouseJustclick_Left?.Invoke();
+
+
+		Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+
+		RaycastHit2D hit;
+
+
+		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
+		{
+			Debug.Log($"{hit.transform.name}");
+			if (hit.transform.TryGetComponent<IClickable>(out IClickable temp))
+			{
+				temp.OnClicking(temp);
+			}
+		}
+	}
+
 }

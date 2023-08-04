@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +18,10 @@ public class PlayerJM_test : MonoBehaviour
 
     Vector2 dir;
 
-    private void OnEnable()
+    //지선 - inventory를 플레이어가 가질 수 있도록 추가
+	public Inventory inven;
+
+	private void OnEnable()
     {
         inputActions.Enable();
     }
@@ -29,7 +33,7 @@ public class PlayerJM_test : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new ActionControl();
+		inputActions = new ActionControl();
         inputActions.PlayerJM.Enable();
         inputActions.PlayerJM.Move.performed += OnMove;
         inputActions.PlayerJM.Move.canceled += OnMove;
@@ -37,6 +41,7 @@ public class PlayerJM_test : MonoBehaviour
         inputActions.PlayerJM.Attack.performed += ctx => Attack();
 
     }
+    
 
     private void OnMove(InputAction.CallbackContext context)
     {
@@ -54,6 +59,7 @@ public class PlayerJM_test : MonoBehaviour
 
     private void Start()
     {
+		inven = new Inventory(7);
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
     }

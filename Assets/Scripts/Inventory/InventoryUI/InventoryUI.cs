@@ -65,7 +65,6 @@ public class InventoryUI : MonoBehaviour
 
 	private void Start()
 	{
-		inventory = GameManager.Ins.inven;
 		var QuickSlotUIs = GameObject.FindGameObjectsWithTag("QuickSlot");
 		foreach(var QuickSlot in QuickSlotUIs)
 		{
@@ -77,8 +76,11 @@ public class InventoryUI : MonoBehaviour
 		trashCan.ClickTrashCan += OnTrashCan;
 	}
 
+
+
 	public void ConnetingSlots()
 	{
+		inventory = GameManager.Ins.playerTest.inven;
 		for(int i = 0; i < inventory.SlotCount; i++)
 		{
 			UISlots[i].invenSlot = inventory[(uint)i];

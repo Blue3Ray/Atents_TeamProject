@@ -126,9 +126,10 @@ public class Inventory
                 }
                 else
                 {
-                    // 다른 종류이면 실패
-                    //Debug.Log($"아이템 추가 실패 : 인벤토리 {slotIndex}번 슬롯에 다른 아이템이 들어있습니다.");
-                }
+
+					// 다른 종류이면 실패
+					//Debug.Log($"아이템 추가 실패 : 인벤토리 {slotIndex}번 슬롯에 다른 아이템이 들어있습니다.");
+				}
             }
         }
         else

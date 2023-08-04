@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-// 사용하지 않는 스크립트인데 참고용으로 냅두고 있습니다.
+// 몬스터 기본 스크립트 
+
 
 public class EnemyBase : MonoBehaviour
 {
     public Transform player;
-    public float speed;
+    public float speed = 5;
+    // 처음에 스피드 계수를 입력해 놓지 않으면 유니티안에서도 스피드가 적용되지 않기에 움직이지 않음 
     float range =20;
     public float nowhp = 1000.0f;
     public float maxhp = 1000.0f;
@@ -31,8 +33,8 @@ public class EnemyBase : MonoBehaviour
         set // 특정 조건에만 실행하는 
         {           
             dir = value;// 값을 넣으려고 할때 
-            if (dir.x < 0) spriteRenderer.flipX = false;
-            if (dir.x > 0) spriteRenderer.flipX = true;
+            if (dir.x < 0) spriteRenderer.flipX = true;
+            if (dir.x > 0) spriteRenderer.flipX = false;
 
         } 
     }
@@ -85,12 +87,12 @@ public class EnemyBase : MonoBehaviour
             if (transform.position.x > 5)
             {
                 Dir = Vector3.left;
-                spriteRenderer.flipX = false; 
+                spriteRenderer.flipX = true; 
             }
             else if (transform.position.x < -5)
             {
                 Dir = Vector3.right;
-                spriteRenderer.flipX = true; // 왼쪽으로 최대한 간 뒤 오른쪽으로 돌아갔을때 자연스럽게 가기 위해 좌우반전을 줌
+                spriteRenderer.flipX = false; // 왼쪽으로 최대한 간 뒤 오른쪽으로 돌아갔을때 자연스럽게 가기 위해 좌우반전을 줌
             }
 
 

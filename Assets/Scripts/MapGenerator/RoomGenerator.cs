@@ -110,6 +110,12 @@ public class RoomGenerator : MonoBehaviour
         randomMap.StartMapData(roomCount);
         randomMap.SortingRoomList(sortList, randomMap.roomList[0]);
 
+        foreach (var temp in randomMap.roomList)
+        {
+            Debug.Log($"index : {temp.index}");
+
+        }
+
         Test(randomMap.roomList[0], cursor);
     }
 
@@ -138,21 +144,21 @@ public class RoomGenerator : MonoBehaviour
             List<ExitDirection> downDir = new();
             List<ExitDirection> rightDir = new();
             List<ExitDirection> leftDir = new();
-            foreach (ExitDirection dir in sortList[i].connectedExit)
+            foreach (var dir in sortList[i].connectedExit)
             {
-                switch (dir)
+                switch (dir.Item2)
                 {
                     case ExitDirection.Up:
-                        upDir.Add(dir);
+                        upDir.Add(dir.Item2);
                         break;
                     case ExitDirection.Left:
-                        leftDir.Add(dir);
+                        leftDir.Add(dir.Item2);
                         break;
                     case ExitDirection.Right:
-                        rightDir.Add(dir);
+                        rightDir.Add(dir.Item2);
                         break;
                     case ExitDirection.Down:
-                        downDir.Add(dir);
+                        downDir.Add(dir.Item2);
                         break;
                 }   
             }
@@ -196,21 +202,21 @@ public class RoomGenerator : MonoBehaviour
         List<ExitDirection> downDir = new();
         List<ExitDirection> rightDir = new();
         List<ExitDirection> leftDir = new();
-        foreach (ExitDirection dir in room.connectedExit)
+        foreach (var dir in room.connectedExit)
         {
-            switch (dir)
+            switch (dir.Item2)
             {
                 case ExitDirection.Up:
-                    upDir.Add(dir);
+                    upDir.Add(dir.Item2);
                     break;
                 case ExitDirection.Left:
-                    leftDir.Add(dir);
+                    leftDir.Add(dir.Item2);
                     break;
                 case ExitDirection.Right:
-                    rightDir.Add(dir);
+                    rightDir.Add(dir.Item2);
                     break;
                 case ExitDirection.Down:
-                    downDir.Add(dir);
+                    downDir.Add(dir.Item2);
                     break;
             }
         }
@@ -244,7 +250,7 @@ public class RoomGenerator : MonoBehaviour
 
         for (int j = 0; j < room.connectedRooms.Count; j++)
         {
-            switch (room.connectedExit[j])
+            switch (room.connectedExit[j].Item2)
             {
                 case ExitDirection.Up:
                     tempCursor.y += maxSingleRoomSize;
@@ -427,7 +433,5 @@ public class RoomGenerator : MonoBehaviour
         int y = Random.Range(-num, num);
         return new Vector3Int(x,y);
     }
-
-
 }
 

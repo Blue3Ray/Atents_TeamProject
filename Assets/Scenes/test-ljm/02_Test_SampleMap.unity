@@ -14652,8 +14652,6 @@ MonoBehaviour:
   mapLayers: []
   min: {x: -16, y: -7, z: 0}
   max: {x: 64, y: 12, z: 0}
-  height: 19
-  width: 80
 --- !u!19719996 &4416265351211965234
 TilemapCollider2D:
   m_ObjectHideFlags: 0

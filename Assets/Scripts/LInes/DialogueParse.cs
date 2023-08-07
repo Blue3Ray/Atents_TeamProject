@@ -17,6 +17,7 @@ public class DialogueParse : Singleton<DialogueParse>
 	/// </summary>
     List<Dialogue> dialogues;
 
+	[SerializeField]
 	/// <summary>
 	/// 이벤트 하나에 알맞는 dialogues를 집어 넣을 리스트
 	/// </summary>

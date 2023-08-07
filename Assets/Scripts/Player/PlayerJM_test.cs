@@ -19,7 +19,8 @@ public class PlayerJM_test : MonoBehaviour
 
     Vector2 dir;
 
-    //지선 - inventory를 플레이어가 가질 수 있도록 추가
+
+	//지선 - inventory를 플레이어가 가질 수 있도록 추가
 	public Inventory inven;
 
     private void Awake()
@@ -121,7 +122,6 @@ public class PlayerJM_test : MonoBehaviour
 
 		Vector3 mousePosition = Input.mousePosition;
 
-		//MouseJustclick_Left?.Invoke();
 
 
 		Ray ray = Camera.main.ScreenPointToRay(mousePosition);

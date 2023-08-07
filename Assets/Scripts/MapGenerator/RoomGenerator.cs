@@ -64,6 +64,7 @@ public class RoomGenerator : MonoBehaviour
     RandomMap randomMap;
     List<Room> sortList = new();
 
+    // ÃÊ±â ·£´ý ¸Ê ¼³Á¤ ---------------------
     public int width = 100;
     public int height = 100;
     public float fillRate = 0.46f;
@@ -71,6 +72,12 @@ public class RoomGenerator : MonoBehaviour
 
     public uint roomCount = 8;
 
+    // »ùÇÃ ¸Ê ¼³Á¤ ----------------------
+
+    /// <summary>
+    /// »ùÇÃ ¸ÊÀÇ °¡Àå Å« ³ð ±âÁØ Å©±â(Á¤»ç°¢Çü ÇÑº¯ÀÇ ±æÀÌ)
+    /// </summary>
+    int maxSingleRoomSize = 0;
 
     private void Awake()
     {
@@ -90,19 +97,20 @@ public class RoomGenerator : MonoBehaviour
     {
         cursor = new Vector3Int(0, 0);
 
-        foreach(SampleRoomData temp in roomSamplesWithExit)
+        foreach(SampleRoomData sampleRoom in roomSamplesWithExit)
         {
-            temp.OnInitialize();
+            int t = sampleRoom.OnInitialize();
+            if (t > maxSingleRoomSize) maxSingleRoomSize = t;
         }
-        foreach (SampleRoomData temp in exitSamples)
+        foreach (SampleRoomData exit in exitSamples)
         {
-            temp.OnInitialize();
+            exit.OnInitialize();
         }
 
-        randomMap.StartMapData(10);
+        randomMap.StartMapData(roomCount);
         randomMap.SortingRoomList(sortList, randomMap.roomList[0]);
 
-        // Test(randomMap.roomList[0], cursor);
+        Test(randomMap.roomList[0], cursor);
     }
 
 
@@ -239,16 +247,16 @@ public class RoomGenerator : MonoBehaviour
             switch (room.connectedExit[j])
             {
                 case ExitDirection.Up:
-                    tempCursor.y += 10;
+                    tempCursor.y += maxSingleRoomSize;
                     break;
                 case ExitDirection.Left:
-                    tempCursor.x -= 10;
+                    tempCursor.x -= maxSingleRoomSize;
                     break;
                 case ExitDirection.Right:
-                    tempCursor.x += 10;
+                    tempCursor.x += maxSingleRoomSize;
                     break;
                 case ExitDirection.Down:
-                    tempCursor.y -= 10;
+                    tempCursor.y -= maxSingleRoomSize;
                     break;
             }
             if(!room.connectedRooms[j].isBuilt) Test(room.connectedRooms[j], tempCursor);

@@ -45,11 +45,12 @@ public class SampleRoomData : MonoBehaviour
     public int Height => max.y - min.y;
     public int Width => max.x - min.x;
 
-    public void OnInitialize()
+    public int OnInitialize()
     {
+        int maxSize = 0;
+
         mapLayers.Clear();
         tilesPos = new List<List<Vector3Int>>();
-
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -66,6 +67,10 @@ public class SampleRoomData : MonoBehaviour
         //width = mapLayers[1].size.x;
 
         CheckExitPos(mapLayers[mapLayers.Count - 1]);
+
+        maxSize = Height > Width ? Height:Width;
+
+        return maxSize;
     }
 
     void CheckExitPos(Tilemap targetTileMap)

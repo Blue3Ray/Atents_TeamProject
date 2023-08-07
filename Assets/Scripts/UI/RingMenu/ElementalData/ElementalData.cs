@@ -5,6 +5,6 @@ using UnityEngine;
 
 public class ElementalData : ScriptableObject
 {
-    public string name;
+    public string m_name;
     public Sprite elemantalSprite;
 }

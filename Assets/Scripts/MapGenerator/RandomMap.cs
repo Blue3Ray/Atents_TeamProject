@@ -247,6 +247,11 @@ public class RandomMap
     public List<Room> roomList = new List<Room>();
 
     /// <summary>
+    /// 맵 위치를 정렬 시킬 그리드
+    /// </summary>
+    int[,] mapGrid;
+
+    /// <summary>
     /// 테스트 용 임시 생성자(어짭히 기본값이 있어서 넣기 귀찮아서 만듬)
     /// </summary>
     public RandomMap()
@@ -341,45 +346,10 @@ public class RandomMap
 
         CheckExitDir(roomList);
 
-        //mapGrid = new int[widthCount, heightCount];
+        mapGrid = new int[widthCount, heightCount];
 
-        //for(int i = 0; i < widthCount; i++)
-        //{
-        //    for(int j = 0; j < heightCount; j++)
-        //    {
-        //        mapGrid[i, j] = -1;
-        //    }
-        //}
+        SetGridMap(mapGrid);
 
-        //Vector2Int grid = Vector2Int.zero;
-        //Vector2Int stand = Vector2Int.zero;
-        
-        //for (int i = 0; i < roomList.Count; i++)
-        //{
-        //    mapGrid[grid.x + stand.x, grid.y + stand.y] = i;        // 방 index
-        //    for (int j = 0; j < roomList[i].connectedExit.Count; j++)       // 방과 연결된 방들을 검사
-        //    {
-        //        switch (roomList[i].connectedExit[j])       // 연결된 방들을 하나씩 꺼내서
-        //        {
-        //            case ExitDirection.Up:
-        //                grid.x++;
-        //                break;
-        //            case ExitDirection.Right:
-        //                grid.y++;
-        //                break;
-        //            case ExitDirection.Down:
-        //                // 그리드 전체가 올라가야됨
-        //                if(grid.y == 0) MoveAllGridCell(true);
-
-        //                break;
-        //            case ExitDirection.Left:
-        //                // 그리드 전체가 오른쪽으로 이동해야 됨
-        //                if (grid.x == 0) MoveAllGridCell(false);
-
-        //                break;
-        //        }
-        //    }
-        //}
         foreach (Room tempRoom in roomList)     // 디버그용
         {
             //Debug.Log($"{tempRoom.connectedRooms.Count}");
@@ -390,7 +360,48 @@ public class RandomMap
         }
     }
 
-    int[,] mapGrid;
+    void SetGridMap(int[,] mapGrid)
+    {
+        for (int i = 0; i < widthCount; i++)
+        {
+            for (int j = 0; j < heightCount; j++)
+            {
+                mapGrid[i, j] = -1;
+            }
+        }
+
+        Vector2Int targetGrid = Vector2Int.zero;
+        Vector2Int stand = Vector2Int.zero;
+
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            mapGrid[targetGrid.x + stand.x, targetGrid.y + stand.y] = i;        // 방 index
+            for (int j = 0; j < roomList[i].connectedExit.Count; j++)       // 방과 연결된 방들을 검사
+            {
+                switch (roomList[i].connectedExit[j])       // 연결된 방들을 하나씩 꺼내서
+                {
+                    case ExitDirection.Up:
+                        targetGrid.x++;
+                        break;
+                    case ExitDirection.Right:
+                        targetGrid.y++;
+                        break;
+                    case ExitDirection.Down:
+                        // 그리드 전체가 올라가야됨
+                        if (targetGrid.y == 0) MoveAllGridCell(true);
+
+                        break;
+                    case ExitDirection.Left:
+                        // 그리드 전체가 오른쪽으로 이동해야 됨
+                        if (targetGrid.x == 0) MoveAllGridCell(false);
+
+                        break;
+                }
+            }
+        }
+    }
+
+
 
     void MoveAllGridCell(bool isY)
     {

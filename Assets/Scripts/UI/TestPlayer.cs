@@ -28,7 +28,21 @@ public class TestPlayer : MonoBehaviour, InHealth
     float maxHP = 100.0f;
     public float MaxHP => maxHP;
 
-   
+    float mp = 80.0f;
+    public float MP 
+    {
+        get => mp;
+        set
+        {
+            mp = value;
+            mp = Mathf.Clamp(mp, 0, MaxMP);
+            onHealthChange?.Invoke(mp / MaxMP);
+        }
+    }
+
+    float maxMP = 80.0F;
+    public float MaxMP => maxMP;
+
 
     public Action<float> onHealthChange 
     { 
@@ -39,6 +53,7 @@ public class TestPlayer : MonoBehaviour, InHealth
     public bool IsAlive => hp > 0;
 
     public Action onDie { get; set; }
+    
     public void Die()
     {
         onDie?.Invoke();

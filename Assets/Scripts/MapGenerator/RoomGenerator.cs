@@ -12,6 +12,16 @@ public enum MapLayer
     Exit
 }
 
+public enum PassWayType
+{
+    UpDown = 0,
+    LeftRight,
+    UpRight,
+    RightDown,
+    DownLeft,
+    LeftUp
+}
+
 public class RoomGenerator : MonoBehaviour
 {
     /// <summary>
@@ -25,9 +35,9 @@ public class RoomGenerator : MonoBehaviour
     public Tile exitTile;
 
     /// <summary>
-    /// 출구 데이터 불러올 샘플들(0 가로, 1 세로)
+    /// 출구 데이터 불러올 샘플들(0 가로, 1 세로. 2 UR, 3 RD, 4 DL, 5LU)
     /// </summary>
-    public SampleRoomData[] exitSamples;
+    public SampleRoomData[] passWaySamples;
 
     /// <summary>
     /// 방 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
@@ -93,13 +103,14 @@ public class RoomGenerator : MonoBehaviour
             int t = sampleRoom.OnInitialize();
             if (t > maxSingleRoomSize) maxSingleRoomSize = t;
         }
-        foreach (SampleRoomData exit in exitSamples)
+        foreach (SampleRoomData passWay in passWaySamples)
         {
-            exit.OnInitialize();
+            passWay.OnInitialize();
         }
 
         //SetUpRooms();
     }
+
 
     public void SetUpRooms()
     {
@@ -305,66 +316,92 @@ public class RoomGenerator : MonoBehaviour
     {
         cursor = startPos.Pos;
 
-        int xDir = 0, yDir = 0;             // 통로가 만들어지는 방향(대각선 경우는 없음)
-        switch (startPos.Direction) 
-        { 
-            case ExitDirection.Up:
-                yDir = 1;
-                break;
-            case ExitDirection.Down:
-                yDir = -1;
-                break;
-            case ExitDirection.Right:
-                xDir = 1;
-                break;
-            case ExitDirection.Left:
-                xDir = -1;
-                break;
-            default:
-                break;
-        }
+        // 만약 두 출구가 같은 선상에 있는 경우가 아니면(대각으로 움직여야하면) 중간 지점에서 S자 꺽기위한 지점
+        Vector3Int halfPos = new Vector3Int((int)((startPos.Pos.x + endPos.Pos.x) * 0.5f), (int)((startPos.Pos.y + endPos.Pos.y) * 0.5f));
 
-        int i = 0;
+        Vector3Int targetPos = endPos.Pos;
 
-        while (i < 50 && cursor != endPos.Pos)
+        bool isY;
+
+        if(Mathf.Abs(startPos.Pos.x - endPos.Pos.x) > Mathf.Abs(startPos.Pos.y - endPos.Pos.y)) // x축 쪽으로 더 길 때
         {
-            cursor += new Vector3Int(xDir, yDir);
-            GeneratePass(cursor, new Vector3Int(xDir, yDir));
-
-            if(cursor.y == endPos.Pos.y && yDir != 0)
-            {
-                yDir = 0;
-                xDir = cursor.x < endPos.Pos.x ? 1 : -1;
-                GeneratePass(cursor, new Vector3Int(xDir, yDir));
-            }
-            else if(cursor.x == endPos.Pos.x && xDir != 0)
-            {
-                xDir = 0;
-                yDir = cursor.y < endPos.Pos.y ? 1 : -1;
-            }
-            i++;
+            isY = false;
+            if (startPos.Pos.x != endPos.Pos.x) targetPos = halfPos;
         }
+        else
+        {
+            isY = true;
+            if (startPos.Pos.x != endPos.Pos.x) targetPos = halfPos;
+        }
+
+        GeneratePass(cursor, PassWayType.UpRight, 0);
+
+
+        //int i = 0;      // 통로 만드는 호출 개수 제한(무한반복 대비)
+
+        //ExitDirection dir = startPos.Direction;
+
+        //while (i < 1000 && cursor != endPos.Pos)
+        //{
+        //    Vector3Int tempPos = Vector3Int.zero;
+        //    int drawOverCount = -1;
+
+
+        //    if(cursor == targetPos)
+        //    {
+        //        if(dir == ExitDirection.Up || dir == ExitDirection.Down)
+        //        {
+        //            if(IsXDir(cursor, targetPos))
+        //            {
+
+        //            }
+        //        }
+        //    }
+
+        //    cursor += tempPos;
+        //}
     }
 
-    void GeneratePass(Vector3Int pos, Vector3Int dir)
+    bool IsXDir(Vector3Int posA, Vector3Int posB)
     {
-        int isXDir = 0;      // 좌우로 그릴건지 상하로 그릴건지 구분
-        Vector2Int orin = new Vector2Int(0, 0);
-
-        if (dir.x == 0)
+        bool result;
+        if(Mathf.Abs(posA.x - posB.x) > Mathf.Abs(posA.y - posB.y))
         {
-            isXDir = 1;
-            orin = new Vector2Int(0, 0);
+            result = true;
+        }
+        else
+        {
+            result = false;
         }
 
-        for (int i = 0; i < exitSamples[isXDir].Height; i++)    // 문 높이 만큼
+        return result;
+    }
+
+    Vector3Int GeneratePass(Vector3Int cursorPos, PassWayType passWayType, int drawOverCount)
+    {
+        Vector3Int result = Vector3Int.zero;
+        //int passWayType = 0;      // 좌우로 그릴건지 상하로 그릴건지 구분(샘플 번호임, 0 : X방향, 1 : Y방향)
+
+        Vector2Int orin = Vector2Int.zero;
+
+        SampleRoomData targetData = passWaySamples[(int) passWayType];
+
+        for (int i = 0; i < targetData.Height; i++)    // 문 높이 만큼
         {
-            for (int j = 0; j < exitSamples[isXDir].Width; j++)  // 문 너비 만큼
+            for (int j = 0; j < targetData.Width; j++)  // 문 너비 만큼
             {
-                if (exitSamples[isXDir].mapLayers[1].HasTile(new Vector3Int(exitSamples[isXDir].min.x + j, exitSamples[isXDir].min.y + i)))
+                Vector3Int plusPos = new Vector3Int(j, i);
+                Vector3Int targetDrawPos = targetData.min + plusPos;
+
+                if (targetData.mapLayers[(int) MapLayer.PlatForm].HasTile(targetDrawPos))
                 {
-                    m_tileMaps[1].SetTile(cursor + new Vector3Int(j - orin.x, i - orin.y), exitSamples[isXDir].mapLayers[1].GetTile(new Vector3Int(j, i)));
-                    //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
+                    // 플랫폼 칸일 때
+                    m_tileMaps[(int)MapLayer.PlatForm].SetTile(cursorPos + plusPos, targetData.mapLayers[(int)MapLayer.PlatForm].GetTile(plusPos));
+                }
+                else if (targetData.mapLayers[(int)MapLayer.HalfPlatForm].HasTile(targetDrawPos))
+                {
+                    // 반플랫폼 칸일 때
+                    m_tileMaps[(int)MapLayer.HalfPlatForm].SetTile(cursorPos + plusPos, targetData.mapLayers[(int)MapLayer.HalfPlatForm].GetTile(plusPos));
                 }
                 else
                 {
@@ -372,6 +409,8 @@ public class RoomGenerator : MonoBehaviour
                 }
             }
         }
+
+        return result;
     }
 
     /// <summary>
@@ -411,11 +450,11 @@ public class RoomGenerator : MonoBehaviour
                 index = 1;
             }
 
-            for (int i = 0; i < exitSamples[index].Height; i++)    // 문 높이 만큼
+            for (int i = 0; i < passWaySamples[index].Height; i++)    // 문 높이 만큼
             {
-                for (int j = 0; j < exitSamples[index].Width; j++)  // 문 너비 만큼
+                for (int j = 0; j < passWaySamples[index].Width; j++)  // 문 너비 만큼
                 {
-                    if (exitSamples[index].mapLayers[1].HasTile(new Vector3Int(exitSamples[index].min.x + j, exitSamples[index].min.y + i)))
+                    if (passWaySamples[index].mapLayers[1].HasTile(new Vector3Int(passWaySamples[index].min.x + j, passWaySamples[index].min.y + i)))
                     {
                         m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), targetRoomData.mapLayers[1].GetTile(temp.Pos));
                         //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");

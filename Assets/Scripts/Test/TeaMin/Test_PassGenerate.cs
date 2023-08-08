@@ -10,6 +10,8 @@ public class Test_PassGenerate : TestBase
 
     public Tilemap exitTileMap;
 
+    public Tile tile;
+
     Vector3Int[] exitPos = new Vector3Int[2];
 
     private void Start()
@@ -31,15 +33,21 @@ public class Test_PassGenerate : TestBase
             }
         }
 
-        Exit exit = new Exit(exitPos[0], ExitDirection.Right);
-        Exit exit2 = new Exit(new Vector3Int(0,14), ExitDirection.Left);
 
-        roomGenerator.GeneratePassway(exit, exit2);
+
     }
 
     protected override void Test1(InputAction.CallbackContext context)
     {
+        Exit exit = new Exit(new Vector3Int(2, 2), ExitDirection.Right);
+        Exit exit2 = new Exit(new Vector3Int(2, 14), ExitDirection.Left);
+        roomGenerator.GeneratePassway(exit, exit2);
         
+    }
+
+    protected override void Test2(InputAction.CallbackContext context)
+    {
+        exitTileMap.SetTile(new Vector3Int(-5, -5), tile);
     }
 
 

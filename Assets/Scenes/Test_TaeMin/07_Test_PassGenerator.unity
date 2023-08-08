@@ -185,9 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundTile: {fileID: 11400000, guid: e096560c386ca154fa0101b53d52a808, type: 2}
   exitTile: {fileID: 11400000, guid: 928358ebd5abc9245b75db1a78d91ce5, type: 2}
-  exitSamples:
-  - {fileID: 3489038067447228485, guid: 533acce20eb645d4a8f1886e079e8ed0, type: 3}
-  - {fileID: 5106308078921462837, guid: 91ac0bfad28f7d54d973873cc40ce1e5, type: 3}
+  passWaySamples: []
   roomSamplesWithExit:
   - {fileID: 5766560427034028742, guid: 29c2e39849dca7145a720a470e7953d4, type: 3}
   - {fileID: 6585165216709810614, guid: bc3a2f72420884144acea6e7231d5499, type: 3}
@@ -904,9 +902,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundTile: {fileID: 11400000, guid: e096560c386ca154fa0101b53d52a808, type: 2}
   exitTile: {fileID: 11400000, guid: 928358ebd5abc9245b75db1a78d91ce5, type: 2}
-  exitSamples:
+  passWaySamples:
   - {fileID: 1635233068044210888, guid: ebcba8e89a2a7af42945e02d77baf5c0, type: 3}
   - {fileID: 5364043125794864837, guid: 94a5b310abb515349ad736ca7a72671f, type: 3}
+  - {fileID: 4749757813145453450, guid: 2b8638866d8a3b14f8bb2425d9488055, type: 3}
+  - {fileID: 1969896381560294265, guid: 0e95cc30f1e5a034e964f57dc79428de, type: 3}
+  - {fileID: 1696334468453365824, guid: c1de23d7612ae7d479086d30a8ed6d9c, type: 3}
+  - {fileID: 7947880996732234699, guid: de0ad0872d95fa948b97ad654bba94ef, type: 3}
   roomSamplesWithExit:
   - {fileID: 5766560427034028742, guid: 29c2e39849dca7145a720a470e7953d4, type: 3}
   - {fileID: 6585165216709810614, guid: bc3a2f72420884144acea6e7231d5499, type: 3}

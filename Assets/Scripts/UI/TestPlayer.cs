@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Switch;
 
-public class TestPlayer : MonoBehaviour, InHealth
+public class TestPlayer : MonoBehaviour, IHealth, IMana, IExperience
 {
+
     float hp = 100.0f;
     public float HP 
     { 
@@ -51,9 +52,29 @@ public class TestPlayer : MonoBehaviour, InHealth
     }
 
     public bool IsAlive => hp > 0;
-
     public Action onDie { get; set; }
-    
+
+    float experience = 0.0f;
+    public float Experience 
+    {
+        get => experience; 
+        set
+        {
+            experience = value;
+        }
+    }
+    float experienceMax = 100.0f;
+    public float ExperienceMax 
+    { 
+        get => experienceMax; 
+        set
+        {
+            experienceMax = value;
+        }
+    }
+    int level = 1;
+    public int LevelingIndex => level;
+
     public void Die()
     {
         onDie?.Invoke();

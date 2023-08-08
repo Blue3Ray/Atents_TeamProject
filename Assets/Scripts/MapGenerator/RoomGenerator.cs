@@ -1,17 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEditor.PlayerSettings;
 
-
-public struct RoomData
-{
-    public Vector3 pos;
-    public SampleRoomData roomData;
-}
 
 public enum MapLayer
 {
@@ -61,8 +52,7 @@ public class RoomGenerator : MonoBehaviour
 
 
     // 기능 부분 ------------------
-    RandomMap randomMap;
-    List<Room> sortList = new();
+    RandomMapGenerator randomMap;
 
     // 초기 랜덤 맵 설정 ---------------------
     public int width = 100;
@@ -70,7 +60,7 @@ public class RoomGenerator : MonoBehaviour
     public float fillRate = 0.46f;
     public int collecBoxBoolCount = 3;
 
-    public uint roomCount = 8;
+    public int roomCount = 8;
 
     // 샘플 맵 설정 ----------------------
 
@@ -90,7 +80,8 @@ public class RoomGenerator : MonoBehaviour
         
         roomStack = new Stack<SampleRoomData>();
 
-        randomMap = new RandomMap(width, height, fillRate, collecBoxBoolCount);
+        randomMap = new RandomMapGenerator();
+        randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);
     }
 
     private void Start()
@@ -107,94 +98,103 @@ public class RoomGenerator : MonoBehaviour
             exit.OnInitialize();
         }
 
-        randomMap.StartMapData(roomCount);
-        randomMap.SortingRoomList(sortList, randomMap.roomList[0]);
-
-        foreach (var temp in randomMap.roomList)
-        {
-            Debug.Log($"index : {temp.index}");
-
-        }
-
-        Test(randomMap.roomList[0], cursor);
+        SetUpRooms();
     }
 
-
-    public void SetupRooms()
+    public void SetUpRooms()
     {
-        // roomSamplesWithExit 방 샘플
-        // randomMap 랜덤 맵
+        Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
 
-        // roomlist의 두번째는 X값 기준으로 되어 있음. 그러므로 연결된 방 기준으로 다시 정렬
-        
-        randomMap.SortingRoomList(sortList, randomMap.roomList[0]);
-
-
-        List<Vector3Int> roomAnchor = new();        // 방을 생성할 기준(모든 방 프리펩은 0,0이 시작점이여야 함)
-        List<Vector3Int> roomsSize = new();         // 방의 사이즈들
-
-
-
-        for(int i = 0; i < sortList.Count; i++)     // 메인룸부터 연결되어 있는 방 순서대로 차례대로
+        for(int x = 0; x < randomMap.gridMap.Width; x++)
         {
-            // 먼저 어떤 방을 생성할지 선택함
-
-            // 출구 개수와 만족하는 방리스트를 따로 만듬
-            List<ExitDirection> upDir = new();
-            List<ExitDirection> downDir = new();
-            List<ExitDirection> rightDir = new();
-            List<ExitDirection> leftDir = new();
-            foreach (var dir in sortList[i].connectedExit)
+            for(int y = 0; y < randomMap.gridMap.Height; y++)
             {
-                switch (dir.Item2)
-                {
-                    case ExitDirection.Up:
-                        upDir.Add(dir.Item2);
-                        break;
-                    case ExitDirection.Left:
-                        leftDir.Add(dir.Item2);
-                        break;
-                    case ExitDirection.Right:
-                        rightDir.Add(dir.Item2);
-                        break;
-                    case ExitDirection.Down:
-                        downDir.Add(dir.Item2);
-                        break;
-                }   
-            }
 
-            Debug.Log($"{i}번째 방은 UP : {upDir.Count}, Left : {leftDir.Count}, Down : {downDir.Count} ,right : {rightDir.Count}");
-            List<SampleRoomData> canBuildRoomList = new();
-
-            foreach (SampleRoomData roomData in roomSamplesWithExit) 
-            {
-                // 샘플에서 각 방향 출구 개수를 비교해서 그 이상인 방들만 걸러냄(구현 가능한 방들만 꺼내기)
-                if(roomData.GetExitCount(ExitDirection.Up) >= upDir.Count && roomData.GetExitCount(ExitDirection.Down) >= downDir.Count &&
-                    roomData.GetExitCount(ExitDirection.Left) >= leftDir.Count && roomData.GetExitCount(ExitDirection.Right) >= rightDir.Count)
+                if (randomMap.gridMap.mapGrid[x,y] != null)
                 {
-                    canBuildRoomList.Add(roomData);
+                    // 방 선택하는 함수
+                    GenerateRoom(roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length -1)], new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize));
                 }
-                
             }
-            if(!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
-
-            // 배치 가능한 방들 중 랜덤으로 하나 선택
-            SampleRoomData targetRoom = canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
-
-            SetRoomAnchor(cursor, targetRoom, ref roomAnchor, ref roomsSize);       // 첫 방은 0,0에서 시작
-
-            Debug.Log($"{i}번째 방 생성 시도");
-
-            cursor = new Vector3Int((int) sortList[i].CenterX, (int)sortList[i].CenterY);       // 표시 잘되나 임시로 만든 것
-
-            GenerateRoom(targetRoom, cursor);           // 생성
-            
-
-            // 커서는 다음 위치로 이동(어디로? 어떻게 다시 돌아오지?)
         }
     }
 
-    void Test(Room room, Vector3Int cursor)
+
+
+    //public void SetupRooms()
+    //{
+    //    // roomSamplesWithExit 방 샘플
+    //    // randomMap 랜덤 맵
+
+    //    // roomlist의 두번째는 X값 기준으로 되어 있음. 그러므로 연결된 방 기준으로 다시 정렬
+        
+    //    randomMap.SortingRoomList(sortList, randomMap.roomList[0]);
+
+
+    //    List<Vector3Int> roomAnchor = new();        // 방을 생성할 기준(모든 방 프리펩은 0,0이 시작점이여야 함)
+    //    List<Vector3Int> roomsSize = new();         // 방의 사이즈들
+
+
+
+    //    for(int i = 0; i < sortList.Count; i++)     // 메인룸부터 연결되어 있는 방 순서대로 차례대로
+    //    {
+    //        // 먼저 어떤 방을 생성할지 선택함
+
+    //        // 출구 개수와 만족하는 방리스트를 따로 만듬
+    //        List<ExitDirection> upDir = new();
+    //        List<ExitDirection> downDir = new();
+    //        List<ExitDirection> rightDir = new();
+    //        List<ExitDirection> leftDir = new();
+    //        foreach (var dir in sortList[i].connectedExit)
+    //        {
+    //            switch (dir.Item2)
+    //            {
+    //                case ExitDirection.Up:
+    //                    upDir.Add(dir.Item2);
+    //                    break;
+    //                case ExitDirection.Left:
+    //                    leftDir.Add(dir.Item2);
+    //                    break;
+    //                case ExitDirection.Right:
+    //                    rightDir.Add(dir.Item2);
+    //                    break;
+    //                case ExitDirection.Down:
+    //                    downDir.Add(dir.Item2);
+    //                    break;
+    //            }   
+    //        }
+
+    //        Debug.Log($"{i}번째 방은 UP : {upDir.Count}, Left : {leftDir.Count}, Down : {downDir.Count} ,right : {rightDir.Count}");
+    //        List<SampleRoomData> canBuildRoomList = new();
+
+    //        foreach (SampleRoomData roomData in roomSamplesWithExit) 
+    //        {
+    //            // 샘플에서 각 방향 출구 개수를 비교해서 그 이상인 방들만 걸러냄(구현 가능한 방들만 꺼내기)
+    //            if(roomData.GetExitCount(ExitDirection.Up) >= upDir.Count && roomData.GetExitCount(ExitDirection.Down) >= downDir.Count &&
+    //                roomData.GetExitCount(ExitDirection.Left) >= leftDir.Count && roomData.GetExitCount(ExitDirection.Right) >= rightDir.Count)
+    //            {
+    //                canBuildRoomList.Add(roomData);
+    //            }
+                
+    //        }
+    //        if(!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
+
+    //        // 배치 가능한 방들 중 랜덤으로 하나 선택
+    //        SampleRoomData targetRoom = canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
+
+    //        SetRoomAnchor(cursor, targetRoom, ref roomAnchor, ref roomsSize);       // 첫 방은 0,0에서 시작
+
+    //        Debug.Log($"{i}번째 방 생성 시도");
+
+    //        cursor = new Vector3Int((int) sortList[i].CenterX, (int)sortList[i].CenterY);       // 표시 잘되나 임시로 만든 것
+
+    //        GenerateRoom(targetRoom, cursor);           // 생성
+            
+    //        // 커서는 다음 위치로 이동(어디로? 어떻게 다시 돌아오지?)
+    //    }
+    //}
+
+    void Test(OldRoom room, Vector3Int cursor)
     {
         Vector3Int tempCursor = cursor;
 
@@ -269,8 +269,8 @@ public class RoomGenerator : MonoBehaviour
         }
     }
 
-    // 첫번째 방을 선택한 후에 연결된 자식들 대상으로 다시 실행하기
 
+    // 첫번째 방을 선택한 후에 연결된 자식들 대상으로 다시 실행하기
     void SetRoomAnchor(Vector3Int cursor, SampleRoomData roomData, ref List<Vector3Int> anchors, ref List<Vector3Int> sizes)
     {
         anchors.Add(cursor);

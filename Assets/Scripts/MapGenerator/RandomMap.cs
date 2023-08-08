@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static RandomMap;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class Room
+public class OldRoom
 {
     public List<Node> nodes = new List<Node>();
-    public List<Room> connectedRooms = new List<Room>();
-    public List<(Room, ExitDirection)> connectedExit = new();
+    public List<OldRoom> connectedRooms = new List<OldRoom>();
+    public List<(OldRoom, ExitDirection)> connectedExit = new();
 
     public int index;
 
@@ -76,7 +77,7 @@ public class Room
         if (!isAccessibleMainRoom)
         {
             isAccessibleMainRoom = true;
-            foreach (Room room in connectedRooms)
+            foreach (OldRoom room in connectedRooms)
             {
                 if (!room.isAccessibleMainRoom)
                 {
@@ -86,7 +87,7 @@ public class Room
         }
     }
 
-    public static void ConnectRooms(Room rA, Room rB)
+    public static void ConnectRooms(OldRoom rA, OldRoom rB)
     {
         // 연결할 때 둘 중 하나가 메인 룸과 연결이 되어 있으면 둘다 연결 설정
         if (rA.isAccessibleMainRoom)
@@ -107,7 +108,7 @@ public class Room
     /// </summary>
     /// <param name="targetRoom">확인할 방</param>
     /// <returns>참이면 연결 되어 있음, 거짓이면 연결 안되어 있음</returns>
-    public bool IsConnected(Room targetRoom)
+    public bool IsConnected(OldRoom targetRoom)
     {
         return connectedRooms.Contains(targetRoom);
     }
@@ -120,7 +121,7 @@ public class Room
     public void SetExitList(ref int width, ref int height)
     {
         ExitDirection exitDir = ExitDirection.Up;
-        foreach (Room room in connectedRooms)
+        foreach (OldRoom room in connectedRooms)
         {
             if(room.CenterY > CenterY)      // 룸이 위쪽에 있고
             {
@@ -164,7 +165,6 @@ public class Room
             }
 
             connectedExit.Add((room, exitDir));         // 리스트 순서(연결되어 있는 방과 index가 같아야됨)대로 저장
-            Debug.Log($"{exitDir}");
         }
     }
 }
@@ -249,7 +249,7 @@ public class RandomMap
     /// <summary>
     /// Room(Node의 리스트)들을 가지고 있는 리스트
     /// </summary>
-    public List<Room> roomList = new List<Room>();
+    public List<OldRoom> roomList = new List<OldRoom>();
 
     /// <summary>
     /// 맵 위치를 정렬 시킬 그리드
@@ -282,14 +282,14 @@ public class RandomMap
     
         GatherData(collectBoxBoolCount);
 
-        roomList = new List<Room>();
+        roomList = new List<OldRoom>();
 
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
                 List<Node> nodeList = NearNodeList(x, y);
-                Room tempRoom = new();
+                OldRoom tempRoom = new();
                 tempRoom.nodes = nodeList;
                 tempRoom.SetXYData();      // room 클래스에 최소 좌표값 최대 좌표값을 동기화 한다.
 
@@ -313,8 +313,7 @@ public class RandomMap
 
         GatherData(collectBoxBoolCount);
 
-
-        roomList = new List<Room>();
+        roomList = new List<OldRoom>();
 
         for (int y = 0; y < height; y++)
         {
@@ -325,7 +324,7 @@ public class RandomMap
 
                 if (nodeList != null)       // 정상적으로 검사를 마치면
                 {
-                    Room tempRoom = new();
+                    OldRoom tempRoom = new();
 
                     tempRoom.nodes = nodeList;
                     tempRoom.SetXYData();      // room 클래스에 최소 좌표값 최대 좌표값을 동기화 한다.
@@ -339,15 +338,17 @@ public class RandomMap
 
         LimitRoomCount(roomCount);
 
-        roomList.Sort((x, y) => x.CenterX < y.CenterX ? -1 : 1);      // 가장 왼쪽부터 오른쪽으로 정렬
+        roomList.Sort((x, y) => x.CenterX < y.CenterX ? -1 : 1);      // 가장 왼쪽부터 오른쪽으로 정렬(아직 방 연결 안됨)
 
         roomList[0].isMainRoom = true;                          // 가장 왼쪽에 있는 방을 메인 방으로 설정(시작 방)
         roomList[0].isAccessibleMainRoom = true;
 
-        ConnectNearRoom(roomList);
+        ConnectNearRoom(roomList);              // 방 연결 하기
 
         widthCount = 0;
         heightCount = 0;
+
+        SortByAccessMainRoom(ref roomList);
 
         CheckExitDir(roomList);
 
@@ -355,7 +356,7 @@ public class RandomMap
         Vector2Int targetGrid = Vector2Int.zero;
         Vector2Int stand = Vector2Int.zero;
 
-        // 모든 방을 -1으로 초기화
+        // 모든 Grid을 -1으로 초기화
         for (int i = 0; i < widthCount; i++)
         {
             for (int j = 0; j < heightCount; j++)
@@ -366,14 +367,33 @@ public class RandomMap
 
         //SetGridMap(mapGrid, targetGrid, stand);
 
-        foreach (Room tempRoom in roomList)     // 디버그용
+        foreach (OldRoom tempRoom in roomList)     // 디버그용
         {
             //Debug.Log($"{tempRoom.connectedRooms.Count}");
-            foreach (Room tempBRoom in tempRoom.connectedRooms)
+            foreach (OldRoom tempBRoom in tempRoom.connectedRooms)
             {
                 Debug.DrawLine(new Vector3(tempRoom.CenterX, tempRoom.CenterY), new Vector3(tempBRoom.CenterX, tempBRoom.CenterY), Color.red, 8f);
             }
         }
+    }
+
+    void SortByAccessMainRoom(ref List<OldRoom> rooms)
+    {
+        List<OldRoom> sortList = new();
+        sortList.Add(rooms[0]);
+        for(int i =0; i < rooms.Count; i++)
+        {
+            OldRoom target = rooms[i];
+            for(int j = 0; j < target.connectedExit.Count; j++)
+            {
+                if (!sortList.Contains(target.connectedExit[j].Item1))
+                {
+                    sortList.Add(target.connectedExit[j].Item1);
+                }
+            }
+        }
+
+        rooms = sortList;
     }
 
     void SetGridMap(int[,] mapGrid, Vector2Int targetGrid, Vector2Int stand)
@@ -479,10 +499,10 @@ public class RandomMap
     /// 리스트에 있는 방에 대해서 연결되어 있는 방들에 대해 방향을 지정함, 추가로 방향에 따라 가로 세로 방 Count도 계산함
     /// </summary>
     /// <param name="rooms">확인할 room 리스트들</param>
-    public void CheckExitDir(List<Room> rooms)
+    public void CheckExitDir(List<OldRoom> rooms)
     {
         int i = 0;
-        foreach(Room room in rooms)
+        foreach(OldRoom room in rooms)
         {
             Debug.Log($"{i}번째 방");
             room.SetExitList(ref widthCount, ref heightCount);
@@ -493,13 +513,13 @@ public class RandomMap
     /// <summary>
     /// 메인룸 부터(0번째는 가장 왼쪽에 있는 메인룸) 가장 가까운 방과 연결하기(거짓이면 일단 근처 1개씩, 참이면 메인룸과 연결확인 후 연결)
     /// </summary>
-    public void ConnectNearRoom(List<Room> allRooms, bool onceChecked = false)
+    public void ConnectNearRoom(List<OldRoom> allRooms, bool onceChecked = false)
     {
-        Room tempA = new();
-        Room tempB = new();
+        OldRoom tempA = new();
+        OldRoom tempB = new();
 
-        List<Room> roomListA = new();
-        List<Room> roomListB = new();
+        List<OldRoom> roomListA = new();
+        List<OldRoom> roomListB = new();
 
         bool isPossible = false;
         float nearDistance = float.MaxValue;
@@ -520,7 +540,7 @@ public class RandomMap
             //    }
             //}
 
-            foreach (Room temp in allRooms)      // 모든 방을 검사하면서 
+            foreach (OldRoom temp in allRooms)      // 모든 방을 검사하면서 
             {
                 if (temp.isAccessibleMainRoom)         // 메인 룸이랑 연결 되어 있는지 확인 후 연결 되어 있으면 A리스트 아니면 B리스트
                 {
@@ -538,7 +558,7 @@ public class RandomMap
             roomListB = allRooms;
         }
 
-        foreach (Room roomA in roomListA)
+        foreach (OldRoom roomA in roomListA)
         {
             if (!onceChecked) 
             {
@@ -548,7 +568,7 @@ public class RandomMap
                 continue;                                   // 패스하기
             }
 
-            foreach(Room roomB in roomListB)
+            foreach(OldRoom roomB in roomListB)
             {
                 if (roomA == roomB) continue;   // A와 B가 같은 방이면 스킵(자기자신)
                 
@@ -569,17 +589,17 @@ public class RandomMap
             }
             else if(isPossible && !onceChecked)                 // 두 방이 연결 가능하면 연결하기, 처음 모든 방을 비교할 때
             {
-                Room.ConnectRooms(tempA, tempB);
+                OldRoom.ConnectRooms(tempA, tempB);
             }
         }
 
         if(isPossible && onceChecked)           // 서로 다른 Room리스트에서 가까운 방을 연결하기
         {
-            Room.ConnectRooms(tempA, tempB);
+            OldRoom.ConnectRooms(tempA, tempB);
         }
 
         bool isAllRoomConnectedWithMainRoom = true;
-        foreach(Room temp in allRooms)
+        foreach(OldRoom temp in allRooms)
         {
             if(!temp.isAccessibleMainRoom)
             {
@@ -590,10 +610,10 @@ public class RandomMap
         if(!onceChecked)
         {         
             // 방과 방 연결된 선 그리는 디버그
-            foreach (Room tempRoom in allRooms)
+            foreach (OldRoom tempRoom in allRooms)
             {
                 //Debug.Log($"{tempRoom.connectedRooms.Count}");
-                foreach (Room tempBRoom in tempRoom.connectedRooms)
+                foreach (OldRoom tempBRoom in tempRoom.connectedRooms)
                 {
                     Debug.DrawLine(new Vector3(tempRoom.CenterX - 1, tempRoom.CenterY - 1), new Vector3(tempBRoom.CenterX - 1, tempBRoom.CenterY - 1), Color.blue, 8f);
                 }
@@ -762,12 +782,12 @@ public class RandomMap
     /// </summary>
     /// <param name="sortRoom">하나씩 정렬해서 새로 반환할 리스트</param>
     /// <param name="targetRoom">정렬 할 대상(중복이면 추가 안함)</param>
-    public void SortingRoomList(List<Room> sortRoom, Room targetRoom)
+    public void SortingRoomList(List<OldRoom> sortRoom, OldRoom targetRoom)
     {
         targetRoom.index = roomIndex;
         sortRoom.Add(targetRoom);
 
-        foreach (Room room in targetRoom.connectedRooms)
+        foreach (OldRoom room in targetRoom.connectedRooms)
         {
             if (!sortRoom.Contains(room))
             {
@@ -786,7 +806,7 @@ public class RandomMap
     {
         Debug.Log($"총 {roomList.Count}개 방");
         int i = 0;
-        foreach(Room room in roomList)
+        foreach(OldRoom room in roomList)
         {
             Debug.Log($"{i}번째 {room.nodes.Count}개 방");
         }
@@ -796,7 +816,7 @@ public class RandomMap
     {
         List<Vector3Int> result = new();
 
-        foreach(Room room in roomList)
+        foreach(OldRoom room in roomList)
         {
             result.Add(new Vector3Int((int) room.CenterX, (int) room.CenterY));
         }

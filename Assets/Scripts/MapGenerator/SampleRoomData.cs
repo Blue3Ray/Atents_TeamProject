@@ -11,14 +11,6 @@ public enum RoomLayer
     Exit
 }
 
-public enum ExitDirection
-{
-    Up = 0,
-    Left,
-    Right,
-    Down
-}
-
 public struct Exit
 {
     public Vector3Int Pos;

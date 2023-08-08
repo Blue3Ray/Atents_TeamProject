@@ -6,19 +6,19 @@ using UnityEngine.UI;
 
 public class ExitButton : MonoBehaviour
 {
-	public Action IsExitMarket;
+	//public Action IsExitMarket;
 
-	Button buyButton;
+	//Button buyButton;
 
-	private void Awake()
-	{
-		buyButton = transform.GetComponent<Button>();
-		buyButton.onClick.AddListener(ExitMarket);
-	}
+	//private void Awake()
+	//{
+	//	buyButton = transform.GetComponent<Button>();
+	//	buyButton.onClick.AddListener(ExitMarket);
+	//}
 
-	private void ExitMarket()
-	{
-		IsExitMarket?.Invoke();
-		Debug.Log("눌림");
-	}
+	//private void ExitMarket()
+	//{
+	//	IsExitMarket?.Invoke();
+	//	Debug.Log("눌림");
+	//}
 }

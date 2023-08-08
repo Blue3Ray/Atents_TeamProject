@@ -97,12 +97,18 @@ public class TalkCanvas : MonoBehaviour,IPointerClickHandler
 			contextIndex = 0;
 		}
 
-		if(finalDialogues[eventIndex].EventDialogues[talkIndex].contexts.Length <= contextIndex)
+		if (talkIndex < finalDialogues[eventIndex].EventDialogues.Count)
 		{
-			SetIndex();
-			return;
+			if (finalDialogues[eventIndex].EventDialogues[talkIndex].contexts.Length <= contextIndex)
+			{
+				SetIndex();
+				return;
+			}
 		}
-
+		else
+		{
+			CanvasLineOff();
+		}
 		OnTalking();
 	}
 

@@ -1225,7 +1225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventIndex: 0
-  talkAnimSpeed: 0.1
+  talkAnimSpeed: 0.01
 --- !u!61 &3399743907663354077
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -556,10 +556,11 @@ public class GridMap
     {
         Room tempRoom = room;
 
-        if (cursor.y >= mapGrid.GetLength(1) || cursor.x >= mapGrid.GetLength(0) || cursor.x < 0 || cursor.y < 0)
-        {
-            int aaa = 0;
-        }
+        //if (cursor.y >= mapGrid.GetLength(1) || cursor.x >= mapGrid.GetLength(0) || cursor.x < 0 || cursor.y < 0)
+        //{
+        // 디버그용
+        //    int aaa = 0;
+        //}
 
         mapGrid[cursor.x, cursor.y] = tempRoom;
 

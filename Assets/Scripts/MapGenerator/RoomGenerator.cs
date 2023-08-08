@@ -123,7 +123,7 @@ public class RoomGenerator : MonoBehaviour
                 if (randomMap.gridMap.mapGrid[x,y] != null)
                 {
                     // 방 선택하는 함수
-                    GenerateRoom(roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length -1)], new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize));
+                    GenerateRoom(new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize), roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length - 1)]);
                 }
             }
         }
@@ -333,9 +333,9 @@ public class RoomGenerator : MonoBehaviour
             isY = true;
             if (startPos.Pos.x != endPos.Pos.x) targetPos = halfPos;
         }
-
+        if (isY) isY = false;
         GeneratePass(cursor, PassWayType.UpRight, 0);
-
+        //GenerateRoom(cursor, roomSamplesWithExit[2]);
 
         //int i = 0;      // 통로 만드는 호출 개수 제한(무한반복 대비)
 
@@ -386,6 +386,8 @@ public class RoomGenerator : MonoBehaviour
 
         SampleRoomData targetData = passWaySamples[(int) passWayType];
 
+        Debug.Log(targetData.min);
+
         for (int i = 0; i < targetData.Height; i++)    // 문 높이 만큼
         {
             for (int j = 0; j < targetData.Width; j++)  // 문 너비 만큼
@@ -396,12 +398,12 @@ public class RoomGenerator : MonoBehaviour
                 if (targetData.mapLayers[(int) MapLayer.PlatForm].HasTile(targetDrawPos))
                 {
                     // 플랫폼 칸일 때
-                    m_tileMaps[(int)MapLayer.PlatForm].SetTile(cursorPos + plusPos, targetData.mapLayers[(int)MapLayer.PlatForm].GetTile(plusPos));
+                    m_tileMaps[(int)MapLayer.PlatForm].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[(int)MapLayer.PlatForm].GetTile(targetDrawPos));
                 }
                 else if (targetData.mapLayers[(int)MapLayer.HalfPlatForm].HasTile(targetDrawPos))
                 {
                     // 반플랫폼 칸일 때
-                    m_tileMaps[(int)MapLayer.HalfPlatForm].SetTile(cursorPos + plusPos, targetData.mapLayers[(int)MapLayer.HalfPlatForm].GetTile(plusPos));
+                    m_tileMaps[(int)MapLayer.HalfPlatForm].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[(int)MapLayer.HalfPlatForm].GetTile(targetDrawPos));
                 }
                 else
                 {
@@ -418,7 +420,7 @@ public class RoomGenerator : MonoBehaviour
     /// </summary>
     /// <param name="targetRoomData">맵 생성할 샘플 데이터</param>
     /// <param name="index">샘플에서 생성할 레이어</param>
-    void GenerateRoom(SampleRoomData targetRoomData, Vector3Int cursor)
+    void GenerateRoom(Vector3Int cursor, SampleRoomData targetRoomData)
     {
         //foreach (List<Vector3Int> poses in targetRoomData.tilesPos)
         for(int i = 0; i < targetRoomData.tilesPos.Count - 1; i++)          // 레이어 별로 나눔(마지막꺼는 출구 레이어라 표시안함

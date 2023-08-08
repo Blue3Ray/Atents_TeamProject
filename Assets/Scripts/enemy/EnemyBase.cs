@@ -22,6 +22,8 @@ public class EnemyBase : MonoBehaviour
     public float maxexp = 0;
     public float df = 50;
     
+   
+    
     
 
     SpriteRenderer spriteRenderer;

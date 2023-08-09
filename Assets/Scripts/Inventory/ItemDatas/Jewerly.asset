@@ -18,3 +18,4 @@ MonoBehaviour:
   price: 30
   maxStackCount: 10
   itemDescription: "\uACF5\uACA9\uB825\uC744 \uC62C\uB824\uC900\uB2E4."
+  modelPrefab: {fileID: 1326992729151916657, guid: 6d47f36ce68ee45458387d9b17c19761, type: 3}

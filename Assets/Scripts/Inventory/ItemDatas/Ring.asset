@@ -18,3 +18,4 @@ MonoBehaviour:
   price: 1000
   maxStackCount: 2
   itemDescription: "\uD761\uD608\uC774 \uAC00\uB2A5\uD55C \uBC18\uC9C0"
+  modelPrefab: {fileID: 9104961183486734662, guid: 1833da20a8fb3fd4588622c394a7e667, type: 3}

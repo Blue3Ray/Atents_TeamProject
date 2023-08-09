@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
         playerTest = FindObjectOfType<PlayerJM_test>();
         if(playerTest != null)
         {
-            Debug.Log("Àß Ã£À½");
+            playerTest.inven = new Inventory(7);
         }
 
 	}

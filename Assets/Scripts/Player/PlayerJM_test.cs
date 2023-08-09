@@ -70,8 +70,12 @@ public class PlayerJM_test : MonoBehaviour
 
     private void Start()
     {
-		inven = new Inventory(7);
-        rb = GetComponent<Rigidbody2D>();
+		//GameManager에서 ItemData 캐싱 - PlayerTest에서 inventory 생성 - InventoryUI의 start함수 순서여야 하는데
+        //두 세 번째가 서로 바뀌면서 UI에서 player의 inven이 생성 안된 채로 접근한다.
+        //따라서 여기에 있던 밑에 코드를
+		//inven = new Inventory(7);
+        //gamemanager에서 player를 찾은 후(awake에서 이미 itemData는 캐싱함)에 접근해줬다.
+		rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
     }
 

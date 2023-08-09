@@ -6,7 +6,11 @@ public enum ItemCode
 {
     Potion = 0,
     Jewerly,
-    Ring
+    Ring,
+    FireSword,
+    WaterSword,
+    WindSword,
+    ElectronicSword
 }
 
 public enum ItemSortBy

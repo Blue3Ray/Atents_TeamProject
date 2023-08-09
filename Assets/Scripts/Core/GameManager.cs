@@ -15,7 +15,7 @@ public enum Element : byte
 
 public class GameManager : Singleton<GameManager>
 {
-	public PlayerJM_test playerTest;
+	public PlayerJM playerTest;
     
     ItemDataManager itemDataManager;
     
@@ -32,7 +32,7 @@ public class GameManager : Singleton<GameManager>
 	protected override void OnInitalize()
 	{
 		base.OnInitalize();
-        playerTest = FindObjectOfType<PlayerJM_test>();
+        playerTest = FindObjectOfType<PlayerJM>();
         if(playerTest != null)
         {
             playerTest.inven = new Inventory(7);

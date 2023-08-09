@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerJM_test : MonoBehaviour
+public class PlayerJM_Test : MonoBehaviour
 {
     private ActionControl inputActions;
     private Rigidbody2D rb;

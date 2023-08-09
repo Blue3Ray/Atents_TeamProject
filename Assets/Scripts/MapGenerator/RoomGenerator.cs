@@ -312,7 +312,7 @@ public class RoomGenerator : MonoBehaviour
     //    return result;
     //}
 
-    public void GeneratePassway(Exit startPos, Exit endPos)
+    public void GeneratePassway(PassWay startPos, PassWay endPos)
     {
         cursor = startPos.Pos;
 
@@ -334,7 +334,15 @@ public class RoomGenerator : MonoBehaviour
             if (startPos.Pos.x != endPos.Pos.x) targetPos = halfPos;
         }
         if (isY) isY = false;
-        GeneratePass(cursor, PassWayType.UpRight, 0);
+        //cursor += GeneratePass(new Exit(cursor, ExitDirection.Right), PassWayType.LeftRight);
+        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Left), PassWayType.LeftRight);
+        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Left), PassWayType.RightDown);
+        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Down), PassWayType.UpDown, 2);
+        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Down), PassWayType.UpRight);
+        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftRight);
+        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftRight, 1);
+        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftUp);
+
         //GenerateRoom(cursor, roomSamplesWithExit[2]);
 
         //int i = 0;      // 통로 만드는 호출 개수 제한(무한반복 대비)
@@ -377,40 +385,110 @@ public class RoomGenerator : MonoBehaviour
         return result;
     }
 
-    Vector3Int GeneratePass(Vector3Int cursorPos, PassWayType passWayType, int drawOverCount)
+    Vector3Int GeneratePass(PassWay passPos, PassWayType passWayType, int drawOverCount = 0)
     {
-        Vector3Int result = Vector3Int.zero;
-        //int passWayType = 0;      // 좌우로 그릴건지 상하로 그릴건지 구분(샘플 번호임, 0 : X방향, 1 : Y방향)
-
-        Vector2Int orin = Vector2Int.zero;
+        Vector3Int cursorPos = passPos.Pos;
 
         SampleRoomData targetData = passWaySamples[(int) passWayType];
 
-        Debug.Log(targetData.min);
+        // 그려야 할 방향이 방 크기보다 작으면(passWaytype이 0 또는 1인경우만)
+        // 그 방향의 작은 만큼 높이 또는 너비를 줄여서 그리기
+        Vector3Int decreaseFromMin = Vector3Int.zero;
+        Vector3Int decreaseFromMax = Vector3Int.zero;
 
-        for (int i = 0; i < targetData.Height; i++)    // 문 높이 만큼
+        if(passWayType == PassWayType.UpDown)
         {
-            for (int j = 0; j < targetData.Width; j++)  // 문 너비 만큼
+            if(passPos.Direction == ExitDirection.Up) 
+            {
+                decreaseFromMax.y = drawOverCount;
+            }
+            else
+            {
+                decreaseFromMin.y = drawOverCount;
+            }
+        }
+        else if(passWayType == PassWayType.LeftRight)
+        {
+            if(passPos.Direction == ExitDirection.Right)
+            {
+                decreaseFromMax.x = drawOverCount;
+            }
+            else
+            {
+                decreaseFromMin.x = drawOverCount;
+            }
+        }
+
+
+        for (int i = 0 + decreaseFromMin.y; i < targetData.Height - decreaseFromMax.y; i++)    // 문 높이 만큼
+        {
+            for (int j = +decreaseFromMin.x; j < targetData.Width - decreaseFromMax.x; j++)  // 문 너비 만큼
             {
                 Vector3Int plusPos = new Vector3Int(j, i);
                 Vector3Int targetDrawPos = targetData.min + plusPos;
 
+                int targetLayer = (int) MapLayer.Background;
+
+                // 배경
+                m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
+
                 if (targetData.mapLayers[(int) MapLayer.PlatForm].HasTile(targetDrawPos))
                 {
                     // 플랫폼 칸일 때
-                    m_tileMaps[(int)MapLayer.PlatForm].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[(int)MapLayer.PlatForm].GetTile(targetDrawPos));
+                    targetLayer = (int)MapLayer.PlatForm;
                 }
                 else if (targetData.mapLayers[(int)MapLayer.HalfPlatForm].HasTile(targetDrawPos))
                 {
                     // 반플랫폼 칸일 때
-                    m_tileMaps[(int)MapLayer.HalfPlatForm].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[(int)MapLayer.HalfPlatForm].GetTile(targetDrawPos));
+                    targetLayer = (int)MapLayer.HalfPlatForm;
+                }
+                
+                 m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
+            }
+        }
+
+        // 다음 커서 위치를 계산하기위해 움직여야 할 위치 값을 반환하는 변수
+        Vector3Int result = Vector3Int.zero;
+
+        switch (passWayType)
+        {
+            case PassWayType.UpDown:
+                if (passPos.Direction == ExitDirection.Up)
+                {
+                    result.y = targetData.Height;
                 }
                 else
                 {
-                    //m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);   // 빈 타일이면 null(빈타일)로 바꾸기
+                    result.y = -targetData.Height;
                 }
-            }
+                break;
+            case PassWayType.LeftRight:
+                if (passPos.Direction == ExitDirection.Right) result.x = targetData.Width;
+                else result.x = -targetData.Width;
+                break;
+            case PassWayType.UpRight:
+                if (passPos.Direction == ExitDirection.Down) result.x = targetData.Width;
+                else result.y = targetData.Height;
+                break;
+            case PassWayType.RightDown:
+                if (passPos.Direction == ExitDirection.Left) result.y = -targetData.Height;
+                else result.x = targetData.Width;
+                break;
+            case PassWayType.DownLeft:
+                if (passPos.Direction == ExitDirection.Right) result.y = -targetData.Height;
+                else result.x = -targetData.Width;
+                break;
+            case PassWayType.LeftUp:
+                if (passPos.Direction == ExitDirection.Right) result.y = targetData.Height;
+                else result.x = -targetData.Width;
+                break;
         }
+
+        // 통로를 짧게 그린만큼 다음 그릴 지점도 위치 반영
+        //decreaseFromMin;
+        result -= decreaseFromMax;
+        //decreaseFromMax;
+        result += decreaseFromMin;
 
         return result;
     }
@@ -437,7 +515,7 @@ public class RoomGenerator : MonoBehaviour
 
     void GenerateExit(SampleRoomData targetRoomData, ExitDirection exitDir)
     {
-        foreach(Exit temp in targetRoomData.exitPos)
+        foreach(PassWay temp in targetRoomData.exitPos)
         {
             if (temp.Direction != exitDir) continue;            // 만약 선택한 출입구가 받은 파라미터 방향과 같지 않으면 스킵
             int x = 0, y = 0;   // 방향이 좌우에 따라 출입구 그려지는 시작위치

@@ -750,7 +750,7 @@ public class RandomMapGenerator
 
         gridMap = new GridMap(size);
 
-        Debug.Log($"¸Ê Å©±â : {size}");
+        //Debug.Log($"¸Ê Å©±â : {size}");
 
         gridMap.MakeGridMap(roomMap.roomList[0], ExitDirection.None);
 

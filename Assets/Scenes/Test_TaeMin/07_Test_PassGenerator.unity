@@ -869,7 +869,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomGenerator: {fileID: 1068360426}
-  exitTileMap: {fileID: 1582710325}
 --- !u!1 &1068360425
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,7 +881,7 @@ GameObject:
   - component: {fileID: 1068360427}
   - component: {fileID: 1068360426}
   m_Layer: 0
-  m_Name: Grid (1)
+  m_Name: Test Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -903,8 +902,8 @@ MonoBehaviour:
   backgroundTile: {fileID: 11400000, guid: e096560c386ca154fa0101b53d52a808, type: 2}
   exitTile: {fileID: 11400000, guid: 928358ebd5abc9245b75db1a78d91ce5, type: 2}
   passWaySamples:
-  - {fileID: 1635233068044210888, guid: ebcba8e89a2a7af42945e02d77baf5c0, type: 3}
-  - {fileID: 5364043125794864837, guid: 94a5b310abb515349ad736ca7a72671f, type: 3}
+  - {fileID: 5364043125794864837, guid: 7ea1171ced511414bacd4b9bb89dff1c, type: 3}
+  - {fileID: 1635233068044210888, guid: de7a4d49559a62b4c8ee565cadc49e58, type: 3}
   - {fileID: 4749757813145453450, guid: 2b8638866d8a3b14f8bb2425d9488055, type: 3}
   - {fileID: 1969896381560294265, guid: 0e95cc30f1e5a034e964f57dc79428de, type: 3}
   - {fileID: 1696334468453365824, guid: c1de23d7612ae7d479086d30a8ed6d9c, type: 3}

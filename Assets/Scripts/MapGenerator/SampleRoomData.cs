@@ -11,12 +11,12 @@ public enum RoomLayer
     Exit
 }
 
-public struct Exit
+public struct PassWay
 {
     public Vector3Int Pos;
     public ExitDirection Direction;
 
-    public Exit(Vector3Int pos, ExitDirection dir)
+    public PassWay(Vector3Int pos, ExitDirection dir)
     {
         Pos = pos;
         Direction = dir;
@@ -29,7 +29,7 @@ public class SampleRoomData : MonoBehaviour
 
     public List<List<Vector3Int>> tilesPos;
 
-    public List<Exit> exitPos;
+    public List<PassWay> exitPos;
 
     public Vector3Int min;
     public Vector3Int max;
@@ -58,7 +58,7 @@ public class SampleRoomData : MonoBehaviour
         //height = mapLayers[1].size.y;
         //width = mapLayers[1].size.x;
 
-        CheckExitPos(mapLayers[mapLayers.Count - 1]);
+        if(mapLayers.Count > 3) CheckExitPos(mapLayers[mapLayers.Count - 1]);
 
         maxSize = Height > Width ? Height:Width;
 
@@ -67,7 +67,7 @@ public class SampleRoomData : MonoBehaviour
 
     void CheckExitPos(Tilemap targetTileMap)
     {
-        exitPos = new List<Exit>();
+        exitPos = new List<PassWay>();
         for (int y = targetTileMap.cellBounds.yMin; y < targetTileMap.cellBounds.yMax; y++)
         {
             for (int x = targetTileMap.cellBounds.xMin; x < targetTileMap.cellBounds.xMax; x++)
@@ -84,7 +84,7 @@ public class SampleRoomData : MonoBehaviour
                         Debug.LogWarning($"({x}, {y}) 출구 위치가 이상합니다. 샘플 데이터({this.gameObject.name}) 확인 필요");
                     }
                     //Debug.Log($"출구 위치 : {x}, {y}, {tempDir}");
-                    Exit tempExit = new Exit(new Vector3Int(x, y), tempDir);
+                    PassWay tempExit = new PassWay(new Vector3Int(x, y), tempDir);
                     exitPos.Add(tempExit);
                 }
             }
@@ -130,7 +130,7 @@ public class SampleRoomData : MonoBehaviour
     public int GetExitCount(ExitDirection dir)
     {
         int result = 0;
-        foreach(Exit exit in exitPos)
+        foreach(PassWay exit in exitPos)
         {
             if(exit.Direction == dir)
             {

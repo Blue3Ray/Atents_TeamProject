@@ -34,6 +34,8 @@ class NodeMap
     int width;
     int height;
 
+
+
     /// <summary>
     /// 초기화 함수
     /// </summary>
@@ -52,9 +54,14 @@ class NodeMap
     /// <param name="fillRate">채우는 비율</param>
     public void RandomFillNodeInMap(float fillRate)
     {
+        //if (RoomGenerator.seed != null) RoomGenerator.seed = "";
+
+        //System.Random rand = new System.Random(RoomGenerator.seed.GetHashCode());
+
         for (int i = 0; i < mapNode.Length; i++)
         {
             mapNode[i] = new Node(
+                //(rand.Next(0, 100) < fillRate * 100),
                 (Random.Range(0.0f, 1.0f) < fillRate),       // fiilrate보다 작으면 true(빈칸) 아니면 false(검은칸)
                 new Vector2Int(i % width, i / height));          // 노드 위치는 
         }
@@ -724,6 +731,7 @@ public class RandomMapGenerator
     public GridMap gridMap;
 
     public List<Room> roomList;
+
 
 
     public void SetUp(int roomCount = 8, int width = 100, int height = 100, float mapFillRate = 0.46f, int collectNodeCount = 3)

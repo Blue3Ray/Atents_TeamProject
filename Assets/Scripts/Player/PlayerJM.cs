@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -25,6 +26,11 @@ public class PlayerJM : MonoBehaviour
     /// 플레이어의 캡슐 콜라이더
     /// </summary>
     private Collider2D playerCollider;
+
+    /// <summary>
+    /// 좌우 반전을 위해 스프라이트 렌더러를 캐싱할 변수
+    /// </summary>
+    SpriteRenderer spriteRenderer;
 
     /// <summary>
     /// 공격중인지 확인할 변수
@@ -73,6 +79,36 @@ public class PlayerJM : MonoBehaviour
     public float fallSpeed = -1.0f;
 
     /// <summary>
+    /// player의 hp
+    /// </summary>
+    float hp = 0.0f;
+    public float maxHp = 100;
+
+    /// <summary>
+    /// hp가 바뀔 때마다 hp를 invoke
+    /// </summary>
+    public Action<float> onHpChange;
+
+    /// <summary>
+    /// hp가 양수인지 확인해서 bool로 get할 수 있는 프로퍼티
+    /// </summary>
+    public bool IsAlive => hp > 0;
+    
+    public float HP
+    {
+        get => hp;
+        set
+        {
+            if (hp != value && IsAlive)
+            {
+                hp = Mathf.Max(0, value);
+				onHpChange?.Invoke(hp);
+			}
+        }
+    }
+
+
+    /// <summary>
     /// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
     /// </summary>
     Vector2 dir;
@@ -93,6 +129,8 @@ public class PlayerJM : MonoBehaviour
     readonly int Hash_Attack1 = Animator.StringToHash("Attack1");
     readonly int Hash_Attack2 = Animator.StringToHash("Attack2");
     readonly int Hash_Attack3 = Animator.StringToHash("Attack3");
+
+    int[] AttackHashes;
 
     private void OnEnable()
     {
@@ -120,6 +158,12 @@ public class PlayerJM : MonoBehaviour
     {
         inputActions = new ActionControl();
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        AttackHashes = new int[3];
+        AttackHashes[0] = Hash_Attack1;
+        AttackHashes[1] = Hash_Attack2;
+        AttackHashes[2] = Hash_Attack3;
+        HP = maxHp;
     }
 
     private void Start()
@@ -127,6 +171,15 @@ public class PlayerJM : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
         anim.SetFloat(Hash_AirSpeedY, fallSpeed);
+    }
+    private void Update()
+    {
+        transform.Translate(Time.deltaTime * moveSpeed * dir);
+
+        if (isAttacking)
+        {
+            AttackAction();
+        }
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -140,11 +193,17 @@ public class PlayerJM : MonoBehaviour
             anim.SetInteger(Hash_AnimState, 1);
         }
         dir = context.ReadValue<Vector2>();
+        if(dir.x < -0.1f)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if(dir.x > 0.1f)
+        {
+            spriteRenderer.flipX = false;
+        }
+        
 
-        //나중에 애니메이션 미러링을 할 때 필요합니다.
-        //다만 현재 아바타 설정이 되어 있어서 미러링이 안되므로
-        //휴머노이드 아바타 설정을 같이 해봐야할 것 같습니다!
-        anim.SetBool(Hash_IsLeft, dir.x < 0);
+
     }
 
     private void OnJump(InputAction.CallbackContext obj)
@@ -153,15 +212,6 @@ public class PlayerJM : MonoBehaviour
         {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
             anim.SetTrigger(Hash_Jump);
-        }
-    }
-    private void Update()
-    {
-        transform.Translate(Time.deltaTime * moveSpeed * dir);
-
-        if (isAttacking)
-        {
-            AttackAction();
         }
     }
 
@@ -188,7 +238,10 @@ public class PlayerJM : MonoBehaviour
 
     private void AttackAction()
     {
-        anim.SetTrigger(Hash_Attack1);
+        int randomAttackIndex;
+        randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
+        Debug.Log($"{randomAttackIndex}");
+		anim.SetTrigger(AttackHashes[randomAttackIndex]);
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.GetMask("Enemy"));
 

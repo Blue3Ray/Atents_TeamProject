@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +12,7 @@ public interface IHealth
 
     bool IsAlive { get; }
 
-    Action<float> onHealthChange { get; set; }
+    System.Action<float> onHealthChange { get; set; }
 
     void Die();
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +6,6 @@ using UnityEngine.InputSystem.Switch;
 public class TestPlayer : MonoBehaviour, IHealth, IMana 
 {
     ActionControl actions;
-    Leveling leveling;
 
     float hp = 100.0f;
     public float HP 
@@ -47,24 +45,50 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana
     public float MaxMP => maxMP;
 
 
-    public Action<float> onHealthChange 
+    public System.Action<float> onHealthChange 
     { 
         get;
         set;
     }
 
     public bool IsAlive => hp > 0;
-    public Action onDie { get; set; }
+    public System.Action onDie { get; set; }
 
     // 경험치 및 레벨 설정
     float experience = 0.0f;
+    public float Experience
+    {
+        get => experience;
+        set
+        {
+            experience = value;
+
+            if (experience >= experienceMax)
+            {
+                experience -= experienceMax;
+                level++;
+                Debug.Log($"Level up : {level}");
+            }
+            onChangeEx(experience, experienceMax, level);
+        }
+    }
     float experienceMax = 100.0f;
     int level = 1;
+    public int Level
+    {
+        get => level;
+        set
+        {
+            level = value;
+            // 레벨 상승시 발생할 이벤트들
+        }
+    }
+
+    public System.Action<float, float, int> onChangeEx;
 
     private void Awake()
     {
         actions= new ActionControl();
-        leveling = new Leveling();
     }
 
     private void Start()
@@ -79,7 +103,12 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana
 
     private void FixedUpdate()
     {
-        
+
+    }
+
+    public void GetEx(float ex)
+    {
+        Experience += ex;
     }
 
     private void OnEnable()
@@ -102,11 +131,8 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana
 
     private void OnLevelUp(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
-        experience += 10.0f;
-
-        leveling.LevelUP(experience, experienceMax, level);
-        Debug.Log($" {experience}");
-
+        GetEx(10.0f);
+        Debug.Log($"경험치 부여함");
     }
 
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1230646ae47c5e44693cc57adcb8212f, type: 3}
+  m_Name: Potion
+  m_EditorClassIdentifier: 
+  code: 0
+  itemName: "\uD3EC\uC158"
+  itemIcon: {fileID: 21300000, guid: db005d11213e5da47b9769c2e6c56eee, type: 3}
+  price: 120
+  maxStackCount: 10
+  itemDescription: "\uCCB4\uB825\uC744 30 \uC62C\uB824\uC90D\uB2C8\uB2E4."
+  modelPrefab: {fileID: 4628546265048983041, guid: 67566bccf8d69df49aa0de3951ce486f, type: 3}

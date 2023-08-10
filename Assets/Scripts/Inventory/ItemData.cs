@@ -15,4 +15,5 @@ public class ItemData : ScriptableObject
     public uint price = 0;                      // 아이템 가치
     public uint maxStackCount = 1;              // 아이템이 인벤토리 슬롯에서 최대 몇개싸지 누적될 수 있는지
     public string itemDescription = "설명";      // 아이템의 상세 설명
+    public GameObject modelPrefab;
 }

@@ -19,6 +19,9 @@ public class Enemy1 : MonoBehaviour
     public int atkSpeed;
     public Vector3 dir;
     public float range = 20;
+    public float distance;
+    public float atkDistance;
+  //  public Collider;
 
     SpriteRenderer spriteRenderer;
     
@@ -99,6 +102,8 @@ public class Enemy1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      //  if (Vector2.Distance(transform.position, RaycastCommand.collider.transform.position) < atkDistance) 
+
         if (Vector3.Distance(player.position, transform.position) < range)//플레이어 추적
         {
             Dir = (player.position - transform.position); //플레이어 위치와 몬스터 위치를 통해 거리 계산

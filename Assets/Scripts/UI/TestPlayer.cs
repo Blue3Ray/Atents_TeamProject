@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Switch;
 
-public class TestPlayer : MonoBehaviour, IHealth, IMana 
+public class TestPlayer : MonoBehaviour, IHealth, IMana , IBattle
 {
     ActionControl actions;
-
+    ElemantalStatus elemantalStatus;
     float hp = 100.0f;
     public float HP 
     { 
@@ -84,11 +84,20 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana
         }
     }
 
+    float atackPower = 10.0f;
+    public float AttackPower => atackPower;
+
+    float defencePower = 10.0f;
+    public float DefencePower => defencePower;
+
     public System.Action<float, float, int> onChangeEx;
 
     private void Awake()
     {
         actions= new ActionControl();
+        elemantalStatus = new ElemantalStatus();
+        elemantalStatus.elemantal = Elemantal.Fire;
+        elemantalStatus.elemantalLevel = 1;
     }
 
     private void Start()
@@ -135,6 +144,15 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana
         Debug.Log($"경험치 부여함");
     }
 
+    public void Attack(IBattle target)
+    {
+        target.Defence(elemantalStatus, AttackPower);
+    }
+
+    public void Defence(ElemantalStatus elemantal, float damage)
+    {
+        
+    }
 }
 
 

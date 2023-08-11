@@ -29,5 +29,5 @@ public interface IBattle
     /// 방어 함수
     /// </summary>
     /// <param name="damage">내가 받은 데미지</param>
-    void Defence(float damage);
+    void Defence(ElemantalStatus elemantal , float damage);
 }

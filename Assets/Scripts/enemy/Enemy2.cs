@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Enemy2 : EnemyBase
@@ -8,7 +9,7 @@ public class Enemy2 : EnemyBase
     public float atkDistance;
     public LayerMask isLayer;
     public float speed;
-
+/*
     public GameObject bullet;
     public Transform pos;
     // Start is called before the first frame update
@@ -25,8 +26,21 @@ public class Enemy2 : EnemyBase
         if (raycast.collider != null)
         {
             currenttime = 0;
-
- //         else if (Vector2.Distance(transform.position, raycast.collider.transform.position, Time.deltaTime * speed));
+        
+           if (Vector2.Distance(transform.position, raycast.collider.transform.position, Time.deltaTime * speed));
+            {
+                if (currenttime <= 0)
+                { 
+                GameObject bulletcopy = Instantiate(bullet, pos.position, transform.rotation);
+                }
+            }
+            else if
+            {
+            transform.position = Vector3.MoveTowards(transform.position, raycast.collider.transform.position, Time.deltaTime * speed);
+            }
+            currenttime -= Time.deltaTime;
         }
-    }
+    } 
+    
 }
+*/

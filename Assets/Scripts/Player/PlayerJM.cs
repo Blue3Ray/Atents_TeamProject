@@ -33,11 +33,6 @@ public class PlayerJM : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     /// <summary>
-    /// 공격중인지 확인할 변수
-    /// </summary>
-    private bool isAttacking;
-
-    /// <summary>
     /// 땅에 닿았는지 확인하는 변수
     /// </summary>
     private bool isGrounded;
@@ -51,7 +46,6 @@ public class PlayerJM : MonoBehaviour
             {
                 isGrounded = value;
                 anim.SetBool(Hash_Grounded, isGrounded);
-                Debug.Log($"애니메이터의 Grounded가 {isGrounded}로 설정되었습니다");
             }
         }
     }
@@ -118,6 +112,10 @@ public class PlayerJM : MonoBehaviour
     /// </summary>
     Animator anim;
 
+    Transform attackAreaPivot;
+    GameObject attackArea;
+    Collider2D attackCollider;
+
     /// <summary>
     /// 애니메이터 파라메터 해쉬 모음집
     /// </summary>
@@ -130,6 +128,10 @@ public class PlayerJM : MonoBehaviour
     readonly int Hash_Attack2 = Animator.StringToHash("Attack2");
     readonly int Hash_Attack3 = Animator.StringToHash("Attack3");
 
+    /// <summary>
+    /// 액션 애니메이션 세 개 중 하나를 랜덤으로 setTrigger하기 위해
+    /// 해쉬 세 개를 배열에 저장
+    /// </summary>
     int[] AttackHashes;
 
     private void OnEnable()
@@ -140,8 +142,6 @@ public class PlayerJM : MonoBehaviour
         inputActions.PlayerJM.Move.performed += OnMove;
         inputActions.PlayerJM.Move.canceled += OnMove;
         inputActions.PlayerJM.Jump.performed += OnJump;
-        
-        //참조도 없고 정의도 여기가 끝인데 ctx가 뭔지 여쭤보기
         inputActions.PlayerJM.Attack.performed += Attack;
     }
 
@@ -164,6 +164,9 @@ public class PlayerJM : MonoBehaviour
         AttackHashes[1] = Hash_Attack2;
         AttackHashes[2] = Hash_Attack3;
         HP = maxHp;
+        attackAreaPivot = transform.GetChild(0);
+        attackArea = attackAreaPivot.GetChild(0).gameObject;
+        attackCollider = attackArea.GetComponent<Collider2D>();
     }
 
     private void Start()
@@ -171,15 +174,11 @@ public class PlayerJM : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
         anim.SetFloat(Hash_AirSpeedY, fallSpeed);
+        attackCollider.enabled = false;
     }
     private void Update()
     {
         transform.Translate(Time.deltaTime * moveSpeed * dir);
-
-        if (isAttacking)
-        {
-            AttackAction();
-        }
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -195,15 +194,14 @@ public class PlayerJM : MonoBehaviour
         dir = context.ReadValue<Vector2>();
         if(dir.x < -0.1f)
         {
+            attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
             spriteRenderer.flipX = true;
         }
         else if(dir.x > 0.1f)
         {
-            spriteRenderer.flipX = false;
+			attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+			spriteRenderer.flipX = false;
         }
-        
-
-
     }
 
     private void OnJump(InputAction.CallbackContext obj)
@@ -215,44 +213,17 @@ public class PlayerJM : MonoBehaviour
         }
     }
 
-
-
-	////1. transform position이 아니라 bounds의 center를 써야하는 건가요?
-	////2. extraHeight의 역할은?
-	////3. 콜라이더의 중심으로부터 콜라이더의 세로길이의 반에 해당하는 레이에 0.01을 더한 후 GroundLayer안에 있는지
-	////확인하는 걸로 이해를 했는데
-	////콜라이더를 사용하는 게 좋을 것 같다고 생각합니다!
-	////4. 무엇보다 이 함수에서 체크는 했는데 막상 isGround는 바꿔주지 않고 있는 것 같습니다.
-	//private bool IsGrounded()
- //   {
- //       float extraHeight = 0.01f;
- //       RaycastHit2D raycastHit = Physics2D.Raycast(playerCollider.bounds.center, 
- //           Vector2.down, playerCollider.bounds.extents.y + extraHeight, LayerMask.GetMask("Ground"));
- //       return raycastHit.collider != null;
- //   }
-
     private void Attack(InputAction.CallbackContext _)
     {
-        isAttacking = true;
-    }
-
-    private void AttackAction()
-    {
-        int randomAttackIndex;
-        randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
-        Debug.Log($"{randomAttackIndex}");
+        OffAttackARea();
+		int randomAttackIndex;
+		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
+        attackCollider.enabled = true;
+        //Debug.Log("콜라이더 켜짐");
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.GetMask("Enemy"));
+	}
 
-        foreach (Collider2D collider in colliders)
-        {
-            Debug.Log("공격 중: " + collider.gameObject.name);
-        }
-
-
-        isAttacking = false;
-    }
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
@@ -270,4 +241,10 @@ public class PlayerJM : MonoBehaviour
             IsGrounded = false;
 		}
 	}
+
+    public void OffAttackARea()
+    {
+        attackCollider.enabled = false;
+        //Debug.Log("콜라이더 꺼짐");
+    }
 }

@@ -1083,6 +1083,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeroKnight
       objectReference: {fileID: 0}
+    - target: {fileID: 3832872602377006597, guid: ceaebe46ee658164b9f5e6627440130b, type: 3}
+      propertyPath: m_GravityScale
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4460924065087970151, guid: ceaebe46ee658164b9f5e6627440130b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1126,6 +1130,10 @@ PrefabInstance:
     - target: {fileID: 4460924065087970151, guid: ceaebe46ee658164b9f5e6627440130b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272235259763455161, guid: ceaebe46ee658164b9f5e6627440130b, type: 3}
+      propertyPath: jumpForce
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceaebe46ee658164b9f5e6627440130b, type: 3}

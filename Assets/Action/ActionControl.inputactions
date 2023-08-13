@@ -234,6 +234,34 @@
             ]
         },
         {
+            "name": "Inventory",
+            "id": "bb2e0f25-d441-4cbe-b068-f86f14fcd270",
+            "actions": [
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "e4b7393c-cf49-4403-a254-a3d43669460b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "09bf69c9-d18a-4ab2-8d58-3bb7fb507934",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "PlayerJM",
             "id": "03587eae-bc03-42e2-a43a-3e821e6cffd5",
             "actions": [
@@ -302,7 +330,7 @@
                 {
                     "name": "up",
                     "id": "e13cab74-495e-49d4-ab13-392caac1dc9e",
-                    "path": "",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -313,7 +341,7 @@
                 {
                     "name": "down",
                     "id": "ae3b0e0e-3570-47a5-ad03-dbaddd929dac",
-                    "path": "",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -336,6 +364,61 @@
                     "name": "right",
                     "id": "99225dcc-9ec3-47b6-92c1-1103f5ab2995",
                     "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "6e1988a7-fbc3-4ae9-9d3e-0108e5b89521",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "4650d071-b0a4-44fd-b14f-7ad349553519",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "1343e020-6b23-4848-8f48-11017cf99d9c",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "80885026-566d-4034-92a5-555a1c19e0e0",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "4facfb8d-1666-4b59-9919-a812617f132c",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -468,34 +551,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "TestClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Inventory",
-            "id": "bb2e0f25-d441-4cbe-b068-f86f14fcd270",
-            "actions": [
-                {
-                    "name": "Inventory",
-                    "type": "Button",
-                    "id": "e4b7393c-cf49-4403-a254-a3d43669460b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "09bf69c9-d18a-4ab2-8d58-3bb7fb507934",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

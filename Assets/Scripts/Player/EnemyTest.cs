@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyTest : MonoBehaviour, IBattle
 {
+	
 	public float AttackPower => throw new System.NotImplementedException();
 
 	public float DefencePower => throw new System.NotImplementedException();

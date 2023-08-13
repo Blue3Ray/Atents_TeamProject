@@ -78,16 +78,20 @@ public class PlayerJM : MonoBehaviour
     float hp = 0.0f;
     public float maxHp = 100;
 
+    bool OnDownArrow = false;
+
     /// <summary>
     /// hp가 바뀔 때마다 hp를 invoke
     /// </summary>
     public Action<float> onHpChange;
 
+    public Action OnBlockCommand;
+
     /// <summary>
     /// hp가 양수인지 확인해서 bool로 get할 수 있는 프로퍼티
     /// </summary>
     public bool IsAlive => hp > 0;
-    
+
     public float HP
     {
         get => hp;
@@ -115,6 +119,7 @@ public class PlayerJM : MonoBehaviour
     Transform attackAreaPivot;
     GameObject attackArea;
     Collider2D attackCollider;
+    WallSensor[] wallsensor;
 
     /// <summary>
     /// 애니메이터 파라메터 해쉬 모음집
@@ -127,12 +132,13 @@ public class PlayerJM : MonoBehaviour
     readonly int Hash_Attack1 = Animator.StringToHash("Attack1");
     readonly int Hash_Attack2 = Animator.StringToHash("Attack2");
     readonly int Hash_Attack3 = Animator.StringToHash("Attack3");
+	readonly int Hash_WallSlide = Animator.StringToHash("WallSlide");
 
-    /// <summary>
-    /// 액션 애니메이션 세 개 중 하나를 랜덤으로 setTrigger하기 위해
-    /// 해쉬 세 개를 배열에 저장
-    /// </summary>
-    int[] AttackHashes;
+	/// <summary>
+	/// 액션 애니메이션 세 개 중 하나를 랜덤으로 setTrigger하기 위해
+	/// 해쉬 세 개를 배열에 저장
+	/// </summary>
+	int[] AttackHashes;
 
     private void OnEnable()
     {
@@ -167,6 +173,8 @@ public class PlayerJM : MonoBehaviour
         attackAreaPivot = transform.GetChild(0);
         attackArea = attackAreaPivot.GetChild(0).gameObject;
         attackCollider = attackArea.GetComponent<Collider2D>();
+        wallsensor = GetComponentsInChildren<WallSensor>();
+        Debug.Log($"{wallsensor.Length}");
     }
 
     private void Start()
@@ -183,33 +191,63 @@ public class PlayerJM : MonoBehaviour
 
     private void OnMove(InputAction.CallbackContext context)
     {
+        
         if (context.canceled)
         {
             anim.SetInteger(Hash_AnimState, 0);
-        }
+            dir = Vector2.zero;
+			if (dir.y < 0)
+			{
+				OnDownArrow = false;
+                Debug.Log("onDown = false");
+			}
+		}
         else
         {
-            anim.SetInteger(Hash_AnimState, 1);
-        }
-        dir = context.ReadValue<Vector2>();
-        if(dir.x < -0.1f)
-        {
-            attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-            spriteRenderer.flipX = true;
-        }
-        else if(dir.x > 0.1f)
-        {
-			attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
-			spriteRenderer.flipX = false;
-        }
+			dir = context.ReadValue<Vector2>();
+            if(dir.x != 0)
+			{
+				if (dir.x < -0.1f)
+				{
+					attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+					spriteRenderer.flipX = true;
+				}
+				else if (dir.x > 0.1f)
+				{
+					attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+					spriteRenderer.flipX = false;
+				}
+				anim.SetInteger(Hash_AnimState, 1);
+            }
+            else
+            {
+				if (dir.y < 0)
+				{
+					OnDownArrow = true;
+					Debug.Log("onDown = true");
+				}
+
+			}
+            dir.y = 0;
+		}
+
+        Debug.Log($"{dir.x}, {dir.y}");
     }
 
     private void OnJump(InputAction.CallbackContext obj)
     {
         if (IsGrounded)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-            anim.SetTrigger(Hash_Jump);
+            if (OnDownArrow)
+            {
+                OnBlockCommand?.Invoke();
+            }
+            else
+            {
+
+				rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+				anim.SetTrigger(Hash_Jump);
+			}
         }
     }
 
@@ -230,7 +268,8 @@ public class PlayerJM : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             IsGrounded = true;
-        }
+			
+		}
 	}
 
 	private void OnCollisionExit2D(Collision2D collision)
@@ -239,6 +278,7 @@ public class PlayerJM : MonoBehaviour
 		if (collision.gameObject.CompareTag("Ground"))
 		{
             IsGrounded = false;
+		
 		}
 	}
 

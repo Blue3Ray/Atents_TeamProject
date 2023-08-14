@@ -16,7 +16,7 @@ public class Block : MonoBehaviour
 	private void Start()
 	{
 		playerJM = GameManager.Ins.playerTest;
-		playerJM.OnBlockCommand += PassBlock;
+		//playerJM.OnBlockCommand += PassBlock;
 	}
 
 	/// <summary>

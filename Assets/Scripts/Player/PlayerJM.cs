@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerJM : MonoBehaviour
 {
+    public Inventory inven;
     private ActionControl inputActions;
     private Rigidbody2D rb;
     private Collider2D playerCollider;

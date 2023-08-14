@@ -11,7 +11,6 @@ public class PlayerJM : MonoBehaviour
     private Collider2D playerCollider;
     private bool isAttacking;
     private bool isGrounded;
-    private bool ignorePlatformCollision;
 
     public float moveSpeed = 10f;
     public float jumpForce = 10f;
@@ -46,7 +45,7 @@ public class PlayerJM : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (!ignorePlatformCollision && isGrounded)
+        if (isGrounded)
         {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
         }
@@ -66,10 +65,8 @@ public class PlayerJM : MonoBehaviour
 
         if (isAttacking)
         {
-            AttackAction();
+            
         }
-
-        ignorePlatformCollision = Keyboard.current.sKey.isPressed && Keyboard.current.altKey.isPressed;
     }
 
     private bool IsGrounded()
@@ -82,31 +79,13 @@ public class PlayerJM : MonoBehaviour
     private void Attack()
     {
         isAttacking = true;
+
+       
     }
 
+    
     private void AttackAction()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.GetMask("Enemy"));
-        foreach (Collider2D collider in colliders)
-        {
-            Debug.Log("АјАн Сп: " + collider.gameObject.name);
-        }
-        isAttacking = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (ignorePlatformCollision && other.CompareTag("PlatformHalf"))
-        {
-            Physics2D.IgnoreCollision(playerCollider, other, true);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (!ignorePlatformCollision && other.CompareTag("PlatformHalf"))
-        {
-            Physics2D.IgnoreCollision(playerCollider, other, false);
-        }
+        
     }
 }

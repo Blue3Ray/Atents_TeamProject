@@ -22,6 +22,8 @@ public class EnemyBase : MonoBehaviour
     public float maxexp = 0;
     public float df = 50;
     
+   
+    
     
 
     SpriteRenderer spriteRenderer;
@@ -53,7 +55,7 @@ public class EnemyBase : MonoBehaviour
        // Dir = Vector3.right;
         // 원하는 대상을 이름으로 찾고싶으면 GameObject.Find
       // 원하는 대상을 태그로 찾기 위할때 쓰는 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform; //플레이어 오브젝트 찾기 
         maxhp = 1000;
         nowhp = 1000;
         atkDmg = 10;

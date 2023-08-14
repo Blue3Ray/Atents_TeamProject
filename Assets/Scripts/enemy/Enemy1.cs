@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class Enemy1 : MonoBehaviour
 {
-    
+    public Transform player;
+    public float speed = 5;
     public GameObject prfHpBar;
     public GameObject canvas;
     Animator animator;
@@ -16,13 +17,42 @@ public class Enemy1 : MonoBehaviour
     public int nowHp;
     public int atkDmg;
     public int atkSpeed;
+    public Vector3 dir;
+    public float range = 20;
+    public float distance;
+    public float atkDistance;
+  //  public Collider;
+
+    SpriteRenderer spriteRenderer;
+    
 
     public float height = 1.7f;
     // 높이 조절 y축 (public으로 설정해서 유니티에서도 수정 가능)
+    
+    Vector3 Dir
+    {
+        get { return dir; }
+        set
+        {
+            dir = value;
+            if (dir.x < 0) spriteRenderer.flipX = true;
+            if (dir.x < 0) spriteRenderer.flipX = false;
+        }
+    }
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        
+    }
+
+   
 
     // Start is called before the first frame update
     void Start()
     {
+       player = GameObject.FindGameObjectWithTag("Player").transform; //플레이어 오브젝트 찾기
+        
         hpBar = Instantiate(prfHpBar, canvas.transform).GetComponent<RectTransform>();
         // 체력바를 생성하되 canvas의 자식으로 생성하고,체력바의 위치 변경을 쉽게 하기 위해 hpBar에 저장한다.
         // Instantiate(게임오브젝트,부모의transform), 게임오브젝트를 생성하는 함수.
@@ -72,6 +102,29 @@ public class Enemy1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      //  if (Vector2.Distance(transform.position, RaycastCommand.collider.transform.position) < atkDistance) 
+
+        if (Vector3.Distance(player.position, transform.position) < range)//플레이어 추적
+        {
+            Dir = (player.position - transform.position); //플레이어 위치와 몬스터 위치를 통해 거리 계산
+                                                          //Dir.normalized 플레이어 추적 시 부자연스럽게 따라오는걸 방지하기 위함 
+        }
+        else
+        {
+            if (transform.position.x > 10)
+            {
+                Dir = Vector3.left;
+                spriteRenderer.flipX = true;
+            }
+            else if (transform.position.x < -10)
+            {
+                Dir = Vector3.right;
+                spriteRenderer.flipX = false;
+            }
+
+        }
+
+        transform.Translate(Time.deltaTime * speed * Dir.normalized);
         Vector3 _hpBarPos = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + height, 0));
         //Camera.main.WorldToScreenPoint(월드 좌표 값), 월드 좌표를 스크린좌표(UI좌표로 바꿔주는 함수)
         //HEIGHT : 체력바를 적 머리 위에 위치시키기 위해 추가함 

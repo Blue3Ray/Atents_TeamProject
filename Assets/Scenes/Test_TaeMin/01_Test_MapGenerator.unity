@@ -192,6 +192,11 @@ MonoBehaviour:
   - {fileID: 5766560427034028742, guid: 29c2e39849dca7145a720a470e7953d4, type: 3}
   - {fileID: 6585165216709810614, guid: bc3a2f72420884144acea6e7231d5499, type: 3}
   - {fileID: 6981323047526874953, guid: 3070ea58d0a372b4c87a8aad99f58b83, type: 3}
+  width: 100
+  height: 100
+  fillRate: 0.46
+  collecBoxBoolCount: 3
+  roomCount: 8
 --- !u!1 &8145954
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,7 +473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &627858048
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -602,7 +607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &906368832
 Grid:
   m_ObjectHideFlags: 0
@@ -640,11 +645,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 947898778503993003, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1929328145318890007, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5034119551250388288, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_Name
@@ -871,7 +876,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1612619360}
-  - component: {fileID: 1612619361}
   - component: {fileID: 1612619362}
   m_Layer: 0
   m_Name: Test_NodeGenerate
@@ -895,22 +899,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1612619361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1612619358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c468d2daca7eecc43b9217e5d0bbca52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 100
-  height: 100
-  mapFillRate: 0.46
-  collectBoxBoolCount: 3
 --- !u!114 &1612619362
 MonoBehaviour:
   m_ObjectHideFlags: 0

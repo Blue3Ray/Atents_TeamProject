@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -90,6 +91,8 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana , IBattle
     float defencePower = 10.0f;
     public float DefencePower => defencePower;
 
+    public Action<float> onManaChange { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     public System.Action<float, float, int> onChangeEx;
 
     private void Awake()
@@ -152,6 +155,26 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana , IBattle
     public void Defence(ElemantalStatus elemantal, float damage)
     {
         
+    }
+
+    public void HealthRegenetate(float totalRegen, float duration)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void HealthRegenerateByTick(float tickRegen, float tickTime, uint totalTickCount)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ManaRegenetate(float totalRegen, float duration)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ManaRegenerateByTick(float tickRegen, float tickTime, uint totalTickCount)
+    {
+        throw new NotImplementedException();
     }
 }
 

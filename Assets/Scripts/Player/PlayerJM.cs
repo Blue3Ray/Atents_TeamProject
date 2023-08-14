@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class PlayerJM : MonoBehaviour
     private Collider2D playerCollider;
     private bool isAttacking;
     private bool isGrounded;
+    private bool ignorePlatformCollision;
 
     public float moveSpeed = 10f;
     public float jumpForce = 10f;
@@ -35,7 +37,6 @@ public class PlayerJM : MonoBehaviour
         inputActions.PlayerJM.Move.canceled += OnMove;
         inputActions.PlayerJM.Jump.performed += OnJump;
         inputActions.PlayerJM.Attack.performed += ctx => Attack();
-
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -45,8 +46,7 @@ public class PlayerJM : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext obj)
     {
-
-        if (isGrounded)
+        if (!ignorePlatformCollision && isGrounded)
         {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
         }
@@ -60,9 +60,7 @@ public class PlayerJM : MonoBehaviour
 
     private void Update()
     {
-
         isGrounded = IsGrounded();
-
 
         transform.Translate(Time.deltaTime * moveSpeed * dir);
 
@@ -70,11 +68,12 @@ public class PlayerJM : MonoBehaviour
         {
             AttackAction();
         }
+
+        ignorePlatformCollision = Keyboard.current.sKey.isPressed && Keyboard.current.altKey.isPressed;
     }
 
     private bool IsGrounded()
     {
-
         float extraHeight = 0.01f;
         RaycastHit2D raycastHit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeight, LayerMask.GetMask("Ground"));
         return raycastHit.collider != null;
@@ -87,16 +86,27 @@ public class PlayerJM : MonoBehaviour
 
     private void AttackAction()
     {
-
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.GetMask("Enemy"));
-
         foreach (Collider2D collider in colliders)
         {
-
             Debug.Log("АјАн Сп: " + collider.gameObject.name);
         }
-
-
         isAttacking = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (ignorePlatformCollision && other.CompareTag("PlatformHalf"))
+        {
+            Physics2D.IgnoreCollision(playerCollider, other, true);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!ignorePlatformCollision && other.CompareTag("PlatformHalf"))
+        {
+            Physics2D.IgnoreCollision(playerCollider, other, false);
+        }
     }
 }

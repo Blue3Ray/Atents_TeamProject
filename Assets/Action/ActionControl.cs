@@ -905,6 +905,8 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
         public static implicit operator InputActionMap(PlayerJMActions set) { return set.Get(); }
+
+
         public void AddCallbacks(IPlayerJMActions instance)
         {
             if (instance == null || m_Wrapper.m_PlayerJMActionsCallbackInterfaces.Contains(instance)) return;

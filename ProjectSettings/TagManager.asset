@@ -7,8 +7,7 @@ TagManager:
   - NPC
   - Ground
   - QuickSlot
-  - Wall
-  - Block
+  - PlatformHalf
   layers:
   - Default
   - TransparentFX

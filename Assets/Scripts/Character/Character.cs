@@ -1,7 +1,19 @@
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
+
+
+// 속성 선택 enum
+enum ESelct
+{
+    None,
+    Fire,
+    Water,
+    Wind,
+    Thunder
+}
 
 public class Character : MonoBehaviour, IHealth
 {
@@ -24,13 +36,42 @@ public class Character : MonoBehaviour, IHealth
     protected float maxHP;
     public float MaxHP => maxHP;
 
-    public Action<float> onHealthChange { get; set; }
+    public System.Action<float> onHealthChange { get; set; }
 
-    public Action onDie { get; set; }
+    public System.Action onDie { get; set; }
 
     public bool IsAlive => hp > 0;
 
     float IHealth.HP { get; set; }
+
+    // 공격력
+    protected float attack;
+    public float Attack
+    {
+        get { return attack; }
+        set
+        {
+            attack = value;
+        }
+    }
+    public System.Action<float> onAttackChange { get; set; }
+
+    // 방어력
+    protected float defence;
+    public float Defence 
+    {
+        get { return defence; } 
+        set
+        {
+            defence = value;
+        }
+    }
+    public System.Action<float> onDefenceChange { get; set; }
+
+    private void Awake()
+    {
+        ESelct eSelct = ESelct.None;
+    }
 
     // 사망 처리용 함수
     public void Die()
@@ -74,5 +115,27 @@ public class Character : MonoBehaviour, IHealth
             HP += Time.deltaTime * regenPerSec;     // 초당 회복량만큼 증가
             yield return null;
         }
+    }
+
+
+    // index : 플레어 경우 레밸 값을 받는 변수
+    // index : Enemy 경우 난이도 값을 받는 변수
+
+    // 공격력 증가 함수
+    protected virtual void AttackIncrease(int index)
+    {
+
+    }
+
+    // 방어력 증가 함수
+    protected virtual void DefenceIncrease(int index)
+    {
+
+    }
+
+    // 속성 선택 함수
+    public void ElemantalSelect()
+    {
+        
     }
 }

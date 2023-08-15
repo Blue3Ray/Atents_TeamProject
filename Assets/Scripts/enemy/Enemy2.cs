@@ -8,7 +8,7 @@ public class Enemy2 : EnemyBase
     public float distance;
     public float atkDistance;
     public LayerMask isLayer;
-    public float speed;
+    //public float speed;
 }
 /*
     public GameObject bullet;

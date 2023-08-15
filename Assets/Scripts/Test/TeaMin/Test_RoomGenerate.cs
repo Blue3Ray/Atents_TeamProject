@@ -7,7 +7,14 @@ using UnityEngine.InputSystem;
 public class Test_RoomGenerate : TestBase
 {
     RandomMapGenerator rmg;
-    public int roomCount = 10;
+    public int width = 100;
+    public int height = 100;
+    public float fillRate = 0.46f;
+    public int collecBoxBoolCount = 3;
+
+    public uint roomCount = 8;
+
+    public string seed = "asd";
     List<Room> list;
 
     private void Start()
@@ -17,7 +24,7 @@ public class Test_RoomGenerate : TestBase
 
     protected override void Test1(InputAction.CallbackContext context)
     {
-        rmg.SetUp(roomCount);
+        rmg.SetUp((int)roomCount, width, height, fillRate, collecBoxBoolCount, seed);
     }
 
     private void OnDrawGizmos()

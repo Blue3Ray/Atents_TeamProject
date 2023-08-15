@@ -52,8 +52,13 @@ class NodeMap
     /// 맵을 랜덤하게 채우는 함수
     /// </summary>
     /// <param name="fillRate">채우는 비율</param>
-    public void RandomFillNodeInMap(float fillRate)
+    public void RandomFillNodeInMap(float fillRate, string seed)
     {
+        System.Random rand = new System.Random();
+        if (seed != null)
+        {
+            rand = new System.Random(seed.GetHashCode());
+        }
         //if (RoomGenerator.seed != null) RoomGenerator.seed = "";
 
         //System.Random rand = new System.Random(RoomGenerator.seed.GetHashCode());
@@ -61,8 +66,8 @@ class NodeMap
         for (int i = 0; i < mapNode.Length; i++)
         {
             mapNode[i] = new Node(
-                //(rand.Next(0, 100) < fillRate * 100),
-                (Random.Range(0.0f, 1.0f) < fillRate),       // fiilrate보다 작으면 true(빈칸) 아니면 false(검은칸)
+                (rand.Next(0, 100) < fillRate * 100),
+                //(Random.Range(0.0f, 1.0f) < fillRate),       // fiilrate보다 작으면 true(빈칸) 아니면 false(검은칸)
                 new Vector2Int(i % width, i / height));          // 노드 위치는 
         }
     }
@@ -558,28 +563,35 @@ public class GridMap
     }
 
     
-
-    public void MakeGridMap(Room room, ExitDirection exitDir)
+    /// <summary>
+    /// 선택한 방과 연결된 모든 방을 그리드 맵에 그리는 함수
+    /// </summary>
+    /// <param name="room">그리드에 배치할 방</param>
+    /// <param name="exitDir">이전 방 기준 방향</param>
+    public void MakeGridMap(Room room, ExitDirection exitDir, out int moveCount)
     {
         Room tempRoom = room;
 
         //if (cursor.y >= mapGrid.GetLength(1) || cursor.x >= mapGrid.GetLength(0) || cursor.x < 0 || cursor.y < 0)
         //{
-        // 디버그용
+        //    //디버그용
         //    int aaa = 0;
         //}
 
         mapGrid[cursor.x, cursor.y] = tempRoom;
 
+        moveCount = 1;
+        int nextIndex = 0;
         for(int i = 0; i < tempRoom.connectedRooms.Count; i++)
         {
-            if (!IsContain(tempRoom.connectedRooms[i].Item1))       // 만약 그리드 맵에 존재하지 않으면
+            if (!IsContain(tempRoom.connectedRooms[i].Item1))       // 만약 그리드 맵에 아직 그리지 않았다면
             {
-                int a = 100;
+                int a = 100;    // 무한루프 탈출용
                 while (a > 0)
                 {
+
                     bool isXDir = false;
-                    switch (tempRoom.connectedRooms[i].Item2)           // 방향에 따라 커서 조정한 후
+                    switch (tempRoom.connectedRooms[i].Item2)           // 방향에 따라 커서 조정한 후(또는 맵 자체를 움직이기)
                     {
                         case ExitDirection.Up:
                             cursor.y++;
@@ -606,22 +618,22 @@ public class GridMap
 
                     bool canDeploy = true;
 
-                    if (isXDir) // 가로로 가는 중일 때
+                    if (isXDir) // 가로로 가는 중일 때 세로열에 뭐가 없을 때까지 반복
                     {
                         for (int y = 0; y < mapGrid.GetLength(1); y++)      
                         {
-                            if (mapGrid[cursor.x, y] != null)   // 같은 라인에 뭐가 있으면
+                            if (mapGrid[cursor.x, y] != null)   // 세로열이 중 뭐가 있으면 설치 불가, 다음 라인으로 넘어감
                             {
                                 canDeploy = false;
                                 break;
                             }
                         }
                     }
-                    else    // 세로로 가는 중일 때
+                    else    // 세로로 가는 중일 때 가로열에 뭐가 있는지 확인함
                     {
                         for (int x = 0; x < mapGrid.GetLength(0); x++)
                         {
-                            if (mapGrid[x, cursor.y] != null)   // 같은 라인에 뭐가 있으면
+                            if (mapGrid[x, cursor.y] != null)   // 가로열 중 뭐가 있으면 설치 불가, 다음 라인으로 넘어감
                             {
                                 canDeploy = false;
                                 break;
@@ -634,25 +646,28 @@ public class GridMap
                         break;
                     }
                     a--;
+                    moveCount++;
                 }
 
-                MakeGridMap(tempRoom.connectedRooms[i].Item1, tempRoom.connectedRooms[i].Item2);
+                MakeGridMap(tempRoom.connectedRooms[i].Item1, tempRoom.connectedRooms[i].Item2, out int nextMoveCount);
+                nextIndex = nextMoveCount;
             }
         }
 
+        // 가로 또는 세로열에 뭔가 있어서 지연 이동한만큼 다시 돌아가야됨
         switch (exitDir)
         {
             case ExitDirection.Up:
-                cursor.y--;
+                cursor.y -= nextIndex;
                 break;
             case ExitDirection.Left:
-                cursor.x++;
+                cursor.x += nextIndex;
                 break;
             case ExitDirection.Right:
-                cursor.x--;
+                cursor.x -= nextIndex;
                 break;
             case ExitDirection.Down:
-                cursor.y++;
+                cursor.y += nextIndex;
                 break;
         }
     }
@@ -734,11 +749,11 @@ public class RandomMapGenerator
 
 
 
-    public void SetUp(int roomCount = 8, int width = 100, int height = 100, float mapFillRate = 0.46f, int collectNodeCount = 3)
+    public void SetUp(int roomCount = 8, int width = 100, int height = 100, float mapFillRate = 0.46f, int collectNodeCount = 3, string seed = null)
     {
         nodeMap = new NodeMap(width, height);
 
-        nodeMap.RandomFillNodeInMap(mapFillRate);           // 맵을 랜덤하게 뿌리고
+        nodeMap.RandomFillNodeInMap(mapFillRate, seed);           // 맵을 랜덤하게 뿌리고
 
         nodeMap.GatherData(collectNodeCount);               // 노드들을 집약화 시키고
 
@@ -760,7 +775,7 @@ public class RandomMapGenerator
 
         //Debug.Log($"맵 크기 : {size}");
 
-        gridMap.MakeGridMap(roomMap.roomList[0], ExitDirection.None);
+        gridMap.MakeGridMap(roomMap.roomList[0], ExitDirection.None, out int moveCount);
 
 
     }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Switch;
 
-public class TestPlayer : MonoBehaviour, IHealth, IMana , IBattle
+public class TestPlayer : MonoBehaviour, IHealth, IMana
 {
     ActionControl actions;
     ElemantalStatus elemantalStatus;
@@ -30,27 +30,8 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana , IBattle
     float maxHP = 100.0f;
     public float MaxHP => maxHP;
 
-    float mp = 80.0f;
-    public float MP 
-    {
-        get => mp;
-        set
-        {
-            mp = value;
-            mp = Mathf.Clamp(mp, 0, MaxMP);
-            onHealthChange?.Invoke(mp / MaxMP);
-        }
-    }
 
-    float maxMP = 80.0F;
-    public float MaxMP => maxMP;
-
-
-    public System.Action<float> onHealthChange 
-    { 
-        get;
-        set;
-    }
+    public System.Action<float> onHealthChange {  get; set; }
 
     public bool IsAlive => hp > 0;
     public System.Action onDie { get; set; }
@@ -85,13 +66,21 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana , IBattle
         }
     }
 
-    float atackPower = 10.0f;
-    public float AttackPower => atackPower;
+    float mp = 80.0f;
+    public float MP 
+    { 
+        get => mp; 
+        set
+        {
+            mp = value;
+        }
+    }
 
-    float defencePower = 10.0f;
-    public float DefencePower => defencePower;
 
-    public Action<float> onManaChange { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    float maxMP = 80.0f;
+    public float MaxMP => maxMP;
+
+    public Action<float> onManaChange { get; set ; }
 
     public System.Action<float, float, int> onChangeEx;
 
@@ -143,19 +132,11 @@ public class TestPlayer : MonoBehaviour, IHealth, IMana , IBattle
 
     private void OnLevelUp(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
-        GetEx(10.0f);
-        Debug.Log($"경험치 부여함");
+
+        hp -= 10.0f;
+      
     }
 
-    public void Attack(IBattle target)
-    {
-        target.Defence(elemantalStatus, AttackPower);
-    }
-
-    public void Defence(ElemantalStatus elemantal, float damage)
-    {
-        
-    }
 
     public void HealthRegenetate(float totalRegen, float duration)
     {

@@ -19,12 +19,17 @@ public class Character : MonoBehaviour, IHealth
         get { return hp; }
         set 
         { 
-            hp = value; 
-            if(hp <= 0)
+            if(IsAlive)
             {
-                hp = 0;
-                Die();
+                hp = value;
+                if (hp <= 0)
+                {     
+                    Die();
+                }
+                hp = Mathf.Clamp(hp, 0, MaxHP);
+                onHealthChange?.Invoke(hp / MaxHP);
             }
+            
         }
     }
 

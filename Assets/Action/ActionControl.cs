@@ -313,6 +313,15 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""8d1d3523-bc8d-4e34-9ff0-c0bf74ee9299"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -447,6 +456,17 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62645bae-2c9f-4112-a026-f221db4f7a2f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -613,6 +633,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_PlayerJM_Move = m_PlayerJM.FindAction("Move", throwIfNotFound: true);
         m_PlayerJM_Jump = m_PlayerJM.FindAction("Jump", throwIfNotFound: true);
         m_PlayerJM_Attack = m_PlayerJM.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerJM_Click = m_PlayerJM.FindAction("Click", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -893,6 +914,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerJM_Move;
     private readonly InputAction m_PlayerJM_Jump;
     private readonly InputAction m_PlayerJM_Attack;
+    private readonly InputAction m_PlayerJM_Click;
     public struct PlayerJMActions
     {
         private @ActionControl m_Wrapper;
@@ -900,13 +922,12 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerJM_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerJM_Jump;
         public InputAction @Attack => m_Wrapper.m_PlayerJM_Attack;
+        public InputAction @Click => m_Wrapper.m_PlayerJM_Click;
         public InputActionMap Get() { return m_Wrapper.m_PlayerJM; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
         public static implicit operator InputActionMap(PlayerJMActions set) { return set.Get(); }
-
-
         public void AddCallbacks(IPlayerJMActions instance)
         {
             if (instance == null || m_Wrapper.m_PlayerJMActionsCallbackInterfaces.Contains(instance)) return;
@@ -920,6 +941,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
         }
 
         private void UnregisterCallbacks(IPlayerJMActions instance)
@@ -933,6 +957,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
         }
 
         public void RemoveCallbacks(IPlayerJMActions instance)
@@ -1069,6 +1096,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {

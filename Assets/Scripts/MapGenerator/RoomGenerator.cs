@@ -321,28 +321,87 @@ public class RoomGenerator : MonoBehaviour
         if (endPosByOne.Direction == ExitDirection.Up || endPosByOne.Direction == ExitDirection.Down) pwt = PassWayType.UpDown;
         endPosByOne.Pos += GeneratePass(new PassWay(endPosByOne.Pos, endPosByOne.Direction), pwt);
 
-
         cursor = startPos.Pos;
+
+        Queue<Vector3Int> wayPoints = new ();
 
         // 만약 두 출구가 같은 선상에 있는 경우가 아니면(대각으로 움직여야하면) 중간 지점에서 S자 꺽기위한 지점
         Vector3Int halfPos = new Vector3Int((int)((startPos.Pos.x + endPos.Pos.x) * 0.5f), (int)((startPos.Pos.y + endPos.Pos.y) * 0.5f));
 
-        Vector3Int targetPos = endPos.Pos;
-
-
-        while(cursor != targetPos)
+        // 비트플래그로 했어야 했는데...
+        // 입구 출구 방향이 같을 때(수직이거나 수평일때)
+        if((startPos.Direction == ExitDirection.Up && endPos.Direction == ExitDirection.Down) &&
+            (startPos.Direction == ExitDirection.Down && endPos.Direction == ExitDirection.Up) &&
+            (startPos.Direction == ExitDirection.Right && endPos.Direction == ExitDirection.Left) &&
+            (startPos.Direction == ExitDirection.Left && endPos.Direction == ExitDirection.Right))
         {
-            startPos.Direction = endPos.Direction;
+            if (startPos.Pos.x == endPos.Pos.x || startPos.Pos.y == endPos.Pos.y)
+            {
+                // 일자로 감
+                wayPoints.Enqueue(endPos.Pos);
+            }
+            else
+            {
+                //s자로 감
+                if(startPos.Direction == ExitDirection.Up || startPos.Direction == ExitDirection.Down)
+                {
+                    wayPoints.Enqueue(new Vector3Int(startPos.Pos.x, halfPos.y));
+                    wayPoints.Enqueue(new Vector3Int(endPos.Pos.x, halfPos.y));
+                    //wayPoints.Add(new Vector3Int(startPos.Pos.x, halfPos.y));
+                    //wayPoints.Add(new Vector3Int(endPos.Pos.x, halfPos.y));
+                }
+                else
+                {
+                    wayPoints.Enqueue(new Vector3Int(halfPos.x, startPos.Pos.y));
+                    wayPoints.Enqueue(new Vector3Int(halfPos.x, endPos.Pos.y));
+                    //wayPoints.Add(new Vector3Int(halfPos.x, startPos.Pos.y));
+                    //wayPoints.Add(new Vector3Int(halfPos.x, endPos.Pos.y));
+                }
+            }
+        }
+        else
+        {
+            // 입구 출구가 직각 일때
+            if (startPos.Direction == ExitDirection.Up || startPos.Direction == ExitDirection.Down)
+            {
+                wayPoints.Enqueue(new Vector3Int(startPos.Pos.x, halfPos.y));
+                //wayPoints.Add(new Vector3Int(startPos.Pos.x, halfPos.y));
+            }
+            else
+            {
+                wayPoints.Enqueue(new Vector3Int(halfPos.x, startPos.Pos.y));
+                //wayPoints.Add(new Vector3Int(halfPos.x, startPos.Pos.y));
+            }
+        }
+
+
+        Vector3Int targetPos = wayPoints.Dequeue();
+
+        ExitDirection targetDir = startPos.Direction;
+
+        int a = 0;      // 무한루프 방지용
+        while(cursor != endPos.Pos && a < 100)
+        {
+            if (cursor.x == targetPos.x)        // 같은 선상에 있는지 확인하는 체크
+            {
+                int decreasePass = Mathf.Min(Mathf.Abs(cursor.y - targetPos.y), 5);
+                cursor += GeneratePass(new PassWay(cursor, targetDir), PassWayType.UpDown, 5 - decreasePass);
+            }
+            else
+            {
+                int decreasePass = Mathf.Min(Mathf.Abs(cursor.x - targetPos.x), 5);
+                cursor += GeneratePass(new PassWay(cursor, targetDir), PassWayType.LeftRight, 5 - decreasePass);
+            }
+            a++;
+            if (cursor == targetPos && targetPos != endPos.Pos)      // 중간 지점에 왔으면
+            {
+                targetPos = wayPoints.Dequeue();     // 최종 목적지 설정 후
+                // 방향에 따라 교차로 생성 코드
+                //cursor += GeneratePass(new Exit(cursor, ExitDirection.Right), PassWayType.LeftRight);
+            }
         }
 
         //cursor += GeneratePass(new Exit(cursor, ExitDirection.Right), PassWayType.LeftRight);
-        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Left), PassWayType.LeftRight);
-        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Left), PassWayType.RightDown);
-        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Down), PassWayType.UpDown, 2);
-        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Down), PassWayType.UpRight);
-        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftRight);
-        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftRight, 1);
-        cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftUp);
     }
 
     bool IsBuildable(Vector3Int cursor, SampleRoomData targetData)
@@ -413,16 +472,17 @@ public class RoomGenerator : MonoBehaviour
         }
 
 
-        for (int i = 0 + decreaseFromMin.y; i < targetData.Height - decreaseFromMax.y; i++)    // 문 높이 만큼
+        for (int i = decreaseFromMin.y; i < targetData.Height - decreaseFromMax.y; i++)    // 문 높이 만큼
         {
-            for (int j = +decreaseFromMin.x; j < targetData.Width - decreaseFromMax.x; j++)  // 문 너비 만큼
+            for (int j = decreaseFromMin.x; j < targetData.Width - decreaseFromMax.x; j++)  // 문 너비 만큼
             {
                 Vector3Int plusPos = new Vector3Int(j, i);
-                Vector3Int targetDrawPos = targetData.min + plusPos;
+                Vector3Int targetDrawPos = targetData.min + plusPos;        // 샘플 위치 까지 고려한 그릴 위치
 
+                // 레이어 설정
                 int targetLayer = (int) MapLayer.Background;
 
-                // 배경
+                // 배경 그리기
                 m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
 
                 if (targetData.mapLayers[(int) MapLayer.PlatForm].HasTile(targetDrawPos))
@@ -436,6 +496,7 @@ public class RoomGenerator : MonoBehaviour
                     targetLayer = (int)MapLayer.HalfPlatForm;
                 }
                 
+                // 플랫폼 그리기
                  m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
             }
         }

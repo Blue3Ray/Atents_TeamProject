@@ -314,6 +314,14 @@ public class RoomGenerator : MonoBehaviour
 
     public void GeneratePassway(PassWay startPos, PassWay endPos)
     {
+
+        // 출구쪽 한단계 빼기 위한 단계
+        PassWay endPosByOne = endPos;
+        PassWayType pwt = PassWayType.LeftRight;
+        if (endPosByOne.Direction == ExitDirection.Up || endPosByOne.Direction == ExitDirection.Down) pwt = PassWayType.UpDown;
+        endPosByOne.Pos += GeneratePass(new PassWay(endPosByOne.Pos, endPosByOne.Direction), pwt);
+
+
         cursor = startPos.Pos;
 
         // 만약 두 출구가 같은 선상에 있는 경우가 아니면(대각으로 움직여야하면) 중간 지점에서 S자 꺽기위한 지점
@@ -321,19 +329,12 @@ public class RoomGenerator : MonoBehaviour
 
         Vector3Int targetPos = endPos.Pos;
 
-        bool isY;
 
-        if(Mathf.Abs(startPos.Pos.x - endPos.Pos.x) > Mathf.Abs(startPos.Pos.y - endPos.Pos.y)) // x축 쪽으로 더 길 때
+        while(cursor != targetPos)
         {
-            isY = false;
-            if (startPos.Pos.x != endPos.Pos.x) targetPos = halfPos;
+            startPos.Direction = endPos.Direction;
         }
-        else
-        {
-            isY = true;
-            if (startPos.Pos.x != endPos.Pos.x) targetPos = halfPos;
-        }
-        if (isY) isY = false;
+
         //cursor += GeneratePass(new Exit(cursor, ExitDirection.Right), PassWayType.LeftRight);
         cursor += GeneratePass(new PassWay(cursor, ExitDirection.Left), PassWayType.LeftRight);
         cursor += GeneratePass(new PassWay(cursor, ExitDirection.Left), PassWayType.RightDown);
@@ -342,32 +343,24 @@ public class RoomGenerator : MonoBehaviour
         cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftRight);
         cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftRight, 1);
         cursor += GeneratePass(new PassWay(cursor, ExitDirection.Right), PassWayType.LeftUp);
+    }
 
-        //GenerateRoom(cursor, roomSamplesWithExit[2]);
-
-        //int i = 0;      // 통로 만드는 호출 개수 제한(무한반복 대비)
-
-        //ExitDirection dir = startPos.Direction;
-
-        //while (i < 1000 && cursor != endPos.Pos)
-        //{
-        //    Vector3Int tempPos = Vector3Int.zero;
-        //    int drawOverCount = -1;
-
-
-        //    if(cursor == targetPos)
-        //    {
-        //        if(dir == ExitDirection.Up || dir == ExitDirection.Down)
-        //        {
-        //            if(IsXDir(cursor, targetPos))
-        //            {
-
-        //            }
-        //        }
-        //    }
-
-        //    cursor += tempPos;
-        //}
+    bool IsBuildable(Vector3Int cursor, SampleRoomData targetData)
+    {
+        bool result = true;
+        for(int x = targetData.min.x; x < targetData.max.x; x++ )
+        {
+            for(int y = targetData.min.y; y < targetData.max.y; y++)
+            {
+                Vector3Int targetPos = new Vector3Int(x, y) + cursor;
+                if (m_tileMaps[1].GetTile(targetPos) != null)
+                {
+                    result = false; 
+                    return result;
+                }
+            }
+        }
+        return result;
     }
 
     bool IsXDir(Vector3Int posA, Vector3Int posB)

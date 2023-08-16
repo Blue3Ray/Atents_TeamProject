@@ -14,6 +14,7 @@ public class Test_RoomGenerate : TestBase
 
     public uint roomCount = 8;
 
+    public bool useSeed = false;
     public string seed = "asd";
     List<Room> list;
 
@@ -24,6 +25,7 @@ public class Test_RoomGenerate : TestBase
 
     protected override void Test1(InputAction.CallbackContext context)
     {
+        if (!useSeed) seed = null;
         rmg.SetUp((int)roomCount, width, height, fillRate, collecBoxBoolCount, seed);
     }
 

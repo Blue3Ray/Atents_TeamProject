@@ -10,7 +10,11 @@ public enum ItemCode
     FireSword,
     WaterSword,
     WindSword,
-    ElectronicSword
+    ElectronicSword,
+    shelid,
+    asd,
+    asdf
+        
 }
 
 public enum ItemSortBy

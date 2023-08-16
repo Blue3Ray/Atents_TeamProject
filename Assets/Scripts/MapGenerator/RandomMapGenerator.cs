@@ -568,7 +568,7 @@ public class GridMap
     /// </summary>
     /// <param name="room">그리드에 배치할 방</param>
     /// <param name="exitDir">이전 방 기준 방향</param>
-    public void MakeGridMap(Room room, ExitDirection exitDir, out int moveCount)
+    public void MakeGridMap(Room room, ExitDirection exitDir, int moveCount)
     {
         Room tempRoom = room;
 
@@ -580,14 +580,14 @@ public class GridMap
 
         mapGrid[cursor.x, cursor.y] = tempRoom;
 
-        moveCount = 1;
-        int nextIndex = 0;
+        
         for(int i = 0; i < tempRoom.connectedRooms.Count; i++)
         {
+            int nextIndex = 1;
             if (!IsContain(tempRoom.connectedRooms[i].Item1))       // 만약 그리드 맵에 아직 그리지 않았다면
             {
                 int a = 100;    // 무한루프 탈출용
-                while (a > 0)
+                while (a > 0)       // 설치를 할수 있는 조건이 나올 때까지 반복함
                 {
 
                     bool isXDir = false;
@@ -646,11 +646,10 @@ public class GridMap
                         break;
                     }
                     a--;
-                    moveCount++;
+                    nextIndex++;
                 }
 
-                MakeGridMap(tempRoom.connectedRooms[i].Item1, tempRoom.connectedRooms[i].Item2, out int nextMoveCount);
-                nextIndex = nextMoveCount;
+                MakeGridMap(tempRoom.connectedRooms[i].Item1, tempRoom.connectedRooms[i].Item2, nextIndex);
             }
         }
 
@@ -658,16 +657,16 @@ public class GridMap
         switch (exitDir)
         {
             case ExitDirection.Up:
-                cursor.y -= nextIndex;
+                cursor.y -= moveCount;
                 break;
             case ExitDirection.Left:
-                cursor.x += nextIndex;
+                cursor.x += moveCount;
                 break;
             case ExitDirection.Right:
-                cursor.x -= nextIndex;
+                cursor.x -= moveCount;
                 break;
             case ExitDirection.Down:
-                cursor.y += nextIndex;
+                cursor.y += moveCount;
                 break;
         }
     }
@@ -704,12 +703,15 @@ public class GridMap
         return false;
     }
 
-
+    /// <summary>
+    /// 그리드에 있는 셀 정보를 미는 함수
+    /// </summary>
+    /// <param name="isY">Y축 방향인지 아닌지 여부</param>
     void MoveAllGridCell(bool isY)
     {
-        for (int y = mapGrid.GetLength(1) - 2; y >= 0 ; y--)
+        for (int y = mapGrid.GetLength(1) - 1; y >= 0 ; y--)
         {
-            for (int x = mapGrid.GetLength(0) - 2; x >= 0 ; x--)
+            for (int x = mapGrid.GetLength(0) - 1; x >= 0 ; x--)
             {
                 if (mapGrid[x, y] != null)
                 {
@@ -775,7 +777,7 @@ public class RandomMapGenerator
 
         //Debug.Log($"맵 크기 : {size}");
 
-        gridMap.MakeGridMap(roomMap.roomList[0], ExitDirection.None, out int moveCount);
+        gridMap.MakeGridMap(roomMap.roomList[0], ExitDirection.None, 0);
 
 
     }

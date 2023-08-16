@@ -15,6 +15,7 @@ public class PlayerJM : MonoBehaviour
     public float moveSpeed = 10f;
     public float jumpForce = 10f;
     public float attackRange = 1f;
+    public float maxJumpSpeed = 10f; 
 
     Vector2 dir;
 
@@ -47,7 +48,7 @@ public class PlayerJM : MonoBehaviour
     {
         if (isGrounded)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
 
@@ -61,12 +62,17 @@ public class PlayerJM : MonoBehaviour
     {
         isGrounded = IsGrounded();
 
-        transform.Translate(Time.deltaTime * moveSpeed * dir);
-
         if (isAttacking)
         {
-            
+            AttackAction();
         }
+
+        if (!isGrounded && rb.velocity.y > maxJumpSpeed)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, maxJumpSpeed);
+        }
+
+        transform.Translate(Time.deltaTime * moveSpeed * dir);
     }
 
     private bool IsGrounded()
@@ -80,12 +86,11 @@ public class PlayerJM : MonoBehaviour
     {
         isAttacking = true;
 
-       
+        
     }
 
-    
     private void AttackAction()
     {
-        
+       
     }
 }

@@ -6,7 +6,7 @@ public class HPbar : BarBase
 { 
     void Start()
     {
-        TestPlayer testPlayer = new TestPlayer();
+        Test_PlayerCharater testPlayer = new Test_PlayerCharater();
         maxValue = testPlayer.MaxHP;
         max.text = $"/    {maxValue}";
         current.text = testPlayer.HP.ToString("0");

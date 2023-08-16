@@ -42,7 +42,7 @@ public class Character : MonoBehaviour, IHealth
 
     public bool IsAlive => hp > 0;
 
-    float IHealth.HP { get; set; }
+    
 
     // 공격력
     protected float attack;
@@ -126,43 +126,27 @@ public class Character : MonoBehaviour, IHealth
     }
 
 
-    // index : 플레어 경우 레밸 값을 받는 변수
-    // index : Enemy 경우 난이도 값을 받는 변수
-
-    // 공격력 증가 함수
-    protected virtual void AttackIncrease(int index)
-    {
-        
-    }
-
-    // 방어력 증가 함수
-    protected virtual void DefenceIncrease(int index)
-    {
-
-    }
 
     // 속성 선택 함수
-    public void ElemantalSelect()
+    public void ElemantalSelect(Elemantal elemantal)
     {
-        Elemantal elemantal = Elemantal.None;
-
         switch(elemantal)
         {
             case Elemantal.Fire:
-                elemantal = Elemantal.Fire; 
+                elemantalStatus.elemantal = Elemantal.Fire; 
                 break;
             case Elemantal.Water:
-                elemantal = Elemantal.Water;
+                elemantalStatus.elemantal = Elemantal.Water;
                 break;
             case Elemantal.Wind:
-                elemantal = Elemantal.Wind;
+                elemantalStatus.elemantal = Elemantal.Wind;
                 break;
             case Elemantal.Thunder:
-                elemantal = Elemantal.Thunder;
+                elemantalStatus.elemantal = Elemantal.Thunder;
                 break;
-             default: 
+             default:
+                elemantalStatus.elemantal = Elemantal.None;
                 break;
-
         }
     }
 

@@ -51,6 +51,9 @@ public class EnemyBase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("player").transform; // 플레이어 오브젝트 찾기
+
+       //수정해야됨 hpbar = Instantiate(prfHpBar, canvas.transform).GetComponent<RectTransform>();
         // 월드에 방향 
        // Dir = Vector3.right;
         // 원하는 대상을 이름으로 찾고싶으면 GameObject.Find
@@ -61,17 +64,14 @@ public class EnemyBase : MonoBehaviour
         atkDmg = 10;
 
         
-       // animator = GetComponent<Animator>();
-       // SetAttackSpeed(1.5f);
-        
-       // 임시 짜놨고 추후에 보완할 예정 (빨간줄도 추후 수정 예정입니다)
+       
 
     }
 
     // Update is called once per frame
     void Update()
     {
-       //nowHpbar.fillAmount = (float)nowhp / (float)maxhp;
+
 
         
         

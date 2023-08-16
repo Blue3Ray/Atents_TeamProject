@@ -17,5 +17,7 @@ public class ElemantalStatus
 
     public int elemantalLevel = 0;
 
+    
+
 
 }

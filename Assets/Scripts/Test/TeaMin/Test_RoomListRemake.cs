@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +15,7 @@ public class Test_RoomListRemake : TestBase
 
     public uint roomCount = 8;
 
+    public string seed = "asd";
     List<Room> list;
     
 
@@ -24,13 +23,13 @@ public class Test_RoomListRemake : TestBase
     {
         roomGenerator = FindObjectOfType<RoomGenerator>();
         rnmg = new RandomMapGenerator();
-        rnmg.SetUp((int) roomCount);
+        rnmg.SetUp((int) roomCount, width, height, fillRate, collecBoxBoolCount, seed);
         list = rnmg.roomList;
     }
 
     protected override void Test1(InputAction.CallbackContext context)
     {
-        rnmg.SetUp((int) roomCount);
+        rnmg.SetUp((int)roomCount, width, height, fillRate, collecBoxBoolCount);
         list = rnmg.roomList;
     }
 

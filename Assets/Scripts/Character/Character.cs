@@ -6,30 +6,30 @@ using UnityEngine;
 
 
 // 속성 선택 enum
-enum ESelct
-{
-    None,
-    Fire,
-    Water,
-    Wind,
-    Thunder
-}
+
 
 public class Character : MonoBehaviour, IHealth
 {
     [SerializeField]
+
+    //HP 
     protected float hp;
     public float HP
     {
         get { return hp; }
         set 
         { 
-            hp = value; 
-            if(hp <= 0)
+            if(IsAlive)
             {
-                hp = 0;
-                Die();
+                hp = value;
+                if (hp <= 0)
+                {     
+                    Die();
+                }
+                hp = Mathf.Clamp(hp, 0, MaxHP);
+                onHealthChange?.Invoke(hp / MaxHP);
             }
+            
         }
     }
 
@@ -46,7 +46,7 @@ public class Character : MonoBehaviour, IHealth
 
     // 공격력
     protected float attack;
-    public float Attack
+    public float Attack    // 공격력 프로퍼티
     {
         get { return attack; }
         set
@@ -58,7 +58,7 @@ public class Character : MonoBehaviour, IHealth
 
     // 방어력
     protected float defence;
-    public float Defence 
+    public float Defence  // 방어력 프로퍼티
     {
         get { return defence; } 
         set
@@ -68,9 +68,17 @@ public class Character : MonoBehaviour, IHealth
     }
     public System.Action<float> onDefenceChange { get; set; }
 
+    // ElemantalStatus 클래스 호출
+    ElemantalStatus elemantalStatus;
+
+    // 속성 공격력
+    public  float elemantalAttack;
+    // 속성 방어력
+    public float elemantalDefence;
+
     private void Awake()
     {
-        ESelct eSelct = ESelct.None;
+        elemantalStatus= new ElemantalStatus();
     }
 
     // 사망 처리용 함수
@@ -124,7 +132,7 @@ public class Character : MonoBehaviour, IHealth
     // 공격력 증가 함수
     protected virtual void AttackIncrease(int index)
     {
-
+        
     }
 
     // 방어력 증가 함수
@@ -136,6 +144,33 @@ public class Character : MonoBehaviour, IHealth
     // 속성 선택 함수
     public void ElemantalSelect()
     {
-        
+        Elemantal elemantal = Elemantal.None;
+
+        switch(elemantal)
+        {
+            case Elemantal.Fire:
+                elemantal = Elemantal.Fire; 
+                break;
+            case Elemantal.Water:
+                elemantal = Elemantal.Water;
+                break;
+            case Elemantal.Wind:
+                elemantal = Elemantal.Wind;
+                break;
+            case Elemantal.Thunder:
+                elemantal = Elemantal.Thunder;
+                break;
+             default: 
+                break;
+
+        }
     }
+
+    // 속성 업그레이드 함수
+    public void ElemantalUpgrade(int elemantalLevel)
+    {
+
+    }
+
+    
 }

@@ -748,7 +748,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eaa63469a365ca469d73ed70fc9e9b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 100
+  height: 100
+  fillRate: 0.46
+  collecBoxBoolCount: 3
   roomCount: 10
+  seed: qqq
 --- !u!1 &1100017663
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,56 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundSensor : MonoBehaviour {
+public class GroundSensor : MonoBehaviour 
+{
 
-    public PlayerController m_root;
+	PlayerJS player;
 
-    // Use this for initialization
-    void Start()
-    {
-        m_root = this.transform.root.GetComponent<PlayerController>();
-       
-    }
-
- 
-
-    ContactPoint2D[] contacts = new ContactPoint2D[1];
-
-    void OnTriggerStay2D(Collider2D other)
-    {
-    
-
-        if (other.CompareTag("Ground") || other.CompareTag("Block"))
-        {
-
-            if (other.CompareTag("Ground"))
-            {
-                m_root.Is_DownJump_GroundCheck = true;
-
-            }
-            else
-            {
-                m_root.Is_DownJump_GroundCheck = false;
-            }
-
-            if (m_root.m_rigidbody.velocity.y <= 0)
-            {
-
-                m_root.isGrounded = true;
-                m_root.currentJumpCount = 0;
-            }
-         
-        
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-
-        m_root.isGrounded = false;
-     
-    }
+	private void Start()
+	{
+		player = GameManager.Ins.playerTest1;
+	}
 
 
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		Debug.Log("충돌감지");
+		if (collision.gameObject.CompareTag("Ground"))
+		{
+			player.IsGrounded = true;
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.gameObject.CompareTag("Ground"))
+		{
+			player.IsGrounded = false;
+
+		}
+	}
 
 }

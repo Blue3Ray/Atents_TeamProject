@@ -10,7 +10,7 @@ public class Leveling : MonoBehaviour
     Slider slider;
 
 
-    public TestPlayer player;
+   public Test_PlayerCharater player;
     private void Awake()
     {
         Transform child = transform.GetChild(0);

@@ -16,6 +16,7 @@ public enum Element : byte
 public class GameManager : Singleton<GameManager>
 {
 	public PlayerJM playerTest;
+    public PlayerJS playerTest1;
     
     ItemDataManager itemDataManager;
     
@@ -33,6 +34,11 @@ public class GameManager : Singleton<GameManager>
 	{
 		base.OnInitalize();
         playerTest = FindObjectOfType<PlayerJM>();
+        if(playerTest == null)
+        {
+
+        playerTest1 = FindObjectOfType<PlayerJS>();
+        }
         if(playerTest != null)
         {
             playerTest.inven = new Inventory(7);

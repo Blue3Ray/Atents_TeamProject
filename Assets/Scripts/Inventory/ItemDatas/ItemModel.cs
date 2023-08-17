@@ -15,7 +15,7 @@ public class ItemModel : MonoBehaviour
 	private void Update()
 	{
 		timeElapsed += Time.deltaTime;
-		y = Mathf.Sign(timeElapsed);
+		y = Mathf.Sign(timeElapsed)*0.5f+0.5f;
 		Debug.Log($"{y}");
 		spriteImage.color = new Color(1, 1, 1, y);
 	}

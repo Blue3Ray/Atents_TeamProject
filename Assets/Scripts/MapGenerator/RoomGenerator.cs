@@ -91,7 +91,7 @@ public class RoomGenerator : MonoBehaviour
         roomStack = new Stack<SampleRoomData>();
 
         randomMap = new RandomMapGenerator();
-        randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);
+        
     }
 
     private void Start()
@@ -114,6 +114,8 @@ public class RoomGenerator : MonoBehaviour
 
     public void SetUpRooms()
     {
+        randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);
+
         Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
 
         for(int x = 0; x < randomMap.gridMap.Width; x++)
@@ -312,14 +314,18 @@ public class RoomGenerator : MonoBehaviour
     //    return result;
     //}
 
+    /// <summary>
+    /// 두 위치와 방향을 가지고 통로를 제작하는 함수
+    /// </summary>
+    /// <param name="startPos">시작 지점</param>
+    /// <param name="endPos">종료 지점</param>
     public void GeneratePassway(PassWay startPos, PassWay endPos)
     {
-
         // 출구쪽 한단계 빼기 위한 단계
         PassWay endPosByOne = endPos;
-        PassWayType pwt = PassWayType.LeftRight;
-        if (endPosByOne.Direction == ExitDirection.Up || endPosByOne.Direction == ExitDirection.Down) pwt = PassWayType.UpDown;
-        endPosByOne.Pos += GeneratePass(new PassWay(endPosByOne.Pos, endPosByOne.Direction), pwt);
+        //PassWayType pwt = PassWayType.LeftRight;
+        //if (endPosByOne.Direction == ExitDirection.Up || endPosByOne.Direction == ExitDirection.Down) pwt = PassWayType.UpDown;
+        //endPosByOne.Pos += GeneratePass(new PassWay(endPosByOne.Pos, endPosByOne.Direction), pwt);
 
         cursor = startPos.Pos;
 
@@ -330,9 +336,9 @@ public class RoomGenerator : MonoBehaviour
 
         // 비트플래그로 했어야 했는데...
         // 입구 출구 방향이 같을 때(수직이거나 수평일때)
-        if((startPos.Direction == ExitDirection.Up && endPos.Direction == ExitDirection.Down) &&
-            (startPos.Direction == ExitDirection.Down && endPos.Direction == ExitDirection.Up) &&
-            (startPos.Direction == ExitDirection.Right && endPos.Direction == ExitDirection.Left) &&
+        if((startPos.Direction == ExitDirection.Up && endPos.Direction == ExitDirection.Down) ||
+            (startPos.Direction == ExitDirection.Down && endPos.Direction == ExitDirection.Up) ||
+            (startPos.Direction == ExitDirection.Right && endPos.Direction == ExitDirection.Left) ||
             (startPos.Direction == ExitDirection.Left && endPos.Direction == ExitDirection.Right))
         {
             if (startPos.Pos.x == endPos.Pos.x || startPos.Pos.y == endPos.Pos.y)
@@ -364,12 +370,12 @@ public class RoomGenerator : MonoBehaviour
             // 입구 출구가 직각 일때
             if (startPos.Direction == ExitDirection.Up || startPos.Direction == ExitDirection.Down)
             {
-                wayPoints.Enqueue(new Vector3Int(startPos.Pos.x, halfPos.y));
+                wayPoints.Enqueue(new Vector3Int(startPos.Pos.x, endPos.Pos.y));
                 //wayPoints.Add(new Vector3Int(startPos.Pos.x, halfPos.y));
             }
             else
             {
-                wayPoints.Enqueue(new Vector3Int(halfPos.x, startPos.Pos.y));
+                wayPoints.Enqueue(new Vector3Int(endPos.Pos.x, startPos.Pos.y));
                 //wayPoints.Add(new Vector3Int(halfPos.x, startPos.Pos.y));
             }
         }
@@ -395,9 +401,56 @@ public class RoomGenerator : MonoBehaviour
             a++;
             if (cursor == targetPos && targetPos != endPos.Pos)      // 중간 지점에 왔으면
             {
-                targetPos = wayPoints.Dequeue();     // 최종 목적지 설정 후
+                if(wayPoints.Count > 0)targetPos = wayPoints.Dequeue();     // 최종 목적지 설정 후
+                else targetPos = endPos.Pos;
                 // 방향에 따라 교차로 생성 코드
-                //cursor += GeneratePass(new Exit(cursor, ExitDirection.Right), PassWayType.LeftRight);
+                // targetDir와 cursor 위치와 targetPos으로 구할수 있을거 같음
+
+                PassWayType passWay = PassWayType.UpDown;
+                switch (targetDir)
+                {
+                    case ExitDirection.Up:
+                        if (targetPos.x > cursor.x) passWay = PassWayType.RightDown;
+                        else passWay = PassWayType.DownLeft;
+                        break;
+                    case ExitDirection.Left:
+                        if (targetPos.y > cursor.y) passWay = PassWayType.UpRight;
+                        else passWay = PassWayType.RightDown;
+                        break;
+                    case ExitDirection.Right:
+                        if (targetPos.y > cursor.y) passWay = PassWayType.LeftUp;
+                        else passWay = PassWayType.DownLeft;
+                        break;
+                    case ExitDirection.Down:
+                        if (targetPos.x > cursor.x) passWay = PassWayType.UpRight;
+                        else passWay = PassWayType.RightDown;
+                        break;
+                }
+
+                cursor += GeneratePass(new PassWay(cursor, targetDir), passWay);
+
+                if (targetPos.x != cursor.x)
+                {
+                    if (targetPos.x > cursor.x)
+                    {
+                        targetDir = ExitDirection.Right;
+                    }
+                    else
+                    {
+                        targetDir = ExitDirection.Left;
+                    }
+                }
+                else
+                {
+                    if (targetPos.y > cursor.y)
+                    {
+                        targetDir = ExitDirection.Up;
+                    }
+                    else
+                    {
+                        targetDir = ExitDirection.Down;
+                    }
+                }
             }
         }
 

@@ -322,6 +322,15 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""807e2ab9-5cf5-4ceb-8c30-9e0efbd00d26"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -362,17 +371,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""name"": ""up"",
                     ""id"": ""e13cab74-495e-49d4-ab13-392caac1dc9e"",
                     ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""ae3b0e0e-3570-47a5-ad03-dbaddd929dac"",
-                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -425,17 +423,6 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
-                    ""id"": ""1343e020-6b23-4848-8f48-11017cf99d9c"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""left"",
                     ""id"": ""80885026-566d-4034-92a5-555a1c19e0e0"",
                     ""path"": ""<Keyboard>/leftArrow"",
@@ -465,6 +452,28 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d0b2cfd-5a47-4dc5-ab7a-f87b08510042"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d89cac00-64c4-4aa0-b10a-606afc4b8ec8"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -634,6 +643,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_PlayerJM_Jump = m_PlayerJM.FindAction("Jump", throwIfNotFound: true);
         m_PlayerJM_Attack = m_PlayerJM.FindAction("Attack", throwIfNotFound: true);
         m_PlayerJM_Click = m_PlayerJM.FindAction("Click", throwIfNotFound: true);
+        m_PlayerJM_Down = m_PlayerJM.FindAction("Down", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -915,6 +925,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerJM_Jump;
     private readonly InputAction m_PlayerJM_Attack;
     private readonly InputAction m_PlayerJM_Click;
+    private readonly InputAction m_PlayerJM_Down;
     public struct PlayerJMActions
     {
         private @ActionControl m_Wrapper;
@@ -923,6 +934,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerJM_Jump;
         public InputAction @Attack => m_Wrapper.m_PlayerJM_Attack;
         public InputAction @Click => m_Wrapper.m_PlayerJM_Click;
+        public InputAction @Down => m_Wrapper.m_PlayerJM_Down;
         public InputActionMap Get() { return m_Wrapper.m_PlayerJM; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -944,6 +956,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @Down.started += instance.OnDown;
+            @Down.performed += instance.OnDown;
+            @Down.canceled += instance.OnDown;
         }
 
         private void UnregisterCallbacks(IPlayerJMActions instance)
@@ -960,6 +975,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @Down.started -= instance.OnDown;
+            @Down.performed -= instance.OnDown;
+            @Down.canceled -= instance.OnDown;
         }
 
         public void RemoveCallbacks(IPlayerJMActions instance)
@@ -1097,6 +1115,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {

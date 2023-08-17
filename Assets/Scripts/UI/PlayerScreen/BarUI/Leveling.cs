@@ -10,9 +10,11 @@ public class Leveling : MonoBehaviour
     Slider slider;
 
 
-   public Test_PlayerCharater player;
+   Test_PlayerCharater player;
     private void Awake()
     {
+        player = new Test_PlayerCharater();
+
         Transform child = transform.GetChild(0);
         levelIndex = child.GetComponent<TextMeshProUGUI>();
 

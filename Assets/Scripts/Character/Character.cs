@@ -14,9 +14,9 @@ public class Character : MonoBehaviour, IHealth
 
     //HP 
     protected float hp;
-    public float HP
+     public float HP
     {
-        get { return hp; }
+        get => hp;
         set 
         { 
             if(IsAlive)
@@ -67,6 +67,8 @@ public class Character : MonoBehaviour, IHealth
         }
     }
     public System.Action<float> onDefenceChange { get; set; }
+    float IHealth.HP { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
 
     // ElemantalStatus 클래스 호출
     ElemantalStatus elemantalStatus;

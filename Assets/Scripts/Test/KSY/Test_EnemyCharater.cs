@@ -10,8 +10,6 @@ public class Test_EnemyCharater: Character
     {
         hp = 100.0f;
         maxHP = 100.0f;
-
-        attack = 10.0f;
     }
     void Start()
     {

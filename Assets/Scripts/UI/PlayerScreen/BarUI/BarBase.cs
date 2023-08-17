@@ -20,15 +20,6 @@ public class BarBase : MonoBehaviour
         current = child.GetComponent<TextMeshProUGUI>();
         child = transform.GetChild(3);
         max = child.GetComponent<TextMeshProUGUI>();
-
-        child = transform.GetChild(0);
-        Image backgroundImage = child.GetComponent<Image>();
-        //Color backgroundColor = new Color(color.r, color.g, color.b, color.a * 0.5f);
-        //backgroundImage.color = backgroundColor;
-
-        child = transform.GetChild(1);
-        Image fillImage = child.GetComponentInChildren<Image>();
-        
     }
 
     /// <summary>

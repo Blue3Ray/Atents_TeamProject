@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Test_PlayerCharater : Character
 {
- 
+       
 
     // 경험치 구현 부분
     float experience = 0.0f;
@@ -40,14 +40,14 @@ public class Test_PlayerCharater : Character
 //-------------------------------------------------------------------------------------------------
     private void Awake()
     {
-        hp = 100.0f;
-        maxHP = 100.0f;
-        attack = 10.0f;
+       
+
     }
 
     private void Start()
     {
-       
+        hp = 100.0f;
+        maxHP = 100.0f;
     }
 
 

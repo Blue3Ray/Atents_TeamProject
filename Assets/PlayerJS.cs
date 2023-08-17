@@ -39,6 +39,10 @@ public class PlayerJS : MonoBehaviour
 	/// </summary>
 	private bool isGrounded;
 
+	bool isTriggerSwitch = false;
+
+	bool isSpaceBarOn = false;
+
 	public bool IsGrounded
 	{
 		get => isGrounded;
@@ -155,6 +159,7 @@ public class PlayerJS : MonoBehaviour
 		inputActions.PlayerJM.Move.performed += OnMove;
 		inputActions.PlayerJM.Move.canceled += OnMove;
 		inputActions.PlayerJM.Jump.performed += OnJump;
+		inputActions.PlayerJM.Jump.canceled += OffSpaceBar;
 		inputActions.PlayerJM.Attack.performed += Attack;
 		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;
 		inputActions.PlayerJM.Down.performed += OnDown;
@@ -163,20 +168,24 @@ public class PlayerJS : MonoBehaviour
 
 	private void OnDown(InputAction.CallbackContext context)
 	{
+
 		if(context.canceled)
 		{
 			OnDownArrow = false;
-			Debug.Log("¾Æ·¡ ¶³¾îÁü");
 		}
 		else
 		{
+			if (isSpaceBarOn && !isTriggerSwitch)
+			{
+				StartCoroutine(TriggerOnOff());	
+			}
 			OnDownArrow = true;
-			Debug.Log("¾Æ·¡ ´­¸²");
 		}
 	}
 
 	private void OnDisable()
 	{
+		inputActions.PlayerJM.Jump.canceled -= OffSpaceBar;
 		inputActions.PlayerJM.Down.performed -= OnDown;
 		inputActions.PlayerJM.Down.canceled -= OnDown;
 		inputActions.PlayerJM.Click.performed -= OnClickMouse_Left;
@@ -269,25 +278,36 @@ public class PlayerJS : MonoBehaviour
 
 	private void OnJump(InputAction.CallbackContext obj)
 	{
-		if (IsGrounded && !OnDownArrow)
+		isSpaceBarOn = true;
+		if (IsGrounded && !OnDownArrow &&!isTriggerSwitch)
 		{
 			rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
 			anim.SetTrigger(Hash_Jump);
 		}
 		else if(OnDownArrow && IsHalfPlatform)
 		{
-			StartCoroutine(TriggerOnOff());
+			if (!isTriggerSwitch)
+			{
+				StartCoroutine(TriggerOnOff());
+			}
 		}
+	}
+
+	private void OffSpaceBar(InputAction.CallbackContext obj)
+	{
+		isSpaceBarOn = false;
 	}
 
 	IEnumerator TriggerOnOff()
 	{
-		playerCollider.isTrigger = true;
-		Debug.Log("Æ®¸®°Å ÄÑÁü");
+		isTriggerSwitch = true;
+		//playerCollider.isTrigger = true;
+		this.gameObject.layer = 8;
 		yield return new WaitForSeconds(0.5f);
-		playerCollider.isTrigger = false;
-		Debug.Log("Æ®¸®°Å ²¨Áü");
+		//playerCollider.isTrigger = false;
+		this.gameObject.layer = 9;
 		StopAllCoroutines();
+		isTriggerSwitch = false;
 	}
 
 	private void Attack(InputAction.CallbackContext ¸®_)

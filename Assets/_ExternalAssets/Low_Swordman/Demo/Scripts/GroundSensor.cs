@@ -15,7 +15,7 @@ public class GroundSensor : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		Debug.Log("충돌감지");
+		//Debug.Log("충돌감지");
 		if (collision.gameObject.CompareTag("Ground"))
 		{
 			player.IsGrounded = true;

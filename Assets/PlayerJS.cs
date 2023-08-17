@@ -51,7 +51,7 @@ public class PlayerJS : MonoBehaviour
 			if (isGrounded != value)
 			{
 				isGrounded = value;
-				Debug.Log($"isGround = {isGrounded}");
+				//Debug.Log($"isGround = {isGrounded}");
 				anim.SetBool(Hash_Grounded, isGrounded);
 			}
 		}
@@ -210,7 +210,7 @@ public class PlayerJS : MonoBehaviour
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
 		attackCollider = attackArea.GetComponent<Collider2D>();
 		wallsensor = GetComponentsInChildren<WallSensor>();
-		Debug.Log($"{wallsensor.Length}");
+		//Debug.Log($"{wallsensor.Length}");
 	}
 
 	private void Start()
@@ -218,7 +218,6 @@ public class PlayerJS : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
 		anim.SetFloat(Hash_AirSpeedY, fallSpeed);
-		attackCollider.enabled = false;
 	}
 	private void Update()
 	{
@@ -239,7 +238,7 @@ public class PlayerJS : MonoBehaviour
 
 		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
 		{
-			Debug.Log($"{hit.transform.name}");
+			//Debug.Log($"{hit.transform.name}");
 			if (hit.transform.TryGetComponent<IClickable>(out IClickable temp))
 			{
 				temp.OnClicking(temp);
@@ -310,15 +309,13 @@ public class PlayerJS : MonoBehaviour
 		isTriggerSwitch = false;
 	}
 
-	private void Attack(InputAction.CallbackContext ¸®_)
+	private void Attack(InputAction.CallbackContext context_)
 	{
-		OffAttackARea();
+		//OffAttackARea();
 		int randomAttackIndex;
 		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
-		attackCollider.enabled = true;
-		//Debug.Log("ÄÝ¶óÀÌ´õ ÄÑÁü");
-
+		OnAttackARea();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -340,6 +337,9 @@ public class PlayerJS : MonoBehaviour
 	public void OffAttackARea()
 	{
 		attackCollider.enabled = false;
-		//Debug.Log("ÄÝ¶óÀÌ´õ ²¨Áü");
+	}
+	public void OnAttackARea()
+	{
+		attackCollider.enabled = true;
 	}
 }

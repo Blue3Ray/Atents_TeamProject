@@ -20,4 +20,9 @@ public class EnemyTest : MonoBehaviour, IBattle
 		throw new System.NotImplementedException();
 	}
 
+	void Update()
+	{
+		
+	}
+
 }

@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
 {
 	public PlayerJM playerTest;
     public PlayerJS playerTest1;
+    public Player_JS playerTest2;
     
     ItemDataManager itemDataManager;
     
@@ -36,8 +37,11 @@ public class GameManager : Singleton<GameManager>
         playerTest = FindObjectOfType<PlayerJM>();
         if(playerTest == null)
         {
-
-        playerTest1 = FindObjectOfType<PlayerJS>();
+            playerTest1 = FindObjectOfType<PlayerJS>();
+            if(playerTest1 == null)
+            {
+                playerTest2 = FindAnyObjectByType<Player_JS>();
+            }
         }
         if(playerTest != null)
         {

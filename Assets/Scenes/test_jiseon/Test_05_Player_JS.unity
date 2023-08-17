@@ -178,7 +178,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeroKnight_JS
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3730335582420583849, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
 --- !u!1001 &753057117
 PrefabInstance:
@@ -289,6 +290,38 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &1171504046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171504036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 779925b9d419c2d4a89ba5b69f7cc750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 0
+  elemantalAttack: 0
+  elemantalDefence: 0
+--- !u!1 &1359163414 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8282602211719534866, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
+  m_PrefabInstance: {fileID: 453810502}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1359163418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359163414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474be1c3ecd2aac43b5b2cb964794b2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1771295729
 GameObject:
   m_ObjectHideFlags: 0

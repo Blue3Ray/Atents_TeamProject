@@ -129,7 +129,7 @@ public class PlayerJS : MonoBehaviour
 
 	Transform attackAreaPivot;
 	GameObject attackArea;
-	Collider2D attackCollider;
+	New_AttackArea attackCollider;
 	WallSensor[] wallsensor;
 
 	/// <summary>
@@ -208,10 +208,23 @@ public class PlayerJS : MonoBehaviour
 		HP = maxHp;
 		attackAreaPivot = transform.GetChild(0);
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
-		attackCollider = attackArea.GetComponent<Collider2D>();
+		attackCollider = GetComponentInChildren<New_AttackArea>();
 		wallsensor = GetComponentsInChildren<WallSensor>();
 		//Debug.Log($"{wallsensor.Length}");
+
+		attackCollider.onCharacterEnter += (target) => {
+			targetChars.Add(target);
+			Debug.Log("사정거리 안에 들어옴");
+		};
+
+		attackCollider.onCharacterExit += (target) => {
+			Debug.Log("사정거리 에서 나감");
+			targetChars.Remove(target);
+		};
+
 	}
+
+	List<Character> targetChars = new();
 
 	private void Start()
 	{
@@ -336,10 +349,15 @@ public class PlayerJS : MonoBehaviour
 
 	public void OffAttackARea()
 	{
-		attackCollider.enabled = false;
+
+		//attackCollider.enabled = false;
 	}
 	public void OnAttackARea()
 	{
-		attackCollider.enabled = true;
+		foreach(var item in targetChars)
+		{
+			Debug.Log("공격함");
+		}
+		//attackCollider.enabled = true;
 	}
 }

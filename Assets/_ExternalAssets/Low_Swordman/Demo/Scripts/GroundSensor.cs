@@ -9,7 +9,8 @@ public class GroundSensor : MonoBehaviour
 
 	private void Start()
 	{
-		player = GameManager.Ins.playerTest1;
+		// player = GameManager.Ins.playerTest1;
+		player = transform.parent.GetComponent<PlayerJS>();
 	}
 
 

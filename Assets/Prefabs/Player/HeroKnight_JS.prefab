@@ -392,7 +392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2446387721782226021}
   - component: {fileID: 3730335582420583848}
-  - component: {fileID: 3730335582420583849}
+  - component: {fileID: 3157922053701312694}
   m_Layer: 9
   m_Name: AttackArea
   m_TagString: Untagged
@@ -431,7 +431,7 @@ CircleCollider2D:
   m_Offset: {x: -0.29509532, y: 0}
   serializedVersion: 2
   m_Radius: 1.2
---- !u!114 &3730335582420583849
+--- !u!114 &3157922053701312694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -440,6 +440,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8282602211719534866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e3572ee46d67f47903d397a23d447b, type: 3}
+  m_Script: {fileID: 11500000, guid: 474be1c3ecd2aac43b5b2cb964794b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

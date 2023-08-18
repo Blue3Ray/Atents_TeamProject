@@ -91,7 +91,6 @@ public class RoomGenerator : MonoBehaviour
         roomStack = new Stack<SampleRoomData>();
 
         randomMap = new RandomMapGenerator();
-        
     }
 
     private void Start()
@@ -108,6 +107,7 @@ public class RoomGenerator : MonoBehaviour
             passWay.OnInitialize();
         }
 
+        maxSingleRoomSize += 5;
         //SetUpRooms();
     }
 
@@ -124,7 +124,7 @@ public class RoomGenerator : MonoBehaviour
             {
                 if (randomMap.gridMap.mapGrid[x,y] != null)
                 {
-                    // 방 선택하는 함수
+                    // 방 선택하는 함수 짜야 됨
                     GenerateRoom(new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize), roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length - 1)]);
                 }
             }

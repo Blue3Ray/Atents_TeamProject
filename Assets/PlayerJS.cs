@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class PlayerJS : MonoBehaviour
 {
+
 	/// <summary>
 	/// inventory를 플레이어가 가질 수 있도록 추가
 	/// </summary>
@@ -210,13 +211,14 @@ public class PlayerJS : MonoBehaviour
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
 		attackCollider = GetComponentInChildren<New_AttackArea>();
 		wallsensor = GetComponentsInChildren<WallSensor>();
-		//Debug.Log($"{wallsensor.Length}");
 
+		//AttackCollider에서 들어온 것을 리스트에 추가
 		attackCollider.onCharacterEnter += (target) => {
 			targetChars.Add(target);
 			Debug.Log("사정거리 안에 들어옴");
 		};
 
+		//attackCollider에서 나간 것을 리스트에서 제거
 		attackCollider.onCharacterExit += (target) => {
 			Debug.Log("사정거리 에서 나감");
 			targetChars.Remove(target);
@@ -347,11 +349,6 @@ public class PlayerJS : MonoBehaviour
 		}
 	}
 
-	public void OffAttackARea()
-	{
-
-		//attackCollider.enabled = false;
-	}
 	public void OnAttackARea()
 	{
 		foreach(var item in targetChars)

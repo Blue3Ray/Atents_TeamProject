@@ -1,5 +1,66 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1827723299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1827723300}
+  - component: {fileID: 1827723302}
+  - component: {fileID: 1827723301}
+  m_Layer: 9
+  m_Name: GroundSensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1827723300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827723299}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1021387751991380785}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1827723302
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827723299}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0713738, y: 0.038175475}
+  serializedVersion: 2
+  m_Radius: 0.10689206
+--- !u!114 &1827723301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827723299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14dc69de864209a4abd8b6de40857671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1012551301118871525
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +72,7 @@ GameObject:
   - component: {fileID: 8328720021856968356}
   - component: {fileID: 2888707300723616926}
   - component: {fileID: 8858138995615554997}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RightWallSensor
   m_TagString: Untagged
   m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
@@ -72,7 +133,7 @@ GameObject:
   - component: {fileID: 4112126290857208719}
   - component: {fileID: 334218263559243743}
   - component: {fileID: 8858138994488257921}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LeftWallSensor
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
@@ -136,7 +197,7 @@ GameObject:
   - component: {fileID: 501528080933518931}
   - component: {fileID: 8858138995613476069}
   - component: {fileID: 4497126297680048882}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HeroKnight_JS
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -150,7 +211,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3255033465047517030}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.111, y: -1.4274, z: 0}
   m_LocalScale: {x: 1.7247545, y: 2.0511332, z: 1}
   m_ConstrainProportionsScale: 0
@@ -158,6 +219,7 @@ Transform:
   - {fileID: 1460637601127782309}
   - {fileID: 8328720021856968356}
   - {fileID: 4112126290857208719}
+  - {fileID: 1827723300}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -250,7 +312,7 @@ Rigidbody2D:
   m_LinearDrag: 3
   m_AngularDrag: 1
   m_GravityScale: 5
-  m_Material: {fileID: 6200000, guid: 9c497a4ce1f356b448c0dd3eca091d35, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -297,7 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1460637601127782309}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackAreaPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,8 +392,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2446387721782226021}
   - component: {fileID: 3730335582420583848}
-  - component: {fileID: 3730335582420583849}
-  m_Layer: 0
+  - component: {fileID: 3157922053701312694}
+  m_Layer: 9
   m_Name: AttackArea
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -366,10 +428,10 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.5857738, y: 0}
+  m_Offset: {x: -0.29509532, y: 0}
   serializedVersion: 2
-  m_Radius: 1.085774
---- !u!114 &3730335582420583849
+  m_Radius: 1.2
+--- !u!114 &3157922053701312694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,6 +440,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8282602211719534866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e3572ee46d67f47903d397a23d447b, type: 3}
+  m_Script: {fileID: 11500000, guid: 474be1c3ecd2aac43b5b2cb964794b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

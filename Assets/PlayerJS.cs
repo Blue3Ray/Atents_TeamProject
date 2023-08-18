@@ -51,7 +51,7 @@ public class PlayerJS : MonoBehaviour
 			if (isGrounded != value)
 			{
 				isGrounded = value;
-				Debug.Log($"isGround = {isGrounded}");
+				//Debug.Log($"isGround = {isGrounded}");
 				anim.SetBool(Hash_Grounded, isGrounded);
 			}
 		}
@@ -129,7 +129,7 @@ public class PlayerJS : MonoBehaviour
 
 	Transform attackAreaPivot;
 	GameObject attackArea;
-	Collider2D attackCollider;
+	New_AttackArea attackCollider;
 	WallSensor[] wallsensor;
 
 	/// <summary>
@@ -208,17 +208,29 @@ public class PlayerJS : MonoBehaviour
 		HP = maxHp;
 		attackAreaPivot = transform.GetChild(0);
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
-		attackCollider = attackArea.GetComponent<Collider2D>();
+		attackCollider = GetComponentInChildren<New_AttackArea>();
 		wallsensor = GetComponentsInChildren<WallSensor>();
-		Debug.Log($"{wallsensor.Length}");
+		//Debug.Log($"{wallsensor.Length}");
+
+		attackCollider.onCharacterEnter += (target) => {
+			targetChars.Add(target);
+			Debug.Log("사정거리 안에 들어옴");
+		};
+
+		attackCollider.onCharacterExit += (target) => {
+			Debug.Log("사정거리 에서 나감");
+			targetChars.Remove(target);
+		};
+
 	}
+
+	List<Character> targetChars = new();
 
 	private void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
 		anim.SetFloat(Hash_AirSpeedY, fallSpeed);
-		attackCollider.enabled = false;
 	}
 	private void Update()
 	{
@@ -239,7 +251,7 @@ public class PlayerJS : MonoBehaviour
 
 		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
 		{
-			Debug.Log($"{hit.transform.name}");
+			//Debug.Log($"{hit.transform.name}");
 			if (hit.transform.TryGetComponent<IClickable>(out IClickable temp))
 			{
 				temp.OnClicking(temp);
@@ -310,15 +322,13 @@ public class PlayerJS : MonoBehaviour
 		isTriggerSwitch = false;
 	}
 
-	private void Attack(InputAction.CallbackContext 리_)
+	private void Attack(InputAction.CallbackContext context_)
 	{
-		OffAttackARea();
+		//OffAttackARea();
 		int randomAttackIndex;
 		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
-		attackCollider.enabled = true;
-		//Debug.Log("콜라이더 켜짐");
-
+		OnAttackARea();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -339,7 +349,15 @@ public class PlayerJS : MonoBehaviour
 
 	public void OffAttackARea()
 	{
-		attackCollider.enabled = false;
-		//Debug.Log("콜라이더 꺼짐");
+
+		//attackCollider.enabled = false;
+	}
+	public void OnAttackARea()
+	{
+		foreach(var item in targetChars)
+		{
+			Debug.Log("공격함");
+		}
+		//attackCollider.enabled = true;
 	}
 }

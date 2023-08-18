@@ -34,8 +34,6 @@ class NodeMap
     int width;
     int height;
 
-
-
     /// <summary>
     /// 초기화 함수
     /// </summary>

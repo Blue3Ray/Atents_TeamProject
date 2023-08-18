@@ -9,13 +9,14 @@ public class GroundSensor : MonoBehaviour
 
 	private void Start()
 	{
-		player = GameManager.Ins.playerTest1;
+		// player = GameManager.Ins.playerTest1;
+		player = transform.parent.GetComponent<PlayerJS>();
 	}
 
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		Debug.Log("충돌감지");
+		//Debug.Log("충돌감지");
 		if (collision.gameObject.CompareTag("Ground"))
 		{
 			player.IsGrounded = true;

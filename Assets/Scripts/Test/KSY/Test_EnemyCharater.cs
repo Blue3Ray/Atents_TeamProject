@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class Test_EnemyCharater: Character
 {
-
-    private void Awake()
-    {
-        hp = 100.0f;
-        maxHP = 100.0f;
-    }
     void Start()
     {
-      
+        maxHP = 100.0f;
+        HP = 100.0f;
     }
 
    

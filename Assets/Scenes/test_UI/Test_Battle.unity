@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14ebc2f833070045805ff135aa2cef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
+  hp: 100
   elemantalAttack: 0
   elemantalDefence: 0
 --- !u!1 &743567855
@@ -393,8 +393,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d63c348414e8f4fbf0a306a9c4a107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  enemy: {fileID: 0}
 --- !u!1 &1248025500
 GameObject:
   m_ObjectHideFlags: 0

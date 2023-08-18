@@ -13,8 +13,8 @@ public class Test_Battle : MonoBehaviour
 
     private void Awake()
     {
-        player = new Test_PlayerCharater();
-        enemy = new Test_EnemyCharater();
+        player = FindObjectOfType<Test_PlayerCharater>();
+        enemy =FindObjectOfType<Test_EnemyCharater>();
 
         inputAction = new ActionControl();  
     }

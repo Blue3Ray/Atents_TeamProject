@@ -8,12 +8,11 @@ public class Leveling : MonoBehaviour
 {
     TextMeshProUGUI levelIndex;
     Slider slider;
+   Test_PlayerCharater testPlayer;
 
-
-   Test_PlayerCharater player;
     private void Awake()
     {
-        player = new Test_PlayerCharater();
+        testPlayer = FindObjectOfType<Test_PlayerCharater>();
 
         Transform child = transform.GetChild(0);
         levelIndex = child.GetComponent<TextMeshProUGUI>();
@@ -24,7 +23,7 @@ public class Leveling : MonoBehaviour
     }
     private void Start()
     {
-        player.onChangeEx += RefreshData;
+        
     }
 
     public void RefreshData(float  experience, float experienceMax, int level)

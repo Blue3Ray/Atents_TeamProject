@@ -10,10 +10,10 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, IHealth
 {
-    [SerializeField]
+  //  [SerializeField]
 
     //HP 
-    protected float hp;
+    protected  float hp  = 1.0f;
      public float HP
     {
         get => hp;
@@ -26,15 +26,23 @@ public class Character : MonoBehaviour, IHealth
                 {     
                     Die();
                 }
-                hp = Mathf.Clamp(hp, 0, MaxHP);
-                onHealthChange?.Invoke(hp / MaxHP);
+                hp = Mathf.Clamp(HP, 0, MaxHP);
+                onHealthChange?.Invoke(HP / MaxHP);
             }
             
         }
     }
 
     protected float maxHP;
-    public float MaxHP => maxHP;
+    public float MaxHP
+    {
+        get => maxHP;
+        set
+        {
+            maxHP = value;
+        }
+    }
+    
 
     public System.Action<float> onHealthChange { get; set; }
 
@@ -67,7 +75,7 @@ public class Character : MonoBehaviour, IHealth
         }
     }
     public System.Action<float> onDefenceChange { get; set; }
-    float IHealth.HP { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+   
 
 
     // ElemantalStatus 클래스 호출

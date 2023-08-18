@@ -8,14 +8,10 @@ public class HPbar : BarBase
 {
     Test_PlayerCharater testPlayer;
 
-    private void Awake()
-    {
-        testPlayer = new Test_PlayerCharater();
 
-  
-    }
     void Start()
     {
+        testPlayer = FindObjectOfType<Test_PlayerCharater>();
         maxValue = testPlayer.MaxHP;
         max.text = $"  /    {maxValue}";
         current.text = testPlayer.HP.ToString("N0");

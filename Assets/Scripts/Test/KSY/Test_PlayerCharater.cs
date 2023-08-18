@@ -1,58 +1,60 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test_PlayerCharater : Character
+public class Test_PlayerCharater : Character, IExperience
 {
-       
+
+
 
     // 경험치 구현 부분
     float experience = 0.0f;
-    public float Experience
-    {
-        get => experience;
+    public float Experience 
+    { 
+        get => experience; 
         set
         {
             experience = value;
-
-            if (experience >= experienceMax)
+            if(experience >= experieceMax)
             {
-                experience -= experienceMax;
+                experieceMax -= experieceMax;
                 level++;
-                Debug.Log($"Level up : {level}");
             }
-            onChangeEx(experience, experienceMax, level);
+            onChangeEx(experience, experieceMax, level);
         }
     }
-    float experienceMax = 100.0f;
+    float experieceMax = 100.0f;
+    public float ExperienceMax => experieceMax;
+
     int level = 1;
-    public int Level
+    public int Level 
     {
         get => level;
         set
         {
             level = value;
-            // 레벨 상승시 발생할 이벤트들
+         
         }
     }
 
-    public System.Action<float, float, int> onChangeEx;
-//-------------------------------------------------------------------------------------------------
-    private void Awake()
-    {
-       
+    public Action<float, float, int> onChangeEx { get; set ; }
+    public Action onLevelUP { get; set; }
+  
 
-    }
+    //-------------------------------------------------------------------------------------------------
 
     private void Start()
     {
-        hp = 100.0f;
         maxHP = 100.0f;
+        HP = 100.0f;
     }
 
 
     public void GetEx(float ex)
     {
-        Experience += ex;
+        
     }
+
+    
 }

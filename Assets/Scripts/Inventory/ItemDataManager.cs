@@ -11,9 +11,12 @@ public enum ItemCode
     WaterSword,
     WindSword,
     ElectronicSword,
-    shelid,
-    asd,
-    asdf
+    HpPotion,
+    Box,
+    MysteryBox,
+    PoisonPotion,
+    SpeedPotion,
+    DfPotion
         
 }
 

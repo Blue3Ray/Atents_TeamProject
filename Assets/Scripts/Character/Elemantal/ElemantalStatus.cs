@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum Elemantal
+public enum ElemantalType
 {
     None,
     Fire,
@@ -11,13 +11,23 @@ public enum Elemantal
     Wind,
     Thunder
 }
+
 public class ElemantalStatus 
 {
-   public  Elemantal elemantal = Elemantal.None;
+    ElemantalType elemantal = ElemantalType.None;
+    public ElemantalType Elemantal
+    {
+        get => elemantal;
+        private set
+        {
+            elemantal = value;
+        }
+    }
 
     public int elemantalLevel = 0;
 
-    
-
-
+    public void ChangeType(ElemantalType type)
+    {
+        elemantal = type;
+    }
 }

@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class HPbar : BarBase
 {
-    Test_PlayerCharater testPlayer;
+    Test_PlayerCharacter testPlayer;
 
 
     void Start()
     {
-        testPlayer = FindObjectOfType<Test_PlayerCharater>();
+        testPlayer = FindObjectOfType<Test_PlayerCharacter>();
         maxValue = testPlayer.MaxHP;
         max.text = $"  /    {maxValue}";
         current.text = testPlayer.HP.ToString("N0");

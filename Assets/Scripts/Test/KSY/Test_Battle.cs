@@ -4,48 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_Battle : MonoBehaviour
+public class Test_Battle : TestBase
 {
-   Test_PlayerCharater player;
-   Test_EnemyCharater enemy;
+    public Test_PlayerCharacter player;
+    public Character enemy;
 
-    ActionControl inputAction;
-
-    private void Awake()
+    private void Start()
     {
-        player = FindObjectOfType<Test_PlayerCharater>();
-        enemy =FindObjectOfType<Test_EnemyCharater>();
 
-        inputAction = new ActionControl();  
     }
 
-    private void OnEnable()
+
+    protected override void Test1(InputAction.CallbackContext context)
     {
-        inputAction.Test.Enable();
-        inputAction.Test.Test1.performed += Test1;
-       // inputAction.Test.Test2.performed += Test2;
-       // inputAction.Test.Test3.performed += Test3;
-       // inputAction.Test.Test4.performed += Test4;
-       // inputAction.Test.Test5.performed += Test5;
-       // inputAction.Test.TestClick.performed += TestClick;
+        player.Attack(enemy);
     }
 
-   
-
-    private void OnDisable()
+    protected override void Test2(InputAction.CallbackContext context)
     {
-        // inputAction.Test.TestClick.performed -= TestClick;
-        // inputAction.Test.Test1.performed -= Test5;
-        // inputAction.Test.Test1.performed -= Test4;
-        // inputAction.Test.Test1.performed -= Test3;
-        // inputAction.Test.Test1.performed -= Test2;
-        inputAction.Test.Test1.performed -= Test1;
-        inputAction.Test.Disable();
+        enemy.Attack(player);
     }
 
-    private void Test1(InputAction.CallbackContext _)
+    protected override void Test3(InputAction.CallbackContext context)
     {
-        player.HP -= 10.0f;
+        IExperience target = player.GetComponent<IExperience>();
+        if(target != null)
+        {
+            target.Experience += 10;
+        }
     }
 
 }

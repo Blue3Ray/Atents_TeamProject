@@ -18,10 +18,10 @@ public class RingMenu
     // ¸µ¸Þ´º ½½·ÔÀÇ °¹¼ö
     public int slotCount => slots.Length;
 
-    TestPlayer owner;
-    public TestPlayer Owner => owner;
+    Character owner;
+    public Character Owner => owner;
 
-    public RingMenu(TestPlayer owner, uint size = Default_RingMenu_Size)
+    public RingMenu(Character owner, uint size = Default_RingMenu_Size)
     {
         slots= new RingMenuSlot[size];
         for(uint i = 0; i < size; i++)

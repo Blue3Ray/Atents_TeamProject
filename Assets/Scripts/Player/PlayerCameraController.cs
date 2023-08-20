@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    readonly int zDistance = -10;
+    //readonly int zDistance = -10;
 	PlayerJM player;
 	public float CameraSpeed = 5.0f;
 	Vector3 CameraZ;

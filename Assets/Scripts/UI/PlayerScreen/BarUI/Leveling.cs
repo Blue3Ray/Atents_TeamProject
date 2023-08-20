@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,12 +9,9 @@ public class Leveling : MonoBehaviour
 {
     TextMeshProUGUI levelIndex;
     Slider slider;
-   Test_PlayerCharater testPlayer;
 
     private void Awake()
     {
-        testPlayer = FindObjectOfType<Test_PlayerCharater>();
-
         Transform child = transform.GetChild(0);
         levelIndex = child.GetComponent<TextMeshProUGUI>();
 
@@ -21,15 +19,16 @@ public class Leveling : MonoBehaviour
         slider = child.GetComponent<Slider>();
         
     }
+
     private void Start()
     {
-        
+        Test_PlayerCharacter testPlayer = FindObjectOfType<Test_PlayerCharacter>();
+        testPlayer.onChangeEx += RefreshData;
     }
 
-    public void RefreshData(float  experience, float experienceMax, int level)
+    public void RefreshData(uint level, int  experience, int experienceMax)
     {
-        slider.value = experience;
-        slider.maxValue = experienceMax;
+        slider.value = (float) experience / (float) experienceMax;
         levelIndex.text = level.ToString();
     }
 }

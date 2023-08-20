@@ -226,7 +226,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643745820}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 794.5066, y: 437.50232, z: -1.3108579}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -242,12 +242,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 643745820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d14ebc2f833070045805ff135aa2cef1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8ba8abfab7c58499bcf82eeada7fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
-  elemantalAttack: 0
-  elemantalDefence: 0
+  hp: 1
+  maxHP: 100
+  attackState: 10
+  defenceState: 0
+  elemantalAttack: 10
+  elemantalDefence: 10
 --- !u!1 &743567855
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,6 +396,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d63c348414e8f4fbf0a306a9c4a107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 643745822}
+  enemy: {fileID: 1997448435}
 --- !u!1 &1248025500
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,7 +633,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997448433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 794.5066, y: 437.50232, z: -1.3108579}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -644,9 +649,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1997448433}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 004434409c1355f47b6524350723841f, type: 3}
+  m_Script: {fileID: 11500000, guid: 779925b9d419c2d4a89ba5b69f7cc750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
-  elemantalAttack: 0
-  elemantalDefence: 0
+  hp: 1
+  maxHP: 100
+  attackState: 10
+  defenceState: 0
+  elemantalAttack: 10
+  elemantalDefence: 10

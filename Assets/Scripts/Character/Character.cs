@@ -1,7 +1,5 @@
-
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
 
@@ -10,30 +8,42 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, IHealth
 {
-  //  [SerializeField]
 
-    //HP 
-    protected  float hp  = 1.0f;
-     public float HP
+    // 캐릭터의 체력 부분 -----------------------------------
+
+    /// <summary>
+    /// 캐릭터의 체력
+    /// </summary>
+    [SerializeField] float hp = 1.0f;
+    /// <summary>
+    /// 캐릭터 체력의 프로퍼티
+    /// </summary>
+    public float HP
     {
         get => hp;
-        set 
-        { 
-            if(IsAlive)
+        set
+        {
+            if (IsAlive)
             {
                 hp = value;
                 if (hp <= 0)
-                {     
-                    Die();
+                {
+                    onDie?.Invoke();
                 }
                 hp = Mathf.Clamp(HP, 0, MaxHP);
                 onHealthChange?.Invoke(HP / MaxHP);
             }
-            
+
         }
     }
 
-    protected float maxHP;
+    /// <summary>
+    /// 캐릭터의 최대 체력
+    /// </summary>
+    public float maxHP;
+    /// <summary>
+    /// 캐릭터 최대 체력의 프로퍼티
+    /// </summary>
     public float MaxHP
     {
         get => maxHP;
@@ -42,43 +52,63 @@ public class Character : MonoBehaviour, IHealth
             maxHP = value;
         }
     }
-    
 
+    /// <summary>
+    /// 캐릭터의 체력이 변화될 때 불리는 델리게이트
+    /// </summary>
     public System.Action<float> onHealthChange { get; set; }
 
+    /// <summary>
+    /// 캐릭터가 죽을 때 불리는 델리게이트
+    /// </summary>
     public System.Action onDie { get; set; }
 
+    /// <summary>
+    /// 캐릭터의 생존 여부
+    /// </summary>
     public bool IsAlive => hp > 0;
 
-    
+    // 캐릭터의 스텟 부분 -----------------------------------
 
-    // 공격력
-    protected float attack;
-    public float Attack    // 공격력 프로퍼티
+    /// <summary>
+    /// 캐릭터의 공격력
+    /// </summary>
+    [SerializeField] protected float attackState;
+    /// <summary>
+    /// 캐릭터 공격력의 프로퍼티
+    /// </summary>
+    public float AttackState
     {
-        get { return attack; }
+        get { return attackState; }
         set
         {
-            attack = value;
+            attackState = value;
         }
     }
+
     public System.Action<float> onAttackChange { get; set; }
 
-    // 방어력
-    protected float defence;
-    public float Defence  // 방어력 프로퍼티
+    /// <summary>
+    /// 캐릭터의 방어력
+    /// </summary>
+    [SerializeField] protected float defenceState;
+    /// <summary>
+    /// 캐릭터 방어력의 프로퍼티
+    /// </summary>
+    public float DefenceState
     {
-        get { return defence; } 
+        get { return defenceState; }
         set
         {
-            defence = value;
+            defenceState = value;
         }
     }
+
     public System.Action<float> onDefenceChange { get; set; }
    
-
-
-    // ElemantalStatus 클래스 호출
+    /// <summary>
+    /// 캐릭터가 가질 원소 속성
+    /// </summary>
     ElemantalStatus elemantalStatus;
 
     // 속성 공격력
@@ -86,22 +116,49 @@ public class Character : MonoBehaviour, IHealth
     // 속성 방어력
     public float elemantalDefence;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         elemantalStatus= new ElemantalStatus();
+
+        onDie += Die;
+        HP = MaxHP;
+    }
+
+    public virtual void OnInitialize()
+    {
+        HP = MaxHP;
+
+        Debug.Log($"{gameObject.name} 생성됨");
     }
 
     // 사망 처리용 함수
     public void Die()
     {
-        if (hp <= 0)
-        {
-            onDie?.Invoke();
-            gameObject.SetActive(false);
-        }
+        Debug.Log($"{gameObject.name} 죽음");
+        //onDie?.Invoke();
+        //gameObject.SetActive(false);
     }
 
-    // 체력으로 틱 단위로 증가 시키는 함수
+    // 속성 선택 함수
+    public void ElemantalSelect(ElemantalType elemantal)
+    {
+        elemantalStatus.ChangeType(elemantal);
+    }
+
+    // 속성 업그레이드 함수
+    public void ElemantalUpgrade(int elemantalLevel)
+    {
+
+    }
+
+    // 체력 회복 기능 ----------------------------------------------
+    
+    /// <summary>
+    /// 체력을 틱 단위로 증가 시키는 함수
+    /// </summary>
+    /// <param name="tickRegen"></param>
+    /// <param name="tickTime"></param>
+    /// <param name="totalTickCount"></param>
     public void HealthRegenerateByTick(float tickRegen, float tickTime, uint totalTickCount)
     {
         StartCoroutine(HealthRegenerateByTickCoroutine(tickRegen, tickTime, totalTickCount));
@@ -117,7 +174,11 @@ public class Character : MonoBehaviour, IHealth
         }
     }
 
-    // 체력을 지속적으로 회복시키는 함수
+    /// <summary>
+    /// 체력을 지속적으로 회복시키는 함수
+    /// </summary>
+    /// <param name="totalRegen"></param>
+    /// <param name="duration"></param>
     public void HealthRegenetate(float totalRegen, float duration)
     {
         StartCoroutine(HealthRegetateCoroutine(totalRegen, duration));
@@ -135,36 +196,47 @@ public class Character : MonoBehaviour, IHealth
         }
     }
 
+    // 공격 방어 기능 -----------------------------------
 
-
-    // 속성 선택 함수
-    public void ElemantalSelect(Elemantal elemantal)
+    public virtual void Attack(Character target)
     {
-        switch(elemantal)
+        Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
+
+        
+        target.Defance(AttackState);
+    }
+
+    public virtual void Defance(float damage, ElemantalStatus elemantal = null)
+    {
+        float resultDamage = 0;
+        if (elemantal == null || elemantal.Elemantal == ElemantalType.None)
         {
-            case Elemantal.Fire:
-                elemantalStatus.elemantal = Elemantal.Fire; 
-                break;
-            case Elemantal.Water:
-                elemantalStatus.elemantal = Elemantal.Water;
-                break;
-            case Elemantal.Wind:
-                elemantalStatus.elemantal = Elemantal.Wind;
-                break;
-            case Elemantal.Thunder:
-                elemantalStatus.elemantal = Elemantal.Thunder;
-                break;
-             default:
-                elemantalStatus.elemantal = Elemantal.None;
-                break;
+            resultDamage = Mathf.Clamp(damage, 0, MaxHP);
         }
+        else
+        {
+            switch (elemantal.Elemantal)
+            {
+                case ElemantalType.Fire:
+                    resultDamage = Mathf.Clamp(damage, 0, MaxHP) + 10;
+                    break;
+                case ElemantalType.Water:
+                    damage *= 1.2f;
+                    resultDamage = Mathf.Clamp(damage, 0, MaxHP);
+                    break;
+                case ElemantalType.Wind:
+                    damage *= 0.8f;
+                    resultDamage = Mathf.Clamp(damage, 0, MaxHP);
+                    break;
+                case ElemantalType.Thunder:
+                    damage *= 2f;
+                    resultDamage = Mathf.Clamp(damage, 0, MaxHP);
+                    break;
+            }
+        }
+
+        Debug.Log($"{gameObject.name}이(가) {resultDamage}만큼 피해를 입었다!");
+        HP -= resultDamage;
     }
 
-    // 속성 업그레이드 함수
-    public void ElemantalUpgrade(int elemantalLevel)
-    {
-
-    }
-
-    
 }

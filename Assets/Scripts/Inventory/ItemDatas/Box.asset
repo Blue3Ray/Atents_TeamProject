@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1230646ae47c5e44693cc57adcb8212f, type: 3}
   m_Name: Box
   m_EditorClassIdentifier: 
-  code: 0
-  itemName: "\uC544\uC774\uD15C"
+  code: 11
+  itemName: "\uBC15\uC2A4"
   itemIcon: {fileID: 21300000, guid: 50fc0b00f1cca6d4198745eee8695886, type: 3}
   price: 150000
   maxStackCount: 1
   itemDescription: "\uB79C\uB364\uC73C\uB85C \uC544\uC774\uD15C\uC774 \uB098\uC635\uB2C8\uB2E4"
   moveIncreaseRate: 0
-  modelPrefab: {fileID: 6377634687141374389, guid: 4c24fc1f8af987447994fa05417b6eba, type: 3}
+  dfIncreaseRate: 0
+  powerIncreaseRate: 0
+  modelPrefab: {fileID: 9150002894139758998, guid: cd25c76f651111b4aa5c8cae3449795c, type: 3}

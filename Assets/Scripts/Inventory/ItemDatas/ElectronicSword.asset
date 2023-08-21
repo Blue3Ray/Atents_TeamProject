@@ -19,4 +19,7 @@ MonoBehaviour:
   maxStackCount: 1
   itemDescription: "\uC7A5\uCC29 \uC2DC \uC804\uAE30 \uC18D\uC131 \uACF5\uACA9\uB825\uC774
     \uAC15\uD574\uC9C4\uB2E4."
-  modelPrefab: {fileID: 5277322383125865745, guid: 16cc97b1c438d6f498ba1aa731b2fc42, type: 3}
+  moveIncreaseRate: 0
+  dfIncreaseRate: 0
+  powerIncreaseRate: 0
+  modelPrefab: {fileID: 7533081205611561732, guid: f0210b5f18af8304c98713d4ad1b1c01, type: 3}

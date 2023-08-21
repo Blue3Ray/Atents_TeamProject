@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1230646ae47c5e44693cc57adcb8212f, type: 3}
-  m_Name: PoisonPotion
+  m_Name: PowerPotion
   m_EditorClassIdentifier: 
-  code: 0
-  itemName: "\uC544\uC774\uD15C"
+  code: 8
+  itemName: "\uACF5\uACA9\uAC15\uD654\uD3EC\uC158"
   itemIcon: {fileID: 21300000, guid: 40ec6c6ab3fa68a478a5092ae1598716, type: 3}
-  price: 15000
+  price: 30000
   maxStackCount: 1
-  itemDescription: "60\uCD08\uAC04 \uC801\uC5D0\uAC8C \uB3C5\uB370\uBBF8\uC9C0\uB97C
-    \uC904\uC218\uC788\uC2B5\uB2C8\uB2E4."
+  itemDescription: "60\uCD08\uB3D9\uC548 \uACF5\uACA9\uB825 30\uC744 \uC0C1\uC2B9\uC2DC\uD0A8\uB2E4"
   moveIncreaseRate: 0
-  modelPrefab: {fileID: 6711851490055713267, guid: f294b4c94036d7e45a9b2bab6bb8712a, type: 3}
+  dfIncreaseRate: 0
+  powerIncreaseRate: 0.5
+  modelPrefab: {fileID: 794972818081052816, guid: 99f49c21e8ae9d145a402ced12d5b870, type: 3}

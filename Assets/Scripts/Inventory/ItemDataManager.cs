@@ -12,12 +12,11 @@ public enum ItemCode
     WindSword,
     ElectronicSword,
     HpPotion,
-    Box,
-    MysteryBox,
-    PoisonPotion,
+    PowerPotion,
     SpeedPotion,
-    DfPotion
-        
+    DfPotion,
+    Box,
+    MysteryBox
 }
 
 public enum ItemSortBy

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PlayerJS : MonoBehaviour
+public class PlayerJS : Character
 {
 
 	/// <summary>
@@ -80,18 +80,8 @@ public class PlayerJS : MonoBehaviour
 	/// </summary>
 	public float fallSpeed = -1.0f;
 
-	/// <summary>
-	/// player의 hp
-	/// </summary>
-	float hp = 0.0f;
-	public float maxHp = 100;
-
 	bool OnDownArrow = false;
 
-	/// <summary>
-	/// hp가 바뀔 때마다 hp를 invoke
-	/// </summary>
-	public Action<float> onHpChange;
 
 	public Action OnBlockCommand;
 
@@ -99,24 +89,30 @@ public class PlayerJS : MonoBehaviour
 
 	bool IsHalfPlatform = false;
 
-	/// <summary>
-	/// hp가 양수인지 확인해서 bool로 get할 수 있는 프로퍼티
-	/// </summary>
-	public bool IsAlive => hp > 0;
+	ElementalType playerElementalType = ElementalType.None;
 
-	public float HP
+	public ElementalType PlayerElemetalType
 	{
-		get => hp;
+		get => playerElementalType;
 		set
 		{
-			if (hp != value && IsAlive)
+			switch (value)
 			{
-				hp = Mathf.Max(0, value);
-				onHpChange?.Invoke(hp);
+				case ElementalType.Fire:
+					break;
+
+				case ElementalType.Thunder:
+					break;
+
+				case ElementalType.Water:
+					break;
+
+				case ElementalType.Wind:
+					break;
+
 			}
 		}
 	}
-
 
 	/// <summary>
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
@@ -161,7 +157,7 @@ public class PlayerJS : MonoBehaviour
 		inputActions.PlayerJM.Move.canceled += OnMove;
 		inputActions.PlayerJM.Jump.performed += OnJump;
 		inputActions.PlayerJM.Jump.canceled += OffSpaceBar;
-		inputActions.PlayerJM.Attack.performed += Attack;
+		inputActions.PlayerJM.Attack.performed += OnAttack;
 		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;
 		inputActions.PlayerJM.Down.performed += OnDown;
 		inputActions.PlayerJM.Down.canceled += OnDown;
@@ -197,8 +193,9 @@ public class PlayerJS : MonoBehaviour
 		//inputActions.Disable();
 	}
 
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		inputActions = new ActionControl();
 		anim = GetComponent<Animator>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
@@ -206,20 +203,21 @@ public class PlayerJS : MonoBehaviour
 		AttackHashes[0] = Hash_Attack1;
 		AttackHashes[1] = Hash_Attack2;
 		AttackHashes[2] = Hash_Attack3;
-		HP = maxHp;
 		attackAreaPivot = transform.GetChild(0);
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
 		attackCollider = GetComponentInChildren<New_AttackArea>();
 		wallsensor = GetComponentsInChildren<WallSensor>();
 
 		//AttackCollider에서 들어온 것을 리스트에 추가
-		attackCollider.onCharacterEnter += (target) => {
+		attackCollider.onCharacterEnter += (target) =>
+		{
 			targetChars.Add(target);
 			Debug.Log("사정거리 안에 들어옴");
 		};
-
 		//attackCollider에서 나간 것을 리스트에서 제거
-		attackCollider.onCharacterExit += (target) => {
+
+		attackCollider.onCharacterExit += (target) =>
+		{
 			Debug.Log("사정거리 에서 나감");
 			targetChars.Remove(target);
 		};
@@ -293,16 +291,19 @@ public class PlayerJS : MonoBehaviour
 	private void OnJump(InputAction.CallbackContext obj)
 	{
 		isSpaceBarOn = true;
-		if (IsGrounded && !OnDownArrow &&!isTriggerSwitch)
+		if (isGrounded)
 		{
-			rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-			anim.SetTrigger(Hash_Jump);
-		}
-		else if(OnDownArrow && IsHalfPlatform)
-		{
-			if (!isTriggerSwitch)
+			if(!OnDownArrow && !isTriggerSwitch)
 			{
-				StartCoroutine(TriggerOnOff());
+				rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+				anim.SetTrigger(Hash_Jump);
+			}
+			else if(OnDownArrow && IsHalfPlatform)
+			{
+				if (!isTriggerSwitch)
+				{
+					StartCoroutine(TriggerOnOff());
+				}
 			}
 		}
 	}
@@ -324,13 +325,17 @@ public class PlayerJS : MonoBehaviour
 		isTriggerSwitch = false;
 	}
 
-	private void Attack(InputAction.CallbackContext context_)
+	private void OnAttack(InputAction.CallbackContext context_)
 	{
 		//OffAttackARea();
 		int randomAttackIndex;
 		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
-		OnAttackARea();
+		foreach(var item in targetChars)
+		{
+			Debug.Log("공격함");
+		}
+		
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -349,12 +354,20 @@ public class PlayerJS : MonoBehaviour
 		}
 	}
 
+
 	public void OnAttackARea()
 	{
-		foreach(var item in targetChars)
+		foreach(var target in targetChars)
 		{
+			Attack(target);
 			Debug.Log("공격함");
 		}
 		//attackCollider.enabled = true;
 	}
+
+	public override void Attack(Character target)
+	{
+		base.Attack(target);
+	}
+
 }

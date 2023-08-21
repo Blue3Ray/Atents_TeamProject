@@ -140,7 +140,7 @@ public class Character : MonoBehaviour, IHealth
     }
 
     // 속성 선택 함수
-    public void ElemantalSelect(ElemantalType elemantal)
+    public void ElemantalSelect(ElementalType elemantal)
     {
         elemantalStatus.ChangeType(elemantal);
     }
@@ -209,7 +209,7 @@ public class Character : MonoBehaviour, IHealth
     public virtual void Defance(float damage, ElemantalStatus elemantal = null)
     {
         float resultDamage = 0;
-        if (elemantal == null || elemantal.Elemantal == ElemantalType.None)
+        if (elemantal == null || elemantal.Elemantal == ElementalType.None)
         {
             resultDamage = Mathf.Clamp(damage, 0, MaxHP);
         }
@@ -217,18 +217,18 @@ public class Character : MonoBehaviour, IHealth
         {
             switch (elemantal.Elemantal)
             {
-                case ElemantalType.Fire:
+                case ElementalType.Fire:
                     resultDamage = Mathf.Clamp(damage, 0, MaxHP) + 10;
                     break;
-                case ElemantalType.Water:
+                case ElementalType.Water:
                     damage *= 1.2f;
                     resultDamage = Mathf.Clamp(damage, 0, MaxHP);
                     break;
-                case ElemantalType.Wind:
+                case ElementalType.Wind:
                     damage *= 0.8f;
                     resultDamage = Mathf.Clamp(damage, 0, MaxHP);
                     break;
-                case ElemantalType.Thunder:
+                case ElementalType.Thunder:
                     damage *= 2f;
                     resultDamage = Mathf.Clamp(damage, 0, MaxHP);
                     break;

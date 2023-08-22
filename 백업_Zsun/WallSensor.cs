@@ -10,9 +10,8 @@ public class WallSensor : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.CompareTag("Ground"))
+		if (collision.CompareTag("Wall"))
 		{
-			Debug.Log("ºÎ´ÚÄ§");
 			OnWall?.Invoke(true);
 		}
 	}
@@ -20,7 +19,7 @@ public class WallSensor : MonoBehaviour
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		if (collision.CompareTag("Ground"))
+		if (collision.CompareTag("Wall"))
 		{
 			OnWall?.Invoke(false);
 		}

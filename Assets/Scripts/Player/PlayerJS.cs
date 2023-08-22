@@ -40,10 +40,21 @@ public class PlayerJS : Character
 	/// </summary>
 	private bool isGrounded;
 
+	/// <summary>
+	/// 리지드바디를 껐다가 키는 이넘이 진행중인지
+	/// </summary>
 	bool isTriggerSwitch = false;
 
+	/// <summary>
+	/// 아래키를 누르고 점프를 하든, 점프를 누르고 아래키를 누르든
+	/// 둘 다 되어야 하니까 스페이스가 눌렸는지도 확인해야 한다.
+	/// </summary>
 	bool isSpaceBarOn = false;
 
+	/// <summary>
+	/// Ground에 닿았는지 유무에 따라
+	/// 그에 걸맞는 애니메이션을 설정하는 프로퍼티
+	/// </summary>
 	public bool IsGrounded
 	{
 		get => isGrounded;
@@ -80,19 +91,45 @@ public class PlayerJS : Character
 	/// </summary>
 	public float fallSpeed = -1.0f;
 
+	/// <summary>
+	/// w키가 눌려있는지를 확인한다.
+	/// </summary>
 	bool OnDownArrow = false;
 
+	/// <summary>
+	/// 왼쪽 시프트키를 눌렀을 때 어떤 크기로
+	/// addforce할지를 인스펙터에서 받는 변수
+	/// </summary>
+	public float dashForce = 2.0f;
 
-	public Action OnBlockCommand;
-
+	/// <summary>
+	/// 왼쪽이 클릭되었는지를 받는다.
+	/// 현재 캐릭터 간의 이야기는 클릭을 입력 받아야 하는데
+	/// 그때 player의 인풋액션을 확인하고 있다.
+	/// </summary>
 	public Action MouseJustclick_Left;
 
+	/// <summary>
+	/// 반플랫폼에 닿았는지 안닿았는지
+	/// </summary>
 	bool IsHalfPlatform = false;
 
+	/// <summary>
+	/// 이 델리게이트에 Elemental의 속성에 맞는 공격함수가 연결된다.
+	/// player고유한 기능만 넣을 거고
+	/// 나머지는 character의 attack을 사용한다.
+	/// </summary>
 	public Action ActiveAttackActionType;
 
+	/// <summary>
+	/// 플레이어의 원소 타입을 저장한다.
+	/// </summary>
 	ElementalType playerElementalType = ElementalType.None;
 
+	/// <summary>
+	/// 원소 타입에 따라 ActiveAttackActionType에 연결되는
+	/// 함수를 지정해주는 프로퍼티
+	/// </summary>
 	public ElementalType PlayerElementalType
 	{
 		get => playerElementalType;
@@ -132,9 +169,28 @@ public class PlayerJS : Character
 	/// </summary>
 	Animator anim;
 
+	/// <summary>
+	/// attack의 콜라이더의 부모 transform
+	/// </summary>
 	Transform attackAreaPivot;
+
+	/// <summary>
+	/// attackarea 콜라이더
+	/// </summary>
 	GameObject attackArea;
+
+	/// <summary>
+	/// 기존 방식에서의 오류를 잡기위해 만든
+	/// 새로운 attackCollider
+	/// 추후 위에 attakArea를 삭제할 예정
+	/// </summary>
 	New_AttackArea attackCollider;
+
+	/// <summary>
+	/// 왼쪽과 오른쪽 벽센서 콜라이더를 받고 있다.
+	/// 닿았을 때 점프를 누르면
+	/// 벽의 반대편으로 튀어오르게 할 것이다.
+	/// </summary>
 	WallSensor[] wallsensor;
 
 	/// <summary>
@@ -149,6 +205,7 @@ public class PlayerJS : Character
 	readonly int Hash_Attack2 = Animator.StringToHash("Attack2");
 	readonly int Hash_Attack3 = Animator.StringToHash("Attack3");
 	readonly int Hash_WallSlide = Animator.StringToHash("WallSlide");
+	readonly int Hash_Roll = Animator.StringToHash("Roll");
 
 	/// <summary>
 	/// 액션 애니메이션 세 개 중 하나를 랜덤으로 setTrigger하기 위해
@@ -169,25 +226,8 @@ public class PlayerJS : Character
 		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;
 		inputActions.PlayerJM.Down.performed += OnDown;
 		inputActions.PlayerJM.Down.canceled += OnDown;
+		inputActions.PlayerJM.Dash.performed += OnDash;
 	}
-
-	private void OnDown(InputAction.CallbackContext context)
-	{
-
-		if(context.canceled)
-		{
-			OnDownArrow = false;
-		}
-		else
-		{
-			if (isSpaceBarOn && !isTriggerSwitch)
-			{
-				StartCoroutine(TriggerOnOff());	
-			}
-			OnDownArrow = true;
-		}
-	}
-
 	private void OnDisable()
 	{
 		inputActions.PlayerJM.Jump.canceled -= OffSpaceBar;
@@ -294,6 +334,42 @@ public class PlayerJS : Character
 				anim.SetInteger(Hash_AnimState, 1);
 			}
 			dir.y = 0;
+		}
+	}
+
+
+	private void OnDash(InputAction.CallbackContext obj)
+	{
+		if (IsGrounded)
+		{
+			if (spriteRenderer.flipX == false)
+			{
+				rb.AddForce(transform.right * dashForce, ForceMode2D.Impulse);
+			}
+			else
+			{
+				rb.AddForce(-transform.right * dashForce, ForceMode2D.Impulse);
+
+			}
+			Debug.Log("대쉬");
+			anim.SetTrigger(Hash_Roll);
+		}
+	}
+
+	private void OnDown(InputAction.CallbackContext context)
+	{
+
+		if(context.canceled)
+		{
+			OnDownArrow = false;
+		}
+		else
+		{
+			if (isSpaceBarOn && !isTriggerSwitch)
+			{
+				StartCoroutine(TriggerOnOff());	
+			}
+			OnDownArrow = true;
 		}
 	}
 

@@ -331,6 +331,15 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""75561add-ca7f-43aa-8378-8f842e96a8cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -474,6 +483,17 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa32b60a-ae5b-4d42-85c8-b2f92a2203fe"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -644,6 +664,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_PlayerJM_Attack = m_PlayerJM.FindAction("Attack", throwIfNotFound: true);
         m_PlayerJM_Click = m_PlayerJM.FindAction("Click", throwIfNotFound: true);
         m_PlayerJM_Down = m_PlayerJM.FindAction("Down", throwIfNotFound: true);
+        m_PlayerJM_Dash = m_PlayerJM.FindAction("Dash", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -926,6 +947,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerJM_Attack;
     private readonly InputAction m_PlayerJM_Click;
     private readonly InputAction m_PlayerJM_Down;
+    private readonly InputAction m_PlayerJM_Dash;
     public struct PlayerJMActions
     {
         private @ActionControl m_Wrapper;
@@ -935,6 +957,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_PlayerJM_Attack;
         public InputAction @Click => m_Wrapper.m_PlayerJM_Click;
         public InputAction @Down => m_Wrapper.m_PlayerJM_Down;
+        public InputAction @Dash => m_Wrapper.m_PlayerJM_Dash;
         public InputActionMap Get() { return m_Wrapper.m_PlayerJM; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -959,6 +982,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Down.started += instance.OnDown;
             @Down.performed += instance.OnDown;
             @Down.canceled += instance.OnDown;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPlayerJMActions instance)
@@ -978,6 +1004,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Down.started -= instance.OnDown;
             @Down.performed -= instance.OnDown;
             @Down.canceled -= instance.OnDown;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPlayerJMActions instance)
@@ -1116,6 +1145,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {

@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class PlayerJS : Character
 {
+	public GameObject fireBall; 
 
 	/// <summary>
 	/// inventory를 플레이어가 가질 수 있도록 추가
@@ -33,7 +34,7 @@ public class PlayerJS : Character
 	/// <summary>
 	/// 좌우 반전을 위해 스프라이트 렌더러를 캐싱할 변수
 	/// </summary>
-	SpriteRenderer spriteRenderer;
+	public SpriteRenderer spriteRenderer;
 
 	/// <summary>
 	/// 땅에 닿았는지 확인하는 변수
@@ -501,10 +502,10 @@ public class PlayerJS : Character
 		int randomAttackIndex;
 		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
-		foreach(var item in targetChars)
-		{
-			ActiveAttackActionType?.Invoke();
-		}
+		ActiveAttackActionType?.Invoke();
+		//foreach(var item in targetChars)
+		//{
+		//}
 		
 	}
 
@@ -542,7 +543,10 @@ public class PlayerJS : Character
 
 	private void NoneAttack()
 	{
-		Debug.Log("NoneAttack");
+		foreach(var target in targetChars)
+		{
+			Attack(target);
+		}
 	}
 
 	private void WindAttack()
@@ -562,7 +566,7 @@ public class PlayerJS : Character
 
 	private void FireAttack()
 	{
-		Debug.Log("FireAttack");
+		Instantiate(fireBall, transform.position, Quaternion.identity);
 	}
 
 	private void SetTouchedWall_Right(bool IsOn)

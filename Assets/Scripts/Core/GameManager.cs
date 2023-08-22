@@ -23,7 +23,7 @@ public class GameManager : Singleton<GameManager>
     
     public ItemDataManager ItemData => itemDataManager;
 
-    
+    public bool IsRight => !playerTest1.spriteRenderer.flipX;
 
     private void Awake()
     {

@@ -15,11 +15,13 @@ public struct PassWay
 {
     public Vector3Int Pos;
     public ExitDirection Direction;
+    public bool isConnected;
 
-    public PassWay(Vector3Int pos, ExitDirection dir)
+    public PassWay(Vector3Int pos, ExitDirection dir, bool isConnected = false)
     {
         Pos = pos;
         Direction = dir;
+        this.isConnected = isConnected;
     }
 }
 
@@ -127,16 +129,18 @@ public class SampleRoomData : MonoBehaviour
         return amount;
     }
 
-    public int GetExitCount(ExitDirection dir)
+    public List<PassWay> GetExitList(ExitDirection dir)
     {
-        int result = 0;
+        List<PassWay> result = new();
+        
         foreach(PassWay exit in exitPos)
         {
             if(exit.Direction == dir)
             {
-                result++;
+                result.Add(exit);
             }
         }
+
         return result;
     }
 }

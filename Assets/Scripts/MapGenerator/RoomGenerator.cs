@@ -60,9 +60,16 @@ public class RoomGenerator : MonoBehaviour
     /// </summary>
     Vector3Int cursor;
 
+    struct Passes
+    {
+        public PassWay start;
+        public PassWay end;
+    }
 
     // 기능 부분 ------------------
     RandomMapGenerator randomMap;
+
+    SampleRoomData[,] mapGrid;
 
     // 초기 랜덤 맵 설정 ---------------------
     public int width = 100;
@@ -118,17 +125,47 @@ public class RoomGenerator : MonoBehaviour
 
         Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
 
-        for(int x = 0; x < randomMap.gridMap.Width; x++)
+        // 방을 만드는 부분
+        for (int x = 0; x < randomMap.gridMap.Width; x++)
         {
-            for(int y = 0; y < randomMap.gridMap.Height; y++)
+            for (int y = 0; y < randomMap.gridMap.Height; y++)
             {
-                if (randomMap.gridMap.mapGrid[x,y] != null)
+                if (randomMap.gridMap.mapGrid[x, y] != null)
                 {
-                    // 방 선택하는 함수 짜야 됨
                     GenerateRoom(new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize), roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length - 1)]);
                 }
             }
         }
+        //----------------------------
+
+
+        
+        // 통로 만드는 부분
+
+        int[] dirCount = new int[4];
+
+        for (int i = 0; i < randomMap.gridMap.mapGrid[startPos.x, startPos.y].connectedRooms.Count; i++)
+        {
+            switch (randomMap.gridMap.mapGrid[startPos.x, startPos.y].connectedRooms[i].Item2)
+            {
+                case ExitDirection.Up:
+                    dirCount[0]++;
+                    break;
+                case ExitDirection.Left:
+                    dirCount[1]++;
+                    break;
+                case ExitDirection.Right:
+                    dirCount[2]++;
+                    break;
+                case ExitDirection.Down:
+                    dirCount[3]++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
     }
 
 

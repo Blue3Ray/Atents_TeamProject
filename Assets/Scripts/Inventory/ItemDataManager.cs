@@ -16,7 +16,11 @@ public enum ItemCode
     SpeedPotion,
     DfPotion,
     Box,
-    MysteryBox
+    MysteryBox,
+    ShortSword,
+    LongSword,
+    LongSword2,
+    HandBomb
 }
 
 public enum ItemSortBy

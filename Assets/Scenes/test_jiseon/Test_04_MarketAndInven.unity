@@ -638,7 +638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4662612979870208520, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
       propertyPath: itemCodes.Array.size
-      value: 13
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4662612979870208520, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
       propertyPath: itemCodes.Array.data[4]
@@ -674,11 +674,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4662612979870208520, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
       propertyPath: itemCodes.Array.data[13]
-      value: 15
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4662612979870208520, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
       propertyPath: itemCodes.Array.data[14]
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662612979870208520, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
+      propertyPath: itemCodes.Array.data[15]
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662612979870208520, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
+      propertyPath: itemCodes.Array.data[16]
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4662612979870208523, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
       propertyPath: m_Vertical

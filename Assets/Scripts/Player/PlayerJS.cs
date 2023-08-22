@@ -159,6 +159,39 @@ public class PlayerJS : Character
 			}
 		}
 	}
+
+	/// <summary>
+	/// 프로퍼티가 public일 때 변수는 private이어도 되지만
+	/// 타입은 public이어야 하기 때문에 public으로 함.
+	/// </summary>
+	public enum TouchedWall
+	{
+		None = 0,
+		RightWall,
+		LeftWall
+	}
+
+	TouchedWall playerTouchedWall = TouchedWall.None;
+
+	public TouchedWall PlayerTouchedWall
+	{
+		get => playerTouchedWall;
+		set
+		{
+			playerTouchedWall = value;
+			if(value == TouchedWall.RightWall)
+			{
+				spriteRenderer.flipX = false;
+			}
+			else if(value == TouchedWall.LeftWall)
+			{
+				spriteRenderer.flipX = true;
+			}
+		}
+	}
+
+
+
 	/// <summary>
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
 	/// </summary>
@@ -188,8 +221,8 @@ public class PlayerJS : Character
 
 	/// <summary>
 	/// 왼쪽과 오른쪽 벽센서 콜라이더를 받고 있다.
-	/// 닿았을 때 점프를 누르면
-	/// 벽의 반대편으로 튀어오르게 할 것이다.
+	/// [0] = 오른쪽
+	/// [1] = 왼쪽
 	/// </summary>
 	WallSensor[] wallsensor;
 
@@ -213,6 +246,23 @@ public class PlayerJS : Character
 	/// </summary>
 	int[] AttackHashes;
 
+	public float wallJumpForce = 10.0f;
+
+	/// <summary>
+	/// attack area 안에 들어온 character 리스트
+	/// </summary>
+	List<Character> targetChars = new();
+
+	/// <summary>
+	/// 오른쪽 대각선 방향
+	/// </summary>
+	Vector3 Cross;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	Vector3 LeftCross;
+
 	private void OnEnable()
 	{
 		//굳이 inputAction을 활성화시키지 않아도 될 것 같아서 주석 처리했습니다!
@@ -230,15 +280,16 @@ public class PlayerJS : Character
 	}
 	private void OnDisable()
 	{
-		inputActions.PlayerJM.Jump.canceled -= OffSpaceBar;
+		inputActions.PlayerJM.Dash.performed -= OnDash;
 		inputActions.PlayerJM.Down.performed -= OnDown;
 		inputActions.PlayerJM.Down.canceled -= OnDown;
 		inputActions.PlayerJM.Click.performed -= OnClickMouse_Left;
+		inputActions.PlayerJM.Attack.performed -= OnAttack;
+		inputActions.PlayerJM.Jump.canceled -= OffSpaceBar;
 		inputActions.PlayerJM.Jump.performed -= OnJump;
 		inputActions.PlayerJM.Move.performed -= OnMove;
 		inputActions.PlayerJM.Move.canceled -= OnMove;
-		inputActions.PlayerJM.Enable();
-		//inputActions.Disable();
+		inputActions.PlayerJM.Disable();
 	}
 
 	protected override void Awake()
@@ -254,8 +305,7 @@ public class PlayerJS : Character
 		attackAreaPivot = transform.GetChild(0);
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
 		attackCollider = GetComponentInChildren<New_AttackArea>();
-		wallsensor = GetComponentsInChildren<WallSensor>();
-
+		
 		//AttackCollider에서 들어온 것을 리스트에 추가
 		attackCollider.onCharacterEnter += (target) =>
 		{
@@ -273,13 +323,21 @@ public class PlayerJS : Character
 		PlayerElementalType = ElementalType.None;
 	}
 
-	List<Character> targetChars = new();
-
 	private void Start()
 	{
+		Cross = transform.up*2 + transform.right;
+		LeftCross = transform.up * 2 + -(transform.right);
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
 		anim.SetFloat(Hash_AirSpeedY, fallSpeed);
+
+
+		wallsensor = new WallSensor[2];
+		wallsensor[0] = transform.GetChild(1).GetComponent<WallSensor>();
+		wallsensor[1] = transform.GetChild(2).GetComponent<WallSensor>();
+		wallsensor[0].OnWall += (OnOff) => SetTouchedWall_Right(OnOff);
+		wallsensor[1].OnWall += (OnOff) => SetTouchedWall_Left(OnOff);
+
 	}
 	private void Update()
 	{
@@ -342,17 +400,42 @@ public class PlayerJS : Character
 	{
 		if (IsGrounded)
 		{
-			if (spriteRenderer.flipX == false)
+			if(PlayerTouchedWall == TouchedWall.None)
 			{
-				rb.AddForce(transform.right * dashForce, ForceMode2D.Impulse);
+				if (spriteRenderer.flipX == false)
+				{
+					rb.AddForce(transform.right * dashForce, ForceMode2D.Impulse);
+				}
+				else
+				{
+					rb.AddForce(-transform.right * dashForce, ForceMode2D.Impulse);
+				}
+				anim.SetTrigger(Hash_Roll);
 			}
-			else
+			else if (PlayerTouchedWall == TouchedWall.LeftWall)
 			{
-				rb.AddForce(-transform.right * dashForce, ForceMode2D.Impulse);
+				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
+				//Debug.Log("왼쪽 벽에서 점프");
+			}
+			else if (PlayerTouchedWall == TouchedWall.RightWall)
+			{
+				//Debug.Log("오른쪽 벽에서 점프");
+				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
+			}
 
+		}
+		else
+		{
+			if (PlayerTouchedWall == TouchedWall.LeftWall)
+			{
+				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
+				//Debug.Log("왼쪽 벽에서 점프");
 			}
-			Debug.Log("대쉬");
-			anim.SetTrigger(Hash_Roll);
+			else if (PlayerTouchedWall == TouchedWall.RightWall)
+			{
+				//Debug.Log("오른쪽 벽에서 점프");
+				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
+			}
 		}
 	}
 
@@ -378,12 +461,13 @@ public class PlayerJS : Character
 		isSpaceBarOn = true;
 		if (isGrounded)
 		{
-			if(!OnDownArrow && !isTriggerSwitch)
+
+			if (!OnDownArrow && !isTriggerSwitch)
 			{
 				rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
 				anim.SetTrigger(Hash_Jump);
 			}
-			else if(OnDownArrow && IsHalfPlatform)
+			else if (OnDownArrow && IsHalfPlatform)
 			{
 				if (!isTriggerSwitch)
 				{
@@ -391,6 +475,7 @@ public class PlayerJS : Character
 				}
 			}
 		}
+		
 	}
 
 	private void OffSpaceBar(InputAction.CallbackContext obj)
@@ -480,5 +565,26 @@ public class PlayerJS : Character
 		Debug.Log("FireAttack");
 	}
 
-
+	private void SetTouchedWall_Right(bool IsOn)
+	{
+		if (IsOn)
+		{
+			PlayerTouchedWall = TouchedWall.RightWall;
+		}
+		else
+		{
+			PlayerTouchedWall = TouchedWall.None;
+		}
+	}
+	private void SetTouchedWall_Left(bool IsOn)
+	{
+		if (IsOn)
+		{
+			PlayerTouchedWall = TouchedWall.LeftWall;
+		}
+		else
+		{
+			PlayerTouchedWall = TouchedWall.None;
+		}
+	}
 }

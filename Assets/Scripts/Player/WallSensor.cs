@@ -5,15 +5,25 @@ using UnityEngine;
 
 public class WallSensor : MonoBehaviour
 {
-	public Action OnWall;
+	public Action<bool> OnWall;
 	
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.CompareTag("Wall"))
+		if (collision.CompareTag("Ground"))
 		{
-			OnWall?.Invoke();
-			Debug.Log("º®´êÀ½");
+			Debug.Log("ºÎ´ÚÄ§");
+			OnWall?.Invoke(true);
 		}
 	}
+
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.CompareTag("Ground"))
+		{
+			OnWall?.Invoke(false);
+		}
+	}
+
 }

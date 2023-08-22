@@ -89,9 +89,11 @@ public class PlayerJS : Character
 
 	bool IsHalfPlatform = false;
 
+	public Action ActiveAttackActionType;
+
 	ElementalType playerElementalType = ElementalType.None;
 
-	public ElementalType PlayerElemetalType
+	public ElementalType PlayerElementalType
 	{
 		get => playerElementalType;
 		set
@@ -99,21 +101,27 @@ public class PlayerJS : Character
 			switch (value)
 			{
 				case ElementalType.Fire:
+					ActiveAttackActionType = FireAttack;
 					break;
 
 				case ElementalType.Thunder:
+					ActiveAttackActionType = ThunderAttack;
 					break;
 
 				case ElementalType.Water:
+					ActiveAttackActionType = WaterAttack;
 					break;
 
 				case ElementalType.Wind:
+					ActiveAttackActionType = WindAttack;
 					break;
 
+				default:
+					ActiveAttackActionType = NoneAttack;
+					break;
 			}
 		}
 	}
-
 	/// <summary>
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
 	/// </summary>
@@ -222,6 +230,7 @@ public class PlayerJS : Character
 			targetChars.Remove(target);
 		};
 
+		PlayerElementalType = ElementalType.None;
 	}
 
 	List<Character> targetChars = new();
@@ -333,7 +342,7 @@ public class PlayerJS : Character
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
 		foreach(var item in targetChars)
 		{
-			Debug.Log("공격함");
+			ActiveAttackActionType?.Invoke();
 		}
 		
 	}
@@ -355,19 +364,45 @@ public class PlayerJS : Character
 	}
 
 
-	public void OnAttackARea()
-	{
-		foreach(var target in targetChars)
-		{
-			Attack(target);
-			Debug.Log("공격함");
-		}
-		//attackCollider.enabled = true;
-	}
+	//public void OnAttackARea()
+	//{
+	//	foreach(var target in targetChars)
+	//	{
+	//		Attack(target);
+	//		Debug.Log("공격함");
+	//	}
+	//	//attackCollider.enabled = true;
+	//}
 
 	public override void Attack(Character target)
 	{
 		base.Attack(target);
 	}
+
+	private void NoneAttack()
+	{
+		Debug.Log("NoneAttack");
+	}
+
+	private void WindAttack()
+	{
+		Debug.Log("WindAttack");
+	}
+
+	private void WaterAttack()
+	{
+		Debug.Log("WaterAttack");
+	}
+
+	private void ThunderAttack()
+	{
+		Debug.Log("ThunderAttack");
+	}
+
+	private void FireAttack()
+	{
+		Debug.Log("FireAttack");
+	}
+
 
 }

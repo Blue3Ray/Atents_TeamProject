@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
+using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -120,42 +121,40 @@ public class PlayerJS : Character
 	/// player고유한 기능만 넣을 거고
 	/// 나머지는 character의 attack을 사용한다.
 	/// </summary>
-	public Action ActiveAttackActionType;
+	public Action ActiveElementalAttack;
+
 
 	/// <summary>
-	/// 플레이어의 원소 타입을 저장한다.
+	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는
+	/// public 프로퍼티로서
+	/// elemantalStatus를 set할 때마다 원소 타입을 챙겨서 연결되는 함수를 바꾼다.
 	/// </summary>
-	ElementalType playerElementalType = ElementalType.None;
-
-	/// <summary>
-	/// 원소 타입에 따라 ActiveAttackActionType에 연결되는
-	/// 함수를 지정해주는 프로퍼티
-	/// </summary>
-	public ElementalType PlayerElementalType
+	public ElemantalStatus PlayerElementalStatus
 	{
-		get => playerElementalType;
+		get => elemantalStatus;
 		set
 		{
-			switch (value)
+			switch (value.Elemantal)
 			{
+
 				case ElementalType.Fire:
-					ActiveAttackActionType = FireAttack;
+					ActiveElementalAttack = FireAttack;
 					break;
 
 				case ElementalType.Thunder:
-					ActiveAttackActionType = ThunderAttack;
+					ActiveElementalAttack = ThunderAttack;
 					break;
 
 				case ElementalType.Water:
-					ActiveAttackActionType = WaterAttack;
+					ActiveElementalAttack = WaterAttack;
 					break;
 
 				case ElementalType.Wind:
-					ActiveAttackActionType = WindAttack;
+					ActiveElementalAttack = WindAttack;
 					break;
 
 				default:
-					ActiveAttackActionType = NoneAttack;
+					ActiveElementalAttack = NoneAttack;
 					break;
 			}
 		}
@@ -191,7 +190,7 @@ public class PlayerJS : Character
 		}
 	}
 
-
+	Transform pivotTransform;
 
 	/// <summary>
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
@@ -321,7 +320,8 @@ public class PlayerJS : Character
 			targetChars.Remove(target);
 		};
 
-		PlayerElementalType = ElementalType.None;
+		PlayerElementalStatusChange(ElementalType.None);
+		pivotTransform = transform.GetChild(5);
 	}
 
 	private void Start()
@@ -502,7 +502,7 @@ public class PlayerJS : Character
 		int randomAttackIndex;
 		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
-		ActiveAttackActionType?.Invoke();
+		ActiveElementalAttack?.Invoke();
 		//foreach(var item in targetChars)
 		//{
 		//}
@@ -525,20 +525,13 @@ public class PlayerJS : Character
 		}
 	}
 
-
-	//public void OnAttackARea()
-	//{
-	//	foreach(var target in targetChars)
-	//	{
-	//		Attack(target);
-	//		Debug.Log("공격함");
-	//	}
-	//	//attackCollider.enabled = true;
-	//}
-
+	/// <summary>
+	/// character에서 실행되는 찐 공격 기능
+	/// </summary>
+	/// <param name="target"></param>
 	public override void Attack(Character target)
 	{
-		base.Attack(target);
+		target.Defance(AttackState, elemantalStatus);
 	}
 
 	private void NoneAttack()
@@ -566,7 +559,18 @@ public class PlayerJS : Character
 
 	private void FireAttack()
 	{
-		Instantiate(fireBall, transform.position, Quaternion.identity);
+		if(spriteRenderer.flipX == false)
+		{
+			Instantiate(fireBall, pivotTransform.position + new Vector3(2f,0,0), Quaternion.identity);
+
+		}
+		else
+		{
+			ProjectileBase projectile =
+			Instantiate(fireBall, pivotTransform.position + new Vector3(-2f,0,0), Quaternion.identity).GetComponent<ProjectileBase>();
+			projectile.OnHit += (target, elemental) => Attack(target);
+
+		}
 	}
 
 	private void SetTouchedWall_Right(bool IsOn)
@@ -590,5 +594,16 @@ public class PlayerJS : Character
 		{
 			PlayerTouchedWall = TouchedWall.None;
 		}
+	}
+
+	/// <summary>
+	/// character 스크립트의 class의 change 함수를 실행하는 함수로
+	/// player에만 있는 프로퍼티에 접근하기 위해서 만들었다.
+	/// 그 프로퍼티에서는 함수를 각각 알맞게 연결해준다.
+	/// </summary>
+	public void PlayerElementalStatusChange(ElementalType elementalType)
+	{
+		elemantalStatus.ChangeType(elementalType);
+		PlayerElementalStatus = elemantalStatus;
 	}
 }

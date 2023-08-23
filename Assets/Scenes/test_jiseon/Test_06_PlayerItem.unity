@@ -351,6 +351,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1021497890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1021497891}
+  m_Layer: 9
+  m_Name: PlayerPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1021497891
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021497890}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.778, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3478382231691445151}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1171504036 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1311134640436741600, guid: dc3c77b98a5db6748a7f48c65bc58621, type: 3}
@@ -15128,9 +15159,17 @@ PrefabInstance:
       value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
+      propertyPath: hp
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
+      propertyPath: maxHP
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
       propertyPath: fireBall
       value: 
-      objectReference: {fileID: 3786596519058902022, guid: 39dd105598eee3c4c80fa171ff460530, type: 3}
+      objectReference: {fileID: 7017759619845434876, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
     - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
       propertyPath: dashForce
       value: 20

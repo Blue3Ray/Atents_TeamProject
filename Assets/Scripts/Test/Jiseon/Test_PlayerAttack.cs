@@ -11,6 +11,7 @@ public class  Test_PlayerAttack: TestBase
 	protected override void Test1(InputAction.CallbackContext context)
 	{
 		PlayerJS player = GameManager.Ins.playerTest1;
-		player.PlayerElementalType = ElementalType.Fire;
+		player.PlayerElementalStatusChange(ElementalType.Fire);
+		//player.PlayerElementalStatus = 
 	}
 }

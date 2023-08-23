@@ -232,9 +232,18 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             ""id"": ""2eaeaca6-2da3-4afd-8531-480979a86e0a"",
             ""actions"": [
                 {
-                    ""name"": ""MouesEvent"",
+                    ""name"": ""MouesRight"",
                     ""type"": ""Button"",
                     ""id"": ""df7ba992-74ee-4ad8-90a7-a8e9e597f8d4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec6ec9a1-0174-4272-8c21-d70bcbead63c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -249,7 +258,18 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Click"",
-                    ""action"": ""MouesEvent"",
+                    ""action"": ""MouesRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8024a09-385c-4a62-adbf-2df770c98da2"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Click"",
+                    ""action"": ""MouseLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -653,7 +673,8 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_PlayerTest_Click = m_PlayerTest.FindAction("Click", throwIfNotFound: true);
         // MouseClickMenu
         m_MouseClickMenu = asset.FindActionMap("MouseClickMenu", throwIfNotFound: true);
-        m_MouseClickMenu_MouesEvent = m_MouseClickMenu.FindAction("MouesEvent", throwIfNotFound: true);
+        m_MouseClickMenu_MouesRight = m_MouseClickMenu.FindAction("MouesRight", throwIfNotFound: true);
+        m_MouseClickMenu_MouseLeft = m_MouseClickMenu.FindAction("MouseLeft", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Inventory = m_Inventory.FindAction("Inventory", throwIfNotFound: true);
@@ -850,12 +871,14 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     // MouseClickMenu
     private readonly InputActionMap m_MouseClickMenu;
     private List<IMouseClickMenuActions> m_MouseClickMenuActionsCallbackInterfaces = new List<IMouseClickMenuActions>();
-    private readonly InputAction m_MouseClickMenu_MouesEvent;
+    private readonly InputAction m_MouseClickMenu_MouesRight;
+    private readonly InputAction m_MouseClickMenu_MouseLeft;
     public struct MouseClickMenuActions
     {
         private @ActionControl m_Wrapper;
         public MouseClickMenuActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouesEvent => m_Wrapper.m_MouseClickMenu_MouesEvent;
+        public InputAction @MouesRight => m_Wrapper.m_MouseClickMenu_MouesRight;
+        public InputAction @MouseLeft => m_Wrapper.m_MouseClickMenu_MouseLeft;
         public InputActionMap Get() { return m_Wrapper.m_MouseClickMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -865,16 +888,22 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MouseClickMenuActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MouseClickMenuActionsCallbackInterfaces.Add(instance);
-            @MouesEvent.started += instance.OnMouesEvent;
-            @MouesEvent.performed += instance.OnMouesEvent;
-            @MouesEvent.canceled += instance.OnMouesEvent;
+            @MouesRight.started += instance.OnMouesRight;
+            @MouesRight.performed += instance.OnMouesRight;
+            @MouesRight.canceled += instance.OnMouesRight;
+            @MouseLeft.started += instance.OnMouseLeft;
+            @MouseLeft.performed += instance.OnMouseLeft;
+            @MouseLeft.canceled += instance.OnMouseLeft;
         }
 
         private void UnregisterCallbacks(IMouseClickMenuActions instance)
         {
-            @MouesEvent.started -= instance.OnMouesEvent;
-            @MouesEvent.performed -= instance.OnMouesEvent;
-            @MouesEvent.canceled -= instance.OnMouesEvent;
+            @MouesRight.started -= instance.OnMouesRight;
+            @MouesRight.performed -= instance.OnMouesRight;
+            @MouesRight.canceled -= instance.OnMouesRight;
+            @MouseLeft.started -= instance.OnMouseLeft;
+            @MouseLeft.performed -= instance.OnMouseLeft;
+            @MouseLeft.canceled -= instance.OnMouseLeft;
         }
 
         public void RemoveCallbacks(IMouseClickMenuActions instance)
@@ -1132,7 +1161,8 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     }
     public interface IMouseClickMenuActions
     {
-        void OnMouesEvent(InputAction.CallbackContext context);
+        void OnMouesRight(InputAction.CallbackContext context);
+        void OnMouseLeft(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {

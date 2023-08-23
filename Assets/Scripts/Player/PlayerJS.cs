@@ -10,7 +10,11 @@ using UnityEngine.UI;
 
 public class PlayerJS : Character
 {
-	public GameObject fireBall; 
+
+	public GameObject fireBall;
+	public GameObject waterBall;
+	public GameObject thunderBall;
+	public GameObject windBall;
 
 	/// <summary>
 	/// inventory를 플레이어가 가질 수 있도록 추가
@@ -544,30 +548,41 @@ public class PlayerJS : Character
 
 	private void WindAttack()
 	{
-		Debug.Log("WindAttack");
+		FarAttack(windBall);
 	}
 
 	private void WaterAttack()
 	{
-		Debug.Log("WaterAttack");
+		FarAttack(waterBall);
 	}
 
 	private void ThunderAttack()
 	{
-		Debug.Log("ThunderAttack");
+		FarAttack(thunderBall);
 	}
 
 	private void FireAttack()
 	{
+		FarAttack(fireBall);
+	}
+
+	private void FarAttack(GameObject projectilePrefab)
+	{
+		SpriteRenderer renderer =
+		projectilePrefab.GetComponentInChildren<SpriteRenderer>();
+
 		if(spriteRenderer.flipX == false)
 		{
-			Instantiate(fireBall, pivotTransform.position + new Vector3(2f,0,0), Quaternion.identity);
+			
+			ProjectileBase projectile =
+			Instantiate(projectilePrefab, pivotTransform.position + new Vector3(2, 0, 0), Quaternion.identity).GetComponentInChildren<ProjectileBase>();
+			projectile.OnHit += (target, elemental) => Attack(target);
 
 		}
 		else
 		{
 			ProjectileBase projectile =
-			Instantiate(fireBall, pivotTransform.position + new Vector3(-2f,0,0), Quaternion.identity).GetComponent<ProjectileBase>();
+			Instantiate(projectilePrefab, pivotTransform.position + new Vector3(-2-(renderer.sprite.bounds.size.x*2), 0,0), Quaternion.identity).GetComponentInChildren<ProjectileBase>();
 			projectile.OnHit += (target, elemental) => Attack(target);
 
 		}

@@ -15171,9 +15171,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7017759619845434876, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
     - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
+      propertyPath: windBall
+      value: 
+      objectReference: {fileID: 6828047779896539430, guid: f76fb51f8d4f24f42b26f6cfc2abeacb, type: 3}
+    - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
       propertyPath: dashForce
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
+      propertyPath: waterBall
+      value: 
+      objectReference: {fileID: 6270525262227540907, guid: b8b23f19618b3c245b2da00e5611fc76, type: 3}
+    - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
+      propertyPath: thunderBall
+      value: 
+      objectReference: {fileID: 6099647101035946026, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
     - target: {fileID: 4497126297680048882, guid: fcd2ee1f9a3c5c941a72ea8bab586cc9, type: 3}
       propertyPath: wallJumpForce
       value: 15
@@ -15440,3 +15452,60 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!1001 &9162238740507179974
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328213986276430554, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6099647101035946026, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}
+      propertyPath: m_Name
+      value: ProjectileThunderPivot
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 934f8a9f428d77749911fd885b9dd3a9, type: 3}

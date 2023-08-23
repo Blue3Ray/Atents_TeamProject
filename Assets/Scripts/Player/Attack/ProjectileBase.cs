@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class ProjectileBase : MonoBehaviour
 {
+	public ElementalType elementalType;
+
 	/// <summary>
 	/// 투사체가 날아가는 속도입니다.
 	/// </summary>
@@ -32,6 +34,7 @@ public class ProjectileBase : MonoBehaviour
 	private void Awake()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		Debug.Log($"{spriteRenderer.sprite.bounds.size.x}");
 	}
 
 	private void Start()
@@ -39,6 +42,7 @@ public class ProjectileBase : MonoBehaviour
 		transform.SetParent(null);					//부모의 영향을 받지 않기 위해
 		if (GameManager.Ins.IsRight)				//오른쪽을 보고 있는지 왼쪽을 보고 있는지 판단한 후 그에 걸맞는 방향으로 쏜다.
 		{
+			spriteRenderer.flipX = false;
 			dirProjectile = transform.right;
 		}
 		else
@@ -63,7 +67,7 @@ public class ProjectileBase : MonoBehaviour
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		Character characterTarget = collision.gameObject.GetComponent<Character>();
-		if(characterTarget != null)
+		if(characterTarget != null && !characterTarget.CompareTag("Player"))
 		{
 			InvokeOnHit(characterTarget);
 		}
@@ -71,6 +75,6 @@ public class ProjectileBase : MonoBehaviour
 
 	protected virtual void InvokeOnHit(Character targetHit)
 	{
-		OnHit?.Invoke(targetHit, ElementalType.None);
+		OnHit?.Invoke(targetHit, elementalType);
 	}
 }

@@ -210,9 +210,18 @@
             "id": "2eaeaca6-2da3-4afd-8531-480979a86e0a",
             "actions": [
                 {
-                    "name": "MouesEvent",
+                    "name": "MouesRight",
                     "type": "Button",
                     "id": "df7ba992-74ee-4ad8-90a7-a8e9e597f8d4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MouseLeft",
+                    "type": "Button",
+                    "id": "ec6ec9a1-0174-4272-8c21-d70bcbead63c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -227,7 +236,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Click",
-                    "action": "MouesEvent",
+                    "action": "MouesRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8024a09-385c-4a62-adbf-2df770c98da2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Click",
+                    "action": "MouseLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

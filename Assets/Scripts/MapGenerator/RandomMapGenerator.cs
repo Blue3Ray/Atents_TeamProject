@@ -412,7 +412,7 @@ public class RoomMap
 public class Room
 {
     /// <summary>
-    /// 연결되어 있는 방과 해당방의 방향
+    /// 연결되어 있는 방과 해당방의 방향 bool은 연결 여부
     /// </summary>
     public List<(Room, ExitDirection)> connectedRooms;
 
@@ -450,7 +450,7 @@ public class Room
     /// <returns>참이면 연결 되어 있음, 거짓이면 연결 안되어 있음</returns>
     public bool IsConnected(Room targetRoom)
     {
-        foreach((Room, ExitDirection) room in connectedRooms)
+        foreach ((Room, ExitDirection) room in connectedRooms)
         {
             if(room.Equals(targetRoom))
             {

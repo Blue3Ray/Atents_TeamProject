@@ -126,20 +126,61 @@ public class RoomGenerator : MonoBehaviour
         Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
 
         // 방을 만드는 부분
-        for (int x = 0; x < randomMap.gridMap.Width; x++)
-        {
-            for (int y = 0; y < randomMap.gridMap.Height; y++)
-            {
-                if (randomMap.gridMap.mapGrid[x, y] != null)
-                {
-                    GenerateRoom(new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize), roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length - 1)]);
-                }
-            }
-        }
+        // 방을 만들때 통로 정보를 저장해야된다.
+        List<(PassWay, PassWay)> passWays = new List<(PassWay, PassWay)>();
+        Room room;
+        /*
+        randomMap에 roomList가 있다.
+        randomMap에 gridMap이 있으며 roomList바탕으로 만들어진 그리드 맵이다.
+
+        List<SampleRoom> roomBuild = new(roomList.Count);
+        
+
+        1. 첫 방을 설정한다. / GenerateRoom
+            => randomMap.roomList[0]의 출구 조건중 Left하나는 무조건 startRoom과 연결되어야 한다.
+            => gridMap의 시작방의 출구 조건이 같거나 이상인 sampleRoom을 선정한다.
+                roomBuild.Add(targetRoom);
+            
+            2. 방과 연결된 방들중 아직 연결 안된 방을 확인한다 
+                => randomMap의 해당 Grid드의 Room의 ConnectedRoom의 item2의 isConnected를 확인
+                방과 연결된 방향 중 연결이 안된 출구를 하나 골라 저장한다 
+                => 선택된 SampleRoom의 exitPos리스트의 해당 isConnected조사한후 랜덤 반환
+                => PassWay targetOne
+            3. 해당 방을 연결 가능한 방을 선택한다 / GenerateRoom
+                => 해당 방이 이미 있으면 그 방을 선택(하지만 그럴리 없음)
+                => randomMap의 해당 그리드에 배치 가능한 SampleRoom 선택
+                 
+            4. 해당 방과 연결할 출입구를 조사한다 
+                => 선택된 SampleRoom의 exitPos리스트의 해당 isConnected조사한후 랜덤 반환
+                => PassWay targetTwo
+            5. 두개 출구 정보를 리스트에 저장한다.passWays.Add(targetOne, targetTwo)
+
+            6. 2번으로 돌아가서 모두 연결 할때까지 반복한다.
+                
+        7. 그 다음 방으로 넘어간 뒤 모든 방의 연결이 연결 될 때까지 반복한다.
+
+        생성할 때 방이 가지고 있어야 할 정보
+        1. 크기 가로세로, 원점으로부터의 거리 등등 레이어별 타일 정보
+        2. 출구 정보(출구의 위치 및 방향)
+        3. 연결되어 있는 방과 연결 여부
+
+        */
+
+        // for문으로 모든 그리드 검사는 효율적이지 안혹 연결 관계 확인하기도 어려움
+        //for (int x = 0; x < randomMap.gridMap.Width; x++)
+        //{
+        //    for (int y = 0; y < randomMap.gridMap.Height; y++)
+        //    {
+        //        if (randomMap.gridMap.mapGrid[x, y] != null)
+        //        {
+        //            GenerateRoom(new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize), roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length - 1)]);
+        //        }
+        //    }
+        //}
         //----------------------------
 
 
-        
+
         // 통로 만드는 부분
 
         int[] dirCount = new int[4];

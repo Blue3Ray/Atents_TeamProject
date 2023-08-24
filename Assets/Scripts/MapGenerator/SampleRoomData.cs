@@ -11,10 +11,22 @@ public enum RoomLayer
     Exit
 }
 
+/// <summary>
+/// 출구 정보
+/// </summary>
 public struct PassWay
 {
+    /// <summary>
+    /// 출구의 위치
+    /// </summary>
     public Vector3Int Pos;
+    /// <summary>
+    /// 출구의 방향
+    /// </summary>
     public ExitDirection Direction;
+    /// <summary>
+    /// 출구 연결 여부
+    /// </summary>
     public bool isConnected;
 
     public PassWay(Vector3Int pos, ExitDirection dir, bool isConnected = false)
@@ -27,11 +39,16 @@ public struct PassWay
 
 public class SampleRoomData : MonoBehaviour
 {
+    /// <summary>
+    /// 해당 방이 가지고 있는 모든 출구 정보
+    /// </summary>
+    public List<PassWay> exitPos;
+
+
     public List<Tilemap> mapLayers;
 
     public List<List<Vector3Int>> tilesPos;
 
-    public List<PassWay> exitPos;
 
     public Vector3Int min;
     public Vector3Int max;

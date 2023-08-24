@@ -92,10 +92,7 @@ public class RingMenuUI : MonoBehaviour
 
     private void OnSlotClick(uint index)
     {
-       switch(index)
-        {
-
-        }
+       
     }
 
 }

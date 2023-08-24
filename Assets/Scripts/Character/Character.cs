@@ -109,7 +109,7 @@ public class Character : MonoBehaviour, IHealth
     /// <summary>
     /// 캐릭터가 가질 원소 속성
     /// </summary>
-    ElemantalStatus elemantalStatus;
+    protected ElemantalStatus elemantalStatus;
 
     // 속성 공격력
     public  float elemantalAttack;

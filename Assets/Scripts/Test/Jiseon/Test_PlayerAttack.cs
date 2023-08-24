@@ -8,9 +8,26 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class  Test_PlayerAttack: TestBase
 {
+	PlayerJS player;
 	protected override void Test1(InputAction.CallbackContext context)
 	{
-		PlayerJS player = GameManager.Ins.playerTest1;
-		player.PlayerElementalType = ElementalType.Fire;
+		player = GameManager.Ins.playerTest1;
+		player.PlayerElementalStatusChange(ElementalType.Fire);
+		//player.PlayerElementalStatus = 
+	}
+
+	protected override void Test2(InputAction.CallbackContext context)
+	{
+		player.PlayerElementalStatusChange(ElementalType.Water);
+	}
+
+	protected override void Test3(InputAction.CallbackContext context)
+	{
+		player.PlayerElementalStatusChange(ElementalType.Thunder);
+	}
+
+	protected override void Test4(InputAction.CallbackContext context)
+	{
+		player.PlayerElementalStatusChange(ElementalType.Wind);
 	}
 }

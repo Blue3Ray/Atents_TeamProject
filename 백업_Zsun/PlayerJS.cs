@@ -179,7 +179,14 @@ public class PlayerJS : Character
 		set
 		{
 			playerTouchedWall = value;
-			Debug.Log($"{value}");
+			if(value == TouchedWall.RightWall)
+			{
+				spriteRenderer.flipX = false;
+			}
+			else if(value == TouchedWall.LeftWall)
+			{
+				spriteRenderer.flipX = true;
+			}
 		}
 	}
 
@@ -238,6 +245,23 @@ public class PlayerJS : Character
 	/// 해쉬 세 개를 배열에 저장
 	/// </summary>
 	int[] AttackHashes;
+
+	public float wallJumpForce = 10.0f;
+
+	/// <summary>
+	/// attack area 안에 들어온 character 리스트
+	/// </summary>
+	List<Character> targetChars = new();
+
+	/// <summary>
+	/// 오른쪽 대각선 방향
+	/// </summary>
+	Vector3 Cross;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	Vector3 LeftCross;
 
 	private void OnEnable()
 	{
@@ -299,10 +323,10 @@ public class PlayerJS : Character
 		PlayerElementalType = ElementalType.None;
 	}
 
-	List<Character> targetChars = new();
-
 	private void Start()
 	{
+		Cross = transform.up*2 + transform.right;
+		LeftCross = transform.up * 2 + -(transform.right);
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
 		anim.SetFloat(Hash_AirSpeedY, fallSpeed);
@@ -376,17 +400,42 @@ public class PlayerJS : Character
 	{
 		if (IsGrounded)
 		{
-			if (spriteRenderer.flipX == false)
+			if(PlayerTouchedWall == TouchedWall.None)
 			{
-				rb.AddForce(transform.right * dashForce, ForceMode2D.Impulse);
+				if (spriteRenderer.flipX == false)
+				{
+					rb.AddForce(transform.right * dashForce, ForceMode2D.Impulse);
+				}
+				else
+				{
+					rb.AddForce(-transform.right * dashForce, ForceMode2D.Impulse);
+				}
+				anim.SetTrigger(Hash_Roll);
 			}
-			else
+			else if (PlayerTouchedWall == TouchedWall.LeftWall)
 			{
-				rb.AddForce(-transform.right * dashForce, ForceMode2D.Impulse);
+				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
+				//Debug.Log("왼쪽 벽에서 점프");
+			}
+			else if (PlayerTouchedWall == TouchedWall.RightWall)
+			{
+				//Debug.Log("오른쪽 벽에서 점프");
+				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
+			}
 
+		}
+		else
+		{
+			if (PlayerTouchedWall == TouchedWall.LeftWall)
+			{
+				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
+				//Debug.Log("왼쪽 벽에서 점프");
 			}
-			Debug.Log("대쉬");
-			anim.SetTrigger(Hash_Roll);
+			else if (PlayerTouchedWall == TouchedWall.RightWall)
+			{
+				//Debug.Log("오른쪽 벽에서 점프");
+				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
+			}
 		}
 	}
 
@@ -412,12 +461,13 @@ public class PlayerJS : Character
 		isSpaceBarOn = true;
 		if (isGrounded)
 		{
-			if(!OnDownArrow && !isTriggerSwitch)
+
+			if (!OnDownArrow && !isTriggerSwitch)
 			{
 				rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
 				anim.SetTrigger(Hash_Jump);
 			}
-			else if(OnDownArrow && IsHalfPlatform)
+			else if (OnDownArrow && IsHalfPlatform)
 			{
 				if (!isTriggerSwitch)
 				{
@@ -425,10 +475,7 @@ public class PlayerJS : Character
 				}
 			}
 		}
-		else
-		{
-			
-		}
+		
 	}
 
 	private void OffSpaceBar(InputAction.CallbackContext obj)

@@ -34,12 +34,18 @@ public class ProjectileBase : MonoBehaviour
 	private void Awake()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
-		Debug.Log($"{spriteRenderer.sprite.bounds.size.x}");
 	}
 
 	private void Start()
 	{
-		transform.SetParent(null);					//부모의 영향을 받지 않기 위해
+		//if(transform.parent.gameObject.TryGetComponent<Collider2D>(out Collider2D _))
+		//{
+		//	transform.parent.SetParent(null);
+		//}
+		//else
+		//{
+		//	transform.parent.parent.SetParent(null);
+		//}
 		if (GameManager.Ins.IsRight)				//오른쪽을 보고 있는지 왼쪽을 보고 있는지 판단한 후 그에 걸맞는 방향으로 쏜다.
 		{
 			dirProjectile = transform.right;
@@ -62,6 +68,12 @@ public class ProjectileBase : MonoBehaviour
 	{
 		Destroy(this.gameObject);
 	}
+
+	public void ParentEndAttack()
+	{
+		Destroy(transform.parent.gameObject);
+	}
+
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{

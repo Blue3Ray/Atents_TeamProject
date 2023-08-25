@@ -13,19 +13,21 @@ public class GroundSensor : MonoBehaviour
 		player = transform.parent.GetComponent<PlayerJS>();
 	}
 
+	GameObject currentGround;
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		//Debug.Log("충돌감지");
 		if (collision.gameObject.CompareTag("Ground"))
 		{
+			currentGround = collision.gameObject;
 			player.IsGrounded = true;
 		}
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		if (collision.gameObject.CompareTag("Ground"))
+		if (collision.gameObject == currentGround)
 		{
 			player.IsGrounded = false;
 

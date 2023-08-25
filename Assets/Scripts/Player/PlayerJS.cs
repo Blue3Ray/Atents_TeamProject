@@ -243,6 +243,8 @@ public class PlayerJS : Character
 	readonly int Hash_Attack3 = Animator.StringToHash("Attack3");
 	readonly int Hash_WallSlide = Animator.StringToHash("WallSlide");
 	readonly int Hash_Roll = Animator.StringToHash("Roll");
+	readonly int Hash_Hurt = Animator.StringToHash("Hurt");
+	readonly int Hash_Death = Animator.StringToHash("Death");
 
 	/// <summary>
 	/// 액션 애니메이션 세 개 중 하나를 랜덤으로 setTrigger하기 위해
@@ -326,6 +328,8 @@ public class PlayerJS : Character
 
 		PlayerElementalStatusChange(ElementalType.None);
 		pivotTransform = transform.GetChild(5);
+
+		onDie += () => { anim.SetTrigger(Hash_Death); };
 	}
 
 	private void Start()
@@ -620,5 +624,11 @@ public class PlayerJS : Character
 	{
 		elemantalStatus.ChangeType(elementalType);
 		PlayerElementalStatus = elemantalStatus;
+	}
+
+	public override void Defance(float damage, ElemantalStatus elemantal = null)
+	{
+		anim.SetTrigger(Hash_Hurt);
+		base.Defance(damage, elemantal);
 	}
 }

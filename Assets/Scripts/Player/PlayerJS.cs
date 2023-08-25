@@ -568,21 +568,21 @@ public class PlayerJS : Character
 
 	private void FarAttack(GameObject projectilePrefab)
 	{
-		SpriteRenderer renderer =
-		projectilePrefab.GetComponentInChildren<SpriteRenderer>();
 
 		if(spriteRenderer.flipX == false)
 		{
 			
 			ProjectileBase projectile =
-			Instantiate(projectilePrefab, pivotTransform.position + new Vector3(2, 0, 0), Quaternion.identity).GetComponentInChildren<ProjectileBase>();
+			Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.identity).GetComponentInChildren<ProjectileBase>();
 			projectile.OnHit += (target, elemental) => Attack(target);
 
 		}
 		else
 		{
+			
 			ProjectileBase projectile =
-			Instantiate(projectilePrefab, pivotTransform.position + new Vector3(-2-(renderer.sprite.bounds.size.x*2), 0,0), Quaternion.identity).GetComponentInChildren<ProjectileBase>();
+			Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.Euler(new Vector3(0, 0, 180))).GetComponentInChildren<ProjectileBase>();
+			
 			projectile.OnHit += (target, elemental) => Attack(target);
 
 		}

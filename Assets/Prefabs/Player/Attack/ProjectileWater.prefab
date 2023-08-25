@@ -7,14 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2324328318703431898, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
-      propertyPath: elementalType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324328318703431898, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
-      propertyPath: ProjectileSpeed
-      value: 0.03
-      objectReference: {fileID: 0}
     - target: {fileID: 7017759619845434876, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
       propertyPath: m_Name
       value: ProjectileWater
@@ -62,26 +54,6 @@ PrefabInstance:
     - target: {fileID: 7017759619845434877, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7017759619845434878, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: f5c5e54b0ea9ca042be35f019b1720a7, type: 2}
-    - target: {fileID: 7017759619845434879, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
-      propertyPath: m_Size.x
-      value: 0.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 7017759619845434879, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
-      propertyPath: m_Size.y
-      value: 0.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 7017759619845434879, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 82dd5369e97d55549a641b8e978b4531, type: 3}
-    - target: {fileID: 7017759619845434879, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99949b3e83d893d4387137165ca5822b, type: 3}

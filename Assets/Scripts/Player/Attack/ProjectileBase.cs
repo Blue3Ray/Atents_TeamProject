@@ -42,12 +42,11 @@ public class ProjectileBase : MonoBehaviour
 		transform.SetParent(null);					//부모의 영향을 받지 않기 위해
 		if (GameManager.Ins.IsRight)				//오른쪽을 보고 있는지 왼쪽을 보고 있는지 판단한 후 그에 걸맞는 방향으로 쏜다.
 		{
-			spriteRenderer.flipX = false;
 			dirProjectile = transform.right;
 		}
 		else
 		{
-			spriteRenderer.flipX = true;
+			spriteRenderer.flipY = true;
 			dirProjectile = -(transform.right);
 		}
 	}

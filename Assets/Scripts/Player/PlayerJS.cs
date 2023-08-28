@@ -16,6 +16,8 @@ public class PlayerJS : Character
 	public GameObject thunderBall;
 	public GameObject windBall;
 
+	public float OnOffSecond = 0.1f;
+
 	/// <summary>
 	/// inventory를 플레이어가 가질 수 있도록 추가
 	/// </summary>
@@ -44,7 +46,7 @@ public class PlayerJS : Character
 	/// <summary>
 	/// 땅에 닿았는지 확인하는 변수
 	/// </summary>
-	private bool isGrounded;
+	public bool isGrounded;
 
 	/// <summary>
 	/// 리지드바디를 껐다가 키는 이넘이 진행중인지
@@ -260,11 +262,6 @@ public class PlayerJS : Character
 	List<Character> targetChars = new();
 
 	/// <summary>
-	/// 오른쪽 대각선 방향
-	/// </summary>
-	Vector3 Cross;
-
-	/// <summary>
 	/// 
 	/// </summary>
 	Vector3 LeftCross;
@@ -327,14 +324,14 @@ public class PlayerJS : Character
 		};
 
 		PlayerElementalStatusChange(ElementalType.None);
-		pivotTransform = transform.GetChild(5);
+		pivotTransform = transform.GetChild(4);
 
 		onDie += () => { anim.SetTrigger(Hash_Death); };
 	}
 
 	private void Start()
 	{
-		Cross = transform.up*2 + transform.right;
+		
 		LeftCross = transform.up * 2 + -(transform.right);
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
@@ -348,9 +345,9 @@ public class PlayerJS : Character
 		wallsensor[1].OnWall += (OnOff) => SetTouchedWall_Left(OnOff);
 
 	}
-	private void Update()
+	private void FixedUpdate()
 	{
-		transform.Translate(Time.deltaTime * moveSpeed * dir);
+		transform.Translate(Time.fixedDeltaTime * moveSpeed * dir);
 	}
 
 	private void OnClickMouse_Left(InputAction.CallbackContext obj)
@@ -421,29 +418,21 @@ public class PlayerJS : Character
 				}
 				anim.SetTrigger(Hash_Roll);
 			}
-			else if (PlayerTouchedWall == TouchedWall.LeftWall)
-			{
-				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
-				//Debug.Log("왼쪽 벽에서 점프");
-			}
-			else if (PlayerTouchedWall == TouchedWall.RightWall)
-			{
-				//Debug.Log("오른쪽 벽에서 점프");
-				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
-			}
+			
+			
 
 		}
 		else
 		{
 			if (PlayerTouchedWall == TouchedWall.LeftWall)
 			{
-				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(transform.right * wallJumpForce, ForceMode2D.Impulse);
 				//Debug.Log("왼쪽 벽에서 점프");
 			}
 			else if (PlayerTouchedWall == TouchedWall.RightWall)
 			{
 				//Debug.Log("오른쪽 벽에서 점프");
-				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(-transform.right * wallJumpForce, ForceMode2D.Impulse);
 			}
 		}
 	}
@@ -497,7 +486,7 @@ public class PlayerJS : Character
 		isTriggerSwitch = true;
 		//playerCollider.isTrigger = true;
 		this.gameObject.layer = 8;
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(OnOffSecond);
 		//playerCollider.isTrigger = false;
 		this.gameObject.layer = 9;
 		StopAllCoroutines();

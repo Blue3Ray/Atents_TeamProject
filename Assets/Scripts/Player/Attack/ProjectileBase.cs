@@ -77,6 +77,7 @@ public class ProjectileBase : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+
 		Character characterTarget = collision.gameObject.GetComponent<Character>();
 		if(characterTarget != null && !characterTarget.CompareTag("Player"))
 		{

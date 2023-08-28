@@ -1,0 +1,8 @@
+Player 
+
+<=>
+
+RingMenu
+- 5개의 RingSelecter(Fire, Wind, water, Elect, none)
+- public ElementType 변수를 가짐
+

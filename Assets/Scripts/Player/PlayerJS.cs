@@ -262,11 +262,6 @@ public class PlayerJS : Character
 	List<Character> targetChars = new();
 
 	/// <summary>
-	/// 오른쪽 대각선 방향
-	/// </summary>
-	Vector3 Cross;
-
-	/// <summary>
 	/// 
 	/// </summary>
 	Vector3 LeftCross;
@@ -336,7 +331,7 @@ public class PlayerJS : Character
 
 	private void Start()
 	{
-		Cross = transform.up*2 + transform.right;
+		
 		LeftCross = transform.up * 2 + -(transform.right);
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
@@ -423,29 +418,21 @@ public class PlayerJS : Character
 				}
 				anim.SetTrigger(Hash_Roll);
 			}
-			else if (PlayerTouchedWall == TouchedWall.LeftWall)
-			{
-				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
-				//Debug.Log("왼쪽 벽에서 점프");
-			}
-			else if (PlayerTouchedWall == TouchedWall.RightWall)
-			{
-				//Debug.Log("오른쪽 벽에서 점프");
-				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
-			}
+			
+			
 
 		}
 		else
 		{
 			if (PlayerTouchedWall == TouchedWall.LeftWall)
 			{
-				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(transform.right * wallJumpForce, ForceMode2D.Impulse);
 				//Debug.Log("왼쪽 벽에서 점프");
 			}
 			else if (PlayerTouchedWall == TouchedWall.RightWall)
 			{
 				//Debug.Log("오른쪽 벽에서 점프");
-				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(-transform.right * wallJumpForce, ForceMode2D.Impulse);
 			}
 		}
 	}

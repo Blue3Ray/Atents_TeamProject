@@ -160,4 +160,18 @@ public class SampleRoomData : MonoBehaviour
 
         return result;
     }
+
+    public int GetExitCount(ExitDirection dir)
+    {
+        int result = 0;
+
+        foreach(PassWay exit in exitPos)
+        {
+            if(exit.Direction == dir)
+            {
+                result ++;
+            }
+        }
+        return result;
+    }
 }

@@ -420,6 +420,7 @@ public class Room
     public bool isAccessibleMainRoom = false;
 
     public Vector2Int roomCoord;
+    public Vector2Int gridCoord;
 
     public Room() { }
 
@@ -669,6 +670,20 @@ public class GridMap
         }
     }
 
+    public void SetRoomsCoord()
+    {
+        for(int y = 0; y < Height; y++)
+        {
+            for(int x = 0; x < Width; x++)
+            {
+                if (mapGrid[x, y] != null)
+                {
+                    mapGrid[x, y].gridCoord = new Vector2Int(x, y);
+                }
+            }
+        }
+    }
+
     public Vector2Int GetRoomGrid(Room room)
     {
         Vector2Int temp = -Vector2Int.one;
@@ -777,7 +792,7 @@ public class RandomMapGenerator
 
         gridMap.MakeGridMap(roomMap.roomList[0], ExitDirection.None, 0);
 
-
+        gridMap.SetRoomsCoord();
     }
 
 

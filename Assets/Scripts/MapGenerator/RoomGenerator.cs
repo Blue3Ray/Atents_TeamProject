@@ -146,6 +146,7 @@ public class RoomGenerator : MonoBehaviour
                 방과 연결된 방향 중 연결이 안된 출구를 하나 골라 저장한다 
                 => 선택된 SampleRoom의 exitPos리스트의 해당 isConnected조사한후 랜덤 반환
                 => PassWay targetOne
+
             3. 해당 방을 연결 가능한 방을 선택한다 / GenerateRoom
                 => 해당 방이 이미 있으면 그 방을 선택(하지만 그럴리 없음)
                 => randomMap의 해당 그리드에 배치 가능한 SampleRoom 선택
@@ -155,7 +156,7 @@ public class RoomGenerator : MonoBehaviour
                 => PassWay targetTwo
             5. 두개 출구 정보를 리스트에 저장한다.passWays.Add(targetOne, targetTwo)
 
-            6. 2번으로 돌아가서 모두 연결 할때까지 반복한다.
+            6. 2번으로 돌아가서 해당방과 연결된 방이 모두 연결 될때까지 반복한다. => 조건은?
                 
         7. 그 다음 방으로 넘어간 뒤 모든 방의 연결이 연결 될 때까지 반복한다.
 
@@ -209,7 +210,55 @@ public class RoomGenerator : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 출구 개수를 만족하는 방을 반환하는 함수
+    /// </summary>
+    /// <param name="targetRoom">조사할 방</param>
+    /// <returns>조건에 맞는 샘플 룸</returns>
+    SampleRoomData GetRandomRoom(Room targetRoom)
+    {
+        //출구 개수와 만족하는 방리스트를 따로 만듬
+        List<ExitDirection> upDir = new();
+        List<ExitDirection> downDir = new();
+        List<ExitDirection> rightDir = new();
+        List<ExitDirection> leftDir = new();
 
+        foreach (var item in targetRoom.connectedRooms)
+        {
+            switch (item.Item2)
+            {
+                case ExitDirection.Up:
+                    upDir.Add(item.Item2);
+                    break;
+                case ExitDirection.Left:
+                    leftDir.Add(item.Item2);
+                    break;
+                case ExitDirection.Right:
+                    rightDir.Add(item.Item2);
+                    break;
+                case ExitDirection.Down:
+                    downDir.Add(item.Item2);
+                    break;
+            }
+        }
+
+        List<SampleRoomData> canBuildRoomList = new();
+
+        foreach (SampleRoomData roomData in roomSamplesWithExit)
+        {
+            // 샘플에서 각 방향 출구 개수를 비교해서 그 이상인 방들만 걸러냄(구현 가능한 방들만 꺼내기)
+            if (roomData.GetExitCount(ExitDirection.Up) >= upDir.Count && roomData.GetExitCount(ExitDirection.Down) >= downDir.Count &&
+                roomData.GetExitCount(ExitDirection.Left) >= leftDir.Count && roomData.GetExitCount(ExitDirection.Right) >= rightDir.Count)
+            {
+                canBuildRoomList.Add(roomData);
+            }
+
+        }
+        if (!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
+
+        // 배치 가능한 방들 중 랜덤으로 하나 선택
+        return canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
+    }
 
     //public void SetupRooms()
     //{

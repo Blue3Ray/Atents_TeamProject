@@ -44,7 +44,6 @@ public class SampleRoomData : MonoBehaviour
     /// </summary>
     public List<PassWay> exitPos;
 
-
     public List<Tilemap> mapLayers;
 
     public List<List<Vector3Int>> tilesPos;

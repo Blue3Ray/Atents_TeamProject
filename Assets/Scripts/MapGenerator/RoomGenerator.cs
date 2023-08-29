@@ -22,6 +22,9 @@ public enum PassWayType
     LeftUp
 }
 
+
+
+
 public class RoomGenerator : MonoBehaviour
 {
     /// <summary>
@@ -125,10 +128,22 @@ public class RoomGenerator : MonoBehaviour
 
         Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
 
+        for(int y = 0; y < randomMap.gridMap.Height; y++)
+        {
+            for(int x = 0; x < randomMap.gridMap.Width; x++)
+            {
+                Room target = randomMap.gridMap.mapGrid[x, y];
+                if (target != null)
+                {
+                    //gridMap[x, y] = new NodeRoom();
+                }
+            }
+        }
+
         // 방을 만드는 부분
         // 방을 만들때 통로 정보를 저장해야된다.
         List<(PassWay, PassWay)> passWays = new List<(PassWay, PassWay)>();
-        Room room;
+
         /*
         randomMap에 roomList가 있다.
         randomMap에 gridMap이 있으며 roomList바탕으로 만들어진 그리드 맵이다.
@@ -788,5 +803,41 @@ public class RoomGenerator : MonoBehaviour
         int y = Random.Range(-num, num);
         return new Vector3Int(x, y);
     }
+
+    class TestRoom
+    {
+        public int getSampleIndex;
+
+        public List<PassWay> passWays;
+
+        public Vector2Int gridCoord;
+
+        public Vector3Int origineCoord;
+
+        
+    }
+
+    public void Test_SetOrigine(SampleRoomData data)
+    {
+        //Vector2Int mapSize = new Vector2Int(roomSamplesWithExit[getSampleIndex]);
+    }
+
+    void Test()
+    {
+        TestRoom test1 = new TestRoom();
+        test1.gridCoord = new Vector2Int(0, 0);
+
+        
+
+
+        TestRoom test2 = new TestRoom();
+        test2.gridCoord = new Vector2Int(0, 1);
+
+        GenerateRoom(test1.origineCoord, roomSamplesWithExit[test1.getSampleIndex]);
+        GenerateRoom(test2.origineCoord, roomSamplesWithExit[test2.getSampleIndex]);
+
+    }
+
+
 }
 

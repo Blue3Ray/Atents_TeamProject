@@ -14,7 +14,7 @@ public enum RoomLayer
 /// <summary>
 /// 출구 정보
 /// </summary>
-public struct PassWay
+public class PassWay
 {
     /// <summary>
     /// 출구의 위치
@@ -92,11 +92,13 @@ public class SampleRoomData : MonoBehaviour
             {
                 if (targetTileMap.HasTile(new Vector3Int(x, y)))
                 {
+                    Vector2Int exitMin = new Vector2Int(targetTileMap.cellBounds.xMin, targetTileMap.cellBounds.yMin);
+                    Vector2Int exitMax = new Vector2Int(targetTileMap.cellBounds.xMax, targetTileMap.cellBounds.yMax);
                     ExitDirection tempDir = new();
-                    if (x == min.x) tempDir = ExitDirection.Left;
-                    else if (x == max.x - 1) tempDir = ExitDirection.Right;
-                    else if (y == min.y) tempDir = ExitDirection.Down;
-                    else if (y == max.y - 1) tempDir = ExitDirection.Up;
+                    if (x == exitMin.x) tempDir = ExitDirection.Left;
+                    else if (x == exitMax.x - 1) tempDir = ExitDirection.Right;
+                    else if (y == exitMin.y) tempDir = ExitDirection.Down;
+                    else if (y == exitMax.y - 1) tempDir = ExitDirection.Up;
                     else
                     {
                         Debug.LogWarning($"({x}, {y}) 출구 위치가 이상합니다. 샘플 데이터({this.gameObject.name}) 확인 필요");

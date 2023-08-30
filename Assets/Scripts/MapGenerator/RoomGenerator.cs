@@ -718,16 +718,15 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 // 레이어 설정
                 int targetLayer = (int) MapLayer.Background;
 
-                // 배경 그리기
-                m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
+                
 
                 TileBase tempTile;
 
                 if (targetData.mapLayers[(int) MapLayer.PlatForm].HasTile(targetDrawPos))
                 {
-                    if (!m_tileMaps[(int)MapLayer.HalfPlatForm].HasTile(cursorPos + targetDrawPos))
+                    if (!m_tileMaps[(int)MapLayer.HalfPlatForm].HasTile(cursorPos + targetDrawPos) && !m_tileMaps[(int)MapLayer.Background].HasTile(cursorPos + targetDrawPos))
                     {
-                        // 플랫폼 칸일 때(반플렛폼이 있으면 안함)
+                        // 플랫폼 칸일 때(반플렛폼이거나 이미 배경 타일이있으면 안함)
                         targetLayer = (int)MapLayer.PlatForm;
                         tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
                         m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
@@ -744,21 +743,24 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
                     m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
 
-                    if (m_tileMaps[(int)MapLayer.PlatForm].HasTile(targetDrawPos))
+                    if (m_tileMaps[(int)MapLayer.PlatForm].HasTile(cursorPos + targetDrawPos))
                     {
                         m_tileMaps[(int)MapLayer.PlatForm].SetTile(cursorPos + targetDrawPos, null);
                     }
-
                 }
                 else
                 {
+                    // 플랫폼도 반플랫폼도 없을 때
                     // 빈칸일 때 기존의 곂치는 플렛폼과 반플렛폼 지우기
                     tempTile = null;
                     targetLayer = (int)MapLayer.PlatForm;
                     m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
-                    targetLayer = (int)MapLayer.HalfPlatForm;
-                    m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
                 }
+
+                targetLayer = (int)MapLayer.Background;
+
+                // 배경 그리기
+                m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
 
                 // 플랫폼 그리기
                 // m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
@@ -934,9 +936,9 @@ public class RoomGenerator : Singleton<RoomGenerator>
         GenerateRoom(test3.origineCoord, roomSamplesWithExit[test3.GetSampleIndex]);
         GenerateRoom(test4.origineCoord, roomSamplesWithExit[test4.GetSampleIndex]);
 
-        Test_ConnectPassway(test1, test2);
-        Test_ConnectPassway(test3, test2);
+        //Test_ConnectPassway(test1, test2);
         Test_ConnectPassway(test2, test4);
+        Test_ConnectPassway(test3, test2);
     }
 
     public void Test_ConnectPassway(TestRoom temp1, TestRoom temp2)

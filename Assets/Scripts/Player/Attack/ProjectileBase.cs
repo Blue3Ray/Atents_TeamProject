@@ -7,14 +7,18 @@ using UnityEngine;
 /// <summary>
 /// 투사체에 들어갈 베이스 스크립트입니다.
 /// </summary>
-public class ProjectileBase : MonoBehaviour
+public class ProjectileBase : PooledObject
 {
 	public ElementalType elementalType;
+
+	ElemantalStatus elemantalStatus;
 
 	/// <summary>
 	/// 투사체가 날아가는 속도입니다.
 	/// </summary>
 	public float ProjectileSpeed = 1;
+
+	public float ProjectileLife = 3.0f;
 
 	/// <summary>
 	/// 투사체가 날아갈 방향입니다.
@@ -31,31 +35,33 @@ public class ProjectileBase : MonoBehaviour
 	/// </summary>
 	public Action<Character, ElementalType> OnHit;
 
+	Animator anim;
+
+	readonly int Hash_Collision = Animator.StringToHash("Collision");
+
 	private void Awake()
 	{
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+		anim = GetComponent<Animator>();
+		elemantalStatus = new ElemantalStatus();
 	}
 
-	private void Start()
+
+	protected override void OnEnable()
 	{
-		//if(transform.parent.gameObject.TryGetComponent<Collider2D>(out Collider2D _))
-		//{
-		//	transform.parent.SetParent(null);
-		//}
-		//else
-		//{
-		//	transform.parent.parent.SetParent(null);
-		//}
-		if (GameManager.Ins.IsRight)				//오른쪽을 보고 있는지 왼쪽을 보고 있는지 판단한 후 그에 걸맞는 방향으로 쏜다.
+		base.OnEnable();
+		dirProjectile = transform.right;
+
+		if (GameManager.Ins.playerTest1 != null)
 		{
-			dirProjectile = transform.right;
+			if (!GameManager.Ins.IsRight)                //오른쪽을 보고 있는지 왼쪽을 보고 있는지 판단한 후 그에 걸맞는 방향으로 쏜다.
+			{
+				spriteRenderer.flipY = true;
+			}
 		}
-		else
-		{
-			spriteRenderer.flipY = true;
-			dirProjectile = -(transform.right);
-		}
+		StartCoroutine(DisableProjectile());
 	}
+
 	private void Update()
 	{
 		transform.Translate(dirProjectile * ProjectileSpeed);
@@ -66,27 +72,39 @@ public class ProjectileBase : MonoBehaviour
 	/// </summary>
 	public void EndAttack()
 	{
-		Destroy(this.gameObject);
+		gameObject.SetActive(false);
+		//Destroy(this.gameObject);
 	}
 
-	public void ParentEndAttack()
-	{
-		Destroy(transform.parent.gameObject);
-	}
 
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 
 		Character characterTarget = collision.gameObject.GetComponent<Character>();
-		if(characterTarget != null && !characterTarget.CompareTag("Player"))
+		if (elementalType == ElementalType.Water && collision.CompareTag("Ground"))
 		{
+			anim.SetTrigger(Hash_Collision);
+			dirProjectile = Vector3.zero;
+		}
+		if (characterTarget != null && !characterTarget.CompareTag("Player"))
+		{
+			anim.SetTrigger(Hash_Collision);
+			dirProjectile = Vector3.zero;
 			InvokeOnHit(characterTarget);
 		}
+
 	}
 
 	protected virtual void InvokeOnHit(Character targetHit)
 	{
-		OnHit?.Invoke(targetHit, elementalType);
+		
+	}
+
+	IEnumerator DisableProjectile()
+	{
+		yield return (new WaitForSeconds(ProjectileLife));
+		EndAttack();
+		StopAllCoroutines();
 	}
 }

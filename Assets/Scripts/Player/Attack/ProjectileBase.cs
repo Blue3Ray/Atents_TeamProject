@@ -11,6 +11,8 @@ public class ProjectileBase : PooledObject
 {
 	public ElementalType elementalType;
 
+	ElemantalStatus elemantalStatus;
+
 	/// <summary>
 	/// 투사체가 날아가는 속도입니다.
 	/// </summary>
@@ -41,7 +43,7 @@ public class ProjectileBase : PooledObject
 	{
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		anim = GetComponent<Animator>();
-		
+		elemantalStatus = new ElemantalStatus();
 	}
 
 
@@ -96,7 +98,7 @@ public class ProjectileBase : PooledObject
 
 	protected virtual void InvokeOnHit(Character targetHit)
 	{
-		OnHit?.Invoke(targetHit, elementalType);
+		
 	}
 
 	IEnumerator DisableProjectile()

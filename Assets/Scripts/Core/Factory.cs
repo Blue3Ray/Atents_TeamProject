@@ -5,21 +5,37 @@ using UnityEngine;
 public enum PoolObjectType
 {
     Projectile = 0,       // ≈ıªÁ√º
+    Projectile_Fire,
+    Projectile_Water,
+    Projectile_Thunder,
+    Projectile_Wind
 }
 
 public class Factory : Singleton<Factory>
 {
     //public GameObject playerBullet;
     ProjectilePool projectilePool;
+    ProjectilePool_Fire projectilePool_Fire;
+    ProjectilePool_Water projectilePool_Water;
+    ProjectilePool_Thunder projectilePool_Thunder;
+    ProjectilePool_Wind projectilePool_Wind;
 
 
     protected override void OnInitalize()
     {
         base.OnInitalize();
 
-        projectilePool = GetComponentInChildren<ProjectilePool>();
-
+        projectilePool = transform.GetChild(0).GetComponent<ProjectilePool>();
         projectilePool?.Initialize();
+		projectilePool_Fire = transform.GetChild(1).GetComponent<ProjectilePool_Fire>();
+        projectilePool_Fire?.Initialize();
+        projectilePool_Water = transform.GetChild(2).GetComponent<ProjectilePool_Water>();
+        projectilePool_Water?.Initialize();
+        projectilePool_Thunder = transform.GetChild(3).GetComponent<ProjectilePool_Thunder>();
+        projectilePool_Thunder?.Initialize();
+        projectilePool_Wind = transform.GetChild(4).GetComponent<ProjectilePool_Wind>();
+        projectilePool_Wind?.Initialize();
+
     }
 
 
@@ -30,6 +46,18 @@ public class Factory : Singleton<Factory>
         {
             case PoolObjectType.Projectile:
                 result = projectilePool.GetObject()?.gameObject;
+                break;
+            case PoolObjectType.Projectile_Fire:
+                result = projectilePool_Fire.GetObject()?.gameObject;
+                break;
+            case PoolObjectType.Projectile_Water:
+                result = projectilePool_Water.GetObject()?.gameObject;
+                break;
+            case PoolObjectType.Projectile_Thunder:
+                result = projectilePool_Thunder.GetObject()?.gameObject;
+                break;
+            case PoolObjectType.Projectile_Wind:
+                result = projectilePool_Wind.GetObject()?.gameObject;
                 break;
             default:
                 result = new GameObject();

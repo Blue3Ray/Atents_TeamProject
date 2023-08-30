@@ -11,8 +11,9 @@ public class Player : Character
 	ActionControl ac;
 	public Action MouseJustclick_Left;
 
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		ac = new();
 	}
 

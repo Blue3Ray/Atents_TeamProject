@@ -7,6 +7,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2324328318703431898, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: elementalType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434867, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_Size.x
+      value: 0.44518182
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434867, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.31353146
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434867, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.25390226
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434867, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.0047025196
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434867, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7017759619845434876, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
       propertyPath: m_Name
       value: ProjectileWater
@@ -55,5 +79,47 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434878, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f5c5e54b0ea9ca042be35f019b1720a7, type: 2}
+    - target: {fileID: 7017759619845434879, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434879, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017759619845434879, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+--- !u!1 &6270525262227540907 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7017759619845434876, guid: 99949b3e83d893d4387137165ca5822b, type: 3}
+  m_PrefabInstance: {fileID: 3918543655817193047}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &5412098981215950327
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6270525262227540907}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -11,10 +11,6 @@ using UnityEngine.UI;
 public class PlayerJS : Character
 {
 
-	public GameObject fireBall;
-	public GameObject waterBall;
-	public GameObject thunderBall;
-	public GameObject windBall;
 
 	public float OnOffSecond = 0.1f;
 
@@ -538,45 +534,50 @@ public class PlayerJS : Character
 			Attack(target);
 		}
 	}
-
-	private void WindAttack()
+	private void FireAttack()
 	{
-		FarAttack(windBall);
+		FarAttack(PoolObjectType.Projectile_Fire);
 	}
-
 	private void WaterAttack()
 	{
-		FarAttack(waterBall);
+
+		FarAttack(PoolObjectType.Projectile_Water);
 	}
 
 	private void ThunderAttack()
 	{
-		FarAttack(thunderBall);
+		FarAttack(PoolObjectType.Projectile_Thunder);
 	}
 
-	private void FireAttack()
+	private void WindAttack()
 	{
-		FarAttack(fireBall);
+		FarAttack(PoolObjectType.Projectile_Wind);
 	}
 
-	private void FarAttack(GameObject projectilePrefab)
+
+
+	private void FarAttack(PoolObjectType type)
 	{
 
 		if(spriteRenderer.flipX == false)
 		{
-			
-			ProjectileBase projectile =
-			Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.identity).GetComponentInChildren<ProjectileBase>();
-			projectile.OnHit += (target, elemental) => Attack(target);
+
+
+
+			Factory.Ins.GetObject(type, attackArea.transform.position, 0);
+			//projectile.OnHit += (target, elemental) => Attack(target);
+
+			//ProjectileBase projectile =
+			//Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.identity).GetComponentInChildren<ProjectileBase>();
 
 		}
 		else
 		{
-			
-			ProjectileBase projectile =
-			Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.Euler(new Vector3(0, 0, 180))).GetComponentInChildren<ProjectileBase>();
-			
-			projectile.OnHit += (target, elemental) => Attack(target);
+			Factory.Ins.GetObject(type, attackArea.transform.position, 180);
+			//ProjectileBase projectile =
+			//Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.Euler(new Vector3(0, 0, 180))).GetComponentInChildren<ProjectileBase>();
+
+			//projectile.OnHit += (target, elemental) => Attack(target);
 
 		}
 	}

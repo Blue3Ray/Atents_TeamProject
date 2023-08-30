@@ -14,7 +14,7 @@ public enum RoomLayer
 /// <summary>
 /// 출구 정보
 /// </summary>
-public class PassWay
+public struct PassWay
 {
     /// <summary>
     /// 출구의 위치

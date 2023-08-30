@@ -528,8 +528,6 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         PassWayType lastone = PassWayType.UpDown;
 
-        bool isLast = false;
-
         int a = 0;      // 무한루프 방지용
         do
         {
@@ -558,20 +556,52 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 switch (targetDir)
                 {
                     case ExitDirection.Up:
-                        if (targetPos.x > cursor.x) passWay = PassWayType.RightDown;
-                        else passWay = PassWayType.DownLeft;
+                        if (targetPos.x > cursor.x)
+                        {
+                            passWay = PassWayType.RightDown;
+                            lastone = PassWayType.LeftRight;
+                        }
+                        else
+                        {
+                            passWay = PassWayType.DownLeft;
+                            lastone = PassWayType.UpDown;
+                        }
                         break;
                     case ExitDirection.Left:
-                        if (targetPos.y > cursor.y) passWay = PassWayType.UpRight;
-                        else passWay = PassWayType.RightDown;
+                        if (targetPos.y > cursor.y)
+                        {
+                            passWay = PassWayType.UpRight;
+                            lastone = PassWayType.UpDown;
+                        }
+                        else
+                        {
+                            passWay = PassWayType.RightDown;
+                            lastone = PassWayType.LeftRight;
+                        }
                         break;
                     case ExitDirection.Right:
-                        if (targetPos.y > cursor.y) passWay = PassWayType.LeftUp;
-                        else passWay = PassWayType.DownLeft;
+                        if (targetPos.y > cursor.y)
+                        {
+                            passWay = PassWayType.LeftUp;
+                            lastone = PassWayType.UpDown;
+                        }
+                        else
+                        {
+                            passWay = PassWayType.DownLeft;
+                            lastone = PassWayType.LeftRight;
+                        }
                         break;
                     case ExitDirection.Down:
-                        if (targetPos.x > cursor.x) passWay = PassWayType.UpRight;
-                        else passWay = PassWayType.RightDown;
+                        if (targetPos.x > cursor.x)
+                        {
+                            passWay = PassWayType.UpRight;
+                            lastone = PassWayType.LeftRight;
+                        }
+                        else
+                        {
+                            passWay = PassWayType.LeftUp;
+                            lastone = PassWayType.UpDown;
+                        }
                         break;
                 }
 
@@ -604,7 +634,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         } while (cursor != endPos.Pos && a < 100);
 
-        cursor += GeneratePass(new PassWay(cursor, targetDir), lastone);        // 타일맵 생성
+        GeneratePass(new PassWay(cursor, targetDir), lastone);        // 마지막 통로 타일맵 생성
 
 
         //cursor += GeneratePass(new Exit(cursor, ExitDirection.Right), PassWayType.LeftRight);
@@ -681,6 +711,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         {
             for (int j = decreaseFromMin.x; j < targetData.Width - decreaseFromMax.x; j++)  // 문 너비 만큼
             {
+                // ******** 배경있는 곳이랑 없는곳이랑 차이 둬서 맵을 만들어야하는 알고리즘짜야됨 다시 고려할 것
                 Vector3Int plusPos = new Vector3Int(j, i);
                 Vector3Int targetDrawPos = targetData.min + plusPos;        // 샘플 위치 까지 고려한 그릴 위치
 
@@ -694,17 +725,30 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
                 if (targetData.mapLayers[(int) MapLayer.PlatForm].HasTile(targetDrawPos))
                 {
-                    // 플랫폼 칸일 때
-                    targetLayer = (int)MapLayer.PlatForm;
-                    tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
-                    m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
+                    if (!m_tileMaps[(int)MapLayer.HalfPlatForm].HasTile(cursorPos + targetDrawPos))
+                    {
+                        // 플랫폼 칸일 때(반플렛폼이 있으면 안함)
+                        targetLayer = (int)MapLayer.PlatForm;
+                        tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
+                        m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
+                    }
+                    else
+                    {
+                        Debug.Log("반플랫폼 타일이 있음");
+                    }
                 }
                 else if (targetData.mapLayers[(int)MapLayer.HalfPlatForm].HasTile(targetDrawPos))
                 {
-                    // 반플랫폼 칸일 때
+                    // 반플랫폼 칸일 때 기존에 플랫폼 칸 있으면 지움
                     targetLayer = (int)MapLayer.HalfPlatForm;
                     tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
                     m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
+
+                    if (m_tileMaps[(int)MapLayer.PlatForm].HasTile(targetDrawPos))
+                    {
+                        m_tileMaps[(int)MapLayer.PlatForm].SetTile(cursorPos + targetDrawPos, null);
+                    }
+
                 }
                 else
                 {
@@ -794,7 +838,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
             if (temp.Direction != exitDir) continue;            // 만약 선택한 출입구가 받은 파라미터 방향과 같지 않으면 스킵
             int x = 0, y = 0;   // 방향이 좌우에 따라 출입구 그려지는 시작위치
             int index = 0;      // 0은 좌우 출입구, 1은 상하 출입구
-            if(temp.Direction == ExitDirection.Left|| temp.Direction == ExitDirection.Right)
+            if(temp.Direction == ExitDirection.Left || temp.Direction == ExitDirection.Right)
             {
                 y = -2;
             }
@@ -838,11 +882,11 @@ public class RoomGenerator : Singleton<RoomGenerator>
             set
             {
                 getSampleIndex = value;
-                passWays = RoomGenerator.Ins.roomSamplesWithExit[getSampleIndex].exitPos;
+                passWays = RoomGenerator.Ins.roomSamplesWithExit[getSampleIndex].exitPos.ToArray();
             }
         }
 
-        public List<PassWay> passWays;
+        public PassWay[] passWays;
 
         public Vector2Int gridCoord;
 
@@ -851,7 +895,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         public void SetOrigineCoord(int roomSize)
         {
             origineCoord = new Vector3Int(gridCoord.x * roomSize, gridCoord.y * roomSize);
-            for(int i =0; i < passWays.Count; i++)
+            for(int i =0; i < passWays.Length; i++)
             {
                 passWays[i].Pos += origineCoord;
             }
@@ -871,21 +915,28 @@ public class RoomGenerator : Singleton<RoomGenerator>
         test1.SetOrigineCoord(maxSingleRoomSize);
         
         TestRoom test2 = new TestRoom();
-        test2.gridCoord = new Vector2Int(1, 0);
+        test2.gridCoord = new Vector2Int(1, 1);
         test2.GetSampleIndex = 1;
         test2.SetOrigineCoord(maxSingleRoomSize);
 
         TestRoom test3 = new TestRoom();
-        test3.gridCoord = new Vector2Int(2, 1);
+        test3.gridCoord = new Vector2Int(2, 0);
         test3.GetSampleIndex = 2;
         test3.SetOrigineCoord(maxSingleRoomSize);
+
+        TestRoom test4 = new TestRoom();
+        test4.gridCoord = new Vector2Int(2, 1);
+        test4.GetSampleIndex = 2;
+        test4.SetOrigineCoord(maxSingleRoomSize);
 
         GenerateRoom(test1.origineCoord, roomSamplesWithExit[test1.GetSampleIndex]);
         GenerateRoom(test2.origineCoord, roomSamplesWithExit[test2.GetSampleIndex]);
         GenerateRoom(test3.origineCoord, roomSamplesWithExit[test3.GetSampleIndex]);
+        GenerateRoom(test4.origineCoord, roomSamplesWithExit[test4.GetSampleIndex]);
 
-        //Test_ConnectPassway(test1, test3);
-        Test_ConnectPassway(test2, test3);
+        Test_ConnectPassway(test1, test2);
+        Test_ConnectPassway(test3, test2);
+        Test_ConnectPassway(test2, test4);
     }
 
     public void Test_ConnectPassway(TestRoom temp1, TestRoom temp2)

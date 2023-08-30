@@ -37,16 +37,27 @@ public class Player_JS : Character
 	}
 
 
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		playerInputAction = new();
 		animator = GetComponent<Animator>();
 		rg = transform.GetComponent<Rigidbody2D>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		AttackPivot = transform.GetChild(1);
 		attackArea = AttackPivot.GetChild(0).GetComponent<Collider2D>();
-		
+
 	}
+	//private void Awake()
+	//{
+	//	playerInputAction = new();
+	//	animator = GetComponent<Animator>();
+	//	rg = transform.GetComponent<Rigidbody2D>();
+	//	spriteRenderer = GetComponent<SpriteRenderer>();
+	//	AttackPivot = transform.GetChild(1);
+	//	attackArea = AttackPivot.GetChild(0).GetComponent<Collider2D>();
+
+	//}
 	private void Start()
 	{
 		GroundSensor = transform.GetChild(0).GetComponent<Collider2D>();

@@ -78,7 +78,7 @@ public class PlayerJM : MonoBehaviour
 	float hp = 0.0f;
 	public float maxHp = 100;
 
-	bool OnDownArrow = false;
+	//bool OnDownArrow = false;
 
 	/// <summary>
 	/// hp가 바뀔 때마다 hp를 invoke
@@ -224,7 +224,7 @@ public class PlayerJM : MonoBehaviour
 			dir = Vector2.zero;
 			if (dir.y < 0)
 			{
-				OnDownArrow = false;
+				//OnDownArrow = false;
 				Debug.Log("onDown = false");
 			}
 		}
@@ -249,7 +249,7 @@ public class PlayerJM : MonoBehaviour
 			{
 				if (dir.y < 0)
 				{
-					OnDownArrow = true;
+					//OnDownArrow = true;
 					Debug.Log("onDown = true");
 				}
 

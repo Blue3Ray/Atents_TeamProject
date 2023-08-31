@@ -102,9 +102,15 @@ public class ObjectPool<T> : MonoBehaviour where T : PooledObject
             obj.name = $"{origianlPrefab.name}_{i}";
 
             T comp = obj.GetComponent<T>();                                     // T는 PooledObject를 가질수 밖에 없음(초기 설정 where)
+            
             if(comp == null)
             {
 				comp = obj.GetComponentInChildren<T>();
+                if(comp == null)
+                {
+                    ProjectileBase ChildOfPooledObject = obj.GetComponent<ProjectileBase>();
+                    comp = ChildOfPooledObject as T;
+                }
 			}
             comp.onDisable += () => readyQueue.Enqueue(comp);                   // 비활성화 되면 Queue로 들어가기
 

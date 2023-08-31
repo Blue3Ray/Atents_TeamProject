@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6034700746867936635}
-  - component: {fileID: 2624580315077351412}
+  - component: {fileID: -1287848553633526277}
   m_Layer: 0
   m_Name: ProjectileThunder_last
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2624580315077351412
+--- !u!114 &-1287848553633526277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,11 +42,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 9096689107159859414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bc1ec4523044cc4f9bd436b498dc20b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2390e7c7f4597524a9e6e914b3aeeb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalType: 4
-  ProjectileSpeed: 0
+  elementalType: 0
+  ProjectileSpeed: 1
+  ProjectileLife: 3
 --- !u!1001 &4993585713723546835
 PrefabInstance:
   m_ObjectHideFlags: 0

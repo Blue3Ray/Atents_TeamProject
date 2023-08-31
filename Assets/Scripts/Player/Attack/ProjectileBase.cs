@@ -11,7 +11,7 @@ public class ProjectileBase : PooledObject
 {
 	public ElementalType elementalType;
 
-	ElemantalStatus elemantalStatus;
+	protected ElemantalStatus elemantalStatus;
 
 	/// <summary>
 	/// 투사체가 날아가는 속도입니다.
@@ -23,7 +23,7 @@ public class ProjectileBase : PooledObject
 	/// <summary>
 	/// 투사체가 날아갈 방향입니다.
 	/// </summary>
-	Vector3 dirProjectile = Vector3.zero;
+	protected Vector3 dirProjectile = Vector3.zero;
 	
 	/// <summary>
 	/// 투사체가 가진 스프라이트 렌더러입니다.
@@ -35,11 +35,25 @@ public class ProjectileBase : PooledObject
 	/// </summary>
 	public Action<Character, ElementalType> OnHit;
 
-	Animator anim;
+	float status = 1f;
 
-	readonly int Hash_Collision = Animator.StringToHash("Collision");
+	public float PlayerStatus 
+	{
+		get => status; 
+		set
+		{ 
+			status = value; 
+		} 
+	}
+	
+	protected Animator anim;
 
-	private void Awake()
+
+
+
+	protected readonly int Hash_Collision = Animator.StringToHash("Collision");
+
+	protected virtual void Awake()
 	{
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		anim = GetComponent<Animator>();
@@ -78,28 +92,20 @@ public class ProjectileBase : PooledObject
 
 
 
-	private void OnTriggerEnter2D(Collider2D collision)
+	protected virtual void OnTriggerEnter2D(Collider2D collision)
 	{
 
 		Character characterTarget = collision.gameObject.GetComponent<Character>();
-		if (elementalType == ElementalType.Water && collision.CompareTag("Ground"))
-		{
-			anim.SetTrigger(Hash_Collision);
-			dirProjectile = Vector3.zero;
-		}
+		
 		if (characterTarget != null && !characterTarget.CompareTag("Player"))
 		{
 			anim.SetTrigger(Hash_Collision);
 			dirProjectile = Vector3.zero;
-			InvokeOnHit(characterTarget);
+			characterTarget.Defance(status, elemantalStatus);
 		}
 
 	}
 
-	protected virtual void InvokeOnHit(Character targetHit)
-	{
-		
-	}
 
 	IEnumerator DisableProjectile()
 	{

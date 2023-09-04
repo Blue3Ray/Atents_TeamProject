@@ -82,6 +82,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
     public int roomCount = 8;
 
+    public int roomGap = 10;
+
     // 샘플 맵 설정 ----------------------
 
     /// <summary>
@@ -89,7 +91,6 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     int maxSingleRoomSize = 0;
 
-    
 
     private void Start()
     {
@@ -116,7 +117,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
             passWay.OnInitialize();
         }
 
-        maxSingleRoomSize += 5;
+        maxSingleRoomSize += roomGap;
         //SetUpRooms();
     }
 
@@ -128,6 +129,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         makeRooms = new();
 
+        // 방 생성하고 리스트에 등록하는 과정
         foreach(var item in randomMap.roomList)
         {
             MakeRoom targetRoom = new MakeRoom();
@@ -140,6 +142,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
             makeRooms.Add(targetRoom);
         }
 
+        // 만들어진 방을 통로 연결 여부 확인 후에 통로 생성하는 과정
         foreach (var roomOne in makeRooms)
         {
             Room targetOne = roomOne.roomData;

@@ -193,9 +193,7 @@ MonoBehaviour:
   - {fileID: 1696334468453365824, guid: c1de23d7612ae7d479086d30a8ed6d9c, type: 3}
   - {fileID: 7947880996732234699, guid: de0ad0872d95fa948b97ad654bba94ef, type: 3}
   roomSamplesWithExit:
-  - {fileID: 5766560427034028742, guid: 21f3271bb2146634aa1c414709f1a409, type: 3}
-  - {fileID: 5766560427034028742, guid: 84f2553c0efd4734aa339ce3af494154, type: 3}
-  - {fileID: 6585165216709810614, guid: 3b8c3a9c4c2f8fc42a749baf32f2a5c2, type: 3}
+  - {fileID: 614984364478799997, guid: 67c462f5860f61c4bafd3e2c194f2cfa, type: 3}
   width: 100
   height: 100
   fillRate: 0.46
@@ -611,7 +609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &906368832
 Grid:
   m_ObjectHideFlags: 0

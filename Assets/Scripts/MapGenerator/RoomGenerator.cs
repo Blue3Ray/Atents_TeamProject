@@ -120,24 +120,46 @@ public class RoomGenerator : Singleton<RoomGenerator>
         //SetUpRooms();
     }
 
+    List<MakeRoom> makeRooms;
 
     public void SetUpRooms()
     {
         randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);
 
-        Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
+        makeRooms = new();
 
-        for(int y = 0; y < randomMap.gridMap.Height; y++)
+        foreach(var item in randomMap.roomList)
         {
-            for(int x = 0; x < randomMap.gridMap.Width; x++)
+            MakeRoom targetRoom = new MakeRoom();
+            targetRoom.GetRoomData(item);
+            targetRoom.GetSampleIndex = GetRandomRoom(item);
+            targetRoom.SetOrigineCoord(maxSingleRoomSize);
+
+            GenerateRoom(targetRoom.origineCoord, roomSamplesWithExit[targetRoom.GetSampleIndex]);
+
+            makeRooms.Add(targetRoom);
+        }
+
+        foreach (var roomOne in makeRooms)
+        {
+            Room targetOne = roomOne.roomData;
+            foreach (var roomTwo in targetOne.connectedRooms)
             {
-                Room target = randomMap.gridMap.mapGrid[x, y];
-                if (target != null)
+                if(!targetOne.IsConnectedBuildRoom(roomTwo.Item1))
                 {
-                    //gridMap[x, y] = new NodeRoom();
+                    targetOne.alreadyConnectPassWayRooms.Add(roomTwo.Item1);
+                    roomTwo.Item1.alreadyConnectPassWayRooms.Add(targetOne);
+
+                    if(TryGetMakeRoomByCoord(roomTwo.Item1.gridCoord, out MakeRoom result))
+                    {
+                        ConnectPassway(roomOne, result);
+                    }
                 }
             }
         }
+
+
+        Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
 
         // 방을 만드는 부분
         // 방을 만들때 통로 정보를 저장해야된다.
@@ -229,7 +251,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     /// <param name="targetRoom">조사할 방</param>
     /// <returns>조건에 맞는 샘플 룸</returns>
-    SampleRoomData GetRandomRoom(Room targetRoom)
+    int GetRandomRoom(Room targetRoom)
     {
         //출구 개수와 만족하는 방리스트를 따로 만듬
         List<ExitDirection> upDir = new();
@@ -271,7 +293,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         if (!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
 
         // 배치 가능한 방들 중 랜덤으로 하나 선택
-        return canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
+        return Random.Range(0, canBuildRoomList.Count - 1);
     }
 
     //public void SetupRooms()
@@ -875,7 +897,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         return new Vector3Int(x, y);
     }
 
-    public class TestRoom
+    public class MakeRoom
     {
         int getSampleIndex;
         public int GetSampleIndex
@@ -892,7 +914,15 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         public Vector2Int gridCoord;
 
+        public Room roomData;
+
         public Vector3Int origineCoord;
+
+        public void GetRoomData(Room room)
+        {
+            gridCoord = room.gridCoord;
+            roomData = room;
+        }
 
         public void SetOrigineCoord(int roomSize)
         {
@@ -911,22 +941,22 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
     public void Test()
     {
-        TestRoom test1 = new TestRoom();
+        MakeRoom test1 = new MakeRoom();
         test1.gridCoord = new Vector2Int(0, 0);
         test1.GetSampleIndex = 0;
         test1.SetOrigineCoord(maxSingleRoomSize);
         
-        TestRoom test2 = new TestRoom();
+        MakeRoom test2 = new MakeRoom();
         test2.gridCoord = new Vector2Int(1, 1);
         test2.GetSampleIndex = 1;
         test2.SetOrigineCoord(maxSingleRoomSize);
 
-        TestRoom test3 = new TestRoom();
+        MakeRoom test3 = new MakeRoom();
         test3.gridCoord = new Vector2Int(2, 0);
         test3.GetSampleIndex = 2;
         test3.SetOrigineCoord(maxSingleRoomSize);
 
-        TestRoom test4 = new TestRoom();
+        MakeRoom test4 = new MakeRoom();
         test4.gridCoord = new Vector2Int(2, 1);
         test4.GetSampleIndex = 2;
         test4.SetOrigineCoord(maxSingleRoomSize);
@@ -937,11 +967,11 @@ public class RoomGenerator : Singleton<RoomGenerator>
         GenerateRoom(test4.origineCoord, roomSamplesWithExit[test4.GetSampleIndex]);
 
         //Test_ConnectPassway(test1, test2);
-        Test_ConnectPassway(test2, test4);
-        Test_ConnectPassway(test3, test2);
+        ConnectPassway(test2, test4);
+        ConnectPassway(test3, test2);
     }
 
-    public void Test_ConnectPassway(TestRoom temp1, TestRoom temp2)
+    public void ConnectPassway(MakeRoom temp1, MakeRoom temp2)
     {
         float distance = float.MaxValue;
         PassWay one = temp1.passWays[0];
@@ -964,6 +994,24 @@ public class RoomGenerator : Singleton<RoomGenerator>
         }
 
         GeneratePassway(one, two);
+    }
+
+    bool TryGetMakeRoomByCoord(Vector2Int gridPos, out MakeRoom resultRoom)
+    {
+        bool result = false;
+        resultRoom = null;
+
+        foreach(var item in makeRooms)
+        {
+            if(item.gridCoord == gridPos)
+            {
+                resultRoom = item;
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 }
 

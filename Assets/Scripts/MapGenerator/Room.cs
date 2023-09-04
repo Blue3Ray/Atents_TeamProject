@@ -8,6 +8,7 @@ public class Room
     /// 연결되어 있는 방과 해당방의 방향 bool은 연결 여부
     /// </summary>
     public List<(Room, ExitDirection)> connectedRooms;
+    public List<Room> alreadyConnectPassWayRooms;
 
     public bool isMainRoom = false;
     public bool isAccessibleMainRoom = false;
@@ -46,6 +47,7 @@ public class Room
     {
         roomCoord = coord;
         connectedRooms = new();
+        alreadyConnectPassWayRooms = new();
     }
 
     public void SetAccessibleMainRoom()
@@ -149,5 +151,12 @@ public class Room
         {
             Debug.LogWarning("방 연결이 안됩니다!");
         }
+    }
+
+    // 방만들때 사용할 거
+
+    public bool IsConnectedBuildRoom(Room targetRoom)
+    {
+        return alreadyConnectPassWayRooms.Contains(targetRoom);
     }
 }

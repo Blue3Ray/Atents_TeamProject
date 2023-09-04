@@ -99,11 +99,16 @@ public class ProjectileBase : PooledObject
 		
 		if (characterTarget != null && !characterTarget.CompareTag("Player"))
 		{
-			anim.SetTrigger(Hash_Collision);
-			dirProjectile = Vector3.zero;
-			characterTarget.Defance(status, elemantalStatus);
+			OnAttack(characterTarget);
 		}
 
+	}
+
+	protected virtual void OnAttack(Character characterTarget)
+	{
+
+		
+		characterTarget.Defance(status, elemantalStatus);
 	}
 
 

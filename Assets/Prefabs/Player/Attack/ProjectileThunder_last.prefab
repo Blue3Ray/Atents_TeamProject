@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2390e7c7f4597524a9e6e914b3aeeb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalType: 0
-  ProjectileSpeed: 1
+  elementalType: 4
+  ProjectileSpeed: 0
   ProjectileLife: 3
 --- !u!1001 &4993585713723546835
 PrefabInstance:

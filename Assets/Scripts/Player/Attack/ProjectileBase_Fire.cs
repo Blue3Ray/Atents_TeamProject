@@ -9,4 +9,10 @@ public class ProjectileBase_Fire : ProjectileBase
 		base.Awake();
 		elemantalStatus.ChangeType(ElementalType.Fire);
 	}
+
+	protected override void OnAttack(Character characterTarget)
+	{
+		base.OnAttack(characterTarget);
+		dirProjectile = Vector3.zero;
+	}
 }

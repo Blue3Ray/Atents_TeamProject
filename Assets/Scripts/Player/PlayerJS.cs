@@ -524,7 +524,12 @@ public class PlayerJS : Character
 	/// <param name="target"></param>
 	public override void Attack(Character target)
 	{
-		target.Defance(AttackState, elemantalStatus);
+		target.Defence(AttackState, elemantalStatus);
+	}
+
+	public override void Attack(Character target, float knockBackPower)
+	{
+		base.Attack(target, knockBackPower);
 	}
 
 	private void NoneAttack()
@@ -616,9 +621,9 @@ public class PlayerJS : Character
 		PlayerElementalStatus = elemantalStatus;
 	}
 
-	public override void Defance(float damage, ElemantalStatus elemantal = null)
+	public override void Defence(float damage, ElemantalStatus elemantal = null)
 	{
 		anim.SetTrigger(Hash_Hurt);
-		base.Defance(damage, elemantal);
+		base.Defence(damage, elemantal);
 	}
 }

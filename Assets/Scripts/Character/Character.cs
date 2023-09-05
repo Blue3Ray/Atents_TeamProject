@@ -68,6 +68,13 @@ public class Character : MonoBehaviour, IHealth
     /// </summary>
     public bool IsAlive => hp > 0;
 
+    Rigidbody2D characterRigid;
+
+    /// <summary>
+    /// 맞은 캐릭터가 밀리는 방향
+    /// </summary>
+    Vector3 knockBackDir;
+
     // 캐릭터의 스텟 부분 -----------------------------------
 
     /// <summary>
@@ -119,9 +126,10 @@ public class Character : MonoBehaviour, IHealth
     protected virtual void Awake()
     {
         elemantalStatus= new ElemantalStatus();
-
+        characterRigid = GetComponent<Rigidbody2D>();
         onDie += Die;
         HP = MaxHP;
+        knockBackDir = transform.right;
     }
 
     public virtual void OnInitialize()
@@ -203,10 +211,17 @@ public class Character : MonoBehaviour, IHealth
         Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
         
-        target.Defance(AttackState);
+        target.Defence(AttackState);
     }
+	public virtual void Attack(Character target, float knockBackPower)
+	{
+		Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
-    public virtual void Defance(float damage, ElemantalStatus elemantal = null)
+
+		target.Defence(AttackState, knockBackPower, elemantalStatus);
+	}
+
+	public virtual void Defence(float damage, ElemantalStatus elemantal = null)
     {
         float resultDamage = 0;
         if (elemantal == null || elemantal.Elemantal == ElementalType.None)
@@ -238,5 +253,42 @@ public class Character : MonoBehaviour, IHealth
         Debug.Log($"{gameObject.name}이(가) {resultDamage}만큼 피해를 입었다!");
         HP -= resultDamage;
     }
+    
+    public virtual void Defence(float damage, float knockBackPower, ElemantalStatus elemantal = null)
+    {
+        if(characterRigid != null)
+        {
+            characterRigid.AddForce(knockBackDir * knockBackPower, ForceMode2D.Impulse);
+        }
+		float resultDamage = 0;
+		if (elemantal == null || elemantal.Elemantal == ElementalType.None)
+		{
+			resultDamage = Mathf.Clamp(damage, 0, MaxHP);
+		}
+		else
+		{
+			switch (elemantal.Elemantal)
+			{
+				case ElementalType.Fire:
+					resultDamage = Mathf.Clamp(damage, 0, MaxHP) + 10;
+					break;
+				case ElementalType.Water:
+					damage *= 1.2f;
+					resultDamage = Mathf.Clamp(damage, 0, MaxHP);
+					break;
+				case ElementalType.Wind:
+					damage *= 0.8f;
+					resultDamage = Mathf.Clamp(damage, 0, MaxHP);
+					break;
+				case ElementalType.Thunder:
+					damage *= 2f;
+					resultDamage = Mathf.Clamp(damage, 0, MaxHP);
+					break;
+			}
+		}
+
+		Debug.Log($"{gameObject.name}이(가) {resultDamage}만큼 피해를 입었다!");
+		HP -= resultDamage;
+	}
 
 }

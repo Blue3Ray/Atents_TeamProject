@@ -30,9 +30,10 @@ public class RingMenuUI : RingMenuSlotUI
         slot[3] = elemanterMenu.GetChild(3).GetComponent<RingMenuSlotUI>();
        
         slot[0].onClick += SlotSelect;
-        slot[1].onClick += SlotSelect;
-        slot[2].onClick += SlotSelect;
-        slot[3].onClick += SlotSelect;
+      
+
+        slot[0].onUP += SlotSelect;
+
         
        
     }
@@ -54,6 +55,7 @@ public class RingMenuUI : RingMenuSlotUI
 
     private void Start()
     {
+        
         elemanterMenu.gameObject.SetActive(false);
     }
 
@@ -62,7 +64,7 @@ public class RingMenuUI : RingMenuSlotUI
     ///  오른쪽 마우스로 RingMenu 호출
     /// </summary>
     /// <param name="context"></param>
-    private void OnRingMenu(InputAction.CallbackContext context)
+    private void OnRingMenu(InputAction.CallbackContext _)
     {
         Vector3 mousepostion = Mouse.current.position.ReadValue();
 
@@ -74,24 +76,24 @@ public class RingMenuUI : RingMenuSlotUI
     ///  오른쪽 마우스 버튼을 놓을 시 Slot 선택
     /// </summary>
     /// <param name="context"></param>
-    private void RingSlotSelect(InputAction.CallbackContext context)
+    private void RingSlotSelect(InputAction.CallbackContext _)
     {
         
-        elemanterMenu.gameObject.SetActive(false);
-    }
+       
+            
+            
+        
 
-    public void SlotClick()
-    {
+        
         
     }
-   
 
     public void SlotSelect(uint index)
     {
         switch (index)
         {
             case (uint)ElementalType.Fire:
-          
+                
                 Debug.Log("불");
                 break;
             case (uint)ElementalType.Wind:

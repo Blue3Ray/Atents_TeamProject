@@ -3,18 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class RingMenuSlotUI : MonoBehaviour, IPointerClickHandler  // 포인터 이벤트들 필요한거
+public class RingMenuSlotUI : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerEnterHandler
+    // 포인터 이벤트들 필요한거
 {
     public ElementalType elementalType;
 
     public System.Action<uint>  onClick;
+    public System.Action<uint>  onUP;
 
+    RingMenuSlotUI slot;
+    Image image;
 
     protected virtual void Awake()
     {
+        slot = GetComponent<RingMenuSlotUI>();
+        image = GetComponent<Image>();
         onClick= null;
-        elementalType = ElementalType.None;
+        elementalType = (uint)ElementalType.None;
+        
     }
 
 
@@ -26,5 +34,15 @@ public class RingMenuSlotUI : MonoBehaviour, IPointerClickHandler  // 포인터 이�
         onClick?.Invoke((uint)elementalType);
     }
 
-  
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        onUP?.Invoke((uint)elementalType);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        
+        
+        
+    }
 }

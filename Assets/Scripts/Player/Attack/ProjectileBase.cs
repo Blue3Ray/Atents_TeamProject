@@ -49,7 +49,7 @@ public class ProjectileBase : PooledObject
 	protected Animator anim;
 
 
-
+	protected float knockBackPower = 1;
 
 	protected readonly int Hash_Collision = Animator.StringToHash("Collision");
 
@@ -108,7 +108,7 @@ public class ProjectileBase : PooledObject
 	{
 
 		
-		characterTarget.Defance(status, elemantalStatus);
+		characterTarget.Defence(status, knockBackPower,elemantalStatus);
 	}
 
 

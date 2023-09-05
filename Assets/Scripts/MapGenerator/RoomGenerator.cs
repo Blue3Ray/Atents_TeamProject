@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.Progress;
 
 
 public enum MapLayer
@@ -42,10 +43,16 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     public SampleRoomData[] passWaySamples;
 
+
     /// <summary>
-    /// 방 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
+    /// 방 데이터 불러올 샘플들
     /// </summary>
     public SampleRoomData[] roomSamplesWithExit;
+
+    /// <summary>
+    /// 시작 방
+    /// </summary>
+    public SampleRoomData startRoom;
 
 
     /// <summary>
@@ -107,6 +114,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         cursor = new Vector3Int(0, 0);
 
+        startRoom.OnInitialize();
+
         foreach(SampleRoomData sampleRoom in roomSamplesWithExit)
         {
             int t = sampleRoom.OnInitialize();
@@ -129,8 +138,24 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         makeRooms = new();
 
+        // 시작 방 생성
+        //startRoom.exitPos[0].
+
+        Vector2Int startRoomGrid = randomMap.roomList[0].gridCoord + new Vector2Int(-1, 0);
+
+        MakeRoom startMakeRoom = new MakeRoom();
+        startMakeRoom.GetRoomData(new Room(startRoomGrid));
+        startMakeRoom.GetSampleIndex = -1;
+        startMakeRoom.SetOrigineCoord(new Vector3Int(startRoom.Width, startRoom.Height), maxSingleRoomSize);
+
+        GenerateRoom(startMakeRoom.origineCoord, startRoom);
+
+        makeRooms.Add(startMakeRoom);
+
+
+
         // 방 생성하고 리스트에 등록하는 과정
-        foreach(var item in randomMap.roomList)
+        foreach (var item in randomMap.roomList)
         {
             MakeRoom targetRoom = new MakeRoom();
             targetRoom.GetRoomData(item);
@@ -758,7 +783,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     }
                     else
                     {
-                        Debug.Log("반플랫폼 타일이 있음");
+                        //Debug.Log("반플랫폼 타일이 있음");
                     }
                 }
                 else if (targetData.mapLayers[(int)MapLayer.HalfPlatForm].HasTile(targetDrawPos))
@@ -902,14 +927,21 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
     public class MakeRoom
     {
-        int getSampleIndex;
+        int getSampleIndex = -1;
         public int GetSampleIndex
         {
             get => getSampleIndex;
             set
             {
                 getSampleIndex = value;
-                passWays = RoomGenerator.Ins.roomSamplesWithExit[getSampleIndex].exitPos.ToArray();
+                if (getSampleIndex != -1)
+                {
+                    passWays = RoomGenerator.Ins.roomSamplesWithExit[getSampleIndex].exitPos.ToArray();
+                }
+                else
+                {
+                    passWays = RoomGenerator.Ins.startRoom.exitPos.ToArray();
+                }
             }
         }
 
@@ -931,6 +963,18 @@ public class RoomGenerator : Singleton<RoomGenerator>
         {
             origineCoord = new Vector3Int(gridCoord.x * roomSize, gridCoord.y * roomSize);
             for(int i =0; i < passWays.Length; i++)
+            {
+                passWays[i].Pos += origineCoord;
+            }
+        }
+
+        // 시작 방을 위한 함수
+        public void SetOrigineCoord(Vector3Int startSize, int roomSize)
+        {
+            // 고쳐야됨 !!
+            Debug.LogWarning("수정 필요");
+            origineCoord = new Vector3Int((roomSize - startSize.x) + (gridCoord.x + 1) * roomSize, (roomSize - startSize.y) + (gridCoord.y + 1) * roomSize);
+            for (int i = 0; i < passWays.Length; i++)
             {
                 passWays[i].Pos += origineCoord;
             }
@@ -997,6 +1041,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
         }
 
         GeneratePassway(one, two);
+        one.isConnected = true;
+        two.isConnected = true;
     }
 
     bool TryGetMakeRoomByCoord(Vector2Int gridPos, out MakeRoom resultRoom)

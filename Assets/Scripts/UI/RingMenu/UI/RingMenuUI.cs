@@ -8,7 +8,7 @@ using TMPro;
 using System;
 using Unity.VisualScripting;
 
-public class RingMenuUI : RingMenuSlotUI
+public class RingMenuUI : MonoBehaviour
 {
     ActionControl acionControl;
     // 속성 메뉴
@@ -16,25 +16,29 @@ public class RingMenuUI : RingMenuSlotUI
 
     RingMenuSlotUI[] slot;
 
-    protected override void Awake()
+    CanvasGroup canvasGroup;
+
+    private void Awake()
     {
-        base.Awake();
 
         acionControl = new ActionControl();
 
         elemanterMenu = transform.GetChild(0);
+        
         slot = new RingMenuSlotUI[5];
-        slot[0] = elemanterMenu.GetChild(0).GetComponent<RingMenuSlotUI>();
-        slot[1] = elemanterMenu.GetChild(1).GetComponent<RingMenuSlotUI>();
-        slot[2] = elemanterMenu.GetChild(2).GetComponent<RingMenuSlotUI>();
-        slot[3] = elemanterMenu.GetChild(3).GetComponent<RingMenuSlotUI>();
-       
-        slot[0].onClick += SlotSelect;
-      
+        
+        slot[0] = elemanterMenu.GetChild(1).GetComponent<RingMenuSlotUI>();
+        slot[1] = elemanterMenu.GetChild(2).GetComponent<RingMenuSlotUI>();
+        slot[2] = elemanterMenu.GetChild(3).GetComponent<RingMenuSlotUI>();
+        slot[3] = elemanterMenu.GetChild(4).GetComponent<RingMenuSlotUI>();
 
         slot[0].onUP += SlotSelect;
+        slot[1].onUP += SlotSelect;
+        slot[2].onUP += SlotSelect;
+        slot[3].onUP += SlotSelect;
 
-        
+        canvasGroup = GetComponent<CanvasGroup>();
+  
        
     }
 
@@ -55,8 +59,8 @@ public class RingMenuUI : RingMenuSlotUI
 
     private void Start()
     {
-        
-        elemanterMenu.gameObject.SetActive(false);
+        canvasGroup.alpha = 0.0f;
+
     }
 
 
@@ -69,47 +73,42 @@ public class RingMenuUI : RingMenuSlotUI
         Vector3 mousepostion = Mouse.current.position.ReadValue();
 
         elemanterMenu.transform.position = mousepostion;
-        elemanterMenu.gameObject.SetActive(true);
+        canvasGroup.alpha = 1.0f;
     }
 
     /// <summary>
     ///  오른쪽 마우스 버튼을 놓을 시 Slot 선택
     /// </summary>
     /// <param name="context"></param>
-    private void RingSlotSelect(InputAction.CallbackContext _)
+    private void RingSlotSelect(InputAction.CallbackContext context)
     {
-        
-       
-            
-            
-        
-
-        
-        
+        canvasGroup.alpha = 0.0f;
     }
 
-    public void SlotSelect(uint index)
+    public void SlotSelect(ElementalType type)
     {
-        switch (index)
-        {
-            case (uint)ElementalType.Fire:
+        Debug.Log(type);
+        
+        //switch (type)
+        //{
+        //    case ElementalType.Fire:
                 
-                Debug.Log("불");
-                break;
-            case (uint)ElementalType.Wind:
+        //        Debug.Log("불");
+        //        break;
+        //    case ElementalType.Wind:
                 
-                Debug.Log("바람");
-                break;
-            case (uint)ElementalType.Water:
+        //        Debug.Log("바람");
+        //        break;
+        //    case ElementalType.Water:
               
-                Debug.Log("물");
-                break;
-            case (uint)ElementalType.Thunder:
+        //        Debug.Log("물");
+        //        break;
+        //    case ElementalType.Thunder:
              
-                Debug.Log("번개");
-                break;
-
-        }
+        //        Debug.Log("번개");
+        //        break;
+        //}
+        
     }
 
 

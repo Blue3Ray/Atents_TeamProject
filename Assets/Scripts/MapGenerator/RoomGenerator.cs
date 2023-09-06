@@ -144,7 +144,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         Vector2Int startRoomGrid = randomMap.roomList[0].gridCoord + new Vector2Int(-1, 0);
 
         MakeRoom startMakeRoom = new MakeRoom();
-        startMakeRoom.GetRoomData(new Room(startRoomGrid));
+        startMakeRoom.GetRoomData(startRoomGrid);
         startMakeRoom.GetSampleIndex = -1;
         startMakeRoom.SetOrigineCoord(new Vector3Int(startRoom.Width, startRoom.Height), maxSingleRoomSize);
 
@@ -167,6 +167,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
             makeRooms.Add(targetRoom);
         }
 
+
         // 만들어진 방을 통로 연결 여부 확인 후에 통로 생성하는 과정
         foreach (var roomOne in makeRooms)
         {
@@ -185,6 +186,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 }
             }
         }
+
+        ConnectPassway(makeRooms[0], makeRooms[1]);
 
 
         Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
@@ -940,6 +943,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 }
                 else
                 {
+                    // 시작 방일 때
                     passWays = RoomGenerator.Ins.startRoom.exitPos.ToArray();
                 }
             }
@@ -959,6 +963,12 @@ public class RoomGenerator : Singleton<RoomGenerator>
             roomData = room;
         }
 
+        public void GetRoomData(Vector2Int pos)
+        {
+            gridCoord = pos;
+            roomData = new Room(pos);
+        }
+
         public void SetOrigineCoord(int roomSize)
         {
             origineCoord = new Vector3Int(gridCoord.x * roomSize, gridCoord.y * roomSize);
@@ -971,9 +981,10 @@ public class RoomGenerator : Singleton<RoomGenerator>
         // 시작 방을 위한 함수
         public void SetOrigineCoord(Vector3Int startSize, int roomSize)
         {
+            int startRoomGab = 20;
             // 고쳐야됨 !!
-            Debug.LogWarning("수정 필요");
-            origineCoord = new Vector3Int((roomSize - startSize.x) + (gridCoord.x + 1) * roomSize, (roomSize - startSize.y) + (gridCoord.y + 1) * roomSize);
+            // Debug.LogWarning("수정 필요"); 식을 잘못 썻음
+            origineCoord = new Vector3Int((gridCoord.x + 1) * roomSize - startSize.x - startRoomGab, gridCoord.y * roomSize);
             for (int i = 0; i < passWays.Length; i++)
             {
                 passWays[i].Pos += origineCoord;

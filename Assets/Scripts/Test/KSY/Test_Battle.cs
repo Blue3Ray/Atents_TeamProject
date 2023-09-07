@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class Test_Battle : TestBase
 {
     public Test_PlayerCharacter player;
-    public Character enemy;
+    public CharacterBase enemy;
 
     private void Start()
     {

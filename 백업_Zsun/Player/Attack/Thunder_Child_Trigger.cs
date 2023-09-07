@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Thunder_Child_Trigger : MonoBehaviour
 {
-	public Action<CharacterBase> childTriggerOn;
+	public Action<Character> childTriggerOn;
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		CharacterBase characterTarget = collision.gameObject.GetComponent<CharacterBase>();
+		Character characterTarget = collision.gameObject.GetComponent<Character>();
 
 		if (characterTarget != null && !characterTarget.CompareTag("Player"))
 		{

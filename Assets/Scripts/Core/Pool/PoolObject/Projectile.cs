@@ -20,7 +20,7 @@ public class Projectile : PooledObject
     /// <summary>
     /// 투사체와 character가 맞았을 때 외쳐질 델리게이트.
     /// </summary>
-    public Action<Character, ElementalType> OnHit;
+    public Action<CharacterBase, ElementalType> OnHit;
 
 
     protected override void OnEnable()
@@ -60,7 +60,7 @@ public class Projectile : PooledObject
         //}
     }
 
-    protected virtual void InvokeOnHit(Character targetHit)
+    protected virtual void InvokeOnHit(CharacterBase targetHit)
     {
         OnHit?.Invoke(targetHit, elementalType);
     }

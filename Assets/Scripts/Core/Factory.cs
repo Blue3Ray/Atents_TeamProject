@@ -79,7 +79,14 @@ public class Factory : Singleton<Factory>
         GameObject obj = GetObject(type);
         obj.transform.position = position;
         obj.transform.Rotate(angle * Vector3.forward);
-
+        ProjectileBase projectile = obj.GetComponent<ProjectileBase>();
+        if(angle == 180)
+        {
+			if (projectile != null)
+			{
+                projectile.dirProjectile = Vector3.left;
+			}
+		}
         return obj;
     }
 }

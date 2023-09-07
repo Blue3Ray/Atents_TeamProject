@@ -34,7 +34,7 @@ public class Icicle : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent<Character>(out Character character))
+        if(collision.TryGetComponent<CharacterBase>(out CharacterBase character))
         {
             character.HP -= 10;
         }

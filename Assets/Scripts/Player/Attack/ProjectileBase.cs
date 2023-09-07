@@ -23,7 +23,7 @@ public class ProjectileBase : PooledObject
 	/// <summary>
 	/// 투사체가 날아갈 방향입니다.
 	/// </summary>
-	public Vector3 dirProjectile = Vector3.right;
+	public Vector3 dirProjectile = Vector3.zero;
 	
 	/// <summary>
 	/// 투사체가 가진 스프라이트 렌더러입니다.
@@ -34,6 +34,8 @@ public class ProjectileBase : PooledObject
 	/// 투사체와 character가 맞았을 때 외쳐질 델리게이트.
 	/// </summary>
 	public Action<CharacterBase, ElementalType> OnHit;
+
+	public bool MoveOrStop = true;
 
 	float status = 1f;
 
@@ -64,12 +66,16 @@ public class ProjectileBase : PooledObject
 	protected override void OnEnable()
 	{
 		base.OnEnable();
+		MoveOrStop = true;
 		StartCoroutine(DisableProjectile());
 	}
 
 	private void Update()
 	{
-		transform.Translate(transform.right * ProjectileSpeed);
+		if (MoveOrStop)
+		{
+			transform.Translate(Vector3.right * ProjectileSpeed);
+		}
 	}
 
 	/// <summary>

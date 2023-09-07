@@ -14,8 +14,8 @@ public class ProjectileBase_Water : ProjectileBase
 
 	protected override void OnAttack(CharacterBase characterTarget)
 	{
+		MoveOrStop = false;
 		base.OnAttack(characterTarget);
-		dirProjectile = Vector3.zero;
 		anim.SetTrigger(Hash_Collision);
 	}
 }

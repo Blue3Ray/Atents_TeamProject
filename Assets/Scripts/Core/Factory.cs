@@ -80,6 +80,7 @@ public class Factory : Singleton<Factory>
         obj.transform.position = position;
         obj.transform.Rotate(angle * Vector3.forward);
         ProjectileBase projectile = obj.GetComponent<ProjectileBase>();
+        projectile.dirProjectile = Vector3.right;
         if(angle == 180)
         {
 			if (projectile != null)

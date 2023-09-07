@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
+using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,9 @@ using UnityEngine.UI;
 
 public class PlayerJS : Character
 {
+
+
+	public float OnOffSecond = 0.1f;
 
 	/// <summary>
 	/// inventory를 플레이어가 가질 수 있도록 추가
@@ -33,12 +37,12 @@ public class PlayerJS : Character
 	/// <summary>
 	/// 좌우 반전을 위해 스프라이트 렌더러를 캐싱할 변수
 	/// </summary>
-	SpriteRenderer spriteRenderer;
+	public SpriteRenderer spriteRenderer;
 
 	/// <summary>
 	/// 땅에 닿았는지 확인하는 변수
 	/// </summary>
-	private bool isGrounded;
+	public bool isGrounded;
 
 	/// <summary>
 	/// 리지드바디를 껐다가 키는 이넘이 진행중인지
@@ -119,42 +123,40 @@ public class PlayerJS : Character
 	/// player고유한 기능만 넣을 거고
 	/// 나머지는 character의 attack을 사용한다.
 	/// </summary>
-	public Action ActiveAttackActionType;
+	public Action ActiveElementalAttack;
+
 
 	/// <summary>
-	/// 플레이어의 원소 타입을 저장한다.
+	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는
+	/// public 프로퍼티로서
+	/// elemantalStatus를 set할 때마다 원소 타입을 챙겨서 연결되는 함수를 바꾼다.
 	/// </summary>
-	ElementalType playerElementalType = ElementalType.None;
-
-	/// <summary>
-	/// 원소 타입에 따라 ActiveAttackActionType에 연결되는
-	/// 함수를 지정해주는 프로퍼티
-	/// </summary>
-	public ElementalType PlayerElementalType
+	public ElemantalStatus PlayerElementalStatus
 	{
-		get => playerElementalType;
+		get => elemantalStatus;
 		set
 		{
-			switch (value)
+			switch (value.Elemantal)
 			{
+
 				case ElementalType.Fire:
-					ActiveAttackActionType = FireAttack;
+					ActiveElementalAttack = FireAttack;
 					break;
 
 				case ElementalType.Thunder:
-					ActiveAttackActionType = ThunderAttack;
+					ActiveElementalAttack = ThunderAttack;
 					break;
 
 				case ElementalType.Water:
-					ActiveAttackActionType = WaterAttack;
+					ActiveElementalAttack = WaterAttack;
 					break;
 
 				case ElementalType.Wind:
-					ActiveAttackActionType = WindAttack;
+					ActiveElementalAttack = WindAttack;
 					break;
 
 				default:
-					ActiveAttackActionType = NoneAttack;
+					ActiveElementalAttack = NoneAttack;
 					break;
 			}
 		}
@@ -190,7 +192,7 @@ public class PlayerJS : Character
 		}
 	}
 
-
+	Transform pivotTransform;
 
 	/// <summary>
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
@@ -239,6 +241,8 @@ public class PlayerJS : Character
 	readonly int Hash_Attack3 = Animator.StringToHash("Attack3");
 	readonly int Hash_WallSlide = Animator.StringToHash("WallSlide");
 	readonly int Hash_Roll = Animator.StringToHash("Roll");
+	readonly int Hash_Hurt = Animator.StringToHash("Hurt");
+	readonly int Hash_Death = Animator.StringToHash("Death");
 
 	/// <summary>
 	/// 액션 애니메이션 세 개 중 하나를 랜덤으로 setTrigger하기 위해
@@ -252,11 +256,6 @@ public class PlayerJS : Character
 	/// attack area 안에 들어온 character 리스트
 	/// </summary>
 	List<Character> targetChars = new();
-
-	/// <summary>
-	/// 오른쪽 대각선 방향
-	/// </summary>
-	Vector3 Cross;
 
 	/// <summary>
 	/// 
@@ -320,12 +319,15 @@ public class PlayerJS : Character
 			targetChars.Remove(target);
 		};
 
-		PlayerElementalType = ElementalType.None;
+		PlayerElementalStatusChange(ElementalType.None);
+		pivotTransform = transform.GetChild(4);
+
+		onDie += () => { anim.SetTrigger(Hash_Death); };
 	}
 
 	private void Start()
 	{
-		Cross = transform.up*2 + transform.right;
+		
 		LeftCross = transform.up * 2 + -(transform.right);
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
@@ -339,9 +341,9 @@ public class PlayerJS : Character
 		wallsensor[1].OnWall += (OnOff) => SetTouchedWall_Left(OnOff);
 
 	}
-	private void Update()
+	private void FixedUpdate()
 	{
-		transform.Translate(Time.deltaTime * moveSpeed * dir);
+		transform.Translate(Time.fixedDeltaTime * moveSpeed * dir);
 	}
 
 	private void OnClickMouse_Left(InputAction.CallbackContext obj)
@@ -412,29 +414,21 @@ public class PlayerJS : Character
 				}
 				anim.SetTrigger(Hash_Roll);
 			}
-			else if (PlayerTouchedWall == TouchedWall.LeftWall)
-			{
-				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
-				//Debug.Log("왼쪽 벽에서 점프");
-			}
-			else if (PlayerTouchedWall == TouchedWall.RightWall)
-			{
-				//Debug.Log("오른쪽 벽에서 점프");
-				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
-			}
+			
+			
 
 		}
 		else
 		{
 			if (PlayerTouchedWall == TouchedWall.LeftWall)
 			{
-				rb.AddForce(Cross * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(transform.right * wallJumpForce, ForceMode2D.Impulse);
 				//Debug.Log("왼쪽 벽에서 점프");
 			}
 			else if (PlayerTouchedWall == TouchedWall.RightWall)
 			{
 				//Debug.Log("오른쪽 벽에서 점프");
-				rb.AddForce(LeftCross * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(-transform.right * wallJumpForce, ForceMode2D.Impulse);
 			}
 		}
 	}
@@ -488,7 +482,7 @@ public class PlayerJS : Character
 		isTriggerSwitch = true;
 		//playerCollider.isTrigger = true;
 		this.gameObject.layer = 8;
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(OnOffSecond);
 		//playerCollider.isTrigger = false;
 		this.gameObject.layer = 9;
 		StopAllCoroutines();
@@ -501,10 +495,10 @@ public class PlayerJS : Character
 		int randomAttackIndex;
 		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
 		anim.SetTrigger(AttackHashes[randomAttackIndex]);
-		foreach(var item in targetChars)
-		{
-			ActiveAttackActionType?.Invoke();
-		}
+		ActiveElementalAttack?.Invoke();
+		//foreach(var item in targetChars)
+		//{
+		//}
 		
 	}
 
@@ -524,45 +518,73 @@ public class PlayerJS : Character
 		}
 	}
 
-
-	//public void OnAttackARea()
-	//{
-	//	foreach(var target in targetChars)
-	//	{
-	//		Attack(target);
-	//		Debug.Log("공격함");
-	//	}
-	//	//attackCollider.enabled = true;
-	//}
-
+	/// <summary>
+	/// character에서 실행되는 찐 공격 기능
+	/// </summary>
+	/// <param name="target"></param>
 	public override void Attack(Character target)
 	{
-		base.Attack(target);
+		target.Defence(AttackState, elemantalStatus);
+	}
+
+	public override void Attack(Character target, float knockBackPower)
+	{
+		base.Attack(target, knockBackPower);
 	}
 
 	private void NoneAttack()
 	{
-		Debug.Log("NoneAttack");
+		foreach(var target in targetChars)
+		{
+			Attack(target);
+		}
 	}
-
-	private void WindAttack()
+	private void FireAttack()
 	{
-		Debug.Log("WindAttack");
+		FarAttack(PoolObjectType.Projectile_Fire);
 	}
-
 	private void WaterAttack()
 	{
-		Debug.Log("WaterAttack");
+
+		FarAttack(PoolObjectType.Projectile_Water);
 	}
 
 	private void ThunderAttack()
 	{
-		Debug.Log("ThunderAttack");
+		FarAttack(PoolObjectType.Projectile_Thunder);
 	}
 
-	private void FireAttack()
+	private void WindAttack()
 	{
-		Debug.Log("FireAttack");
+		FarAttack(PoolObjectType.Projectile_Wind);
+	}
+
+
+
+	private void FarAttack(PoolObjectType type)
+	{
+
+		if(spriteRenderer.flipX == false)
+		{
+
+
+
+			Factory.Ins.GetObject(type, attackArea.transform.position, 0);
+			//projectile.OnHit += (target, elemental) => Attack(target);
+
+			//ProjectileBase projectile =
+			//Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.identity).GetComponentInChildren<ProjectileBase>();
+
+		}
+		else
+		{
+			Factory.Ins.GetObject(type, attackArea.transform.position, 180);
+			//ProjectileBase projectile =
+			//Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.Euler(new Vector3(0, 0, 180))).GetComponentInChildren<ProjectileBase>();
+
+			//projectile.OnHit += (target, elemental) => Attack(target);
+
+		}
 	}
 
 	private void SetTouchedWall_Right(bool IsOn)
@@ -586,5 +608,22 @@ public class PlayerJS : Character
 		{
 			PlayerTouchedWall = TouchedWall.None;
 		}
+	}
+
+	/// <summary>
+	/// character 스크립트의 class의 change 함수를 실행하는 함수로
+	/// player에만 있는 프로퍼티에 접근하기 위해서 만들었다.
+	/// 그 프로퍼티에서는 함수를 각각 알맞게 연결해준다.
+	/// </summary>
+	public void PlayerElementalStatusChange(ElementalType elementalType)
+	{
+		elemantalStatus.ChangeType(elementalType);
+		PlayerElementalStatus = elemantalStatus;
+	}
+
+	public override void Defence(float damage, ElemantalStatus elemantal = null)
+	{
+		anim.SetTrigger(Hash_Hurt);
+		base.Defence(damage, elemantal);
 	}
 }

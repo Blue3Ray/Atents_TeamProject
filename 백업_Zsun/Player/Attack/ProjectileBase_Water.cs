@@ -12,10 +12,10 @@ public class ProjectileBase_Water : ProjectileBase
 		elemantalStatus.ChangeType(ElementalType.Water);
 	}
 
-	protected override void OnAttack(CharacterBase characterTarget)
+	protected override void OnAttack(Character characterTarget)
 	{
-		MoveOrStop = false;
 		base.OnAttack(characterTarget);
+		dirProjectile = Vector3.zero;
 		anim.SetTrigger(Hash_Collision);
 	}
 }

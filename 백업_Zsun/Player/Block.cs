@@ -5,7 +5,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
 	BoxCollider2D colliderBlock;
-	PlayerJS playerJS;
+	PlayerJM playerJM;
 
 	bool InBlockCollider = false;
 
@@ -15,7 +15,7 @@ public class Block : MonoBehaviour
 	}
 	private void Start()
 	{
-		playerJS = GameManager.Ins.playerTest;
+		playerJM = GameManager.Ins.playerTest;
 		//playerJM.OnBlockCommand += PassBlock;
 	}
 

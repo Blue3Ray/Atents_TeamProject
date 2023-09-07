@@ -6,7 +6,7 @@ using UnityEngine;
 // 속성 선택 enum
 
 
-public class Character : MonoBehaviour, IHealth
+public class CharacterBase : MonoBehaviour, IHealth
 {
 
     // 캐릭터의 체력 부분 -----------------------------------
@@ -73,7 +73,7 @@ public class Character : MonoBehaviour, IHealth
     /// <summary>
     /// 맞은 캐릭터가 밀리는 방향
     /// </summary>
-    Vector3 knockBackDir;
+    public Vector3 knockBackDir;
 
     // 캐릭터의 스텟 부분 -----------------------------------
 
@@ -206,14 +206,14 @@ public class Character : MonoBehaviour, IHealth
 
     // 공격 방어 기능 -----------------------------------
 
-    public virtual void Attack(Character target)
+    public virtual void Attack(CharacterBase target)
     {
         Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
         
         target.Defence(AttackState);
     }
-	public virtual void Attack(Character target, float knockBackPower)
+	public virtual void Attack(CharacterBase target, float knockBackPower)
 	{
 		Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 

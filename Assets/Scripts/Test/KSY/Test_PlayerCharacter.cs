@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test_PlayerCharacter : Character, IExperience
+public class Test_PlayerCharacter : CharacterBase, IExperience
 {
     /// <summary>
     /// 경험치 구현 부분

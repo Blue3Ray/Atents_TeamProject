@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PlayerJS : Character
+public class PlayerJS : CharacterBase
 {
 
 
@@ -219,7 +219,7 @@ public class PlayerJS : Character
 	/// 새로운 attackCollider
 	/// 추후 위에 attakArea를 삭제할 예정
 	/// </summary>
-	New_AttackArea attackCollider;
+	Player_AttackArea attackCollider;
 
 	/// <summary>
 	/// 왼쪽과 오른쪽 벽센서 콜라이더를 받고 있다.
@@ -255,7 +255,7 @@ public class PlayerJS : Character
 	/// <summary>
 	/// attack area 안에 들어온 character 리스트
 	/// </summary>
-	List<Character> targetChars = new();
+	List<CharacterBase> targetChars = new();
 
 	/// <summary>
 	/// 
@@ -303,7 +303,7 @@ public class PlayerJS : Character
 		AttackHashes[2] = Hash_Attack3;
 		attackAreaPivot = transform.GetChild(0);
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
-		attackCollider = GetComponentInChildren<New_AttackArea>();
+		attackCollider = GetComponentInChildren<Player_AttackArea>();
 		
 		//AttackCollider에서 들어온 것을 리스트에 추가
 		attackCollider.onCharacterEnter += (target) =>
@@ -522,12 +522,12 @@ public class PlayerJS : Character
 	/// character에서 실행되는 찐 공격 기능
 	/// </summary>
 	/// <param name="target"></param>
-	public override void Attack(Character target)
+	public override void Attack(CharacterBase target)
 	{
 		target.Defence(AttackState, elemantalStatus);
 	}
 
-	public override void Attack(Character target, float knockBackPower)
+	public override void Attack(CharacterBase target, float knockBackPower)
 	{
 		base.Attack(target, knockBackPower);
 	}
@@ -566,24 +566,11 @@ public class PlayerJS : Character
 
 		if(spriteRenderer.flipX == false)
 		{
-
-
-
 			Factory.Ins.GetObject(type, attackArea.transform.position, 0);
-			//projectile.OnHit += (target, elemental) => Attack(target);
-
-			//ProjectileBase projectile =
-			//Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.identity).GetComponentInChildren<ProjectileBase>();
-
 		}
 		else
 		{
 			Factory.Ins.GetObject(type, attackArea.transform.position, 180);
-			//ProjectileBase projectile =
-			//Instantiate(projectilePrefab, attackArea.transform.position, Quaternion.Euler(new Vector3(0, 0, 180))).GetComponentInChildren<ProjectileBase>();
-
-			//projectile.OnHit += (target, elemental) => Attack(target);
-
 		}
 	}
 

@@ -12,7 +12,7 @@ public class PlayerJS : CharacterBase, IExperience
 {
 
 	/// <summary>
-	/// 리지드바디를 껐다가 키는 시간
+	/// 레이어를 옮겼다 가져오는 시간
 	/// </summary>
 	public float OnOffSecond = 0.1f;
 
@@ -284,6 +284,10 @@ public class PlayerJS : CharacterBase, IExperience
 
 	TouchedWall playerTouchedWall = TouchedWall.None;
 
+	/// <summary>
+	/// 닿은 벽은 딱 하나만 되도록
+	/// 이넘을 통해 관리하였습니다.
+	/// </summary>
 	public TouchedWall PlayerTouchedWall
 	{
 		get => playerTouchedWall;
@@ -300,9 +304,6 @@ public class PlayerJS : CharacterBase, IExperience
 			}
 		}
 	}
-
-
-    Transform pivotTransform;
 
 	/// <summary>
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
@@ -430,19 +431,15 @@ public class PlayerJS : CharacterBase, IExperience
 		attackCollider.onCharacterEnter += (target) =>
 		{
 			targetChars.Add(target);
-			Debug.Log("사정거리 안에 들어옴");
 		};
-		//attackCollider에서 나간 것을 리스트에서 제거
 
+		//attackCollider에서 나간 것을 리스트에서 제거
 		attackCollider.onCharacterExit += (target) =>
 		{
-			Debug.Log("사정거리 에서 나감");
 			targetChars.Remove(target);
 		};
 
 		PlayerElementalStatusChange(ElementalType.None);
-		pivotTransform = transform.GetChild(4);
-
 
 		//죽었을 대 추가되는 람다함수입니다.
 		onDie += () => 
@@ -485,10 +482,8 @@ public class PlayerJS : CharacterBase, IExperience
 
 		RaycastHit2D hit;
 
-
 		if (hit = Physics2D.Raycast(ray.origin, ray.direction, 50.0f))
 		{
-			//Debug.Log($"{hit.transform.name}");
 			if (hit.transform.TryGetComponent<IClickable>(out IClickable temp))
 			{
 				temp.OnClicking(temp);
@@ -551,11 +546,9 @@ public class PlayerJS : CharacterBase, IExperience
 			if (PlayerTouchedWall == TouchedWall.LeftWall)
 			{
 				rb.AddForce(transform.right * wallJumpForce, ForceMode2D.Impulse);
-				//Debug.Log("왼쪽 벽에서 점프");
 			}
 			else if (PlayerTouchedWall == TouchedWall.RightWall)
 			{
-				//Debug.Log("오른쪽 벽에서 점프");
 				rb.AddForce(-transform.right * wallJumpForce, ForceMode2D.Impulse);
 			}
 		}
@@ -605,13 +598,16 @@ public class PlayerJS : CharacterBase, IExperience
 		isSpaceBarOn = false;
 	}
 
+
+	/// <summary>
+	/// 반플랫폼 뚫고 내려가기를 위해 레이어를 옮겼다가 되돌려옵니다.
+	/// </summary>
+	/// <returns></returns>
 	IEnumerator TriggerOnOff()
 	{
 		isTriggerSwitch = true;
-		//playerCollider.isTrigger = true;
 		this.gameObject.layer = 8;
 		yield return new WaitForSeconds(OnOffSecond);
-		//playerCollider.isTrigger = false;
 		this.gameObject.layer = 9;
 		StopAllCoroutines();
 		isTriggerSwitch = false;
@@ -730,9 +726,8 @@ public class PlayerJS : CharacterBase, IExperience
 	}
 
 	/// <summary>
-	/// character 스크립트의 class의 change 함수를 실행하는 함수로
-	/// player에만 있는 프로퍼티에 접근하기 위해서 만들었다.
-	/// 그 프로퍼티에서는 함수를 각각 알맞게 연결해준다.
+	/// character 스크립트가 가진 ememetalstatus class의 change 함수를 실행하는 함수다.
+	/// player가 가진 원소타입 변수로 그 클래스의 change를 실행시키는 작업을 한다.
 	/// </summary>
 	public void PlayerElementalStatusChange(ElementalType elementalType)
 	{

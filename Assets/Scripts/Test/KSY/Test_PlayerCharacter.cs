@@ -49,22 +49,22 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
         {
             if (level != value)
             {
-                if (value > level) onLevelUP?.Invoke();
+                if (value > level) onLevelUP?.Invoke(level);
                 level = value;   
             }
         }
     }
 
     public Action<uint, int, int> onChangeEx { get; set ; }
-    public Action onLevelUP { get; set; }
+    public Action<uint> onLevelUP { get; set; }
 
     //-------------------------------------------------------------------------------------------------
 
     protected override void Awake()
     {
         base.Awake();
-        onLevelUP += IncreaceMax;
-        onLevelUP += () => HP = MaxHP;
+        onLevelUP += (level) => IncreaceMax();
+        onLevelUP += (level) => HP = MaxHP;
     }
 
     public override void OnInitialize()

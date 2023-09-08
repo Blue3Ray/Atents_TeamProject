@@ -5,7 +5,6 @@ using UnityEngine;
 
 // 속성 선택 enum
 
-
 public class CharacterBase : MonoBehaviour, IHealth
 {
 
@@ -141,7 +140,7 @@ public class CharacterBase : MonoBehaviour, IHealth
     }
 
     // 사망 처리용 함수
-    public void Die()
+    public virtual void Die()
     {
         Debug.Log($"{gameObject.name} 죽음");
         //onDie?.Invoke();
@@ -211,7 +210,6 @@ public class CharacterBase : MonoBehaviour, IHealth
     {
         Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
-        
         target.Defence(AttackState);
     }
 	public virtual void Attack(CharacterBase target, float knockBackPower)

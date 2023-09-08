@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 public class Test_EnemyBase : TestBase
 {
     public float knockBackPwr;
+
     EnemyBase enemy;
+
 
     private void Start()
     {

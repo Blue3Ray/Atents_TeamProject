@@ -272,7 +272,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         if (!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
 
         // 배치 가능한 방들 중 랜덤으로 하나 선택
-        return Random.Range(0, canBuildRoomList.Count - 1);
+        return Random.Range(0, canBuildRoomList.Count);
     }
 
     /// <summary>

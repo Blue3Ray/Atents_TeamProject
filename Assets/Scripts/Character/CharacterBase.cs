@@ -32,7 +32,6 @@ public class CharacterBase : MonoBehaviour, IHealth
                 }
                 hp = Mathf.Clamp(HP, 0, MaxHP);
                 onHealthChange?.Invoke(HP / MaxHP);
-                Debug.Log($"HP : {HP/MaxHP}");
             }
 
         }

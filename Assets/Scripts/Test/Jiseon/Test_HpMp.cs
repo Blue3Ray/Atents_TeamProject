@@ -15,7 +15,14 @@ public class Test_HpMp : TestBase
 	protected override void Test1(InputAction.CallbackContext context)
 	{
         player.MP -= 10;
-        player.HP -= 10;
-        player.Level++;
+        //player.HP -= 10;
 	}
+
+	protected override void Test2(InputAction.CallbackContext context)
+	{
+		player.MP += 10;
+		//player.HP += 10;
+	}
+
+
 }

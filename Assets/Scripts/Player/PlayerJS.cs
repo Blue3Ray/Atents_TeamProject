@@ -90,10 +90,6 @@ public class PlayerJS : CharacterBase, IExperience
 			if (IsAlive)
 			{
 				mp = value;
-				if (mp <= 0)
-				{
-					onDie?.Invoke();
-				}
 				mp = Mathf.Clamp(MP, 0, maxMP);
 				onMpchange?.Invoke(MP / maxMP);
 				Debug.Log($"마나 : {MP}");
@@ -126,7 +122,7 @@ public class PlayerJS : CharacterBase, IExperience
 				{
 					playerLevel = value;
 					onLevelUP?.Invoke(playerLevel);
-					Debug.Log("레벨업");
+					Debug.Log($"레벨 : {playerLevel}");
 				}
 			}
 		} 
@@ -150,9 +146,12 @@ public class PlayerJS : CharacterBase, IExperience
 				if (playerEx != value)
 				{
 					playerEx = value;
+					Debug.Log($"Exp : {playerEx}");
 					if (playerEx > playerExMax)
 					{
 						Level++;
+						playerEx = 0;
+						
 					}
 				}
 			}
@@ -375,25 +374,33 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnEnable()
 	{
-		//굳이 inputAction을 활성화시키지 않아도 될 것 같아서 주석 처리했습니다!
-		//inputActions.Enable();
+		EnableInputAction();											//클릭을 제외한 다른 input System 연결
+		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;		//클릭은 따로 실행해줘서 ondie때 클릭은 먹히도록 설정
+	}
+	private void OnDisable()
+	{
+		inputActions.PlayerJM.Click.performed -= OnClickMouse_Left;
+		DisableInputAction();
+	}
+
+	void EnableInputAction()
+	{
 		inputActions.PlayerJM.Enable();
 		inputActions.PlayerJM.Move.performed += OnMove;
 		inputActions.PlayerJM.Move.canceled += OnMove;
 		inputActions.PlayerJM.Jump.performed += OnJump;
 		inputActions.PlayerJM.Jump.canceled += OffSpaceBar;
 		inputActions.PlayerJM.Attack.performed += OnAttack;
-		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;
 		inputActions.PlayerJM.Down.performed += OnDown;
 		inputActions.PlayerJM.Down.canceled += OnDown;
 		inputActions.PlayerJM.Dash.performed += OnDash;
 	}
-	private void OnDisable()
+
+	void DisableInputAction()
 	{
 		inputActions.PlayerJM.Dash.performed -= OnDash;
 		inputActions.PlayerJM.Down.performed -= OnDown;
 		inputActions.PlayerJM.Down.canceled -= OnDown;
-		inputActions.PlayerJM.Click.performed -= OnClickMouse_Left;
 		inputActions.PlayerJM.Attack.performed -= OnAttack;
 		inputActions.PlayerJM.Jump.canceled -= OffSpaceBar;
 		inputActions.PlayerJM.Jump.performed -= OnJump;
@@ -436,7 +443,14 @@ public class PlayerJS : CharacterBase, IExperience
 		PlayerElementalStatusChange(ElementalType.None);
 		pivotTransform = transform.GetChild(4);
 
-		onDie += () => { anim.SetTrigger(Hash_Death); };
+
+		//죽었을 대 추가되는 람다함수입니다.
+		onDie += () => 
+		{ 
+			anim.SetTrigger(Hash_Death);
+			DisableInputAction();
+			dir = Vector2.zero;
+		};
 	}
 
 	private void Start()
@@ -605,15 +619,14 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnAttack(InputAction.CallbackContext context_)
 	{
-		//OffAttackARea();
-		int randomAttackIndex;
-		randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);
-		anim.SetTrigger(AttackHashes[randomAttackIndex]);
-		ActiveElementalAttack?.Invoke();
-		//foreach(var item in targetChars)
-		//{
-		//}
-		
+		if(MP> 0 && IsAlive)
+		{
+			int randomAttackIndex;
+			randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);			//0부터 2까지 난수 저장
+			anim.SetTrigger(AttackHashes[randomAttackIndex]);					//랜덤으로 정해진 번째의 공격 애니메이션 실행
+			ActiveElementalAttack?.Invoke();                                    //실질적 공격 명령 함수 (연결되는 함수가 원소별로 여러가지이다.)
+			MP -= 5;
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -621,6 +634,12 @@ public class PlayerJS : CharacterBase, IExperience
 		if(collision.gameObject.layer == 7)
 		{
 			IsHalfPlatform = true;
+		}
+
+		CharacterBase character = collision.gameObject.GetComponent<CharacterBase>();
+		if(character != null)
+		{
+			Defence(10);
 		}
 	}
 
@@ -677,8 +696,7 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void FarAttack(PoolObjectType type)
 	{
-
-		if(spriteRenderer.flipX == false)
+		if (spriteRenderer.flipX == false)
 		{
 			Factory.Ins.GetObject(type, attackArea.transform.position, 0);
 		}

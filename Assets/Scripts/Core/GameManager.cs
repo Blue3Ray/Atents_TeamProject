@@ -15,13 +15,13 @@ public enum Element : byte
 
 public class GameManager : Singleton<GameManager>
 {
-    public PlayerJS playerTest;
+    public PlayerJS player;
     
     ItemDataManager itemDataManager;
     
     public ItemDataManager ItemData => itemDataManager;
 
-    public bool IsRight => !playerTest.spriteRenderer.flipX;
+    public bool IsRight => !player.spriteRenderer.flipX;
 
     private void Awake()
     {
@@ -32,11 +32,11 @@ public class GameManager : Singleton<GameManager>
 	protected override void OnInitalize()
 	{
 		base.OnInitalize();
-        playerTest = FindObjectOfType<PlayerJS>();
+        player = FindObjectOfType<PlayerJS>();
        
-        if(playerTest != null)
+        if(player != null)
         {
-            playerTest.inven = new Inventory(7);
+            player.inven = new Inventory(7);
         }
 
 	}

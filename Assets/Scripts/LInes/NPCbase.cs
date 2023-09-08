@@ -22,8 +22,10 @@ public class NPCbase : MonoBehaviour, IClickable
 	private void Start()
 	{
 		
-		Transform canvasTransform = canvas.transform.GetChild(0);
-		talkCanvas = canvasTransform.GetComponent<TalkCanvas>();
+		//Transform canvasTransform = canvas.transform.GetChild(2);
+		//talkCanvas = canvasTransform.GetComponent<TalkCanvas>();
+
+		talkCanvas = FindObjectOfType<TalkCanvas>();
 	}
 
 

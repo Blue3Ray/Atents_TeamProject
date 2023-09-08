@@ -93,6 +93,7 @@ public class CharacterBase : MonoBehaviour, IHealth
         }
     }
 
+
     public System.Action<float> onAttackChange { get; set; }
 
     /// <summary>
@@ -119,7 +120,7 @@ public class CharacterBase : MonoBehaviour, IHealth
     protected ElemantalStatus elemantalStatus;
 
     // 加己 傍拜仿
-    public  float elemantalAttack;
+    public float elemantalAttack;
     // 加己 规绢仿
     public float elemantalDefence;
 

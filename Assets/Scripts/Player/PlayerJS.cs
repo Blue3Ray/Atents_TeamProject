@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PlayerJS : CharacterBase
+public class PlayerJS : CharacterBase, IExperience
 {
 
 
@@ -192,7 +192,15 @@ public class PlayerJS : CharacterBase
 		}
 	}
 
-	Transform pivotTransform;
+    public uint Level { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int Experience { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public int ExperienceMax => throw new NotImplementedException();
+
+    public Action<uint, int, int> onChangeEx { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Action onLevelUP { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    Transform pivotTransform;
 
 	/// <summary>
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장

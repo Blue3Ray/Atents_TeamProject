@@ -22,7 +22,7 @@ public class Leveling : MonoBehaviour
 
     private void Start()
     {
-        Test_PlayerCharacter testPlayer = FindObjectOfType<Test_PlayerCharacter>();
+        PlayerJS testPlayer = GameManager.Ins.player;
         testPlayer.onChangeEx += RefreshData;
     }
 

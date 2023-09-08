@@ -9,9 +9,14 @@ using UnityEngine.InputSystem;
 public class  Test_PlayerAttack: TestBase
 {
 	PlayerJS player;
-	protected override void Test1(InputAction.CallbackContext context)
+
+    private void Start()
+    {
+		player = GameManager.Ins.player;
+    }
+
+    protected override void Test1(InputAction.CallbackContext context)
 	{
-		player = GameManager.Ins.playerTest;
 		player.PlayerElementalStatusChange(ElementalType.Fire);
 		//player.PlayerElementalStatus = 
 	}

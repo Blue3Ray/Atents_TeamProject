@@ -140,7 +140,7 @@ public class CharacterBase : MonoBehaviour, IHealth
     }
 
     // »ç¸Á Ã³¸®¿ë ÇÔ¼ö
-    public void Die()
+    public virtual void Die()
     {
         Debug.Log($"{gameObject.name} Á×À½");
         //onDie?.Invoke();

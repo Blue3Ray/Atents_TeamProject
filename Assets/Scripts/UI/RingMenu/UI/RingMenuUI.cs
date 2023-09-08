@@ -5,14 +5,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class RingMenuUI : MonoBehaviour
+public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     ActionControl acionControl;
 
     RingMenuSlotUI[] slot;
 
     CanvasGroup canvasGroup;
-  
+
+    Transform test;
 
     private void Awake()
     {
@@ -20,20 +21,19 @@ public class RingMenuUI : MonoBehaviour
         acionControl = new ActionControl();
         
         slot = new RingMenuSlotUI[5];
-        
-        slot[0] = transform.GetChild(1).GetComponent<RingMenuSlotUI>();
-        slot[1] = transform.GetChild(2).GetComponent<RingMenuSlotUI>();
-        slot[2] = transform.GetChild(3).GetComponent<RingMenuSlotUI>();
-        slot[3] = transform.GetChild(4).GetComponent<RingMenuSlotUI>();
+        test = transform.GetChild(0);
+        slot[0] = test.GetChild(1).GetComponent<RingMenuSlotUI>();
+        slot[1] = test.GetChild(2).GetComponent<RingMenuSlotUI>();
+        slot[2] = test.GetChild(3).GetComponent<RingMenuSlotUI>();
+        slot[3] = test.GetChild(4).GetComponent<RingMenuSlotUI>();
 
-        slot[0].onUP += SlotSelect;
-        slot[1].onUP += SlotSelect;
-        slot[2].onUP += SlotSelect;
-        slot[3].onUP += SlotSelect;
+        slot[0].onEnter += Onclick;
+        slot[1].onEnter += Onclick;
+        slot[2].onEnter += Onclick;
+        slot[3].onEnter += Onclick;
+        //canvasGroup = GetComponent<CanvasGroup>();
 
-        canvasGroup = GetComponent<CanvasGroup>();
-  
-       
+
     }
 
     private void OnEnable()
@@ -53,7 +53,8 @@ public class RingMenuUI : MonoBehaviour
 
     private void Start()
     {
-        canvasGroup.alpha = 0.0f;
+        //canvasGroup.alpha = 0.0f;
+        test.gameObject.SetActive(false);
     }
 
 
@@ -64,9 +65,9 @@ public class RingMenuUI : MonoBehaviour
     private void OnRingMenu(InputAction.CallbackContext _)
     {
         Vector3 mousepostion = Mouse.current.position.ReadValue();
-
         transform.position = mousepostion;
-        canvasGroup.alpha = 1.0f;
+        test.gameObject.SetActive(true);
+        //canvasGroup.alpha = 1.0f;
     }
 
     /// <summary>
@@ -75,35 +76,28 @@ public class RingMenuUI : MonoBehaviour
     /// <param name="context"></param>
     private void RingSlotSelect(InputAction.CallbackContext context)
     {
-       
-        
-        canvasGroup.alpha = 0.0f;
+
+        test.gameObject.SetActive(false);
+       // canvasGroup.alpha = 0.0f;
     }
 
-    public void SlotSelect(ElementalType type)
+    public ElementalType selectIndex = 0;
+
+    public void Onclick(uint index)
     {
-        Debug.Log(type);
-        
-        //switch (type)
-        //{
-        //    case ElementalType.Fire:
-                
-        //        Debug.Log("불");
-        //        break;
-        //    case ElementalType.Wind:
-                
-        //        Debug.Log("바람");
-        //        break;
-        //    case ElementalType.Water:
-              
-        //        Debug.Log("물");
-        //        break;
-        //    case ElementalType.Thunder:
-             
-        //        Debug.Log("번개");
-        //        break;
-        //}
+        selectIndex = (ElementalType)index;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
         
     }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        Debug.Log($"업 현재 선택된 값 : {selectIndex}");
+        GameManager.Ins.player.ElemantalSelect(selectIndex);
+    }
+
 
 }

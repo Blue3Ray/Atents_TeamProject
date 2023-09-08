@@ -5,88 +5,50 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class RingMenuSlotUI : MonoBehaviour, IPointerClickHandler,/* IPointerEnterHandler, IPointerExitHandler*/ IPointerDownHandler, IPointerUpHandler
-    // 포인터 이벤트들 필요한거
+public class RingMenuSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+// 포인터 이벤트들 필요한거
 {
     public ElementalType elementalType;
-
-    public System.Action<uint>  onClick;
-    public System.Action<ElementalType> onUP;
-    public System.Action<uint>  onEnter;
-    public System.Action<uint> onExit;
-    public System.Action<uint>  onDown;
-
-    RingMenuSlotUI ringMenuSlotUI;
-
    
+    public System.Action<uint> onEnter;
+    public System.Action<uint> onExit;
+    public System.Action<uint> onUP;
+    public System.Action<uint> onDown;
 
-    private void Awake()
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        ringMenuSlotUI = GetComponent<RingMenuSlotUI>();
-        onEnter = null;
-        onExit = null;
-        
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log("click");
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        Debug.Log("Down");
-    }
-
-    //public void OnPointerEnter(PointerEventData eventData)
-    //{
-        
-    //    if (eventData.pointerCurrentRaycast.gameObject != null)
-    //    {
-    //        Debug.Log("Enter");
-    //    }
-    //}
-
-    //public void OnPointerExit(PointerEventData eventData)
-    //{
-    //    if (eventData.pointerCurrentRaycast.gameObject == null)
-    //    {
-    //        Debug.Log("Exit");
-    //    }
-
-    //}
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if(eventData.button == PointerEventData.InputButton.Right)
+        GameObject obj = eventData.pointerCurrentRaycast.gameObject;
+        if (obj != null)
         {
-            if(eventData.pointerPressRaycast.gameObject != null)
+            RingMenuSlotUI ringslot = obj.GetComponent<RingMenuSlotUI>();
+            if (ringslot != null)
             {
-                Debug.Log("Up");
-            }
+                onEnter?.Invoke((uint)ringslot.elementalType);
+                Debug.Log($"{ringslot.elementalType}");
+            }     
         }
         
     }
 
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        GameObject obj = eventData.pointerCurrentRaycast.gameObject;
+        if (obj != null)
+        {
+            RingMenuSlotUI ringslot = obj.GetComponent<RingMenuSlotUI>();
+            if (ringslot != null)
+            {
+                onExit?.Invoke((uint)ringslot.elementalType);
+                Debug.Log("Exit");
+            }
+        }
+
+    }
 
 
-    //public void OnPointerUp(PointerEventData eventData)
-    //{
-    //    Debug.Log("Up");
-    //    if(eventData.button == PointerEventData.InputButton.Right)
-    //    {
-    //        if(eventData.pointerCurrentRaycast.gameObject != null)
-    //        {
-    //            onUP?.Invoke(elementalType);
-    //            Debug.Log($"in Slot : {elementalType}");
-    //        }
-    //    }
-
-    //}
 
 
-    //public void OnPointerDown(PointerEventData eventData)
-    //{
-    //    Debug.Log("Down");
-    //}
+
+
 }

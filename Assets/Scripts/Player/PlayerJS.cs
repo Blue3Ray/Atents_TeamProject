@@ -11,7 +11,9 @@ using UnityEngine.UI;
 public class PlayerJS : CharacterBase, IExperience
 {
 
-
+	/// <summary>
+	/// 리지드바디를 껐다가 키는 시간
+	/// </summary>
 	public float OnOffSecond = 0.1f;
 
 	/// <summary>
@@ -74,6 +76,115 @@ public class PlayerJS : CharacterBase, IExperience
 	}
 
 	/// <summary>
+	/// mp와 관련된 변수와 프로퍼티
+	/// </summary>
+	float mp;
+
+	int maxMP = 100;
+
+	public float MP
+	{
+		get => mp;
+		set
+		{
+			if (IsAlive)
+			{
+				mp = value;
+				if (mp <= 0)
+				{
+					onDie?.Invoke();
+				}
+				mp = Mathf.Clamp(MP, 0, maxMP);
+				onMpchange?.Invoke(MP / maxMP);
+				Debug.Log($"마나 : {MP}");
+			}
+
+		}
+	}
+
+	/// <summary>
+	/// 마나 바뀔 때 외쳐지는 델리게이트
+	/// </summary>
+	public Action<float> onMpchange;
+
+	/// <summary>
+	/// 플레이어의 레벨
+	/// </summary>
+	uint playerLevel;
+
+	/// <summary>
+	/// 플레이어 레벨의 프로퍼티
+	/// </summary>
+    public uint Level 
+	{
+		get => playerLevel;
+		set
+		{
+			if (IsAlive)
+			{
+				if (playerLevel != value)
+				{
+					playerLevel = value;
+					onLevelUP?.Invoke(playerLevel);
+					Debug.Log("레벨업");
+				}
+			}
+		} 
+	}
+
+	/// <summary>
+	/// 플레이어의 경험치
+	/// </summary>
+	int playerEx = 0 ;
+	
+	/// <summary>
+	/// 플레이어 경험치의 프로퍼티
+	/// </summary>
+	public int Experience 
+	{ 
+		get =>playerEx;
+		set
+		{
+			if (IsAlive)
+			{
+				if (playerEx != value)
+				{
+					playerEx = value;
+					if (playerEx > playerExMax)
+					{
+						Level++;
+					}
+				}
+			}
+		} 
+	}
+
+	/// <summary>
+	/// 플레이어의 경험치 최대값
+	/// </summary>
+	int playerExMax = 100;
+
+	/// <summary>
+	/// 플레이어 경험치 최대값의 읽기 전용 프로퍼티
+	/// </summary>
+    public int ExperienceMax 
+	{
+		get => playerExMax;
+	}
+
+	/// <summary>
+	/// UI에 보낼 각종 변수 변화 프로퍼티
+	/// 파라메터 (레벨, 경험치, 최대 경험치)
+	/// 최대 경험치까지 같이 보내서 받은 곳에서 비율 계산한다.
+	/// </summary>
+    public Action<uint, int, int> onChangeEx {get; set; }
+    
+	/// <summary>
+	/// 플레이어가 레벨업을 했을 때 보낼 프로퍼티
+	/// </summary>
+	public Action<uint> onLevelUP { get; set; }
+
+	/// <summary>
 	/// 달리는 스피드
 	/// </summary>
 	public float moveSpeed = 10f;
@@ -127,8 +238,7 @@ public class PlayerJS : CharacterBase, IExperience
 
 
 	/// <summary>
-	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는
-	/// public 프로퍼티로서
+	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는 프로퍼티로써
 	/// elemantalStatus를 set할 때마다 원소 타입을 챙겨서 연결되는 함수를 바꾼다.
 	/// </summary>
 	public ElemantalStatus PlayerElementalStatus
@@ -192,13 +302,6 @@ public class PlayerJS : CharacterBase, IExperience
 		}
 	}
 
-    public uint Level { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Experience { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    public int ExperienceMax => throw new NotImplementedException();
-
-    public Action<uint, int, int> onChangeEx { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public Action onLevelUP { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     Transform pivotTransform;
 
@@ -301,6 +404,9 @@ public class PlayerJS : CharacterBase, IExperience
 
 	protected override void Awake()
 	{
+		MP = maxMP;
+		HP = maxHP;
+		Level = 1;
 		base.Awake();
 		inputActions = new ActionControl();
 		anim = GetComponent<Animator>();

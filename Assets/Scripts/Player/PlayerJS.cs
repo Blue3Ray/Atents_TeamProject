@@ -92,7 +92,7 @@ public class PlayerJS : CharacterBase, IExperience
 				mp = value;
 				mp = Mathf.Clamp(MP, 0, maxMP);
 				onMpchange?.Invoke(MP / maxMP);
-				Debug.Log($"마나 : {MP}");
+				//Debug.Log($"마나 : {MP}");
 			}
 
 		}
@@ -122,7 +122,7 @@ public class PlayerJS : CharacterBase, IExperience
 				{
 					playerLevel = value;
 					onLevelUP?.Invoke(playerLevel);
-					Debug.Log($"레벨 : {playerLevel}");
+					//Debug.Log($"레벨 : {playerLevel}");
 				}
 			}
 		} 
@@ -146,7 +146,7 @@ public class PlayerJS : CharacterBase, IExperience
 				if (playerEx != value)
 				{
 					playerEx = value;
-					Debug.Log($"Exp : {playerEx}");
+					//Debug.Log($"Exp : {playerEx}");
 					if (playerEx > playerExMax)
 					{
 						Level++;
@@ -339,6 +339,8 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	WallSensor[] wallsensor;
 
+	DefencSensor defencSensor;
+
 	/// <summary>
 	/// 애니메이터 파라메터 해쉬 모음집
 	/// </summary>
@@ -426,6 +428,8 @@ public class PlayerJS : CharacterBase, IExperience
 		attackAreaPivot = transform.GetChild(0);
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
 		attackCollider = GetComponentInChildren<Player_AttackArea>();
+		defencSensor = transform.GetChild(5).GetComponent<DefencSensor>();
+		defencSensor.OnDefence += (demage) => Defence(demage);
 		
 		//AttackCollider에서 들어온 것을 리스트에 추가
 		attackCollider.onCharacterEnter += (target) =>
@@ -631,12 +635,6 @@ public class PlayerJS : CharacterBase, IExperience
 		{
 			IsHalfPlatform = true;
 		}
-
-		CharacterBase character = collision.gameObject.GetComponent<CharacterBase>();
-		if(character != null)
-		{
-			Defence(10);
-		}
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
@@ -663,9 +661,9 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void NoneAttack()
 	{
-		foreach(var target in targetChars)
+		foreach(var tmp in targetChars)
 		{
-			Attack(target);
+			tmp.GetComponent<CharacterBase>().Defence(5);
 		}
 	}
 	private void FireAttack()

@@ -249,7 +249,7 @@ public class CharacterBase : MonoBehaviour, IHealth
             }
         }
 
-        Debug.Log($"{gameObject.name}이(가) {resultDamage}만큼 피해를 입었다!");
+        //Debug.Log($"{gameObject.name}이(가) {resultDamage}만큼 피해를 입었다!");
         HP -= resultDamage;
     }
     

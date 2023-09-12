@@ -8,13 +8,14 @@ public class ItemBase : MonoBehaviour
 
 	public float rangeDetect;
 
-	public ItemCode ItemCode;
+	public ItemCode itemCode;
 
 	private void FixedUpdate()
 	{
 		if(Physics2D.OverlapCircle(transform.position, rangeDetect, PlayerLayerMask))
 		{
 			Debug.Log("아이템의 범위 안에 플레이어 들어옴");
+			GameManager.Ins.player.inven.AddItem(itemCode);
 			Destroy(this.gameObject);
 		}
 		

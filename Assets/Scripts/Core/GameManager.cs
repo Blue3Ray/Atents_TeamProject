@@ -21,8 +21,6 @@ public class GameManager : Singleton<GameManager>
     
     public ItemDataManager ItemData => itemDataManager;
 
-    public bool IsRight => !player.spriteRenderer.flipX;
-
     private void Awake()
     {
         itemDataManager = GetComponent<ItemDataManager>();

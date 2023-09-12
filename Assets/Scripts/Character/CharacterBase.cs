@@ -5,7 +5,7 @@ using UnityEngine;
 
 // 속성 선택 enum
 
-public class CharacterBase : MonoBehaviour, IHealth
+public class CharacterBase : PooledObject, IHealth
 {
 
     // 캐릭터의 체력 부분 -----------------------------------
@@ -135,7 +135,6 @@ public class CharacterBase : MonoBehaviour, IHealth
     public virtual void OnInitialize()
     {
         HP = MaxHP;
-
         Debug.Log($"{gameObject.name} 생성됨");
     }
 

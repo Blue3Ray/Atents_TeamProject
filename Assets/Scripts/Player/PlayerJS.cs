@@ -94,7 +94,6 @@ public class PlayerJS : CharacterBase, IExperience
 				onMpchange?.Invoke(MP / maxMP);
 				//Debug.Log($"¸¶³ª : {MP}");
 			}
-
 		}
 	}
 

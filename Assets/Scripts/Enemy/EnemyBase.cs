@@ -47,16 +47,14 @@ public class EnemyBase : CharacterBase
                         onStateUpdate = Update_Chase;
                         break;
                     case EnemyState.Attack:
-
-
                         animator.SetTrigger(Hash_IsAttack);
-
                         onStateUpdate = Update_Attack;
                         break;
                     case EnemyState.Dead:
+                        CurrentMoveSpeed = 0;
                         animator.SetTrigger(Hash_IsDead);
-
                         onStateUpdate = Update_Dead;
+                        StartCoroutine(LifeOver(3.0f));
                         break;
                 }
             }
@@ -76,10 +74,13 @@ public class EnemyBase : CharacterBase
             if (currentMoveSpeed != value)
             {
                 currentMoveSpeed = value;
-                animator.SetFloat(Hash_Speed, currentMoveSpeed);
+                if(IsAlive)animator.SetFloat(Hash_Speed, currentMoveSpeed);
             }
         }
     }
+
+    public float farSightRange = 5.0f;
+    public float closeSightRange = 2.0f;
 
     // 공격 기능 부분 ------------------------------------------------------
 
@@ -92,17 +93,17 @@ public class EnemyBase : CharacterBase
     /// </summary>
     CharacterBase attackTarget;
 
-    CharacterBase chaseTarget;
+    Transform chaseTarget;
 
     /// <summary>
     /// 공격 쿨타임
     /// </summary>
-    public float attackCoolTime = 1.0f;
+    public float attackCoolTime = 5.0f;
 
     /// <summary>
     /// 공격 쿨타임 현재 진행 시간(0이되면 공격 가능)
     /// </summary>
-    float attackCurrentCoolTime = 1.0f;
+    float attackCurrentCoolTime = 5.0f;
 
     /// <summary>
     /// update 함수 돌릴 델리게이트
@@ -183,7 +184,7 @@ public class EnemyBase : CharacterBase
 
     void Update_Patrol()
     {
-
+        SearchPlayer();
     }
 
     void Update_Chase()
@@ -198,6 +199,7 @@ public class EnemyBase : CharacterBase
         {
             animator.SetTrigger(Hash_IsAttack);
             //Attack(attackTarget);
+            attackCurrentCoolTime = attackCoolTime;
         }
     }
 
@@ -205,7 +207,6 @@ public class EnemyBase : CharacterBase
     {
 
     }
-
 
     //--------------------------------------------------------
 
@@ -218,35 +219,58 @@ public class EnemyBase : CharacterBase
         bool result = false;
         chaseTarget = null;
 
-        //Collider[] targets = Physics.OverlapSphere(transform.position, farSightRange, LayerMask.GetMask("Player"));
+        Collider2D target = Physics2D.OverlapCircle(transform.position, farSightRange, LayerMask.GetMask("Player"));
         //Physics2D.Raycast()
 
-        //if (targets.Length > 0)
-        //{
-        //    Vector3 player = targets[0].transform.position;
-        //    // 근접 범위안에 들어가면 참
-        //    if (Vector3.SqrMagnitude(player - transform.position) < closeSightRange * closeSightRange)
-        //    {
-        //        chaseTarget = targets[0].transform;
-        //        result = true;
-        //    }
-        //    else
-        //    {
-        //        // 시야에 들어왔고
-        //        if (IsInSightAngle(player - transform.position))
-        //        {
-        //            // 시야에 가리는게 없으면 참
-        //            if (IsSightClear(player - transform.position))
-        //            {
-        //                chaseTarget = targets[0].transform;
-        //                result = true;
-        //            }
-        //        }
-        //    }
-        //}
+        if (target != null)
+        {
+            Vector3 player = target.transform.position;
+            // 근접 범위안에 들어가면 참
+            if (Vector2.SqrMagnitude(player - transform.position) < closeSightRange * closeSightRange)
+            {
+                chaseTarget = target.transform;
+                result = true;
+            }
+            else
+            {
+                // 시야에 들어왔고
+                if (IsInSightAngle(player - transform.position))
+                {
+                    // 시야에 가리는게 없으면 참
+                    if (IsSightClear(player - transform.position))
+                    {
+                        Debug.Log("시야에 가리는게 없이 플레이어가 보임");
+                        chaseTarget = target.transform;
+                        result = true;
+                    }
+                    else
+                    {
+                        Debug.Log("시야에 가리는게 있음");
+                    }
+                }
+            }
+        }
         return result;
     }
 
+    bool IsInSightAngle(Vector3 targetPos)
+    {
+        return true;
+    }
+
+    bool IsSightClear(Vector3 toTargetDir)
+    {
+        bool result = false;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, toTargetDir, farSightRange);
+        if (hit)
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                result = true;
+            }
+        }
+        return result;
+    }
 
     // 공격 기능들-----------------------------------------------
 
@@ -259,14 +283,20 @@ public class EnemyBase : CharacterBase
     public override void Defence(float damage, ElemantalStatus elemantal = null)
     {
         base.Defence(damage, elemantal);
-        animator.SetTrigger(Hash_GetHit);
+        if(IsAlive) animator.SetTrigger(Hash_GetHit);
     }
 
     public override void Defence(float damage, float knockBackPower, ElemantalStatus elemantal = null)
     {
         base.Defence(damage, knockBackPower, elemantal);
-        animator.SetTrigger(Hash_GetHit);
+        if (IsAlive) animator.SetTrigger(Hash_GetHit);
     }
 
-    
+    // 생존 관련 기능 들 ----------------------
+
+    public override void Die()
+    {
+        base.Die();     // 죽었다라는 로그
+        State = EnemyState.Dead;
+    }
 }

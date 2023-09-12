@@ -9,7 +9,11 @@ public class DefencSensor : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		OnDefence?.Invoke(10);					//플레이어의 데미지 플롯을 보냄
+		CharacterBase characterBase = collision.gameObject.GetComponent<CharacterBase>();
+		if(characterBase != null)
+		{
+			OnDefence?.Invoke(10);					//플레이어의 데미지 플롯을 보냄
+		}
 	}
 }
     

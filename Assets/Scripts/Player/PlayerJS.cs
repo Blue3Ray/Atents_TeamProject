@@ -374,12 +374,12 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	Vector3 LeftCross;
 
-	private void OnEnable()
+	protected override void OnEnable()
 	{
 		EnableInputAction();											//클릭을 제외한 다른 input System 연결
 		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;		//클릭은 따로 실행해줘서 ondie때 클릭은 먹히도록 설정
 	}
-	private void OnDisable()
+    protected override void OnDisable()
 	{
 		inputActions.PlayerJM.Click.performed -= OnClickMouse_Left;
 		DisableInputAction();

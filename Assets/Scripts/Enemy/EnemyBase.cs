@@ -151,7 +151,7 @@ public class EnemyBase : CharacterBase
         {
             if (State != EnemyState.Chase)       // 공격상태가 아닐 때
             {
-                chaseTarget = target;          // 공격 대상 지정
+                chaseTarget = target.transform;          // 공격 대상 지정
                 State = EnemyState.Chase;      // 공격 상태로 변경
             }
         };

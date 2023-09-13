@@ -10,7 +10,7 @@ public class Inventory
     /// <summary>
     /// 인벤토리에 들어있는 인벤 슬롯의 기본 갯수
     /// </summary>
-    public const int Default_Inventory_Size = 12;
+    public const int Default_Inventory_Size = 5;
 
     /// <summary>
     /// 임시슬롯용 인덱스
@@ -51,15 +51,19 @@ public class Inventory
     /// </summary>
     /// <param name="owner">인벤토리 소유자</param>
     /// <param name="size">인벤토리의 크기</param>
-    public Inventory(uint size = Default_Inventory_Size)
+    public Inventory(uint size = Default_Inventory_Size, uint QuickslotSize = 0)
     {
-        slots = new InvenSlot[size];
+        slots = new InvenSlot[size + QuickslotSize];
         for(uint i=0;i<size;i++)
         {
             slots[i] = new InvenSlot(i);                // 슬롯 만들어서 저장
         }
         tempSlot = new InvenSlot(TempSlotIndex);
         
+        for(uint i = 0; i < QuickslotSize; i++)
+        {
+            slots[size + i] = new InvenSlot(40+ i);
+        }
         itemDataManager = GameManager.Ins.ItemData;  // 아이템 데이터 메니저 캐싱
     }
 
@@ -99,13 +103,45 @@ public class Inventory
         return result;
     }
 
-    /// <summary>
-    /// 인벤토리의 특정 슬롯에 아이템을 하나 추가하는 함수
-    /// </summary>
-    /// <param name="code">추가할 아이템의 종류</param>
-    /// <param name="slotIndex">아이템을 추가할 인덱스</param>
-    /// <returns></returns>
-    public bool AddItem(ItemCode code, uint slotIndex)
+	public bool AddItemExeptQuickSlot(ItemCode code)
+	{
+
+		bool result = false;
+		ItemData data = itemDataManager[code];
+
+		InvenSlot sameDataSlot = FindSameItem(data);
+		if (sameDataSlot != null)
+		{
+			// 같은 종류의 아이템이 있다.
+			// 아이템 개수 1 증가시키기고 결과 받기
+			result = sameDataSlot.IncreaseSlotItem(out _);  // 넘치는 개수가 의미 없어서 따로 받지 않음
+		}
+		else
+		{
+			// 같은 종류의 아이템이 없다.
+			InvenSlot emptySlot = FindEmptySlot();
+			if (emptySlot != null && emptySlot.Index < 40)
+			{
+				emptySlot.AssignSlotItem(data); // 빈슬롯이 있으면 아이템 하나 할당
+				result = true;
+			}
+			else
+			{
+				// 비어있는 슬롯이 없다.
+				//Debug.Log("아이템 추가 실패 : 인벤토리가 가득 차있습니다.");
+			}
+		}
+
+		return result;
+	}
+
+	/// <summary>
+	/// 인벤토리의 특정 슬롯에 아이템을 하나 추가하는 함수
+	/// </summary>
+	/// <param name="code">추가할 아이템의 종류</param>
+	/// <param name="slotIndex">아이템을 추가할 인덱스</param>
+	/// <returns></returns>
+	public bool AddItem(ItemCode code, uint slotIndex)
     {
         bool result = false;
 

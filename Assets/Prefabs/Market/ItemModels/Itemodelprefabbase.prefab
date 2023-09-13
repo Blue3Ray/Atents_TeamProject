@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9159566784126648107}
   - component: {fileID: 548247742046630881}
   - component: {fileID: 9159566784126648108}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Itemodelprefabbase
   m_TagString: Untagged
   m_Icon: {fileID: 0}

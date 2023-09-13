@@ -24,7 +24,7 @@ TagManager:
   - EnemyProjectile
   - RingSlot
   - RingFrame
-  - 
+  - OnlyDetectGround
   - 
   - 
   - 

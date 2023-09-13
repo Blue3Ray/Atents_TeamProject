@@ -34,7 +34,7 @@ public class GameManager : Singleton<GameManager>
        
         if(player != null)
         {
-            player.inven = new Inventory(7);
+            player.inven = new Inventory(5,2);
         }
 
 	}

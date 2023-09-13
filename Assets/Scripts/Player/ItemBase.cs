@@ -15,7 +15,7 @@ public class ItemBase : MonoBehaviour
 		if(Physics2D.OverlapCircle(transform.position, rangeDetect, PlayerLayerMask))
 		{
 			Debug.Log("아이템의 범위 안에 플레이어 들어옴");
-			if (GameManager.Ins.player.inven.AddItem(itemCode))
+			if (GameManager.Ins.player.inven.AddItemExeptQuickSlot(itemCode))
 			{
 				Destroy(this.gameObject);
 			}

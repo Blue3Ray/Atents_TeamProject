@@ -17,6 +17,29 @@ public class EnemyBase : CharacterBase
         Dead
     }
 
+    /// <summary>
+    /// 대기 시간
+    /// </summary>
+    public float waitTime = 2.0f;
+
+    /// <summary>
+    /// 대기 시간 측정 용
+    /// </summary>
+    float waitTimer = 2.0f;
+    protected float WaitTimer
+    {
+        get => waitTimer;
+        set
+        {
+            waitTimer = value;
+            if (waitTimer < 0)
+            {
+                State = EnemyState.Patrol;
+            }
+        }
+    }
+
+
     EnemyState state = EnemyState.Patrol;
     protected EnemyState State
     {
@@ -32,7 +55,7 @@ public class EnemyBase : CharacterBase
                     case EnemyState.Wait:
 
                         CurrentMoveSpeed = 0;
-
+                        onStateUpdate = Update_Wait;
                         break;
                     case EnemyState.Patrol:
 
@@ -61,7 +84,7 @@ public class EnemyBase : CharacterBase
         }
     }
 
-    // 이동 기능 부분
+    // 이동 기능 부분 ----------------------------------------------
 
     public float maxMoveSpeed;
 
@@ -146,27 +169,27 @@ public class EnemyBase : CharacterBase
             }
         };
 
-        detectedArea = areas[1];
-        detectedArea.onPlayerIn += (target) =>
-        {
-            if (State != EnemyState.Chase)       // 공격상태가 아닐 때
-            {
-                chaseTarget = target.transform;          // 공격 대상 지정
-                State = EnemyState.Chase;      // 공격 상태로 변경
-            }
-        };
+        //detectedArea = areas[1];
+        //detectedArea.onPlayerIn += (target) =>
+        //{
+        //    if (State != EnemyState.Chase)       // 추적상태가 아닐 때
+        //    {
+        //        chaseTarget = target.transform;          // 공격 대상 지정
+        //        State = EnemyState.Chase;      // 공격 상태로 변경
+        //    }
+        //};
 
-        detectedArea.onPlayerOut += (target) =>
-        {
-            if (chaseTarget == target)          // 추적 대상이 나가면 
-            {
-                chaseTarget = null;            // 공격 대상 초기화
-                if (State != EnemyState.Dead)    // 죽은 상태가 아니면
-                {
-                    State = EnemyState.Wait;   // 대기 상태로 변경
-                }
-            }
-        };
+        //detectedArea.onPlayerOut += (target) =>
+        //{
+        //    if (chaseTarget == target)          // 추적 대상이 나가면 
+        //    {
+        //        chaseTarget = null;            // 공격 대상 초기화
+        //        if (State != EnemyState.Dead)    // 죽은 상태가 아니면
+        //        {
+        //            State = EnemyState.Wait;   // 대기 상태로 변경
+        //        }
+        //    }
+        //};
     }
 
     public override void OnInitialize()
@@ -182,6 +205,18 @@ public class EnemyBase : CharacterBase
         onStateUpdate();
     }
 
+    void Update_Wait()
+    {
+        if (SearchPlayer())
+        {
+            State = EnemyState.Chase;
+        }
+        else
+        {
+            WaitTimer -= Time.deltaTime;
+        }
+    }
+
     void Update_Patrol()
     {
         SearchPlayer();
@@ -189,7 +224,22 @@ public class EnemyBase : CharacterBase
 
     void Update_Chase()
     {
-
+        if (SearchPlayer())
+        {
+            State = EnemyState.Chase;
+        }
+        else
+        {
+            //// pathPending : 경로 계산이 진행중인지 확인하는 프로퍼티. 참이면 경로 계산 중
+            //// agent 목적지 지정할 때 순간 계산이 바로 되지 않기 때문에 확인 변수 추가함
+            //if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            ////if(agent.isStopped)      
+            //{
+            //    waypointTarget = wayPoints.MoveNext();
+            //    State = EnemyState.Wait;
+            //}
+            State = EnemyState.Wait;
+        }
     }
 
     void Update_Attack()

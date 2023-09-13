@@ -138,6 +138,11 @@ public class CharacterBase : PooledObject, IHealth
         Debug.Log($"{gameObject.name} 积己凳");
     }
 
+    protected override void OnEnable()
+    {
+        OnInitialize();
+    }
+
     // 荤噶 贸府侩 窃荐
     public virtual void Die()
     {

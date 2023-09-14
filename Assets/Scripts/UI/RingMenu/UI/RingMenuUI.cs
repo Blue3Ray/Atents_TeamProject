@@ -95,8 +95,13 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log($"업 현재 선택된 값 : {selectIndex}");
-        GameManager.Ins.player.ElemantalSelect(selectIndex);
+        if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            Debug.Log($"업 현재 선택된 값 : {selectIndex}");
+            GameManager.Ins.player.ElemantalSelect(selectIndex);
+          
+        }
+      
     }
 
 

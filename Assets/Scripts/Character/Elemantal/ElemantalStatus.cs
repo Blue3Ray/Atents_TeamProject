@@ -12,11 +12,14 @@ public enum ElementalType
     Thunder
 }
 
+
+
 public class ElemantalStatus 
 {
     ElementalType elemantal = ElementalType.None;
     public ElementalType Elemantal
     {
+
         get => elemantal;
         private set
         {
@@ -26,8 +29,13 @@ public class ElemantalStatus
 
     public int elemantalLevel = 0;
 
+    public System.Action<ElementalType> onElemantaltypeChange;
+
     public void ChangeType(ElementalType type)
     {
         elemantal = type;
+        onElemantaltypeChange?.Invoke(elemantal);
     }
+  
+
 }

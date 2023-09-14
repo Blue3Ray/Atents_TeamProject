@@ -234,7 +234,7 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	public Action ActiveElementalAttack;
 
-
+	
 	/// <summary>
 	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는 프로퍼티로써
 	/// elemantalStatus를 set할 때마다 원소 타입을 챙겨서 연결되는 함수를 바꾼다.
@@ -246,10 +246,9 @@ public class PlayerJS : CharacterBase, IExperience
 		{
 			switch (value.Elemantal)
 			{
-
 				case ElementalType.Fire:
-					ActiveElementalAttack = FireAttack;
-					break;
+					ActiveElementalAttack = FireAttack; 
+                    break;
 
 				case ElementalType.Thunder:
 					ActiveElementalAttack = ThunderAttack;
@@ -267,8 +266,10 @@ public class PlayerJS : CharacterBase, IExperience
 					ActiveElementalAttack = NoneAttack;
 					break;
 			}
+			
 		}
 	}
+	
 
 	/// <summary>
 	/// 프로퍼티가 public일 때 변수는 private이어도 되지만

@@ -253,6 +253,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Last
       objectReference: {fileID: 0}
+    - target: {fileID: 2122255425316255477, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4500016455673576098, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -999,6 +1003,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8201801825486491143, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.32
+      objectReference: {fileID: 0}
     - target: {fileID: 8201801826718716435, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
       propertyPath: m_Name
       value: BoneEnemy

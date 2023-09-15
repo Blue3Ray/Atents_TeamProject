@@ -8,7 +8,7 @@ public class EnemyBase : CharacterBase
 {
     // 상태 머신
     // 상태 : 대기, 순찰, 추적, 공격, 사망
-    protected enum EnemyState
+    public enum EnemyState
     {
         Wait = 0,
         Patrol,
@@ -18,15 +18,15 @@ public class EnemyBase : CharacterBase
     }
 
     /// <summary>
-    /// 대기 시간
+    /// 패트롤 대기 시간(또는 대상 노쳤을 시 대기 시간)
     /// </summary>
     public float waitTime = 2.0f;
 
     /// <summary>
     /// 대기 시간 측정 용
     /// </summary>
-    float waitTimer = 2.0f;
-    protected float WaitTimer
+    protected float waitTimer = 2.0f;
+    protected virtual float WaitTimer
     {
         get => waitTimer;
         set
@@ -34,52 +34,7 @@ public class EnemyBase : CharacterBase
             waitTimer = value;
             if (waitTimer < 0)
             {
-                State = EnemyState.Patrol;
-            }
-        }
-    }
-
-
-    EnemyState state = EnemyState.Patrol;
-    protected EnemyState State
-    {
-        get => state;
-        set
-        {
-            if (state != value)
-            {
-                state = value;
-                Debug.Log($"{state}");
-                switch (state)
-                {
-                    case EnemyState.Wait:
-
-                        CurrentMoveSpeed = 0;
-                        onStateUpdate = Update_Wait;
-                        break;
-                    case EnemyState.Patrol:
-
-                        CurrentMoveSpeed = maxMoveSpeed;
-
-                        onStateUpdate = Update_Patrol;
-                        break;
-                    case EnemyState.Chase:
-
-                        CurrentMoveSpeed = maxMoveSpeed;
-
-                        onStateUpdate = Update_Chase;
-                        break;
-                    case EnemyState.Attack:
-                        animator.SetTrigger(Hash_IsAttack);
-                        onStateUpdate = Update_Attack;
-                        break;
-                    case EnemyState.Dead:
-                        CurrentMoveSpeed = 0;
-                        animator.SetTrigger(Hash_IsDead);
-                        onStateUpdate = Update_Dead;
-                        StartCoroutine(LifeOver(3.0f));
-                        break;
-                }
+                //State = EnemyState.Patrol;
             }
         }
     }
@@ -88,7 +43,7 @@ public class EnemyBase : CharacterBase
 
     public float maxMoveSpeed;
 
-    float currentMoveSpeed;
+    protected float currentMoveSpeed;
     public float CurrentMoveSpeed
     {
         get => currentMoveSpeed;
@@ -102,161 +57,103 @@ public class EnemyBase : CharacterBase
         }
     }
 
+    /// <summary>
+    /// 움직이는 방향
+    /// </summary>
+    protected Vector2 moveDir = Vector2.right;
+    protected Vector2 MoveDir
+    {
+        get => moveDir;
+        set
+        {
+            if (moveDir != value)
+            {
+                moveDir = value;
+                transform.localScale = new Vector3(moveDir.x, 1, 1);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 원거리 추적 거리
+    /// </summary>
     public float farSightRange = 5.0f;
+
+    /// <summary>
+    /// 근거리 추적 거리
+    /// </summary>
     public float closeSightRange = 2.0f;
 
     // 공격 기능 부분 ------------------------------------------------------
 
-    AttackArea attackArea;
-
-    AttackArea detectedArea;
+    protected AttackArea attackArea;
 
     /// <summary>
     /// 공격 대상(1개)
     /// </summary>
-    CharacterBase attackTarget;
+    protected CharacterBase attackTarget;
 
-    Transform chaseTarget;
+    /// <summary>
+    /// 추적 대상
+    /// </summary>
+    protected Transform chaseTarget;
 
     /// <summary>
     /// 공격 쿨타임
     /// </summary>
-    public float attackCoolTime = 5.0f;
+    public float attackMaxCoolTime = 5.0f;
 
     /// <summary>
-    /// 공격 쿨타임 현재 진행 시간(0이되면 공격 가능)
+    /// 공격 쿨다운 남은 시간(초기값은 0보다 작아야 이후 공격 쿨다운이 작동됨, 양수면 작동 안됨)
     /// </summary>
-    float attackCurrentCoolTime = 5.0f;
+    protected float attackCurrentCoolTime = -1.0f;
 
     /// <summary>
     /// update 함수 돌릴 델리게이트
     /// </summary>
-    System.Action onStateUpdate;
+    protected System.Action onStateUpdate;
 
-    Animator animator;
+    protected Animator animator;
 
-    readonly int Hash_GetHit = Animator.StringToHash("GetHit");
-    readonly int Hash_IsDead = Animator.StringToHash("IsDead");
-    readonly int Hash_Speed = Animator.StringToHash("Speed");
-    readonly int Hash_IsAttack = Animator.StringToHash("IsAttack");
+    protected readonly int Hash_GetHit = Animator.StringToHash("GetHit");
+    protected readonly int Hash_IsDead = Animator.StringToHash("IsDead");
+    protected readonly int Hash_Speed = Animator.StringToHash("Speed");
+    protected readonly int Hash_IsAttack = Animator.StringToHash("IsAttack");
+
+    protected Rigidbody2D rb;
 
 
     protected override void Awake()
     {
         base.Awake();
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
 
         AttackArea[] areas = GetComponentsInChildren<AttackArea>();
         attackArea = areas[0];
-        attackArea.onPlayerIn += (target) =>
-        {
-            if (State == EnemyState.Chase)       // 추적 상태 였을 때
-            {
-                attackTarget = target;          // 공격 대상 지정
-                State = EnemyState.Attack;      // 공격 상태로 변경
-            }
-        };
-
-        attackArea.onPlayerOut += (target) =>
-        {
-            if (attackTarget == target)          // 공격 대상이 나가면 
-            {
-                attackTarget = null;            // 공격 대상 초기화
-                if (State != EnemyState.Dead)    // 죽은 상태가 아니면
-                {
-                    State = EnemyState.Chase;   // 추적 상태로 변경
-                }
-            }
-        };
-
-        //detectedArea = areas[1];
-        //detectedArea.onPlayerIn += (target) =>
-        //{
-        //    if (State != EnemyState.Chase)       // 추적상태가 아닐 때
-        //    {
-        //        chaseTarget = target.transform;          // 공격 대상 지정
-        //        State = EnemyState.Chase;      // 공격 상태로 변경
-        //    }
-        //};
-
-        //detectedArea.onPlayerOut += (target) =>
-        //{
-        //    if (chaseTarget == target)          // 추적 대상이 나가면 
-        //    {
-        //        chaseTarget = null;            // 공격 대상 초기화
-        //        if (State != EnemyState.Dead)    // 죽은 상태가 아니면
-        //        {
-        //            State = EnemyState.Wait;   // 대기 상태로 변경
-        //        }
-        //    }
-        //};
     }
 
     public override void OnInitialize()
     {
         base.OnInitialize();
-        State = EnemyState.Wait;
     }
 
     // 업데이트 함수들 -----------------------------------------------------
 
-    private void Update()
+    protected virtual void Update()
     {
         onStateUpdate();
     }
 
-    void Update_Wait()
-    {
-        if (SearchPlayer())
-        {
-            State = EnemyState.Chase;
-        }
-        else
-        {
-            WaitTimer -= Time.deltaTime;
-        }
-    }
+    protected virtual void Update_Wait() { }
 
-    void Update_Patrol()
-    {
-        SearchPlayer();
-    }
+    protected virtual void Update_Patrol() { }
 
-    void Update_Chase()
-    {
-        if (SearchPlayer())
-        {
-            State = EnemyState.Chase;
-        }
-        else
-        {
-            //// pathPending : 경로 계산이 진행중인지 확인하는 프로퍼티. 참이면 경로 계산 중
-            //// agent 목적지 지정할 때 순간 계산이 바로 되지 않기 때문에 확인 변수 추가함
-            //if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            ////if(agent.isStopped)      
-            //{
-            //    waypointTarget = wayPoints.MoveNext();
-            //    State = EnemyState.Wait;
-            //}
-            State = EnemyState.Wait;
-        }
-    }
+    protected virtual void Update_Chase() { }
 
-    void Update_Attack()
-    {
-        attackCurrentCoolTime -= Time.deltaTime;
-        if (attackCurrentCoolTime < 0)
-        {
-            animator.SetTrigger(Hash_IsAttack);
-            //Attack(attackTarget);
-            attackCurrentCoolTime = attackCoolTime;
-        }
-    }
+    protected virtual void Update_Attack() { }
 
-    void Update_Dead()
-    {
-
-    }
+    protected virtual void Update_Dead() { }
 
     //--------------------------------------------------------
 
@@ -264,70 +161,14 @@ public class EnemyBase : CharacterBase
     /// 플레이어를 찾는 함수
     /// </summary>
     /// <returns>참이면 찾음, 거짓이면 찾지 못함</returns>
-    bool SearchPlayer()
-    {
-        bool result = false;
-        chaseTarget = null;
-
-        Collider2D target = Physics2D.OverlapCircle(transform.position, farSightRange, LayerMask.GetMask("Player"));
-        //Physics2D.Raycast()
-
-        if (target != null)
-        {
-            Vector3 player = target.transform.position;
-            // 근접 범위안에 들어가면 참
-            if (Vector2.SqrMagnitude(player - transform.position) < closeSightRange * closeSightRange)
-            {
-                chaseTarget = target.transform;
-                result = true;
-            }
-            else
-            {
-                // 시야에 들어왔고
-                if (IsInSightAngle(player - transform.position))
-                {
-                    // 시야에 가리는게 없으면 참
-                    if (IsSightClear(player - transform.position))
-                    {
-                        Debug.Log("시야에 가리는게 없이 플레이어가 보임");
-                        chaseTarget = target.transform;
-                        result = true;
-                    }
-                    else
-                    {
-                        Debug.Log("시야에 가리는게 있음");
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    bool IsInSightAngle(Vector3 targetPos)
-    {
-        return true;
-    }
-
-    bool IsSightClear(Vector3 toTargetDir)
-    {
-        bool result = false;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, toTargetDir, farSightRange);
-        if (hit)
-        {
-            if (hit.collider.CompareTag("Player"))
-            {
-                result = true;
-            }
-        }
-        return result;
-    }
+    protected virtual bool SearchPlayer() { return false; } 
 
     // 공격 기능들-----------------------------------------------
 
     public override void Attack(CharacterBase target, float knockBackPower)
     {
         base.Attack(target, knockBackPower);
-        attackCurrentCoolTime = attackCoolTime;
+        attackCurrentCoolTime = attackMaxCoolTime;
     }
 
     public override void Defence(float damage, ElemantalStatus elemantal = null)
@@ -347,6 +188,5 @@ public class EnemyBase : CharacterBase
     public override void Die()
     {
         base.Die();     // 죽었다라는 로그
-        State = EnemyState.Dead;
     }
 }

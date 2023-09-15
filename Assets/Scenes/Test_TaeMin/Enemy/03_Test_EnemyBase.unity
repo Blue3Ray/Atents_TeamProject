@@ -220,7 +220,7 @@ MonoBehaviour:
   maxMoveSpeed: 10
   farSightRange: 5
   closeSightRange: 2
-  attackCoolTime: 1
+  attackMaxCoolTime: 5
 --- !u!95 &59317816
 Animator:
   serializedVersion: 5
@@ -1053,6 +1053,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8201801826718716440, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8201801826718716444, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
+      propertyPath: maxHP
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8201801826718716444, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
+      propertyPath: attackState
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -1003,10 +1003,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8201801825486491143, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.32
-      objectReference: {fileID: 0}
     - target: {fileID: 8201801826718716435, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
       propertyPath: m_Name
       value: BoneEnemy
@@ -1017,11 +1013,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8201801826718716440, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.44
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8201801826718716440, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8201801826718716440, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1053,14 +1049,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8201801826718716440, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201801826718716444, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
-      propertyPath: maxHP
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201801826718716444, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
-      propertyPath: attackState
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

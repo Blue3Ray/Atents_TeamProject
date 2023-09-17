@@ -8,7 +8,8 @@ public enum PoolObjectType
     Projectile_Fire,
     Projectile_Water,
     Projectile_Thunder,
-    Projectile_Wind
+    Projectile_Wind,
+    BoneEnemy
 }
 
 public class Factory : Singleton<Factory>
@@ -19,7 +20,7 @@ public class Factory : Singleton<Factory>
     ProjectilePool_Water projectilePool_Water;
     ProjectilePool_Thunder projectilePool_Thunder;
     ProjectilePool_Wind projectilePool_Wind;
-
+    EnemyPool_BoneEnemy enemyPool_BoneEnemy;
 
     protected override void OnInitalize()
     {
@@ -35,6 +36,10 @@ public class Factory : Singleton<Factory>
         projectilePool_Thunder?.Initialize();
         projectilePool_Wind = transform.GetChild(4).GetComponent<ProjectilePool_Wind>();
         projectilePool_Wind?.Initialize();
+
+        enemyPool_BoneEnemy = transform.GetChild(5).GetComponent<EnemyPool_BoneEnemy>();
+        enemyPool_BoneEnemy?.Initialize();
+
 
     }
 
@@ -59,6 +64,9 @@ public class Factory : Singleton<Factory>
             case PoolObjectType.Projectile_Wind:
                 result = projectilePool_Wind.GetObject()?.gameObject;
                 break;
+            case PoolObjectType.BoneEnemy:
+                result = enemyPool_BoneEnemy.GetObject()?.gameObject;
+                break;
             default:
                 result = new GameObject();
                 break;
@@ -79,15 +87,15 @@ public class Factory : Singleton<Factory>
         GameObject obj = GetObject(type);
         obj.transform.position = position;
         obj.transform.Rotate(angle * Vector3.forward);
-        ProjectileBase projectile = obj.GetComponent<ProjectileBase>();
-        projectile.dirProjectile = Vector3.right;
-        if(angle == 180)
-        {
-			if (projectile != null)
-			{
-                projectile.dirProjectile = Vector3.left;
-			}
-		}
+  //      ProjectileBase projectile = obj.GetComponent<ProjectileBase>();
+  //      projectile.dirProjectile = Vector3.right;
+  //      if(angle == 180)
+  //      {
+		//	if (projectile != null)
+		//	{
+  //              projectile.dirProjectile = Vector3.left;
+		//	}
+		//}
         return obj;
     }
 }

@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8201801825486491142}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.78, y: 0.06, z: 0}
+  m_LocalPosition: {x: 1.32, y: 0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 8201801826718716446}
   - component: {fileID: 8201801826718716445}
   - component: {fileID: 8201801826718716444}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BoneEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,6 +253,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4206beb407177a3438f1700a6616bbd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMoveSpeed: 8
-  waypoints: []
+  hp: 1
+  maxHP: 100
+  knockBackDir: {x: 0, y: 0, z: 0}
+  attackState: 0
+  defenceState: 0
+  elemantalAttack: 0
+  elemantalDefence: 0
   waitTime: 2
+  maxMoveSpeed: 8
+  farSightRange: 5
+  closeSightRange: 2
+  attackMaxCoolTime: 5
+  waypoints: []

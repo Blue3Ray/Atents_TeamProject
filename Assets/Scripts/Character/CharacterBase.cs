@@ -13,7 +13,7 @@ public class CharacterBase : PooledObject, IHealth
     /// <summary>
     /// 캐릭터의 체력
     /// </summary>
-    [SerializeField] float hp = 1.0f;
+    [SerializeField] protected float hp = 1.0f;
     /// <summary>
     /// 캐릭터 체력의 프로퍼티
     /// </summary>
@@ -25,12 +25,12 @@ public class CharacterBase : PooledObject, IHealth
             if (IsAlive)
             {
                 hp = value;
+                
                 if (hp <= 0)
                 {
                     onDie?.Invoke();
                 }
                 hp = Mathf.Clamp(HP, 0, MaxHP);
-                onHealthChange?.Invoke(HP / MaxHP);
             }
 
         }
@@ -79,7 +79,7 @@ public class CharacterBase : PooledObject, IHealth
     /// <summary>
     /// 캐릭터의 공격력
     /// </summary>
-    [SerializeField] protected float attackState;
+    [SerializeField] protected float attackState = 5;
     /// <summary>
     /// 캐릭터 공격력의 프로퍼티
     /// </summary>

@@ -74,7 +74,11 @@ public class BoneEnemy : EnemyBase
                         CurrentMoveSpeed = 0;
                         animator.SetTrigger(Hash_IsDead);
                         onStateUpdate = Update_Dead;
-                        // StartCoroutine(LifeOver(3.0f));
+
+                        rb.bodyType = RigidbodyType2D.Static;
+                        GetComponent<CapsuleCollider2D>().enabled = false;
+
+                        StartCoroutine(LifeOver(3.0f));
                         break;
                 }
             }
@@ -133,11 +137,15 @@ public class BoneEnemy : EnemyBase
     {
         base.OnInitialize();
 
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        GetComponent<CapsuleCollider2D>().enabled = true;
+
         waypoints = new Vector2[2];
         waypoints[0] = transform.position + new Vector3(3, 0);
         waypoints[1] = transform.position + new Vector3(-3, 0);
         State = EnemyState.Wait;
     }
+
 
     protected override void Update()
     {
@@ -293,6 +301,15 @@ public class BoneEnemy : EnemyBase
             Attack(attackTarget, 5);
         }
     }
+
+    // 생존 기능 ----------------------------------------
+
+    public override void Die()
+    {
+        base.Die();
+        State = EnemyState.Dead;
+    }
+
 
     // 감지 기능---------------------------------------------
     protected override bool SearchPlayer()

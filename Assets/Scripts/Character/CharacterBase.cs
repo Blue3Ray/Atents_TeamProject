@@ -135,7 +135,7 @@ public class CharacterBase : PooledObject, IHealth
     public virtual void OnInitialize()
     {
         HP = MaxHP;
-        Debug.Log($"{gameObject.name} 积己凳");
+        //Debug.Log($"{gameObject.name} 积己凳");
     }
 
     protected override void OnEnable()

@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 263762969156522773}
   - component: {fileID: 4208060470673849415}
   - component: {fileID: 947898778503993003}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7609,9 +7609,9 @@ GameObject:
   - component: {fileID: 8777365051304340845}
   - component: {fileID: 5873539434517946036}
   - component: {fileID: 1929328145318890007}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlatformHalf
-  m_TagString: Untagged
+  m_TagString: PlatformHalf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

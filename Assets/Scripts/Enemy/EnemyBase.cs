@@ -39,6 +39,11 @@ public class EnemyBase : CharacterBase
         }
     }
 
+    /// <summary>
+    /// 사망시 플레이어에게 주는 경험치
+    /// </summary>
+    public int experiencePoint = 10;
+
     // 이동 기능 부분 ----------------------------------------------
 
     public float maxMoveSpeed;
@@ -136,6 +141,7 @@ public class EnemyBase : CharacterBase
     public override void OnInitialize()
     {
         base.OnInitialize();
+        HP = MaxHP;
     }
 
     // 업데이트 함수들 -----------------------------------------------------
@@ -188,5 +194,6 @@ public class EnemyBase : CharacterBase
     public override void Die()
     {
         base.Die();     // 죽었다라는 로그
+        GameManager.Ins.player.Experience += experiencePoint;
     }
 }

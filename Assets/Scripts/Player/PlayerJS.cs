@@ -663,7 +663,7 @@ public class PlayerJS : CharacterBase, IExperience
 	{
 		foreach(var tmp in targetChars)
 		{
-			tmp.GetComponent<CharacterBase>().Defence(5);
+			tmp.Defence(attackState);
 		}
 	}
 	private void FireAttack()

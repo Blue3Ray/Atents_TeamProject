@@ -137,7 +137,7 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	public int Experience 
 	{ 
-		get =>playerEx;
+		get => playerEx;
 		set
 		{
 			if (IsAlive)

@@ -134,7 +134,7 @@ public class CharacterBase : PooledObject, IHealth
 
     public virtual void OnInitialize()
     {
-        HP = MaxHP;
+        hp = MaxHP;
         //Debug.Log($"{gameObject.name} 생성됨");
     }
 
@@ -148,7 +148,6 @@ public class CharacterBase : PooledObject, IHealth
     {
         Debug.Log($"{gameObject.name} 죽음");
         //onDie?.Invoke();
-        //gameObject.SetActive(false);
     }
 
     // 속성 선택 함수

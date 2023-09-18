@@ -76,7 +76,7 @@ public class BoneEnemy : EnemyBase
                         onStateUpdate = Update_Dead;
 
                         rb.bodyType = RigidbodyType2D.Static;
-                        GetComponent<CapsuleCollider2D>().enabled = false;
+                        // GetComponent<CapsuleCollider2D>().enabled = false;
 
                         StartCoroutine(LifeOver(3.0f));
                         break;
@@ -143,7 +143,14 @@ public class BoneEnemy : EnemyBase
         waypoints = new Vector2[2];
         waypoints[0] = transform.position + new Vector3(3, 0);
         waypoints[1] = transform.position + new Vector3(-3, 0);
+
         State = EnemyState.Wait;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        OnInitialize();
     }
 
 

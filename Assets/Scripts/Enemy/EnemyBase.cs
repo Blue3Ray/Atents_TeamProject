@@ -141,7 +141,6 @@ public class EnemyBase : CharacterBase
     public override void OnInitialize()
     {
         base.OnInitialize();
-        HP = MaxHP;
     }
 
     // 업데이트 함수들 -----------------------------------------------------

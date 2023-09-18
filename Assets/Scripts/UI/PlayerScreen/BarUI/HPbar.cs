@@ -14,7 +14,7 @@ public class HPbar : BarBase
         max.text = $"  /    {maxValue}";
         current.text = testPlayer.HP.ToString("N0");
         slider.value = testPlayer.HP / maxValue;
-        testPlayer.onHealthChange += OnValueChange;
+        testPlayer.onHpchange += OnValueChange;
     }
 
 }

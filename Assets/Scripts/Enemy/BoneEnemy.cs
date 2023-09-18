@@ -241,7 +241,7 @@ public class BoneEnemy : EnemyBase
     {
         if (attackCurrentCoolTime < 0)
         {
-            Debug.Log($"{gameObject.name}, 공격 시도!");
+            //Debug.Log($"{gameObject.name}, 공격 시도!");
             animator.SetTrigger(Hash_IsAttack);
             StopCoroutine(attackCoolDown);
             attackCurrentCoolTime = attackMaxCoolTime;

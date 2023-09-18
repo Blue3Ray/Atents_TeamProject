@@ -82,6 +82,11 @@ public class PlayerJS : CharacterBase, IExperience
 
 	int maxMP = 100;
 
+	public int MaxMP
+	{
+		get => maxMP;
+	}
+
 	public float MP
 	{
 		get => mp;
@@ -96,11 +101,36 @@ public class PlayerJS : CharacterBase, IExperience
 			}
 		}
 	}
+	/// <summary>
+	/// 캐릭터 체력의 프로퍼티
+	/// </summary>
+	new public float HP
+	{
+		get => this.hp;
+		set
+		{
+			if (IsAlive)
+			{
+				hp = value;
+				if (hp <= 0)
+				{
+					onDie?.Invoke();
+				}
+				hp = Mathf.Clamp(HP, 0, MaxHP);
+				onHpchange?.Invoke(hp / maxHP);
+			}
+
+		}
+	}
 
 	/// <summary>
 	/// 마나 바뀔 때 외쳐지는 델리게이트
 	/// </summary>
 	public Action<float> onMpchange;
+	/// <summary>
+	/// HP 바뀔 때 외쳐지는 델리게이트
+	/// </summary>
+	public Action<float> onHpchange;
 
 	/// <summary>
 	/// 플레이어의 레벨

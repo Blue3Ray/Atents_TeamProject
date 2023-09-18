@@ -15,6 +15,8 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     Transform test;
 
+    public System.Action<uint> onUP;
+
     private void Awake()
     {
 

@@ -12,7 +12,7 @@ public class RingMenuSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
    
     public System.Action<uint> onEnter;
     public System.Action<uint> onExit;
-    public System.Action<uint> onUP;
+    
     public System.Action<uint> onDown;
 
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTest : Character
+public class EnemyTest : CharacterBase
 {
 	
 	public float AttackPower => throw new System.NotImplementedException();

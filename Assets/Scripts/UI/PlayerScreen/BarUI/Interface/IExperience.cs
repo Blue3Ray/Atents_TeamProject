@@ -33,7 +33,7 @@ public interface IExperience
     /// <summary>
     /// 레벨 업을 알리기 위한 데리게이트용 프로퍼티
     /// </summary>
-    Action onLevelUP { get; set; }  
+    Action<uint> onLevelUP { get; set; }  
 
 
 

@@ -121,9 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc85893b950d694eb473a74b8e6ace1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalType: 0
-  ProjectileSpeed: 1
+  elementalType: 2
+  ProjectileSpeed: 0.1
   ProjectileLife: 3
+  dirProjectile: {x: 0, y: 0, z: 0}
+  MoveOrStop: 1
 --- !u!70 &6460933157142703053
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -137,8 +139,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.25390226, y: -0.0047025196}
-  m_Size: {x: 0.44518182, y: 0.31353146}
+  m_Offset: {x: 0.52336216, y: -0.0047025518}
+  m_Size: {x: 0.3135333, y: 0.3135333}
   m_Direction: 1
 --- !u!50 &5023513184381072798
 Rigidbody2D:

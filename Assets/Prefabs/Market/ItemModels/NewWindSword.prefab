@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 548247742046630881, guid: e811356261ba44f42bc9322cb15215fc, type: 3}
+      propertyPath: itemCode
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 9159566784126648105, guid: e811356261ba44f42bc9322cb15215fc, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -57,7 +61,7 @@ PrefabInstance:
       objectReference: {fileID: 362047883, guid: 09d5b9118127a98479190fcb9ac5846c, type: 3}
     - target: {fileID: 9159566784126648109, guid: e811356261ba44f42bc9322cb15215fc, type: 3}
       propertyPath: m_Name
-      value: WindSword
+      value: NewWindSword
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e811356261ba44f42bc9322cb15215fc, type: 3}

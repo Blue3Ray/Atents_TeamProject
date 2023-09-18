@@ -31,6 +31,6 @@ public class ItemBlock : MonoBehaviour
 
 	public void Buy()
 	{
-		GameManager.Ins.playerTest.inven.AddItem(itemcode);
+		GameManager.Ins.player.inven.AddItemExeptQuickSlot(itemcode);
 	}
 }

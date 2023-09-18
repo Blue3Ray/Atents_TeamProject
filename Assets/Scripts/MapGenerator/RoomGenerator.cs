@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.Progress;
 
 
 public enum MapLayer
@@ -42,16 +43,16 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     public SampleRoomData[] passWaySamples;
 
+
     /// <summary>
-    /// 방 데이터 불러올 샘플들(첫생성할때 0은 항상 시작 방)
+    /// 방 데이터 불러올 샘플들
     /// </summary>
     public SampleRoomData[] roomSamplesWithExit;
 
-
     /// <summary>
-    /// 생성된 방들이 쌓여있을 스택
+    /// 시작 방
     /// </summary>
-    public Stack<SampleRoomData> roomStack;
+    public SampleRoomData startRoom;
 
     /// <summary>
     /// 타일을 그릴 맵들(0 배경, 1 플랫폼, 2 반플랫폼, ... n-1 출입구)
@@ -63,24 +64,30 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     Vector3Int cursor;
 
-    struct Passes
-    {
-        public PassWay start;
-        public PassWay end;
-    }
-
     // 기능 부분 ------------------
+    /// <summary>
+    /// 그리드 맵 생성하는 클래스
+    /// </summary>
     RandomMapGenerator randomMap;
 
-    SampleRoomData[,] mapGrid;
+    /// <summary>
+    /// 그려질 맵 정보를 가지고 있는 리스트
+    /// </summary>
+    List<MakeRoom> makeRooms;
 
     // 초기 랜덤 맵 설정 ---------------------
+    
     public int width = 100;
+
     public int height = 100;
+
     public float fillRate = 0.46f;
+
     public int collecBoxBoolCount = 3;
 
     public int roomCount = 8;
+
+    public int roomGap = 10;
 
     // 샘플 맵 설정 ----------------------
 
@@ -89,67 +96,44 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     int maxSingleRoomSize = 0;
 
-    
-
+    // 싱글톤이기 때문에 오브젝트 찾는건 start에서 실행함
     private void Start()
     {
-        // 타일을 작성할 레이어 불러오는 과정
+        // 타일을 그릴 레이어 불러오는 과정
         m_tileMaps = new Tilemap[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
         {
             m_tileMaps[i] = transform.GetChild(i).GetComponent<Tilemap>();
         }
 
-        roomStack = new Stack<SampleRoomData>();
-
         randomMap = new RandomMapGenerator();
 
         cursor = new Vector3Int(0, 0);
 
+
+        // 방 정보 정리하는 구간
+        // 시작 방
+        startRoom.OnInitialize();
+
+        // 샘플 방
         foreach(SampleRoomData sampleRoom in roomSamplesWithExit)
         {
             int t = sampleRoom.OnInitialize();
             if (t > maxSingleRoomSize) maxSingleRoomSize = t;
         }
+
+        // 통로
         foreach (SampleRoomData passWay in passWaySamples)
         {
             passWay.OnInitialize();
         }
 
-        maxSingleRoomSize += 5;
-        //SetUpRooms();
+        // 방과 방 사이 거리 추가해서 방 크기의 여유 두기
+        maxSingleRoomSize += roomGap;
     }
 
-
-    public void SetUpRooms()
-    {
-        randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);
-
-        Vector2Int startPos = randomMap.gridMap.GetRoomGrid(randomMap.roomList[0]);
-
-        for(int y = 0; y < randomMap.gridMap.Height; y++)
-        {
-            for(int x = 0; x < randomMap.gridMap.Width; x++)
-            {
-                Room target = randomMap.gridMap.mapGrid[x, y];
-                if (target != null)
-                {
-                    //gridMap[x, y] = new NodeRoom();
-                }
-            }
-        }
-
-        // 방을 만드는 부분
-        // 방을 만들때 통로 정보를 저장해야된다.
-        List<(PassWay, PassWay)> passWays = new List<(PassWay, PassWay)>();
-
-        /*
-        randomMap에 roomList가 있다.
-        randomMap에 gridMap이 있으며 roomList바탕으로 만들어진 그리드 맵이다.
-
-        List<SampleRoom> roomBuild = new(roomList.Count);
-        
-
+    /*
+    방 생성하는 알고리즘 설정
         1. 첫 방을 설정한다. / GenerateRoom
             => randomMap.roomList[0]의 출구 조건중 Left하나는 무조건 startRoom과 연결되어야 한다.
             => gridMap의 시작방의 출구 조건이 같거나 이상인 sampleRoom을 선정한다.
@@ -181,47 +165,64 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         */
 
-        // for문으로 모든 그리드 검사는 효율적이지 안혹 연결 관계 확인하기도 어려움
-        //for (int x = 0; x < randomMap.gridMap.Width; x++)
-        //{
-        //    for (int y = 0; y < randomMap.gridMap.Height; y++)
-        //    {
-        //        if (randomMap.gridMap.mapGrid[x, y] != null)
-        //        {
-        //            GenerateRoom(new Vector3Int((x - startPos.x) * maxSingleRoomSize, (y - startPos.y) * maxSingleRoomSize), roomSamplesWithExit[Random.Range(0, roomSamplesWithExit.Length - 1)]);
-        //        }
-        //    }
-        //}
-        //----------------------------
+    /// <summary>
+    /// 방을 생성하는 함수
+    /// </summary>
+    public void SetUpRooms()
+    {
+        randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);        // 맵 정보 생성
+
+        makeRooms = new();      // 방 리스트 초기화
+
+        // 시작 방 생성(시작 방은 만들어진 그리드 맵에서 가장 좌측에 있는 방의 좌측에 배치가 된다
+        Vector2Int startRoomGrid = randomMap.roomList[0].gridCoord + new Vector2Int(-1, 0);
+
+        MakeRoom startMakeRoom = new MakeRoom();
+        startMakeRoom.GetRoomData(startRoomGrid);
+        startMakeRoom.GetSampleIndex = -1;
+        startMakeRoom.SetOrigineCoord(new Vector3Int(startRoom.Width, startRoom.Height), maxSingleRoomSize);
+
+        GenerateRoom(startMakeRoom.origineCoord, startRoom);
+
+        makeRooms.Add(startMakeRoom);
 
 
 
-        // 통로 만드는 부분
-
-        int[] dirCount = new int[4];
-
-        for (int i = 0; i < randomMap.gridMap.mapGrid[startPos.x, startPos.y].connectedRooms.Count; i++)
+        // 방 생성하고 리스트에 등록하는 과정
+        foreach (var item in randomMap.roomList)
         {
-            switch (randomMap.gridMap.mapGrid[startPos.x, startPos.y].connectedRooms[i].Item2)
-            {
-                case ExitDirection.Up:
-                    dirCount[0]++;
-                    break;
-                case ExitDirection.Left:
-                    dirCount[1]++;
-                    break;
-                case ExitDirection.Right:
-                    dirCount[2]++;
-                    break;
-                case ExitDirection.Down:
-                    dirCount[3]++;
-                    break;
-                default:
-                    break;
-            }
+            MakeRoom targetRoom = new MakeRoom();
+            targetRoom.GetRoomData(item);
+            targetRoom.GetSampleIndex = GetRandomRoom(item);
+            targetRoom.SetOrigineCoord(maxSingleRoomSize);
+
+            GenerateRoom(targetRoom.origineCoord, roomSamplesWithExit[targetRoom.GetSampleIndex]);
+
+            makeRooms.Add(targetRoom);
         }
 
 
+        // 만들어진 방을 통로 연결 여부 확인 후에 통로 생성하는 과정
+        foreach (var roomOne in makeRooms)
+        {
+            Room targetOne = roomOne.roomData;
+            foreach (var roomTwo in targetOne.connectedRooms)
+            {
+                if(!targetOne.IsConnectedBuildRoom(roomTwo.Item1))
+                {
+                    targetOne.alreadyConnectPassWayRooms.Add(roomTwo.Item1);
+                    roomTwo.Item1.alreadyConnectPassWayRooms.Add(targetOne);
+
+                    if(TryGetMakeRoomByCoord(roomTwo.Item1.gridCoord, out MakeRoom result))
+                    {
+                        ConnectPassway(roomOne, result);
+                    }
+                }
+            }
+        }
+
+        // 시작 방과 첫방을 연결함(그리드 맵 정보에 시작방 정보가 없기 때문에 수동으로 따로 해줌)
+        ConnectPassway(makeRooms[0], makeRooms[1]);
     }
 
     /// <summary>
@@ -229,7 +230,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     /// <param name="targetRoom">조사할 방</param>
     /// <returns>조건에 맞는 샘플 룸</returns>
-    SampleRoomData GetRandomRoom(Room targetRoom)
+    int GetRandomRoom(Room targetRoom)
     {
         //출구 개수와 만족하는 방리스트를 따로 만듬
         List<ExitDirection> upDir = new();
@@ -271,189 +272,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
         if (!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
 
         // 배치 가능한 방들 중 랜덤으로 하나 선택
-        return canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
+        return Random.Range(0, canBuildRoomList.Count);
     }
-
-    //public void SetupRooms()
-    //{
-    //    // roomSamplesWithExit 방 샘플
-    //    // randomMap 랜덤 맵
-
-    //    // roomlist의 두번째는 X값 기준으로 되어 있음. 그러므로 연결된 방 기준으로 다시 정렬
-        
-    //    randomMap.SortingRoomList(sortList, randomMap.roomList[0]);
-
-
-    //    List<Vector3Int> roomAnchor = new();        // 방을 생성할 기준(모든 방 프리펩은 0,0이 시작점이여야 함)
-    //    List<Vector3Int> roomsSize = new();         // 방의 사이즈들
-
-
-
-    //    for(int i = 0; i < sortList.Count; i++)     // 메인룸부터 연결되어 있는 방 순서대로 차례대로
-    //    {
-    //        // 먼저 어떤 방을 생성할지 선택함
-
-    //        // 출구 개수와 만족하는 방리스트를 따로 만듬
-    //        List<ExitDirection> upDir = new();
-    //        List<ExitDirection> downDir = new();
-    //        List<ExitDirection> rightDir = new();
-    //        List<ExitDirection> leftDir = new();
-    //        foreach (var dir in sortList[i].connectedExit)
-    //        {
-    //            switch (dir.Item2)
-    //            {
-    //                case ExitDirection.Up:
-    //                    upDir.Add(dir.Item2);
-    //                    break;
-    //                case ExitDirection.Left:
-    //                    leftDir.Add(dir.Item2);
-    //                    break;
-    //                case ExitDirection.Right:
-    //                    rightDir.Add(dir.Item2);
-    //                    break;
-    //                case ExitDirection.Down:
-    //                    downDir.Add(dir.Item2);
-    //                    break;
-    //            }   
-    //        }
-
-    //        Debug.Log($"{i}번째 방은 UP : {upDir.Count}, Left : {leftDir.Count}, Down : {downDir.Count} ,right : {rightDir.Count}");
-    //        List<SampleRoomData> canBuildRoomList = new();
-
-    //        foreach (SampleRoomData roomData in roomSamplesWithExit) 
-    //        {
-    //            // 샘플에서 각 방향 출구 개수를 비교해서 그 이상인 방들만 걸러냄(구현 가능한 방들만 꺼내기)
-    //            if(roomData.GetExitCount(ExitDirection.Up) >= upDir.Count && roomData.GetExitCount(ExitDirection.Down) >= downDir.Count &&
-    //                roomData.GetExitCount(ExitDirection.Left) >= leftDir.Count && roomData.GetExitCount(ExitDirection.Right) >= rightDir.Count)
-    //            {
-    //                canBuildRoomList.Add(roomData);
-    //            }
-                
-    //        }
-    //        if(!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
-
-    //        // 배치 가능한 방들 중 랜덤으로 하나 선택
-    //        SampleRoomData targetRoom = canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
-
-    //        SetRoomAnchor(cursor, targetRoom, ref roomAnchor, ref roomsSize);       // 첫 방은 0,0에서 시작
-
-    //        Debug.Log($"{i}번째 방 생성 시도");
-
-    //        cursor = new Vector3Int((int) sortList[i].CenterX, (int)sortList[i].CenterY);       // 표시 잘되나 임시로 만든 것
-
-    //        GenerateRoom(targetRoom, cursor);           // 생성
-            
-    //        // 커서는 다음 위치로 이동(어디로? 어떻게 다시 돌아오지?)
-    //    }
-    //}
-
-    //void Test(OldRoom room, Vector3Int cursor)
-    //{
-    //    Vector3Int tempCursor = cursor;
-
-    //    List<ExitDirection> upDir = new();
-    //    List<ExitDirection> downDir = new();
-    //    List<ExitDirection> rightDir = new();
-    //    List<ExitDirection> leftDir = new();
-    //    foreach (var dir in room.connectedExit)
-    //    {
-    //        switch (dir.Item2)
-    //        {
-    //            case ExitDirection.Up:
-    //                upDir.Add(dir.Item2);
-    //                break;
-    //            case ExitDirection.Left:
-    //                leftDir.Add(dir.Item2);
-    //                break;
-    //            case ExitDirection.Right:
-    //                rightDir.Add(dir.Item2);
-    //                break;
-    //            case ExitDirection.Down:
-    //                downDir.Add(dir.Item2);
-    //                break;
-    //        }
-    //    }
-
-        
-    //    List<SampleRoomData> canBuildRoomList = new();
-
-    //    foreach (SampleRoomData roomData in roomSamplesWithExit)
-    //    {
-    //        // 샘플에서 각 방향 출구 개수를 비교해서 그 이상인 방들만 걸러냄(구현 가능한 방들만 꺼내기)
-    //        if (roomData.GetExitCount(ExitDirection.Up) >= upDir.Count && roomData.GetExitCount(ExitDirection.Down) >= downDir.Count &&
-    //            roomData.GetExitCount(ExitDirection.Left) >= leftDir.Count && roomData.GetExitCount(ExitDirection.Right) >= rightDir.Count)
-    //        {
-    //            canBuildRoomList.Add(roomData);
-    //        }
-
-    //    }
-    //    if (!(canBuildRoomList.Count > 0)) Debug.LogWarning("구현 가능한 방이 없습니다.");
-
-    //    SampleRoomData targetRoom = canBuildRoomList[Random.Range(0, canBuildRoomList.Count - 1)];
-
-    //    if (CheckBuildable(tempCursor, targetRoom))
-    //    {
-    //        GenerateRoom(targetRoom, tempCursor);           // 생성
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("맵 생성이 안됩니다.");
-    //    }
-    //    room.isBuilt = true;
-
-    //    for (int j = 0; j < room.connectedRooms.Count; j++)
-    //    {
-    //        switch (room.connectedExit[j].Item2)
-    //        {
-    //            case ExitDirection.Up:
-    //                tempCursor.y += maxSingleRoomSize;
-    //                break;
-    //            case ExitDirection.Left:
-    //                tempCursor.x -= maxSingleRoomSize;
-    //                break;
-    //            case ExitDirection.Right:
-    //                tempCursor.x += maxSingleRoomSize;
-    //                break;
-    //            case ExitDirection.Down:
-    //                tempCursor.y -= maxSingleRoomSize;
-    //                break;
-    //        }
-    //        if(!room.connectedRooms[j].isBuilt) Test(room.connectedRooms[j], tempCursor);
-    //    }
-    //}
-
-
-    //// 첫번째 방을 선택한 후에 연결된 자식들 대상으로 다시 실행하기
-    //void SetRoomAnchor(Vector3Int cursor, SampleRoomData roomData, ref List<Vector3Int> anchors, ref List<Vector3Int> sizes)
-    //{
-    //    anchors.Add(cursor);
-    //    sizes.Add(roomData.max);
-    //}
-
-    ///// <summary>
-    ///// 커서 위치로부터 그리려는 roomData가 그려질수 있는지 체크하는 함수
-    ///// </summary>
-    ///// <param name="cursor">방의 기준점이 될 위치</param>
-    ///// <param name="roomData">그릴 방</param>
-    ///// <returns>참이면 해당 범위에 다른 방과 인접한 사항 없음, 거짓이면 다른 방과 곂침</returns>
-    //bool CheckBuildable(Vector3Int cursor, SampleRoomData roomData)
-    //{
-    //    bool result = true;
-
-    //    for(int y = 0; y < roomData.max.y; y++)
-    //    {
-    //        for(int x = 0; x  < roomData.max.x; x++)
-    //        {
-    //            if (m_tileMaps[(int) MapLayer.PlatForm].HasTile(cursor + new Vector3Int(x, y)))
-    //            {
-    //                result = false; break;
-    //            }
-    //        }
-    //        if (!result) break;
-    //    }
-
-    //    return result;
-    //}
 
     /// <summary>
     /// 두 위치와 방향을 가지고 통로를 제작하는 함수
@@ -635,43 +455,73 @@ public class RoomGenerator : Singleton<RoomGenerator>
         } while (cursor != endPos.Pos && a < 100);
 
         GeneratePass(new PassWay(cursor, targetDir), lastone);        // 마지막 통로 타일맵 생성
-
-
-        //cursor += GeneratePass(new Exit(cursor, ExitDirection.Right), PassWayType.LeftRight);
     }
 
-    bool IsBuildable(Vector3Int cursor, SampleRoomData targetData)
+    /// <summary>
+    /// 두개의 방을 연결 할때 사용가능한 출입구를 확인해서 연결하는 함수
+    /// </summary>
+    /// <param name="temp1">연결할 첫번째 방</param>
+    /// <param name="temp2">연결할 두번째 방</param>
+    public void ConnectPassway(MakeRoom temp1, MakeRoom temp2)
     {
-        bool result = true;
-        for(int x = targetData.min.x; x < targetData.max.x; x++ )
+        float distance = float.MaxValue;
+        PassWay one = temp1.passWays[0];
+        PassWay two = temp2.passWays[0];
+
+        // 각 출구들을 하나 씩 꺼내서 최단 거리인지 비교
+        foreach (var exit1 in temp1.passWays)
         {
-            for(int y = targetData.min.y; y < targetData.max.y; y++)
+            if (exit1.isConnected) continue;    // 이미 연결 되어 있으면 패스
+            foreach (var exit2 in temp2.passWays)
             {
-                Vector3Int targetPos = new Vector3Int(x, y) + cursor;
-                if (m_tileMaps[1].GetTile(targetPos) != null)
+                if (exit2.isConnected) continue; // 이미 연결 되어 있으면 패스
+
+                float tempDistance = Vector3Int.Distance(exit1.Pos + temp1.origineCoord, exit2.Pos + temp2.origineCoord);
+                if (tempDistance < distance)    // 기존 저장한 거리보다 짧으면 초기화
                 {
-                    result = false; 
-                    return result;
+                    distance = tempDistance;
+                    one = exit1;
+                    two = exit2;
                 }
             }
         }
-        return result;
+
+        GeneratePassway(one, two);  // 통로 생성
+        one.isConnected = true;
+        two.isConnected = true;
     }
 
-    bool IsXDir(Vector3Int posA, Vector3Int posB)
+    /// <summary>
+    /// 해당 그리드 좌표에 있는 makeRoom 데이터가 있는지 확인하고 반환하는 함수
+    /// </summary>
+    /// <param name="gridPos">확인할 그리드 좌표</param>
+    /// <param name="resultRoom">결과 방</param>
+    /// <returns>해당 그리드 좌표에 방 정보가 있으면 참, 없으면 거짓</returns>
+    bool TryGetMakeRoomByCoord(Vector2Int gridPos, out MakeRoom resultRoom)
     {
-        bool result;
-        if(Mathf.Abs(posA.x - posB.x) > Mathf.Abs(posA.y - posB.y))
+        bool result = false;
+        resultRoom = null;
+
+        foreach (var item in makeRooms)
         {
-            result = true;
+            if (item.gridCoord == gridPos)      // 리스트 중 해당 방 좌표가 찾는 좌표이면
+            {
+                resultRoom = item;
+                result = true;
+                break;
+            }
         }
-        else
-        {
-            result = false;
-        }
+
         return result;
     }
 
+    /// <summary>
+    /// 통로를 한개를 그리는 함수
+    /// </summary>
+    /// <param name="passPos">위치, 방향 정보</param>
+    /// <param name="passWayType">그려야 할 방향 정보</param>
+    /// <param name="drawOverCount">그려야 할 칸이 통로 크기보다 작을 때 넘치는 줄 수</param>
+    /// <returns>통로 한개를 그리고 나서 반환될 다음 위치</returns>
     Vector3Int GeneratePass(PassWay passPos, PassWayType passWayType, int drawOverCount = 0)
     {
         Vector3Int cursorPos = passPos.Pos;
@@ -683,6 +533,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         Vector3Int decreaseFromMin = Vector3Int.zero;
         Vector3Int decreaseFromMax = Vector3Int.zero;
 
+        // 그려야 할 방향에 따라 줄이는 방향 정하기
         if(passWayType == PassWayType.UpDown)
         {
             if(passPos.Direction == ExitDirection.Up) 
@@ -706,7 +557,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
             }
         }
 
-
+        // 통로 그리는 부분
         for (int i = decreaseFromMin.y; i < targetData.Height - decreaseFromMax.y; i++)    // 문 높이 만큼
         {
             for (int j = decreaseFromMin.x; j < targetData.Width - decreaseFromMax.x; j++)  // 문 너비 만큼
@@ -717,8 +568,6 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
                 // 레이어 설정
                 int targetLayer = (int) MapLayer.Background;
-
-                
 
                 TileBase tempTile;
 
@@ -733,7 +582,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     }
                     else
                     {
-                        Debug.Log("반플랫폼 타일이 있음");
+                        //Debug.Log("반플랫폼 타일이 있음");
                     }
                 }
                 else if (targetData.mapLayers[(int)MapLayer.HalfPlatForm].HasTile(targetDrawPos))
@@ -761,15 +610,13 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
                 // 배경 그리기
                 m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
-
-                // 플랫폼 그리기
-                // m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
             }
         }
 
         // 다음 커서 위치를 계산하기위해 움직여야 할 위치 값을 반환하는 변수
         Vector3Int result = Vector3Int.zero;
 
+        // 현재 그려진 방향에 따라 다름 위치 설정
         switch (passWayType)
         {
             case PassWayType.UpDown:
@@ -805,9 +652,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         }
 
         // 통로를 짧게 그린만큼 다음 그릴 지점도 위치 반영
-        //decreaseFromMin;
         result -= decreaseFromMax;
-        //decreaseFromMax;
         result += decreaseFromMin;
 
         return result;
@@ -820,7 +665,6 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// <param name="index">샘플에서 생성할 레이어</param>
     void GenerateRoom(Vector3Int cursor, SampleRoomData targetRoomData)
     {
-        //foreach (List<Vector3Int> poses in targetRoomData.tilesPos)
         for(int i = 0; i < targetRoomData.tilesPos.Count - 1; i++)          // 레이어 별로 나눔(마지막꺼는 출구 레이어라 표시안함
         {
             List<Vector3Int> poses = targetRoomData.tilesPos[i];
@@ -831,68 +675,65 @@ public class RoomGenerator : Singleton<RoomGenerator>
         }
     }
 
-
-
-    void GenerateExit(SampleRoomData targetRoomData, ExitDirection exitDir)
+    /// <summary>
+    /// 그려질 방 정보 클래스
+    /// </summary>
+    public class MakeRoom
     {
-        foreach(PassWay temp in targetRoomData.exitPos)
-        {
-            if (temp.Direction != exitDir) continue;            // 만약 선택한 출입구가 받은 파라미터 방향과 같지 않으면 스킵
-            int x = 0, y = 0;   // 방향이 좌우에 따라 출입구 그려지는 시작위치
-            int index = 0;      // 0은 좌우 출입구, 1은 상하 출입구
-            if(temp.Direction == ExitDirection.Left || temp.Direction == ExitDirection.Right)
-            {
-                y = -2;
-            }
-            else if(temp.Direction == ExitDirection.Up || temp.Direction == ExitDirection.Down)
-            {
-                x = -2;
-                index = 1;
-            }
+        int getSampleIndex = -1;
 
-            for (int i = 0; i < passWaySamples[index].Height; i++)    // 문 높이 만큼
-            {
-                for (int j = 0; j < passWaySamples[index].Width; j++)  // 문 너비 만큼
-                {
-                    if (passWaySamples[index].mapLayers[1].HasTile(new Vector3Int(passWaySamples[index].min.x + j, passWaySamples[index].min.y + i)))
-                    {
-                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), targetRoomData.mapLayers[1].GetTile(temp.Pos));
-                        //Debug.Log($"{targetRoomData.mapLayers[1].GetTile(pos)}");
-                    }
-                    else       
-                    {
-                        m_tileMaps[1].SetTile(temp.Pos + cursor + new Vector3Int(j + x, i + y), null);   // 빈 타일이면 null(빈타일)로 바꾸기
-                    }
-                }
-            }
-        }
-    }
-
-    private Vector3Int GetRoomGap(int num)
-    {
-        int x = Random.Range(3, num);
-        int y = Random.Range(-num, num);
-        return new Vector3Int(x, y);
-    }
-
-    public class TestRoom
-    {
-        int getSampleIndex;
+        /// <summary>
+        /// 방에다가 설치될 샘플 방 인덱스, 설정이 되면 해당 방의 출구 정보를 자동으로 가져온다
+        /// </summary>
         public int GetSampleIndex
         {
             get => getSampleIndex;
             set
             {
                 getSampleIndex = value;
-                passWays = RoomGenerator.Ins.roomSamplesWithExit[getSampleIndex].exitPos.ToArray();
+                if (getSampleIndex != -1)           // 시작 방일 때 -1
+                {
+                    passWays = RoomGenerator.Ins.roomSamplesWithExit[getSampleIndex].exitPos.ToArray();
+                }
+                else
+                {
+                    // 시작 방일 때
+                    passWays = RoomGenerator.Ins.startRoom.exitPos.ToArray();
+                }
             }
         }
 
+        /// <summary>
+        /// 출구 정보
+        /// </summary>
         public PassWay[] passWays;
 
+        /// <summary>
+        /// 맵 그리드 좌표(방 한칸 당 하나)
+        /// </summary>
         public Vector2Int gridCoord;
 
+        /// <summary>
+        /// 해당 방이 가지고 있을 Room데이터
+        /// </summary>
+        public Room roomData;
+
+        /// <summary>
+        /// 방 원점의 실제 위치값(그리드 좌표와 방 기본 크기에 따라 바뀜)
+        /// </summary>
         public Vector3Int origineCoord;
+
+        public void GetRoomData(Room room)
+        {
+            gridCoord = room.gridCoord;
+            roomData = room;
+        }
+
+        public void GetRoomData(Vector2Int pos)
+        {
+            gridCoord = pos;
+            roomData = new Room(pos);
+        }
 
         public void SetOrigineCoord(int roomSize)
         {
@@ -902,68 +743,53 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 passWays[i].Pos += origineCoord;
             }
         }
-    }
 
-    public void Test_SetOrigine(SampleRoomData data)
-    {
-        //Vector2Int mapSize = new Vector2Int(roomSamplesWithExit[getSampleIndex]);
-    }
-
-    public void Test()
-    {
-        TestRoom test1 = new TestRoom();
-        test1.gridCoord = new Vector2Int(0, 0);
-        test1.GetSampleIndex = 0;
-        test1.SetOrigineCoord(maxSingleRoomSize);
-        
-        TestRoom test2 = new TestRoom();
-        test2.gridCoord = new Vector2Int(1, 1);
-        test2.GetSampleIndex = 1;
-        test2.SetOrigineCoord(maxSingleRoomSize);
-
-        TestRoom test3 = new TestRoom();
-        test3.gridCoord = new Vector2Int(2, 0);
-        test3.GetSampleIndex = 2;
-        test3.SetOrigineCoord(maxSingleRoomSize);
-
-        TestRoom test4 = new TestRoom();
-        test4.gridCoord = new Vector2Int(2, 1);
-        test4.GetSampleIndex = 2;
-        test4.SetOrigineCoord(maxSingleRoomSize);
-
-        GenerateRoom(test1.origineCoord, roomSamplesWithExit[test1.GetSampleIndex]);
-        GenerateRoom(test2.origineCoord, roomSamplesWithExit[test2.GetSampleIndex]);
-        GenerateRoom(test3.origineCoord, roomSamplesWithExit[test3.GetSampleIndex]);
-        GenerateRoom(test4.origineCoord, roomSamplesWithExit[test4.GetSampleIndex]);
-
-        //Test_ConnectPassway(test1, test2);
-        Test_ConnectPassway(test2, test4);
-        Test_ConnectPassway(test3, test2);
-    }
-
-    public void Test_ConnectPassway(TestRoom temp1, TestRoom temp2)
-    {
-        float distance = float.MaxValue;
-        PassWay one = temp1.passWays[0];
-        PassWay two = temp2.passWays[0];
-
-        foreach(var exit1 in temp1.passWays)
+        // 시작 방을 위한 함수
+        public void SetOrigineCoord(Vector3Int startSize, int roomSize)
         {
-            if (exit1.isConnected) continue;    // 이미 연결 되어 있으면 패스
-            foreach(var exit2 in temp2.passWays)
+            int startRoomGab = 20;
+            // 고쳐야됨 !!
+            // Debug.LogWarning("수정 필요"); 식을 잘못 썻음
+            origineCoord = new Vector3Int((gridCoord.x + 1) * roomSize - startSize.x - startRoomGab, gridCoord.y * roomSize);
+            for (int i = 0; i < passWays.Length; i++)
             {
-                if (exit2.isConnected) continue;
-                float tempDistance = Vector3Int.Distance(exit1.Pos + temp1.origineCoord, exit2.Pos + temp2.origineCoord);
-                if (tempDistance < distance)
-                {
-                    distance = tempDistance;
-                    one = exit1;
-                    two = exit2;
-                }
+                passWays[i].Pos += origineCoord;
             }
         }
-
-        GeneratePassway(one, two);
     }
+
+    //public void Test()
+    //{
+    //    MakeRoom test1 = new MakeRoom();
+    //    test1.gridCoord = new Vector2Int(0, 0);
+    //    test1.GetSampleIndex = 0;
+    //    test1.SetOrigineCoord(maxSingleRoomSize);
+        
+    //    MakeRoom test2 = new MakeRoom();
+    //    test2.gridCoord = new Vector2Int(1, 1);
+    //    test2.GetSampleIndex = 1;
+    //    test2.SetOrigineCoord(maxSingleRoomSize);
+
+    //    MakeRoom test3 = new MakeRoom();
+    //    test3.gridCoord = new Vector2Int(2, 0);
+    //    test3.GetSampleIndex = 2;
+    //    test3.SetOrigineCoord(maxSingleRoomSize);
+
+    //    MakeRoom test4 = new MakeRoom();
+    //    test4.gridCoord = new Vector2Int(2, 1);
+    //    test4.GetSampleIndex = 2;
+    //    test4.SetOrigineCoord(maxSingleRoomSize);
+
+    //    GenerateRoom(test1.origineCoord, roomSamplesWithExit[test1.GetSampleIndex]);
+    //    GenerateRoom(test2.origineCoord, roomSamplesWithExit[test2.GetSampleIndex]);
+    //    GenerateRoom(test3.origineCoord, roomSamplesWithExit[test3.GetSampleIndex]);
+    //    GenerateRoom(test4.origineCoord, roomSamplesWithExit[test4.GetSampleIndex]);
+
+    //    //Test_ConnectPassway(test1, test2);
+    //    ConnectPassway(test2, test4);
+    //    ConnectPassway(test3, test2);
+    //}
+
+    
 }
 

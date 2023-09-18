@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edcea6c001c38d4785a64242cd5d498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalType: 0
-  ProjectileSpeed: 1
+  elementalType: 3
+  ProjectileSpeed: 0.2
   ProjectileLife: 3
 --- !u!95 &3194445642223133118
 Animator:
@@ -136,6 +136,6 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.19554454, y: -0.0043452424}
-  m_Size: {x: 0.6089179, y: 0.5741632}
-  m_Direction: 1
+  m_Offset: {x: 0.1238019, y: -0.004345238}
+  m_Size: {x: 0.33081397, y: 0.57416356}
+  m_Direction: 0

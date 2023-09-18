@@ -193,14 +193,14 @@ MonoBehaviour:
   - {fileID: 1696334468453365824, guid: c1de23d7612ae7d479086d30a8ed6d9c, type: 3}
   - {fileID: 7947880996732234699, guid: de0ad0872d95fa948b97ad654bba94ef, type: 3}
   roomSamplesWithExit:
-  - {fileID: 5766560427034028742, guid: 21f3271bb2146634aa1c414709f1a409, type: 3}
-  - {fileID: 5766560427034028742, guid: 84f2553c0efd4734aa339ce3af494154, type: 3}
-  - {fileID: 6585165216709810614, guid: 3b8c3a9c4c2f8fc42a749baf32f2a5c2, type: 3}
+  - {fileID: 614984364478799997, guid: 67c462f5860f61c4bafd3e2c194f2cfa, type: 3}
+  startRoom: {fileID: 3956124997088234189, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
   width: 100
   height: 100
   fillRate: 0.46
   collecBoxBoolCount: 3
   roomCount: 8
+  roomGap: 10
 --- !u!1 &8145954
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5034119551250388288, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6105058282255814837, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
       propertyPath: m_RootOrder

@@ -22,10 +22,10 @@ TagManager:
   - Player
   - PlayerProjectile
   - EnemyProjectile
-  - 
-  - 
-  - 
-  - 
+  - RingSlot
+  - RingFrame
+  - OnlyDetectGround
+  - Enemy
   - 
   - 
   - 

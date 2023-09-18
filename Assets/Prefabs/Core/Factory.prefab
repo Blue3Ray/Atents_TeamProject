@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1583983366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1583983367}
+  - component: {fileID: 1583983368}
+  m_Layer: 0
+  m_Name: EnemyPool_BoneEmeny
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1583983367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583983366}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305771768482445485}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1583983368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583983366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d67c49f82959d408f9c018a1b22df0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origianlPrefab: {fileID: 8201801826718716435, guid: 5d478a90396b9fc4388fc4eeb9f54524, type: 3}
+  poolSize: 4
 --- !u!1 &1828774480
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf0edb3a844b274dab54171f304e774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origianlPrefab: {fileID: 6270525262227540907, guid: b8b23f19618b3c245b2da00e5611fc76, type: 3}
+  origianlPrefab: {fileID: 6460933157142703042, guid: b8b23f19618b3c245b2da00e5611fc76, type: 3}
   poolSize: 32
 --- !u!1 &6485799703770696833
 GameObject:
@@ -182,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b929b99326a54479c2f2efef5bab4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origianlPrefab: {fileID: 6828047779896539430, guid: f76fb51f8d4f24f42b26f6cfc2abeacb, type: 3}
+  origianlPrefab: {fileID: 3194445642223133116, guid: f76fb51f8d4f24f42b26f6cfc2abeacb, type: 3}
   poolSize: 32
 --- !u!1 &7305771767777291358
 GameObject:
@@ -264,6 +310,7 @@ Transform:
   - {fileID: 5600265404999894413}
   - {fileID: 5686676192535132908}
   - {fileID: 8431684570869428650}
+  - {fileID: 1583983367}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

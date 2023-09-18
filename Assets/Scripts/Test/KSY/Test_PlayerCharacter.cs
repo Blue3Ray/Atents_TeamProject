@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test_PlayerCharacter : Character, IExperience
+public class Test_PlayerCharacter : CharacterBase, IExperience
 {
     /// <summary>
     /// 경험치 구현 부분
@@ -49,22 +49,22 @@ public class Test_PlayerCharacter : Character, IExperience
         {
             if (level != value)
             {
-                if (value > level) onLevelUP?.Invoke();
+                if (value > level) onLevelUP?.Invoke(level);
                 level = value;   
             }
         }
     }
 
     public Action<uint, int, int> onChangeEx { get; set ; }
-    public Action onLevelUP { get; set; }
+    public Action<uint> onLevelUP { get; set; }
 
     //-------------------------------------------------------------------------------------------------
 
     protected override void Awake()
     {
         base.Awake();
-        onLevelUP += IncreaceMax;
-        onLevelUP += () => HP = MaxHP;
+        onLevelUP += (level) => IncreaceMax();
+        onLevelUP += (level) => HP = MaxHP;
     }
 
     public override void OnInitialize()

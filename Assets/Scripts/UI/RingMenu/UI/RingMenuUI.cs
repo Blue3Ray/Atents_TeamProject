@@ -2,39 +2,38 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using TMPro;
 using System;
-using Unity.VisualScripting;
 
-public class RingMenuUI : RingMenuSlotUI
+public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     ActionControl acionControl;
-    // 속성 메뉴
-    Transform elemanterMenu;
 
     RingMenuSlotUI[] slot;
 
-    protected override void Awake()
+    CanvasGroup canvasGroup;
+
+    Transform test;
+
+    private void Awake()
     {
-        base.Awake();
 
         acionControl = new ActionControl();
-
-        elemanterMenu = transform.GetChild(0);
-        slot = new RingMenuSlotUI[5];
-        slot[0] = elemanterMenu.GetChild(0).GetComponent<RingMenuSlotUI>();
-        slot[1] = elemanterMenu.GetChild(1).GetComponent<RingMenuSlotUI>();
-        slot[2] = elemanterMenu.GetChild(2).GetComponent<RingMenuSlotUI>();
-        slot[3] = elemanterMenu.GetChild(3).GetComponent<RingMenuSlotUI>();
-       
-        slot[0].onClick += SlotSelect;
-        slot[1].onClick += SlotSelect;
-        slot[2].onClick += SlotSelect;
-        slot[3].onClick += SlotSelect;
         
-       
+        slot = new RingMenuSlotUI[5];
+        test = transform.GetChild(0);
+        slot[0] = test.GetChild(1).GetComponent<RingMenuSlotUI>();
+        slot[1] = test.GetChild(2).GetComponent<RingMenuSlotUI>();
+        slot[2] = test.GetChild(3).GetComponent<RingMenuSlotUI>();
+        slot[3] = test.GetChild(4).GetComponent<RingMenuSlotUI>();
+
+        slot[0].onEnter += Onclick;
+        slot[1].onEnter += Onclick;
+        slot[2].onEnter += Onclick;
+        slot[3].onEnter += Onclick;
+        //canvasGroup = GetComponent<CanvasGroup>();
+
+
     }
 
     private void OnEnable()
@@ -54,7 +53,8 @@ public class RingMenuUI : RingMenuSlotUI
 
     private void Start()
     {
-        elemanterMenu.gameObject.SetActive(false);
+        //canvasGroup.alpha = 0.0f;
+        test.gameObject.SetActive(false);
     }
 
 
@@ -62,12 +62,12 @@ public class RingMenuUI : RingMenuSlotUI
     ///  오른쪽 마우스로 RingMenu 호출
     /// </summary>
     /// <param name="context"></param>
-    private void OnRingMenu(InputAction.CallbackContext context)
+    private void OnRingMenu(InputAction.CallbackContext _)
     {
         Vector3 mousepostion = Mouse.current.position.ReadValue();
-
-        elemanterMenu.transform.position = mousepostion;
-        elemanterMenu.gameObject.SetActive(true);
+        transform.position = mousepostion;
+        test.gameObject.SetActive(true);
+        //canvasGroup.alpha = 1.0f;
     }
 
     /// <summary>
@@ -76,38 +76,32 @@ public class RingMenuUI : RingMenuSlotUI
     /// <param name="context"></param>
     private void RingSlotSelect(InputAction.CallbackContext context)
     {
-        
-        elemanterMenu.gameObject.SetActive(false);
+
+        test.gameObject.SetActive(false);
+       // canvasGroup.alpha = 0.0f;
     }
 
-    public void SlotClick()
+    public ElementalType selectIndex = 0;
+
+    public void Onclick(uint index)
+    {
+        selectIndex = (ElementalType)index;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
     {
         
     }
-   
 
-    public void SlotSelect(uint index)
+    public void OnPointerUp(PointerEventData eventData)
     {
-        switch (index)
+        if(eventData.button == PointerEventData.InputButton.Right)
         {
-            case (uint)ElementalType.Fire:
+            Debug.Log($"업 현재 선택된 값 : {selectIndex}");
+            GameManager.Ins.player.ElemantalSelect(selectIndex);
           
-                Debug.Log("불");
-                break;
-            case (uint)ElementalType.Wind:
-                
-                Debug.Log("바람");
-                break;
-            case (uint)ElementalType.Water:
-              
-                Debug.Log("물");
-                break;
-            case (uint)ElementalType.Thunder:
-             
-                Debug.Log("번개");
-                break;
-
         }
+      
     }
 
 

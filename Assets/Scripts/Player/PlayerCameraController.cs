@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerCameraController : MonoBehaviour
 {
     //readonly int zDistance = -10;
-	PlayerJM player;
+	PlayerJS player;
 	public float CameraSpeed = 5.0f;
 	Vector3 CameraZ;
 	public float MinMapX;
@@ -31,7 +31,7 @@ public class PlayerCameraController : MonoBehaviour
 
 	private void Start()
 	{
-		player = GameManager.Ins.playerTest;
+		player = GameManager.Ins.player;
 	}
 
 	private void FixedUpdate()

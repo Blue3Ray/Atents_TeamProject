@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095ceae8286ff0741a5a8e1e76ba4c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalType: 0
-  ProjectileSpeed: 1
+  elementalType: 1
+  ProjectileSpeed: 0.5
   ProjectileLife: 3
 --- !u!95 &7017759619845434878
 Animator:

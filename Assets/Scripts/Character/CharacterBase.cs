@@ -25,7 +25,7 @@ public class CharacterBase : PooledObject, IHealth
             if (IsAlive)
             {
                 hp = value;
-                
+
                 if (hp <= 0)
                 {
                     onDie?.Invoke();
@@ -113,13 +113,21 @@ public class CharacterBase : PooledObject, IHealth
     }
 
     public System.Action<float> onDefenceChange { get; set; }
-   
+
     /// <summary>
     /// 캐릭터가 가질 원소 속성
     /// </summary>
     protected ElemantalStates elemantalStatus;
 
-    public ElemantalStates ElemantalStates => elemantalStatus;
+    public virtual ElemantalStates ElemantalStates
+    {
+        get => elemantalStatus;
+        set
+        {
+            elemantalStatus = value;
+        }
+
+    }
 
     // 속성 공격력
     public float elemantalAttack;
@@ -153,17 +161,6 @@ public class CharacterBase : PooledObject, IHealth
         //onDie?.Invoke();
     }
 
-    // 속성 선택 함수
-    public void ElemantalSelect(ElementalType elemantal)
-    {
-        elemantalStatus.ChangeType(elemantal);
-    }
-
-    // 속성 업그레이드 함수
-    public void ElemantalUpgrade(int elemantalLevel)
-    {
-
-    }
 
     // 체력 회복 기능 ----------------------------------------------
     

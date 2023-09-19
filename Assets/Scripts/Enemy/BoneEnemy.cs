@@ -23,11 +23,6 @@ public class BoneEnemy : EnemyBase
     [SerializeField]
     bool isAttacking = false;
 
-    /// <summary>
-    /// 공격 받은 상태인지 확인하는 변수(공격 맞은 상태면 움직이는 속도가 0이여야 됨)
-    /// </summary>
-    [SerializeField]
-    bool isHitted = false;
 
     // 이동 기능 ---------------------------------------------------------------
 

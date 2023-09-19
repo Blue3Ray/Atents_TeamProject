@@ -153,6 +153,7 @@ public class PlayerJS : CharacterBase, IExperience
 					if (playerEx > playerExMax)		// 현재 경험치가 맥스 경험치에 도달할 때(레벨업 할 때)
 					{
 						LevelUp();
+						Debug.Log("levelup");
 					}
 					onChangeEx?.Invoke(playerLevel, playerEx, playerExMax);
                 }
@@ -254,7 +255,7 @@ public class PlayerJS : CharacterBase, IExperience
 	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는 프로퍼티로써
 	/// elemantalStatus를 set할 때마다 원소 타입을 챙겨서 연결되는 함수를 바꾼다.
 	/// </summary>
-	public ElemantalStates PlayerElementalStatus
+	public override ElemantalStates ElemantalStates
 	{
 		get => elemantalStatus;
 		set
@@ -646,7 +647,7 @@ public class PlayerJS : CharacterBase, IExperience
 		if(IsAlive)
 		{
 			int randomAttackIndex;
-			randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);			//0부터 2까지 난수 저장
+			randomAttackIndex = UnityEngine.Random.Range(0, 3);					//0부터 2까지 난수 저장
 			anim.SetTrigger(AttackHashes[randomAttackIndex]);					//랜덤으로 정해진 번째의 공격 애니메이션 실행
 			ActiveElementalAttack?.Invoke();                                    //실질적 공격 명령 함수 (연결되는 함수가 원소별로 여러가지이다.)
 		}
@@ -728,15 +729,10 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void FarAttack(PoolObjectType type)
 	{
-		if (spriteRenderer.flipX == false)
-		{
-			Factory.Ins.GetObject(type, attackArea.transform.position, 0);
-		}
-		else
-		{
-			Factory.Ins.GetObject(type, attackArea.transform.position, 180);
-		}
-	}
+		GameObject temp = Factory.Ins.GetObject(type, attackArea.transform.position, 0);
+		ProjectileBase tempProjectile = temp.GetComponent<ProjectileBase>();
+		tempProjectile.OnInitialize(knockBackDir);
+    }
 
 	private void SetTouchedWall_Right(bool IsOn)
 	{
@@ -768,18 +764,18 @@ public class PlayerJS : CharacterBase, IExperience
 	public void PlayerElementalStatusChange(ElementalType elementalType)
 	{
 		elemantalStatus.ChangeType(elementalType);
-		PlayerElementalStatus = elemantalStatus;
+		ElemantalStates = elemantalStatus;
 	}
 
 	public override void Defence(float damage, ElemantalStates elemantal = null)
 	{
-		anim.SetTrigger(Hash_Hurt);
 		base.Defence(damage, elemantal);
+		if(IsAlive) anim.SetTrigger(Hash_Hurt);
 	}
 
     public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
     {
-        anim.SetTrigger(Hash_Hurt);
         base.Defence(damage, knockBackDir, elemantal);
+        if (IsAlive) anim.SetTrigger(Hash_Hurt);
     }
 }

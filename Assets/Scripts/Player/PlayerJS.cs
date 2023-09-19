@@ -95,6 +95,10 @@ public class PlayerJS : CharacterBase, IExperience
     public float MaxMP
     {
         get => maxMP;
+		private set
+		{
+			maxMP = value;
+		}
     }
 
     /// <summary>
@@ -163,7 +167,9 @@ public class PlayerJS : CharacterBase, IExperience
         playerExMax = playerExMax * 2;
 
 		MaxHP = MaxHP * 1.1f;
-		maxMP = MaxMP * 1.1f;
+		MaxMP = MaxMP * 1.1f;
+		HP = MaxMP;
+		MP = MaxMP;
     }
 
 	/// <summary>

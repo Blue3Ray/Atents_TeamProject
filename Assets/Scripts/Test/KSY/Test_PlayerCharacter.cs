@@ -28,7 +28,7 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
     /// <summary>
     /// 최대 경험치
     /// </summary>
-    int experieceMax = 100;
+    int experieceMax = 30;
     public int ExperienceMax
     {
         get => experieceMax;
@@ -75,5 +75,10 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
     void IncreaceMax()
     {
         ExperienceMax += 10;
+    }
+
+    public void LevelUp()
+    {
+        throw new NotImplementedException();
     }
 }

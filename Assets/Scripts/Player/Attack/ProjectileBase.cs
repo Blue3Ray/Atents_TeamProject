@@ -70,11 +70,21 @@ public class ProjectileBase : PooledObject
 		StartCoroutine(DisableProjectile());
 	}
 
+	/// <summary>
+	/// 투사체가 생성될 때 설정하는 함수(부모에서는 방향을 지정해 준다)
+	/// </summary>
+	/// <param name="dir">날라갈 방향</param>
+	public virtual void OnInitialize(Vector2 dir)
+	{
+		dirProjectile = dir;
+		transform.localScale *= new Vector2(dir.x, 1);
+	}
+
 	private void Update()
 	{
 		if (MoveOrStop)
 		{
-			transform.Translate(Vector3.right * ProjectileSpeed);
+			transform.Translate(dirProjectile * ProjectileSpeed);
 		}
 	}
 

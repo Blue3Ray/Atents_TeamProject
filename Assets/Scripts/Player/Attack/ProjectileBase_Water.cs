@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ProjectileBase_Water : ProjectileBase
 {
-
-
 	protected override void Awake()
 	{
 		base.Awake();

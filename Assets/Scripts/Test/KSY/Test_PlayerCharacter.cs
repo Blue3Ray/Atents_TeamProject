@@ -9,13 +9,13 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
     /// 경험치 구현 부분
     /// </summary>
     int experience = 0;
-    public int Experience 
-    { 
-        get => experience; 
+    public int Experience
+    {
+        get => experience;
         set
         {
             experience = value;
-            if(experience >= experieceMax)
+            if (experience >= experieceMax)
             {
                 experience -= experieceMax;
                 Level++;
@@ -42,7 +42,7 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
     /// 현재 레벨
     /// </summary>
     uint level = 1;
-    public uint Level 
+    public uint Level
     {
         get => level;
         set
@@ -50,12 +50,12 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
             if (level != value)
             {
                 if (value > level) onLevelUP?.Invoke(level);
-                level = value;   
+                level = value;
             }
         }
     }
 
-    public Action<uint, int, int> onChangeEx { get; set ; }
+    public Action<uint, int, int> onChangeEx { get; set; }
     public Action<uint> onLevelUP { get; set; }
 
     //-------------------------------------------------------------------------------------------------
@@ -82,5 +82,4 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
     {
         throw new NotImplementedException();
     }
-
 }

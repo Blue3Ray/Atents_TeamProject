@@ -647,7 +647,7 @@ public class PlayerJS : CharacterBase, IExperience
 		if(IsAlive)
 		{
 			int randomAttackIndex;
-			randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);			//0부터 2까지 난수 저장
+			randomAttackIndex = UnityEngine.Random.Range(0, 3);					//0부터 2까지 난수 저장
 			anim.SetTrigger(AttackHashes[randomAttackIndex]);					//랜덤으로 정해진 번째의 공격 애니메이션 실행
 			ActiveElementalAttack?.Invoke();                                    //실질적 공격 명령 함수 (연결되는 함수가 원소별로 여러가지이다.)
 		}
@@ -729,15 +729,10 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void FarAttack(PoolObjectType type)
 	{
-		if (spriteRenderer.flipX == false)
-		{
-			Factory.Ins.GetObject(type, attackArea.transform.position, 0);
-		}
-		else
-		{
-			Factory.Ins.GetObject(type, attackArea.transform.position, 180);
-		}
-	}
+		GameObject temp = Factory.Ins.GetObject(type, attackArea.transform.position, 0);
+		ProjectileBase tempProjectile = temp.GetComponent<ProjectileBase>();
+		tempProjectile.OnInitialize(knockBackDir);
+    }
 
 	private void SetTouchedWall_Right(bool IsOn)
 	{
@@ -775,7 +770,7 @@ public class PlayerJS : CharacterBase, IExperience
 	public override void Defence(float damage, ElemantalStates elemantal = null)
 	{
 		base.Defence(damage, elemantal);
-		if(IsAlive)anim.SetTrigger(Hash_Hurt);
+		if(IsAlive) anim.SetTrigger(Hash_Hurt);
 	}
 
     public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)

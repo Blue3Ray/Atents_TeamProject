@@ -256,11 +256,12 @@ MonoBehaviour:
   hp: 1
   maxHP: 100
   knockBackDir: {x: 0, y: 0, z: 0}
-  attackState: 0
+  attackState: 10
   defenceState: 0
   elemantalAttack: 0
   elemantalDefence: 0
   waitTime: 2
+  experiencePoint: 10
   maxMoveSpeed: 8
   farSightRange: 5
   closeSightRange: 2

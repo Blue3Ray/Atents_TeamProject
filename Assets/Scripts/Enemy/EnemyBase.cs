@@ -75,6 +75,7 @@ public class EnemyBase : CharacterBase
             {
                 moveDir = value;
                 transform.localScale = new Vector3(moveDir.x, 1, 1);
+                knockBackDir = moveDir;
             }
         }
     }
@@ -179,13 +180,13 @@ public class EnemyBase : CharacterBase
     public override void Defence(float damage, ElemantalStatus elemantal = null)
     {
         base.Defence(damage, elemantal);
-        if(IsAlive) animator.SetTrigger(Hash_GetHit);
+        //if(IsAlive) animator.SetTrigger(Hash_GetHit);
     }
 
-    public override void Defence(float damage, float knockBackPower, ElemantalStatus elemantal = null)
+    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
     {
-        base.Defence(damage, knockBackPower, elemantal);
-        if (IsAlive) animator.SetTrigger(Hash_GetHit);
+        base.Defence(damage, knockBackDir, elemantal);
+        //if (IsAlive) animator.SetTrigger(Hash_GetHit);
     }
 
     // 생존 관련 기능 들 ----------------------

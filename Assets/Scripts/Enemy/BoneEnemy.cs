@@ -18,8 +18,9 @@ public class BoneEnemy : EnemyBase
     float attackRange;
 
     /// <summary>
-    /// 공격 애니메이션 도중인지 확인하는 변수(상태머신이랑 별개로 움직임, 공격 도중 움직이는 것을 방지)
+    /// 공격 애니메이션 도중인지 확인하는 변수(상태머신이랑 별개로 움직임, 공격 도중 움직이는 것을 방지, 공격 도중 맞아도 공격지속시키는 역할함)
     /// </summary>
+    [SerializeField]
     bool isAttacking = false;
 
 
@@ -143,6 +144,8 @@ public class BoneEnemy : EnemyBase
         waypoints = new Vector2[2];
         waypoints[0] = transform.position + new Vector3(3, 0);
         waypoints[1] = transform.position + new Vector3(-3, 0);
+
+        attackCurrentCoolTime = -1;
 
         State = EnemyState.Wait;
     }
@@ -307,6 +310,12 @@ public class BoneEnemy : EnemyBase
         {
             Attack(attackTarget, 5);
         }
+    }
+
+    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
+    {
+        base.Defence(damage, knockBackDir, elemantal);
+        if (IsAlive && !isAttacking) animator.SetTrigger(Hash_GetHit);
     }
 
     // 생존 기능 ----------------------------------------

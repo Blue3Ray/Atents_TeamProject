@@ -8,8 +8,6 @@ public class SkillStatusUI : MonoBehaviour
 {
     TextMeshProUGUI ename;
 
-  
-
     public ElementalType elementalType = 0;
 
     private void Awake()
@@ -22,7 +20,6 @@ public class SkillStatusUI : MonoBehaviour
     {
         PlayerJS testplayer = GameManager.Ins.player;
         ename.text = testplayer.PlayerElementalStatus.ToString();
-    
     }
 
 }

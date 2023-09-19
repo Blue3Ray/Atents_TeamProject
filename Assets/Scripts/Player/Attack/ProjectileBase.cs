@@ -103,8 +103,8 @@ public class ProjectileBase : PooledObject
 
 	protected virtual void OnAttack(CharacterBase characterTarget)
 	{
-		characterTarget.knockBackDir = dirProjectile;
-		characterTarget.Defence(status, knockBackPower,elemantalStatus);
+		// characterTarget.knockBackDir = dirProjectile;
+		characterTarget.Defence(status, dirProjectile * knockBackPower,elemantalStatus);
 	}
 
 

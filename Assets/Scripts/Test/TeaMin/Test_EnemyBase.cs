@@ -17,6 +17,6 @@ public class Test_EnemyBase : TestBase
 
     protected override void Test1(InputAction.CallbackContext context)
     {
-        enemy.Defence(20, 10);
+        //enemy.Defence(20, 10);
     }
 }

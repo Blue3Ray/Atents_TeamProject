@@ -213,14 +213,14 @@ public class CharacterBase : PooledObject, IHealth
     {
         Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
-        target.Defence(AttackState);
+        target.Defence(AttackState, knockBackDir);
     }
 	public virtual void Attack(CharacterBase target, float knockBackPower)
 	{
 		Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
 
-		target.Defence(AttackState, knockBackPower, elemantalStatus);
+		target.Defence(AttackState, knockBackDir * knockBackPower, elemantalStatus);
 	}
 
 	public virtual void Defence(float damage, ElemantalStatus elemantal = null)
@@ -256,11 +256,11 @@ public class CharacterBase : PooledObject, IHealth
         HP -= resultDamage;
     }
     
-    public virtual void Defence(float damage, float knockBackPower, ElemantalStatus elemantal = null)
+    public virtual void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
     {
         if(characterRigid != null)
         {
-            characterRigid.AddForce(knockBackDir * knockBackPower, ForceMode2D.Impulse);
+            characterRigid.AddForce(knockBackDir, ForceMode2D.Impulse);
         }
 		float resultDamage = 0;
 		if (elemantal == null || elemantal.Elemantal == ElementalType.None)
@@ -289,7 +289,7 @@ public class CharacterBase : PooledObject, IHealth
 			}
 		}
 
-		Debug.Log($"{gameObject.name}이(가) {resultDamage}만큼 피해를 입었다!");
+		//Debug.Log($"{gameObject.name}이(가) {resultDamage}만큼 피해를 입었다!");
 		HP -= resultDamage;
 	}
 

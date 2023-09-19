@@ -1,12 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
-using System.Net.NetworkInformation;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerJS : CharacterBase, IExperience
 {
@@ -339,6 +335,18 @@ public class PlayerJS : CharacterBase, IExperience
 	/// Move 액션맵에 바인딩 된 키들의 벡터값을 저장
 	/// </summary>
 	Vector2 dir;
+	Vector2 Dir
+	{
+		get => dir;
+		set
+		{
+			if(dir != value)
+			{
+				dir = value;
+				knockBackDir = dir;
+			}
+		}
+	}
 
 	/// <summary>
 	/// 애니메이터 컴포넌트를 받아올 변수
@@ -480,7 +488,7 @@ public class PlayerJS : CharacterBase, IExperience
 		{ 
 			anim.SetTrigger(Hash_Death);
 			DisableInputAction();
-			dir = Vector2.zero;
+			Dir = Vector2.zero;
 		};
 	}
 
@@ -502,7 +510,7 @@ public class PlayerJS : CharacterBase, IExperience
 	}
 	private void FixedUpdate()
 	{
-		transform.Translate(Time.fixedDeltaTime * moveSpeed * dir);
+		transform.Translate(Time.fixedDeltaTime * moveSpeed * Dir);
 	}
 
 	private void OnClickMouse_Left(InputAction.CallbackContext obj)
@@ -527,32 +535,35 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnMove(InputAction.CallbackContext context)
 	{
+		Vector2 result = Vector2.zero;
 
-		if (context.canceled)
+        if (context.canceled)
 		{
 			anim.SetInteger(Hash_AnimState, 0);
-			dir = Vector2.zero;
+			//result = Vector2.zero;
 		}
 		else
 		{
-			dir = context.ReadValue<Vector2>();
-			if (dir.x != 0)
+			
+			result = context.ReadValue<Vector2>();
+			if (result.x != 0)
 			{
-				if (dir.x < -0.1f)
+				if (result.x < -0.1f)
 				{
 					attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
 					spriteRenderer.flipX = true;
 				}
-				else if (dir.x > 0.1f)
+				else if (result.x > 0.1f)
 				{
 					attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 					spriteRenderer.flipX = false;
 				}
 				anim.SetInteger(Hash_AnimState, 1);
 			}
-			dir.y = 0;
+            result.y = 0;
 		}
-	}
+        Dir = result;
+    }
 
 
 	private void OnDash(InputAction.CallbackContext obj)
@@ -693,7 +704,7 @@ public class PlayerJS : CharacterBase, IExperience
 	{
 		foreach(var tmp in targetChars)
 		{
-			tmp.Defence(attackState);
+			tmp.Defence(attackState, knockBackDir);
 		}
 	}
 	private void FireAttack()
@@ -768,4 +779,10 @@ public class PlayerJS : CharacterBase, IExperience
 		anim.SetTrigger(Hash_Hurt);
 		base.Defence(damage, elemantal);
 	}
+
+    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
+    {
+        anim.SetTrigger(Hash_Hurt);
+        base.Defence(damage, knockBackDir, elemantal);
+    }
 }

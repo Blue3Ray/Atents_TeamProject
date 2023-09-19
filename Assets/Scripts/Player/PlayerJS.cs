@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerJS : CharacterBase, IExperience
 {
-
 	/// <summary>
 	/// 레이어를 옮겼다 가져오는 시간
 	/// </summary>
@@ -477,18 +476,12 @@ public class PlayerJS : CharacterBase, IExperience
 		wallsensor[0].OnWall += (OnOff) => SetTouchedWall_Right(OnOff);
 		wallsensor[1].OnWall += (OnOff) => SetTouchedWall_Left(OnOff);
 
-		SetUIValue();
-    }
-
-	/// <summary>
-	/// 초기 UI값 설정용 함수(델리게이트 연결 타이밍이 애매해서 따로 실행하는 함수)
-	/// </summary>
-	public void SetUIValue()
-	{
         MP = MaxMP;
         HP = MaxHP;
         Level = 1;
     }
+
+	
 	private void FixedUpdate()
 	{
 		transform.Translate(Time.fixedDeltaTime * moveSpeed * Dir);

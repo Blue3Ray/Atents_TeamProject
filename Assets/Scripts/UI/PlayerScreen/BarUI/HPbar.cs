@@ -8,8 +8,10 @@ public class HPbar : BarBase
 {
     protected override void Start()
     {
-        GameManager.Ins.player.onHealthChange += (current, max) => OnValueChange(current, max);
-        base.Start();
+        PlayerJS player = GameManager.Ins.player;
+        OnValueChange(player.HP, player.MaxHP);
+        player.onHealthChange += (current, max) => OnValueChange(current, max);
+        //base.Start();
     }
 
 }

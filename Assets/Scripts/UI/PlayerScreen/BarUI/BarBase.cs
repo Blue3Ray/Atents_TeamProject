@@ -21,7 +21,7 @@ public class BarBase : MonoBehaviour
 
     protected virtual void Start()
     {
-        GameManager.Ins.player.SetUIValue();
+        
     }
 
     /// <summary>

@@ -7,8 +7,9 @@ public class MPbar : BarBase
 {
     protected override void Start()
     {
-        GameManager.Ins.player.onMpChange += (current, max) => OnValueChange(current, max);
-        base.Start();
+        PlayerJS player = GameManager.Ins.player;
+        OnValueChange(player.MP, player.MaxMP);
+        player.onMpChange += (current, max) => OnValueChange(current, max);
 	}
 
 }

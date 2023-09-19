@@ -17,18 +17,18 @@ public class Leveling : MonoBehaviour
 
         child = transform.GetChild(1);
         slider = child.GetComponent<Slider>();
-        
     }
 
     private void Start()
     {
-        PlayerJS testPlayer = GameManager.Ins.player;
-        testPlayer.onChangeEx += RefreshData;
+        PlayerJS player = GameManager.Ins.player;
+        RefreshData(player.Level, player.Experience, player.ExperienceMax);
+        player.onChangeEx += RefreshData;
     }
 
     public void RefreshData(uint level, int  experience, int experienceMax)
     {
-        slider.value = (float) experience / (float) experienceMax;
-        levelIndex.text = level.ToString();
+        slider.value = experience / experienceMax;
+        levelIndex.text = $"{level}";
     }
 }

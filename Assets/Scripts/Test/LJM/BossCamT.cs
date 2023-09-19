@@ -20,9 +20,17 @@ public class BossCamT : MonoBehaviour
         virtualCamera.LookAt = player;
 
         
-        //StartCoroutine(MoveCameraToBoss());
-    }
+        StartCoroutine(MoveCameraToBoss());
 
+
+    }
+    IEnumerator MyCoroutine()
+    {
+        // 코루틴 내용
+        yield return new WaitForSeconds(2.0f); // 2초 대기
+
+        Debug.Log("코루틴이 종료됨");
+    }
     IEnumerator MoveCameraToBoss()
     {
         

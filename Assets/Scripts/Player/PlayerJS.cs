@@ -255,7 +255,7 @@ public class PlayerJS : CharacterBase, IExperience
 	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는 프로퍼티로써
 	/// elemantalStatus를 set할 때마다 원소 타입을 챙겨서 연결되는 함수를 바꾼다.
 	/// </summary>
-	public ElemantalStates PlayerElementalStatus
+	public override ElemantalStates ElemantalStates
 	{
 		get => elemantalStatus;
 		set
@@ -764,7 +764,7 @@ public class PlayerJS : CharacterBase, IExperience
 	public void PlayerElementalStatusChange(ElementalType elementalType)
 	{
 		elemantalStatus.ChangeType(elementalType);
-		PlayerElementalStatus = elemantalStatus;
+		ElemantalStates = elemantalStatus;
 	}
 
 	public override void Defence(float damage, ElemantalStates elemantal = null)

@@ -259,7 +259,7 @@ MonoBehaviour:
   hp: 100
   maxHP: 100
   knockBackDir: {x: 0, y: 0, z: 0}
-  attackState: 10
+  attackState: 20
   defenceState: 0
   elemantalAttack: 0
   elemantalDefence: 0
@@ -320,7 +320,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.18780689
+  m_Radius: 0.2
 --- !u!114 &5382252199004232722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,7 +442,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.18780689
+  m_Radius: 0.2
 --- !u!114 &5382252197843512358
 MonoBehaviour:
   m_ObjectHideFlags: 0

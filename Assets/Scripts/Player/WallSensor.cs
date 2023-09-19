@@ -7,7 +7,7 @@ public class WallSensor : MonoBehaviour
 {
 	public Action<bool> OnWall;
 	
-
+	
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.CompareTag("Ground"))
@@ -22,7 +22,8 @@ public class WallSensor : MonoBehaviour
 	{
 		if (collision.CompareTag("Ground"))
 		{
-			OnWall?.Invoke(false);
+            Debug.Log("¶³¾îÁü");
+            OnWall?.Invoke(false);
 		}
 	}
 

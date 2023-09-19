@@ -184,7 +184,8 @@ public class BoneEnemy : EnemyBase
         }
         else
         {
-            rb.MovePosition(transform.position + (Vector3) (CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir));
+            transform.Translate(CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir * 0.1f);
+            //rb.MovePosition(transform.position + (Vector3) (CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir));
             
             if (Mathf.Abs(waypoints[currentWaypointIndex].x - transform.position.x) < 0.1f)
             {
@@ -195,8 +196,6 @@ public class BoneEnemy : EnemyBase
             }
         }
     }
-
-    
 
     protected override void Update_Chase()
     {
@@ -236,7 +235,8 @@ public class BoneEnemy : EnemyBase
             currentChaseTime = ChaseMaxUpdateTime;
         }
 
-        rb.MovePosition(transform.position + (Vector3)(CurrentMoveSpeed * Time.deltaTime * moveDir));
+        transform.Translate(CurrentMoveSpeed * Time.deltaTime * MoveDir * 0.1f);
+        //rb.MovePosition(transform.position + (Vector3)(CurrentMoveSpeed * Time.deltaTime * moveDir));
         currentChaseTime -= Time.deltaTime;
     }
 
@@ -252,6 +252,8 @@ public class BoneEnemy : EnemyBase
             //(attackTarget);
         }
     }
+
+    // 공격 기능 ---------------------------------------
 
     /// <summary>
     /// 공격 쿨다운 감소시키는 코루틴
@@ -299,7 +301,7 @@ public class BoneEnemy : EnemyBase
     }
 
 
-    // 공격 기능 ---------------------------------------
+    
 
     /// <summary>
     /// 애니메이션에 달릴 공격 이벤트 함수
@@ -311,6 +313,10 @@ public class BoneEnemy : EnemyBase
             Attack(attackTarget, 5);
         }
     }
+
+    // 방어 기능 ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
     public override void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
     {

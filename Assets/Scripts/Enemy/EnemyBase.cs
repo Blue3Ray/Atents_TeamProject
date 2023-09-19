@@ -14,6 +14,7 @@ public class EnemyBase : CharacterBase
         Patrol,
         Chase,
         Attack,
+        Hitted,
         Dead
     }
 
@@ -75,7 +76,7 @@ public class EnemyBase : CharacterBase
             {
                 moveDir = value;
                 transform.localScale = new Vector3(moveDir.x, 1, 1);
-                knockBackDir = moveDir;
+                if(moveDir != Vector2.zero) knockBackDir = moveDir;
             }
         }
     }
@@ -158,6 +159,8 @@ public class EnemyBase : CharacterBase
     protected virtual void Update_Chase() { }
 
     protected virtual void Update_Attack() { }
+
+    protected virtual void Update_Hitted() { }
 
     protected virtual void Update_Dead() { }
 

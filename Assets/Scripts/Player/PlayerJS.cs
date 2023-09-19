@@ -317,7 +317,7 @@ public class PlayerJS : CharacterBase, IExperience
 			if(dir != value)
 			{
 				dir = value;
-				knockBackDir = dir;
+				if(dir != Vector2.zero) knockBackDir = dir;
 			}
 		}
 	}
@@ -382,11 +382,6 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	List<CharacterBase> targetChars = new();
 
-	/// <summary>
-	/// 
-	/// </summary>
-	Vector3 LeftCross;
-
 	protected override void OnEnable()
 	{
 		EnableInputAction();											//클릭을 제외한 다른 input System 연결
@@ -438,7 +433,7 @@ public class PlayerJS : CharacterBase, IExperience
 		attackArea = attackAreaPivot.GetChild(0).gameObject;
 		attackCollider = GetComponentInChildren<Player_AttackArea>();
 		defencSensor = transform.GetChild(5).GetComponent<DefencSensor>();
-		defencSensor.OnDefence += (demage) => Defence(demage);
+		defencSensor.OnDefence += (demage) => Defence(demage, -Dir * 2.0f);
 		
 		//AttackCollider에서 들어온 것을 리스트에 추가
 		attackCollider.onCharacterEnter += (target) =>
@@ -465,7 +460,6 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void Start()
 	{
-		LeftCross = transform.up * 2 + -(transform.right);
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
 		anim.SetFloat(Hash_AirSpeedY, fallSpeed);
@@ -634,13 +628,12 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnAttack(InputAction.CallbackContext context_)
 	{
-		if(MP> 0 && IsAlive)
+		if(IsAlive)
 		{
 			int randomAttackIndex;
 			randomAttackIndex = (int)UnityEngine.Random.Range(0, 3);			//0부터 2까지 난수 저장
 			anim.SetTrigger(AttackHashes[randomAttackIndex]);					//랜덤으로 정해진 번째의 공격 애니메이션 실행
 			ActiveElementalAttack?.Invoke();                                    //실질적 공격 명령 함수 (연결되는 함수가 원소별로 여러가지이다.)
-			MP -= 5;
 		}
 	}
 
@@ -676,6 +669,7 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void NoneAttack()
 	{
+		Debug.Log(knockBackDir);
 		foreach(var tmp in targetChars)
 		{
 			tmp.Defence(attackState, knockBackDir);
@@ -683,23 +677,38 @@ public class PlayerJS : CharacterBase, IExperience
 	}
 	private void FireAttack()
 	{
-		FarAttack(PoolObjectType.Projectile_Fire);
+		if (MP > 0)
+		{
+			FarAttack(PoolObjectType.Projectile_Fire);
+			MP -= 5;
+		}
 	}
 	private void WaterAttack()
 	{
-
-		FarAttack(PoolObjectType.Projectile_Water);
-	}
+        if (MP > 0)
+        {
+            FarAttack(PoolObjectType.Projectile_Water);
+            MP -= 5;
+        }
+    }
 
 	private void ThunderAttack()
 	{
-		FarAttack(PoolObjectType.Projectile_Thunder);
-	}
+        if (MP > 0)
+        {
+            FarAttack(PoolObjectType.Projectile_Thunder);
+            MP -= 5;
+        }
+    }
 
 	private void WindAttack()
 	{
-		FarAttack(PoolObjectType.Projectile_Wind);
-	}
+        if (MP > 0)
+        {
+            FarAttack(PoolObjectType.Projectile_Wind);
+            MP -= 5;
+        }
+    }
 
 
 

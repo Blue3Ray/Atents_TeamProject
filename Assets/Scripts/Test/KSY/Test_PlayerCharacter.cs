@@ -77,17 +77,13 @@ public class Test_PlayerCharacter : CharacterBase, IExperience
         ExperienceMax += 10;
     }
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
     public void LevelUp()
     {
         throw new NotImplementedException();
     }
-<<<<<<< Updated upstream
-}
-=======
 
 }
->>>>>>> Stashed changes
+
+
+

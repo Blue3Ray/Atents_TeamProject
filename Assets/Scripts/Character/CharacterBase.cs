@@ -30,7 +30,8 @@ public class CharacterBase : PooledObject, IHealth
                 {
                     onDie?.Invoke();
                 }
-                hp = Mathf.Clamp(HP, 0, MaxHP);
+                hp = Mathf.Clamp(hp, 0, maxHP);
+                onHealthChange?.Invoke(hp, maxHP);
             }
 
         }
@@ -53,9 +54,9 @@ public class CharacterBase : PooledObject, IHealth
     }
 
     /// <summary>
-    /// 캐릭터의 체력이 변화될 때 불리는 델리게이트
+    /// 캐릭터의 체력이 변화될 때 불리는 델리게이트(현재 값, 최대 값)
     /// </summary>
-    public System.Action<float> onHealthChange { get; set; }
+    public System.Action<float, float> onHealthChange { get; set; }
 
     /// <summary>
     /// 캐릭터가 죽을 때 불리는 델리게이트

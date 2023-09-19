@@ -16,9 +16,9 @@ public interface IHealth
     float MaxHP { get; }
 
     /// <summary>
-    /// HP가 변경될 때마다 실행될 델리게이트(파라메터는 비율) 용 프로퍼티
+    /// HP가 변경될 때마다 실행될 델리게이트(현재 값, 최대 값) 용 프로퍼티
     /// </summary>
-    Action<float> onHealthChange { get; set; }
+    Action<float, float> onHealthChange { get; set; }
 
     /// <summary>
     /// 사망 처리용 함수

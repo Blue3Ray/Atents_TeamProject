@@ -265,5 +265,6 @@ MonoBehaviour:
   maxMoveSpeed: 8
   farSightRange: 5
   closeSightRange: 2
-  attackMaxCoolTime: 5
+  attackMaxCoolTime: 3
+  isAttacking: 0
   waypoints: []

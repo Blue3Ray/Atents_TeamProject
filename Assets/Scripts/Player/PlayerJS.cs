@@ -91,42 +91,17 @@ public class PlayerJS : CharacterBase, IExperience
 			if (IsAlive)
 			{
 				mp = value;
-				mp = Mathf.Clamp(MP, 0, maxMP);
-				onMpchange?.Invoke(MP / maxMP);
+				mp = Mathf.Clamp(mp, 0, maxMP);
+				onMpChange?.Invoke(mp, maxMP);
 				//Debug.Log($"마나 : {MP}");
 			}
 		}
 	}
-	/// <summary>
-	/// 캐릭터 체력의 프로퍼티
-	/// </summary>
-	new public float HP
-	{
-		get => this.hp;
-		set
-		{
-			if (IsAlive)
-			{
-				hp = value;
-				if (hp <= 0)
-				{
-					onDie?.Invoke();
-				}
-				hp = Mathf.Clamp(HP, 0, MaxHP);
-				onHpchange?.Invoke(hp / maxHP);
-			}
-
-		}
-	}
 
 	/// <summary>
-	/// 마나 바뀔 때 외쳐지는 델리게이트
+	/// 마나 바뀔 때 외쳐지는 델리게이트(현재 값, 최대 값)
 	/// </summary>
-	public Action<float> onMpchange;
-	/// <summary>
-	/// HP 바뀔 때 외쳐지는 델리게이트
-	/// </summary>
-	public Action<float> onHpchange;
+	public Action<float, float> onMpChange;
 
 	/// <summary>
 	/// 플레이어의 레벨
@@ -452,9 +427,6 @@ public class PlayerJS : CharacterBase, IExperience
 
 	protected override void Awake()
 	{
-		MP = maxMP;
-		HP = maxHP;
-		Level = 1;
 		base.Awake();
 		inputActions = new ActionControl();
 		anim = GetComponent<Animator>();
@@ -494,12 +466,10 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void Start()
 	{
-		
 		LeftCross = transform.up * 2 + -(transform.right);
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
 		anim.SetFloat(Hash_AirSpeedY, fallSpeed);
-
 
 		wallsensor = new WallSensor[2];
 		wallsensor[0] = transform.GetChild(1).GetComponent<WallSensor>();
@@ -507,7 +477,18 @@ public class PlayerJS : CharacterBase, IExperience
 		wallsensor[0].OnWall += (OnOff) => SetTouchedWall_Right(OnOff);
 		wallsensor[1].OnWall += (OnOff) => SetTouchedWall_Left(OnOff);
 
-	}
+		SetUIValue();
+    }
+
+	/// <summary>
+	/// 초기 UI값 설정용 함수(델리게이트 연결 타이밍이 애매해서 따로 실행하는 함수)
+	/// </summary>
+	public void SetUIValue()
+	{
+        MP = MaxMP;
+        HP = MaxHP;
+        Level = 1;
+    }
 	private void FixedUpdate()
 	{
 		transform.Translate(Time.fixedDeltaTime * moveSpeed * Dir);

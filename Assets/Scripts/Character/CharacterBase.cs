@@ -117,7 +117,9 @@ public class CharacterBase : PooledObject, IHealth
     /// <summary>
     /// 캐릭터가 가질 원소 속성
     /// </summary>
-    protected ElemantalStatus elemantalStatus;
+    protected ElemantalStates elemantalStatus;
+
+    public ElemantalStates ElemantalStates => elemantalStatus;
 
     // 속성 공격력
     public float elemantalAttack;
@@ -126,7 +128,7 @@ public class CharacterBase : PooledObject, IHealth
 
     protected virtual void Awake()
     {
-        elemantalStatus= new ElemantalStatus();
+        elemantalStatus= new ElemantalStates();
         characterRigid = GetComponent<Rigidbody2D>();
         onDie += Die;
         HP = MaxHP;
@@ -223,7 +225,7 @@ public class CharacterBase : PooledObject, IHealth
 		target.Defence(AttackState, knockBackDir * knockBackPower, elemantalStatus);
 	}
 
-	public virtual void Defence(float damage, ElemantalStatus elemantal = null)
+	public virtual void Defence(float damage, ElemantalStates elemantal = null)
     {
         float resultDamage = 0;
         if (elemantal == null || elemantal.Elemantal == ElementalType.None)
@@ -256,7 +258,7 @@ public class CharacterBase : PooledObject, IHealth
         HP -= resultDamage;
     }
     
-    public virtual void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
+    public virtual void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
     {
         if(characterRigid != null)
         {

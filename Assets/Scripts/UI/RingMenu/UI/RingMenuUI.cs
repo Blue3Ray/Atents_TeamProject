@@ -15,6 +15,8 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     Transform test;
 
+    PlayerJS player;
+
     public System.Action<uint> onUP;
 
     private void Awake()
@@ -34,8 +36,12 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         slot[2].onEnter += Onclick;
         slot[3].onEnter += Onclick;
         //canvasGroup = GetComponent<CanvasGroup>();
+    }
 
-
+    void Start()
+    {
+        player = GameManager.Ins.player;
+        test.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -51,12 +57,6 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         acionControl.MouseClickMenu.MouesRight.canceled -= RingSlotSelect;
         acionControl.MouseClickMenu.MouesRight.performed -= OnRingMenu;
         acionControl.MouseClickMenu.Disable();
-    }
-
-    private void Start()
-    {
-        //canvasGroup.alpha = 0.0f;
-        test.gameObject.SetActive(false);
     }
 
 
@@ -100,8 +100,7 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(eventData.button == PointerEventData.InputButton.Right)
         {
             Debug.Log($"업 현재 선택된 값 : {selectIndex}");
-            GameManager.Ins.player.ElemantalSelect(selectIndex);
-          
+            player.ElemantalSelect(selectIndex);
         }
       
     }

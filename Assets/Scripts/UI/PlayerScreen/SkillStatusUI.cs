@@ -2,24 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.UI;
 
 public class SkillStatusUI : MonoBehaviour
 {
-    TextMeshProUGUI ename;
+    TextMeshProUGUI enameText;
+    Image image;
+
+    public Sprite[] eleSprites;
 
     public ElementalType elementalType = 0;
 
     private void Awake()
     {
-        ename = GetComponent<TextMeshProUGUI>();
-        
+        enameText = GetComponentInChildren<TextMeshProUGUI>();
+        image = GetComponent<Image>();
     }
 
     private void Start()
     {
-        PlayerJS testplayer = GameManager.Ins.player;
-        ename.text = testplayer.PlayerElementalStatus.ToString();
+        PlayerJS player = GameManager.Ins.player;
+        player.ElemantalStates.onElemantaltypeChange += Refresh;
+        //ename.text = player.PlayerElementalStatus.ToString();
     }
 
+    public void Refresh(ElementalType type)
+    {
+        enameText.text = type.ToString();
+        image.sprite = eleSprites[(int)type];
+    }
 }

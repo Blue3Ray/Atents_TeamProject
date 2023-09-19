@@ -13,12 +13,14 @@ public class BossCamT : MonoBehaviour
 
     void Start()
     {
-        
+
+        player = GameManager.Ins.player.transform;
+
         virtualCamera.Follow = player;
         virtualCamera.LookAt = player;
 
         
-        StartCoroutine(MoveCameraToBoss());
+        //StartCoroutine(MoveCameraToBoss());
     }
 
     IEnumerator MoveCameraToBoss()

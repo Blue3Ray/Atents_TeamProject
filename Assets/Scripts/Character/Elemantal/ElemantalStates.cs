@@ -14,7 +14,7 @@ public enum ElementalType
 
 
 
-public class ElemantalStatus 
+public class ElemantalStates 
 {
     ElementalType elemantal = ElementalType.None;
     public ElementalType Elemantal

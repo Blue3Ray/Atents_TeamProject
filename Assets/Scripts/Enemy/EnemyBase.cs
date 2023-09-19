@@ -180,13 +180,13 @@ public class EnemyBase : CharacterBase
         attackCurrentCoolTime = attackMaxCoolTime;
     }
 
-    public override void Defence(float damage, ElemantalStatus elemantal = null)
+    public override void Defence(float damage, ElemantalStates elemantal = null)
     {
         base.Defence(damage, elemantal);
         //if(IsAlive) animator.SetTrigger(Hash_GetHit);
     }
 
-    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
+    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
     {
         base.Defence(damage, knockBackDir, elemantal);
         //if (IsAlive) animator.SetTrigger(Hash_GetHit);

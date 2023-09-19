@@ -335,7 +335,7 @@ public class BoneEnemy : EnemyBase
 
     // 방어 기능 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
+    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
     {
         base.Defence(damage, knockBackDir, elemantal);
         if (IsAlive && !isAttacking)                    // 살아 있거나 공격 중이 아닐 때(공격 중에는 hit그로기에 빠지지 않는다)

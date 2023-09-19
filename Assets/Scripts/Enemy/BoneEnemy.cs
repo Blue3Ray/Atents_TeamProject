@@ -23,6 +23,11 @@ public class BoneEnemy : EnemyBase
     [SerializeField]
     bool isAttacking = false;
 
+    /// <summary>
+    /// 공격 받은 상태인지 확인하는 변수(공격 맞은 상태면 움직이는 속도가 0이여야 됨)
+    /// </summary>
+    [SerializeField]
+    bool isHitted = false;
 
     // 이동 기능 ---------------------------------------------------------------
 
@@ -40,6 +45,9 @@ public class BoneEnemy : EnemyBase
 
     // 상태 머신 ---------------------------------------------------------------
 
+
+    EnemyState preState = EnemyState.Wait;
+
     EnemyState state = EnemyState.Patrol;
     EnemyState State
     {
@@ -48,8 +56,9 @@ public class BoneEnemy : EnemyBase
         {
             if (state != value)
             {
+                //Debug.Log($"이전 : {state}, 이후 : {value}");
                 state = value;
-                Debug.Log($"{state}");
+                
                 switch (state)
                 {
                     case EnemyState.Wait:
@@ -70,6 +79,12 @@ public class BoneEnemy : EnemyBase
                         CurrentMoveSpeed = 0;
                         
                         onStateUpdate = Update_Attack;
+                        break;
+                    case EnemyState.Hitted:
+                        CurrentMoveSpeed = 0;
+                        animator.SetTrigger(Hash_GetHit);
+                        StartCoroutine(HitDelay(1.0f));
+                        onStateUpdate = Update_Hitted;
                         break;
                     case EnemyState.Dead:
                         CurrentMoveSpeed = 0;
@@ -244,14 +259,23 @@ public class BoneEnemy : EnemyBase
     {
         if (attackCurrentCoolTime < 0)
         {
-            //Debug.Log($"{gameObject.name}, 공격 시도!");
             animator.SetTrigger(Hash_IsAttack);
             StopCoroutine(attackCoolDown);
             attackCurrentCoolTime = attackMaxCoolTime;
             StartCoroutine(attackCoolDown);
-            //(attackTarget);
         }
     }
+
+    protected override void Update_Hitted()
+    {
+        
+    }
+
+    protected override void Update_Dead()
+    {
+
+    }
+
 
     // 공격 기능 ---------------------------------------
 
@@ -295,11 +319,6 @@ public class BoneEnemy : EnemyBase
         }
     }
 
-    protected override void Update_Dead()
-    {
-
-    }
-
 
     
 
@@ -316,12 +335,30 @@ public class BoneEnemy : EnemyBase
 
     // 방어 기능 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
     public override void Defence(float damage, Vector2 knockBackDir, ElemantalStatus elemantal = null)
     {
         base.Defence(damage, knockBackDir, elemantal);
-        if (IsAlive && !isAttacking) animator.SetTrigger(Hash_GetHit);
+        if (IsAlive && !isAttacking)                    // 살아 있거나 공격 중이 아닐 때(공격 중에는 hit그로기에 빠지지 않는다)
+        {
+            if(State != EnemyState.Hitted) preState = State;
+            State = EnemyState.Hitted;
+        }
+    }
+
+
+    float currentDelayTime = 0;
+    IEnumerator HitDelay(float delayTime)
+    {
+        if(currentDelayTime <= 0) currentDelayTime = delayTime;
+        while (currentDelayTime > 0)
+        {
+            currentDelayTime -= Time.deltaTime;
+            yield return null;
+        }
+        if (State != EnemyState.Dead)
+        {
+            State = preState;
+        }
     }
 
     // 생존 기능 ----------------------------------------

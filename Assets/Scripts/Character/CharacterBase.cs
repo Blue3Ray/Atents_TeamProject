@@ -147,7 +147,7 @@ public class CharacterBase : PooledObject, IHealth
     // 사망 처리용 함수
     public virtual void Die()
     {
-        Debug.Log($"{gameObject.name} 죽음");
+        //Debug.Log($"{gameObject.name} 죽음");
         //onDie?.Invoke();
     }
 
@@ -212,14 +212,13 @@ public class CharacterBase : PooledObject, IHealth
 
     public virtual void Attack(CharacterBase target)
     {
-        Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
+        //Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
         target.Defence(AttackState, knockBackDir);
     }
 	public virtual void Attack(CharacterBase target, float knockBackPower)
 	{
-		Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
-
+		//Debug.Log($"{gameObject.name}이(가) {target.name}을 공격했다!");
 
 		target.Defence(AttackState, knockBackDir * knockBackPower, elemantalStatus);
 	}

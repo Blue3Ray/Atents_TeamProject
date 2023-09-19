@@ -75,13 +75,6 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	float mp;
 
-	int maxMP = 100;
-
-	public int MaxMP
-	{
-		get => maxMP;
-	}
-
 	public float MP
 	{
 		get => mp;
@@ -97,10 +90,17 @@ public class PlayerJS : CharacterBase, IExperience
 		}
 	}
 
-	/// <summary>
-	/// 마나 바뀔 때 외쳐지는 델리게이트(현재 값, 최대 값)
-	/// </summary>
-	public Action<float, float> onMpChange;
+    float maxMP = 100;
+
+    public float MaxMP
+    {
+        get => maxMP;
+    }
+
+    /// <summary>
+    /// 마나 바뀔 때 외쳐지는 델리게이트(현재 값, 최대 값)
+    /// </summary>
+    public Action<float, float> onMpChange;
 
 	/// <summary>
 	/// 플레이어의 레벨
@@ -146,16 +146,25 @@ public class PlayerJS : CharacterBase, IExperience
 				{
 					playerEx = value;
 					//Debug.Log($"Exp : {playerEx}");
-					if (playerEx > playerExMax)
+					if (playerEx > playerExMax)		// 현재 경험치가 맥스 경험치에 도달할 때(레벨업 할 때)
 					{
-						Level++;
-						playerEx = 0;
-						
+						LevelUp();
 					}
-				}
+					onChangeEx?.Invoke(playerLevel, playerEx, playerExMax);
+                }
 			}
 		} 
 	}
+
+	public void LevelUp()
+	{
+        Level++;
+        playerEx = 0;
+        playerExMax = playerExMax * 2;
+
+		MaxHP = MaxHP * 1.1f;
+		maxMP = MaxMP * 1.1f;
+    }
 
 	/// <summary>
 	/// 플레이어의 경험치 최대값
@@ -669,7 +678,6 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void NoneAttack()
 	{
-		Debug.Log(knockBackDir);
 		foreach(var tmp in targetChars)
 		{
 			tmp.Defence(attackState, knockBackDir);

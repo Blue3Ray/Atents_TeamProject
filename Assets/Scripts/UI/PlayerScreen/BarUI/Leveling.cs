@@ -28,7 +28,7 @@ public class Leveling : MonoBehaviour
 
     public void RefreshData(uint level, int  experience, int experienceMax)
     {
-        slider.value = experience / experienceMax;
+        slider.value = experience / (float)experienceMax; ;
         levelIndex.text = $"{level}";
     }
 }

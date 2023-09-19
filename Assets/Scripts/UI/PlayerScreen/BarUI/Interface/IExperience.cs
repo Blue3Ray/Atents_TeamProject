@@ -33,7 +33,13 @@ public interface IExperience
     /// <summary>
     /// 레벨 업을 알리기 위한 데리게이트용 프로퍼티
     /// </summary>
-    Action<uint> onLevelUP { get; set; }  
+    Action<uint> onLevelUP { get; set; }
+
+    /// <summary>
+    /// 레벨업 할 때 실행할 함수
+    /// </summary>
+    public void LevelUp();
+    
 
 
 

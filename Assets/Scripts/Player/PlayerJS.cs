@@ -153,6 +153,7 @@ public class PlayerJS : CharacterBase, IExperience
 					if (playerEx > playerExMax)		// 현재 경험치가 맥스 경험치에 도달할 때(레벨업 할 때)
 					{
 						LevelUp();
+						Debug.Log("levelup");
 					}
 					onChangeEx?.Invoke(playerLevel, playerEx, playerExMax);
                 }

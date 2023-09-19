@@ -773,13 +773,13 @@ public class PlayerJS : CharacterBase, IExperience
 
 	public override void Defence(float damage, ElemantalStates elemantal = null)
 	{
-		anim.SetTrigger(Hash_Hurt);
 		base.Defence(damage, elemantal);
+		if(IsAlive)anim.SetTrigger(Hash_Hurt);
 	}
 
     public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
     {
-        anim.SetTrigger(Hash_Hurt);
         base.Defence(damage, knockBackDir, elemantal);
+        if (IsAlive) anim.SetTrigger(Hash_Hurt);
     }
 }

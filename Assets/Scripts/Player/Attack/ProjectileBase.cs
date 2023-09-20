@@ -50,7 +50,6 @@ public class ProjectileBase : PooledObject
 	
 	protected Animator anim;
 
-
 	protected float knockBackPower = 1;
 
 	protected readonly int Hash_Collision = Animator.StringToHash("Collision");
@@ -84,7 +83,7 @@ public class ProjectileBase : PooledObject
 	{
 		if (MoveOrStop)
 		{
-			transform.Translate(dirProjectile * ProjectileSpeed);
+			transform.Translate(dirProjectile * ProjectileSpeed * Time.deltaTime);
 		}
 	}
 
@@ -114,7 +113,7 @@ public class ProjectileBase : PooledObject
 	protected virtual void OnAttack(CharacterBase characterTarget)
 	{
 		// characterTarget.knockBackDir = dirProjectile;
-		characterTarget.Defence(status, dirProjectile * knockBackPower,elemantalStatus);
+		characterTarget.Defence(status, dirProjectile * knockBackPower, elemantalStatus);
 	}
 
 

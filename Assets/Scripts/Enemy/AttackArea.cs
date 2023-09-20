@@ -8,11 +8,11 @@ public class AttackArea : MonoBehaviour
     public Action<CharacterBase> onPlayerIn;
     public Action<CharacterBase> onPlayerOut;
 
-    public CircleCollider2D col;
+    public Collider2D col;
 
     private void Awake()
     {
-        col = GetComponent<CircleCollider2D>();
+        col = GetComponent<Collider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)

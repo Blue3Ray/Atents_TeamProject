@@ -15,7 +15,7 @@ public enum PoolObjectType
 public class Factory : Singleton<Factory>
 {
     //public GameObject playerBullet;
-    ProjectilePool projectilePool;
+    
     ProjectilePool_Fire projectilePool_Fire;
     ProjectilePool_Water projectilePool_Water;
     ProjectilePool_Thunder projectilePool_Thunder;
@@ -26,18 +26,16 @@ public class Factory : Singleton<Factory>
     {
         base.OnInitalize();
 
-        projectilePool = transform.GetChild(0).GetComponent<ProjectilePool>();
-        projectilePool?.Initialize();
-		projectilePool_Fire = transform.GetChild(1).GetComponent<ProjectilePool_Fire>();
+		projectilePool_Fire = transform.GetChild(0).GetComponent<ProjectilePool_Fire>();
         projectilePool_Fire?.Initialize();
-        projectilePool_Water = transform.GetChild(2).GetComponent<ProjectilePool_Water>();
+        projectilePool_Water = transform.GetChild(1).GetComponent<ProjectilePool_Water>();
         projectilePool_Water?.Initialize();
-        projectilePool_Thunder = transform.GetChild(3).GetComponent<ProjectilePool_Thunder>();
+        projectilePool_Thunder = transform.GetChild(2).GetComponent<ProjectilePool_Thunder>();
         projectilePool_Thunder?.Initialize();
-        projectilePool_Wind = transform.GetChild(4).GetComponent<ProjectilePool_Wind>();
+        projectilePool_Wind = transform.GetChild(3).GetComponent<ProjectilePool_Wind>();
         projectilePool_Wind?.Initialize();
 
-        enemyPool_BoneEnemy = transform.GetChild(5).GetComponent<EnemyPool_BoneEnemy>();
+        enemyPool_BoneEnemy = transform.GetChild(4).GetComponent<EnemyPool_BoneEnemy>();
         enemyPool_BoneEnemy?.Initialize();
 
 
@@ -49,9 +47,6 @@ public class Factory : Singleton<Factory>
         GameObject result = null;
         switch (type)
         {
-            case PoolObjectType.Projectile:
-                result = projectilePool.GetObject()?.gameObject;
-                break;
             case PoolObjectType.Projectile_Fire:
                 result = projectilePool_Fire.GetObject()?.gameObject;
                 break;

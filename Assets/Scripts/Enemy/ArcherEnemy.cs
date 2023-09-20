@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class BoneEnemy : EnemyBase
+public class ArcherEnemy : EnemyBase
 {
     // 공격 기능 ---------------------------------------------------------------
 
@@ -13,9 +12,9 @@ public class BoneEnemy : EnemyBase
     IEnumerator attackCoolDown;
 
     /// <summary>
-    /// 공격 근접 범위(AttackArea까지의 거리, trigger 닿자마자 공격하는건 어색하다고 생각해서임)
+    /// 공격 사거리
     /// </summary>
-    float attackRange;
+    float attackRange = 10;
 
     /// <summary>
     /// 공격 애니메이션 도중인지 확인하는 변수(상태머신이랑 별개로 움직임, 공격 도중 움직이는 것을 방지, 공격 도중 맞아도 공격지속시키는 역할함)
@@ -54,7 +53,7 @@ public class BoneEnemy : EnemyBase
             {
                 //Debug.Log($"이전 : {state}, 이후 : {value}");
                 state = value;
-                
+
                 switch (state)
                 {
                     case EnemyState.Wait:
@@ -67,13 +66,13 @@ public class BoneEnemy : EnemyBase
                         onStateUpdate = Update_Patrol;
                         break;
                     case EnemyState.Chase:              // CurrentMove에 따라서 애니메이션 바뀌기 때문에 추적 내부에 이동 속도를 조절함
-                        
+
                         onStateUpdate = Update_Chase;
                         break;
                     case EnemyState.Attack:
 
                         CurrentMoveSpeed = 0;
-                        
+
                         onStateUpdate = Update_Attack;
                         break;
                     case EnemyState.Hitted:
@@ -119,7 +118,7 @@ public class BoneEnemy : EnemyBase
             if (State == EnemyState.Chase)       // 추적 상태 였을 때
             {
                 attackTarget = target;          // 공격 대상 지정
-                if(attackCurrentCoolTime < 0) State = EnemyState.Attack;      // 공격 상태로 변경
+                if (attackCurrentCoolTime < 0) State = EnemyState.Attack;      // 공격 상태로 변경
             }
         };
 
@@ -138,7 +137,7 @@ public class BoneEnemy : EnemyBase
         };
 
         // 근접 공격 범위는 근접 알아챔(?) 범위와 같음
-        closeSightRange = Mathf.Abs(transform.position.x - attackArea.transform.position.x);
+        // closeSightRange = Mathf.Abs(transform.position.x - attackArea.transform.position.x);
 
         attackCoolDown = AttackCoolDown();
 
@@ -175,7 +174,7 @@ public class BoneEnemy : EnemyBase
 
     protected override void Update_Wait()
     {
-        if(SearchPlayer())
+        if (SearchPlayer())
         {
             Debug.Log("Player를 찾음");
             State = EnemyState.Chase;
@@ -197,7 +196,7 @@ public class BoneEnemy : EnemyBase
         {
             transform.Translate(CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir * 0.1f);
             //rb.MovePosition(transform.position + (Vector3) (CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir));
-            
+
             if (Mathf.Abs(waypoints[currentWaypointIndex].x - transform.position.x) < 0.1f)
             {
                 currentWaypointIndex++;
@@ -215,28 +214,43 @@ public class BoneEnemy : EnemyBase
         {
             if (SearchPlayer())
             {
-                // 타켓한테 다가가기
                 Vector3 targetPos = chaseTarget.transform.position;
+                CurrentMoveSpeed = maxMoveSpeed;
 
-                if (targetPos.x > transform.position.x)
+                if ((attackRange * attackRange) + 2 < Mathf.Pow(targetPos.x - transform.position.x, 2))
                 {
-                    MoveDir = new Vector2(1, 0);
+                    Debug.Log("사거리가 멈");
+                    // 사거리 보다 바깥이면
+                    // 타켓한테 다가가는 방향 설정
+                    if (targetPos.x > transform.position.x)
+                    {
+                        MoveDir = new Vector2(1, 0);
+                    }
+                    else
+                    {
+                        MoveDir = new Vector2(-1, 0);
+                    }
+                }
+                else if ((attackRange * attackRange) + 2 > Mathf.Pow(targetPos.x - transform.position.x, 2))
+                {
+                    Debug.Log("사거리가 가까움");
+                    // 사거리보다 안쪽이면
+                    // 타켓한테 멀어지는 방향 설정
+                    if (targetPos.x > transform.position.x)
+                    {
+                        MoveDir = new Vector2(-1, 0);
+                    }
+                    else
+                    {
+                        MoveDir = new Vector2(1, 0);
+                    }
                 }
                 else
                 {
-                    MoveDir = new Vector2(-1, 0);
-                }
-
-                // 근접 거리면 대기하기
-                if (Mathf.Abs(targetPos.x - transform.position.x) < closeSightRange)
-                {
+                    Debug.Log("사거리가 적절함");
+                    // 공격 사거리면 대기하기
                     CurrentMoveSpeed = 0;
                 }
-                else
-                {
-                    CurrentMoveSpeed = maxMoveSpeed;
-                }
-                
             }
             else
             {
@@ -264,7 +278,7 @@ public class BoneEnemy : EnemyBase
 
     protected override void Update_Hitted()
     {
-        
+
     }
 
     protected override void Update_Dead()
@@ -288,7 +302,7 @@ public class BoneEnemy : EnemyBase
                 yield return null;
             }
             yield return null;
-            if(attackTarget != null) State = EnemyState.Attack;
+            if (attackTarget != null) State = EnemyState.Attack;
         }
     }
 
@@ -316,7 +330,7 @@ public class BoneEnemy : EnemyBase
     }
 
 
-    
+
 
     /// <summary>
     /// 애니메이션에 달릴 공격 이벤트 함수
@@ -336,7 +350,7 @@ public class BoneEnemy : EnemyBase
         base.Defence(damage, knockBackDir, elemantal);
         if (IsAlive && !isAttacking)                    // 살아 있거나 공격 중이 아닐 때(공격 중에는 hit그로기에 빠지지 않는다)
         {
-            if(State != EnemyState.Hitted) preState = State;
+            if (State != EnemyState.Hitted) preState = State;
             State = EnemyState.Hitted;
         }
     }
@@ -345,7 +359,7 @@ public class BoneEnemy : EnemyBase
     float currentDelayTime = 0;
     IEnumerator HitDelay(float delayTime)
     {
-        if(currentDelayTime <= 0) currentDelayTime = delayTime;
+        if (currentDelayTime <= 0) currentDelayTime = delayTime;
         while (currentDelayTime > 0)
         {
             currentDelayTime -= Time.deltaTime;
@@ -379,7 +393,7 @@ public class BoneEnemy : EnemyBase
         if (target != null)
         {
             Vector3 player = target.transform.position;
-            
+
             if (Vector2.SqrMagnitude(player - transform.position) < closeSightRange * closeSightRange)
             {
                 // 근접 범위이면

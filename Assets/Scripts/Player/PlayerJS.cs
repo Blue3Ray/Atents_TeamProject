@@ -285,7 +285,6 @@ public class PlayerJS : CharacterBase, IExperience
 			
 		}
 	}
-	
 
 	/// <summary>
 	/// 프로퍼티가 public일 때 변수는 private이어도 되지만
@@ -640,6 +639,18 @@ public class PlayerJS : CharacterBase, IExperience
 		this.gameObject.layer = 9;
 		StopAllCoroutines();
 		isTriggerSwitch = false;
+	}
+
+	float attackCoolTime = 1.0f;
+	public float attackCoolTimeMax = 1.0f;
+	IEnumerator AttackCoolTime()
+	{
+		attackCoolTime = attackCoolTimeMax;
+		while(attackCoolTime > 0)
+		{
+			attackCoolTime -= Time.deltaTime;
+			yield return null;
+		}
 	}
 
 	private void OnAttack(InputAction.CallbackContext context_)

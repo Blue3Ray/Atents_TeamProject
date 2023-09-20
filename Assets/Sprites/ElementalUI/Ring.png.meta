@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 81cd0cf7f05219b4986b1b8488459d11
+guid: 7bdb8cb461f59334da47787d73570451
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -101,107 +101,95 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Water
+      name: Ring_Water
       rect:
         serializedVersion: 2
         x: 0
-        y: 161
-        width: 362
-        height: 337
+        y: 146
+        width: 366
+        height: 352
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 986a0d73647b4fa4097cbcd0b3797abc
-      internalID: 1452850016
+      spriteID: a4bc131bb72125446bd12ebff3ef3e22
+      internalID: 220223112
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fire
+      name: Ring_Fire
       rect:
         serializedVersion: 2
-        x: 525
-        y: 157
-        width: 341
-        height: 341
+        x: 512
+        y: 141
+        width: 369
+        height: 357
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 4, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9d69e1349599c464893350fdbc878039
-      internalID: 1375811311
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Thunder
-      rect:
-        serializedVersion: 2
-        x: 1068
-        y: 157
-        width: 355
-        height: 332
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c105e17ece143f540942572950e7391e
-      internalID: 101399253
+      spriteID: 8399ac9bf8971974f977fc3b2e4ef12e
+      internalID: 1390729734
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wind
+      name: Ring_Thunder
       rect:
         serializedVersion: 2
-        x: 1583
-        y: 155
-        width: 346
-        height: 327
+        x: 1061
+        y: 143
+        width: 366
+        height: 355
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a233ca070fea1ba4aaacafe6cb157655
-      internalID: -1427594052
+      spriteID: b9d792c2e0c6f6d449194139aa809221
+      internalID: -894166945
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 738c46075593bff707f63d40c5e46ef7_4
+      name: Ring_Wind
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 141
+        width: 363
+        height: 357
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0a814740c2c0b044b5cd30fe41145dc
+      internalID: 804543884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ring_4
       rect:
         serializedVersion: 2
         x: 2024
@@ -209,20 +197,20 @@ TextureImporter:
         width: 506.57144
         height: 498
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2996872b846fa914a8830979cc752d8e
-      internalID: -492767044
+      spriteID: c032584c157c1944dac39d1028cbe9dd
+      internalID: -1862213386
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 738c46075593bff707f63d40c5e46ef7_5
+      name: Ring_5
       rect:
         serializedVersion: 2
         x: 2530
@@ -230,20 +218,20 @@ TextureImporter:
         width: 506.57144
         height: 498
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 80a97fad5ad1fb24a8b51be0a05c0dfa
-      internalID: 435734925
+      spriteID: c8ad28ffb9dc374498dfe5f3137ef0ce
+      internalID: -541558629
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 738c46075593bff707f63d40c5e46ef7_6
+      name: Ring_6
       rect:
         serializedVersion: 2
         x: 3036
@@ -251,14 +239,14 @@ TextureImporter:
         width: 506.57144
         height: 498
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e73c121123f53924486a1d4b918532c6
-      internalID: -1820679463
+      spriteID: bfcbc31dd77a23d4993b13661f698918
+      internalID: -724807786
       vertices: []
       indices: 
       edges: []
@@ -274,13 +262,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      738c46075593bff707f63d40c5e46ef7_4: -492767044
-      738c46075593bff707f63d40c5e46ef7_5: 435734925
-      738c46075593bff707f63d40c5e46ef7_6: -1820679463
-      Fire: 1375811311
-      Thunder: 101399253
-      Water: 1452850016
-      Wind: -1427594052
+      Ring_4: -1862213386
+      Ring_5: -541558629
+      Ring_6: -724807786
+      Ring_Fire: 1390729734
+      Ring_Thunder: -894166945
+      Ring_Water: 220223112
+      Ring_Wind: 804543884
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

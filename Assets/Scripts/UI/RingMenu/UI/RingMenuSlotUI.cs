@@ -40,7 +40,7 @@ public class RingMenuSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             if (ringslot != null)
             {
                 onExit?.Invoke((uint)ringslot.elementalType);
-                Debug.Log("Exit");
+               
             }
         }
 

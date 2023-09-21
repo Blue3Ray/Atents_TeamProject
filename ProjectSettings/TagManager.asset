@@ -21,15 +21,15 @@ TagManager:
   - OnlyIgnoreHalfPlatform
   - Player
   - PlayerProjectile
-  - EnemyProjectile
+  - 
   - RingSlot
   - RingFrame
   - OnlyDetectGround
+  - 
+  - 
   - Enemy
-  - 
-  - 
-  - 
-  - 
+  - EnemyProjectile
+  - IgnorePlayer
   - 
   - 
   - 

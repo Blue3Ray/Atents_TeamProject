@@ -36,66 +36,23 @@ public class BoneEnemy : EnemyBase
     /// </summary>
     int currentWaypointIndex = 0;
 
-
-    // 상태 머신 ---------------------------------------------------------------
-
-    /// <summary>
-    /// 이전 상태를 저장하는 변수(Hit상태일 때 사용함)
-    /// </summary>
-    EnemyState preState = EnemyState.Wait;
-
-    EnemyState state = EnemyState.Patrol;
-    EnemyState State
+    protected override float WaitTimer
     {
-        get => state;
+        get => waitTimer;
         set
         {
-            if (state != value)
+            waitTimer = value;
+            if (waitTimer < 0)
             {
-                //Debug.Log($"이전 : {state}, 이후 : {value}");
-                state = value;
-                
-                switch (state)
-                {
-                    case EnemyState.Wait:
-                        CurrentMoveSpeed = 0;
-                        WaitTimer = waitTime;           // 대기 상태 들어가면 최대 대기시간 설정
-                        onStateUpdate = Update_Wait;
-                        break;
-                    case EnemyState.Patrol:             // Wait, (Patrol)는 Speed에 따라서 애니메이션 바뀜
-                        CurrentMoveSpeed = maxMoveSpeed;
-                        onStateUpdate = Update_Patrol;
-                        break;
-                    case EnemyState.Chase:              // CurrentMove에 따라서 애니메이션 바뀌기 때문에 추적 내부에 이동 속도를 조절함
-                        
-                        onStateUpdate = Update_Chase;
-                        break;
-                    case EnemyState.Attack:
-
-                        CurrentMoveSpeed = 0;
-                        
-                        onStateUpdate = Update_Attack;
-                        break;
-                    case EnemyState.Hitted:
-                        CurrentMoveSpeed = 0;
-                        animator.SetTrigger(Hash_GetHit);
-                        StartCoroutine(HitDelay(1.0f));
-                        onStateUpdate = Update_Hitted;
-                        break;
-                    case EnemyState.Dead:
-                        CurrentMoveSpeed = 0;
-                        animator.SetTrigger(Hash_IsDead);
-                        onStateUpdate = Update_Dead;
-
-                        rb.bodyType = RigidbodyType2D.Static;
-                        // GetComponent<CapsuleCollider2D>().enabled = false;
-
-                        StartCoroutine(LifeOver(3.0f));
-                        break;
-                }
+                if(State == EnemyState.Wait) State = EnemyState.Patrol;
             }
         }
     }
+
+
+    // 상태 머신 ---------------------------------------------------------------
+
+    
 
     /// <summary>
     /// 상태 머신에서 부자연스럽게 빠른 동작 전환하는 것을 방지하기위해 사용하는 기준시간 변수
@@ -107,11 +64,9 @@ public class BoneEnemy : EnemyBase
     protected override void Awake()
     {
         base.Awake();
-        // animator = GetComponent<Animator>();
-        //rb = GetComponent<Rigidbody2D>();
 
-        //AttackArea[] areas = GetComponentsInChildren<AttackArea>();
-        //attackArea = areas[0];
+        AttackArea[] areas = GetComponentsInChildren<AttackArea>();
+        AttackArea attackArea = areas[0];
 
         //공격 범위에 들어왔을 때
         attackArea.onPlayerIn += (target) =>
@@ -150,7 +105,7 @@ public class BoneEnemy : EnemyBase
         base.OnInitialize();
 
         rb.bodyType = RigidbodyType2D.Dynamic;
-        GetComponent<CapsuleCollider2D>().enabled = true;
+        GetComponent<Collider2D>().isTrigger = false;
 
         waypoints = new Vector2[2];
         waypoints[0] = transform.position + new Vector3(3, 0);
@@ -338,22 +293,6 @@ public class BoneEnemy : EnemyBase
         {
             if(State != EnemyState.Hitted) preState = State;
             State = EnemyState.Hitted;
-        }
-    }
-
-
-    float currentDelayTime = 0;
-    IEnumerator HitDelay(float delayTime)
-    {
-        if(currentDelayTime <= 0) currentDelayTime = delayTime;
-        while (currentDelayTime > 0)
-        {
-            currentDelayTime -= Time.deltaTime;
-            yield return null;
-        }
-        if (State != EnemyState.Dead)
-        {
-            State = preState;
         }
     }
 

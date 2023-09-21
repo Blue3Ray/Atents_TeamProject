@@ -19,6 +19,92 @@ public class EnemyBase : CharacterBase
     }
 
     /// <summary>
+    /// 이전 상태를 저장하는 변수(Hit상태일 때 사용함)
+    /// </summary>
+    protected EnemyState preState = EnemyState.Wait;
+
+    /// <summary>
+    /// 현재 상태
+    /// </summary>
+    [SerializeField]
+    protected EnemyState state = EnemyState.Patrol;
+    
+    /// <summary>
+    /// 현재 상태를 접근하는 프로퍼티
+    /// </summary>
+    protected virtual EnemyState State
+    {
+        get => state;
+        set
+        {
+            if (state != value)
+            {
+                //Debug.Log($"이전 : {state}, 이후 : {value}");
+                state = value;
+
+                switch (state)
+                {
+                    case EnemyState.Wait:
+                        CurrentMoveSpeed = 0;
+                        WaitTimer = waitTime;           // 대기 상태 들어가면 최대 대기시간 설정
+                        onStateUpdate = Update_Wait;
+                        break;
+                    case EnemyState.Patrol:             // Wait, (Patrol)는 Speed에 따라서 애니메이션 바뀜
+                        CurrentMoveSpeed = maxMoveSpeed;
+                        onStateUpdate = Update_Patrol;
+                        break;
+                    case EnemyState.Chase:              // CurrentMove에 따라서 애니메이션 바뀌기 때문에 추적 내부에 이동 속도를 조절함
+
+                        onStateUpdate = Update_Chase;
+                        break;
+                    case EnemyState.Attack:
+
+                        CurrentMoveSpeed = 0;
+
+                        onStateUpdate = Update_Attack;
+                        break;
+                    case EnemyState.Hitted:
+                        CurrentMoveSpeed = 0;
+                        animator.SetTrigger(Hash_GetHit);
+                        StartCoroutine(HitDelay(1.0f));
+                        onStateUpdate = Update_Hitted;
+                        break;
+                    case EnemyState.Dead:
+                        CurrentMoveSpeed = 0;
+                        animator.SetTrigger(Hash_IsDead);
+                        onStateUpdate = Update_Dead;
+
+                        rb.bodyType = RigidbodyType2D.Static;
+                        GetComponent<Collider2D>().isTrigger = true;
+
+                        StartCoroutine(LifeOver(3.0f));
+                        break;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 맞았을 때 딜레이 걸리는 현재 시간
+    /// </summary>
+    protected float currentDelayTime = 0;
+    protected virtual IEnumerator HitDelay(float delayTime)
+    {
+        if (currentDelayTime <= 0) currentDelayTime = delayTime;
+        while (currentDelayTime > 0)
+        {
+            currentDelayTime -= Time.deltaTime;
+            yield return null;
+        }
+        if (State != EnemyState.Dead)
+        {
+            State = preState;
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------
+
+    /// <summary>
     /// 패트롤 대기 시간(또는 대상 노쳤을 시 대기 시간)
     /// </summary>
     public float waitTime = 2.0f;
@@ -35,7 +121,8 @@ public class EnemyBase : CharacterBase
             waitTimer = value;
             if (waitTimer < 0)
             {
-                //State = EnemyState.Patrol;
+                //
+                // State = EnemyState.Patrol;
             }
         }
     }
@@ -93,7 +180,7 @@ public class EnemyBase : CharacterBase
 
     // 공격 기능 부분 ------------------------------------------------------
 
-    protected AttackArea attackArea;
+
 
     /// <summary>
     /// 공격 대상(1개)
@@ -135,9 +222,6 @@ public class EnemyBase : CharacterBase
         base.Awake();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-
-        AttackArea[] areas = GetComponentsInChildren<AttackArea>();
-        attackArea = areas[0];
     }
 
     public override void OnInitialize()

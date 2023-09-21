@@ -12,7 +12,7 @@ public class ArcherEnemy : EnemyBase
     IEnumerator attackCoolDown;
 
     /// <summary>
-    /// 공격 사거리
+    /// 공격 사거리(farSight보다는 작아야 한다)
     /// </summary>
     float attackRange = 10;
 
@@ -35,16 +35,23 @@ public class ArcherEnemy : EnemyBase
     /// </summary>
     int currentWaypointIndex = 0;
 
+    protected override float WaitTimer
+    {
+        get => waitTimer;
+        set
+        {
+            waitTimer = value;
+            if (waitTimer < 0)
+            {
+                if (State == EnemyState.Wait) State = EnemyState.Patrol;
+            }
+        }
+    }
+
 
     // 상태 머신 ---------------------------------------------------------------
 
-    /// <summary>
-    /// 이전 상태를 저장하는 변수(Hit상태일 때 사용함)
-    /// </summary>
-    EnemyState preState = EnemyState.Wait;
-
-    EnemyState state = EnemyState.Patrol;
-    EnemyState State
+    protected override EnemyState State
     {
         get => state;
         set
@@ -87,7 +94,7 @@ public class ArcherEnemy : EnemyBase
                         onStateUpdate = Update_Dead;
 
                         rb.bodyType = RigidbodyType2D.Static;
-                        // GetComponent<CapsuleCollider2D>().enabled = false;
+                        GetComponent<Collider2D>().isTrigger = true;
 
                         StartCoroutine(LifeOver(3.0f));
                         break;
@@ -106,35 +113,26 @@ public class ArcherEnemy : EnemyBase
     protected override void Awake()
     {
         base.Awake();
-        // animator = GetComponent<Animator>();
-        //rb = GetComponent<Rigidbody2D>();
-
-        //AttackArea[] areas = GetComponentsInChildren<AttackArea>();
-        //attackArea = areas[0];
-
-        //공격 범위에 들어왔을 때
-        attackArea.onPlayerIn += (target) =>
-        {
-            if (State == EnemyState.Chase)       // 추적 상태 였을 때
-            {
-                attackTarget = target;          // 공격 대상 지정
-                if (attackCurrentCoolTime < 0) State = EnemyState.Attack;      // 공격 상태로 변경
-            }
-        };
-
-        //공격 범위에서 나갔을 때
-        attackArea.onPlayerOut += (target) =>
-        {
-            if (attackTarget == target)          // 공격 대상이 나가면 
-            {
-                attackTarget = null;            // 공격 대상 초기화
-
-                if (State != EnemyState.Dead && !isAttacking)    // 죽은 상태가 아니고, 공격 중이 아닐 때
-                {
-                    State = EnemyState.Chase;   // 추적 상태로 변경
-                }
-            }
-        };
+        
+        AttackArea detectedArea = GetComponentInChildren<AttackArea>();
+        //detectedArea.onPlayerIn += (target) =>
+        //{
+        //    // Player가 인지 범위 안에 들어올 때
+        //    attackTarget = target;
+        //    State = EnemyState.Chase;
+        //};
+        //detectedArea.onPlayerOut += (target) =>
+        //{
+        //    // Player가 인지 범위 밖에 나갈 때
+        //    if (target == attackTarget)
+        //    {
+        //        attackTarget = null;
+        //        if (State != EnemyState.Dead && !isAttacking)
+        //        {
+        //            State = EnemyState.Wait;
+        //        }
+        //    }
+        //};
 
         // 근접 공격 범위는 근접 알아챔(?) 범위와 같음
         // closeSightRange = Mathf.Abs(transform.position.x - attackArea.transform.position.x);
@@ -149,7 +147,7 @@ public class ArcherEnemy : EnemyBase
         base.OnInitialize();
 
         rb.bodyType = RigidbodyType2D.Dynamic;
-        GetComponent<CapsuleCollider2D>().enabled = true;
+        GetComponent<Collider2D>().isTrigger = false;
 
         waypoints = new Vector2[2];
         waypoints[0] = transform.position + new Vector3(3, 0);
@@ -195,7 +193,6 @@ public class ArcherEnemy : EnemyBase
         else
         {
             transform.Translate(CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir * 0.1f);
-            //rb.MovePosition(transform.position + (Vector3) (CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir));
 
             if (Mathf.Abs(waypoints[currentWaypointIndex].x - transform.position.x) < 0.1f)
             {
@@ -230,11 +227,12 @@ public class ArcherEnemy : EnemyBase
                     {
                         MoveDir = new Vector2(-1, 0);
                     }
+                    CurrentMoveSpeed = maxMoveSpeed;
                 }
-                else if ((attackRange * attackRange) + 2 > Mathf.Pow(targetPos.x - transform.position.x, 2))
+                else if ((attackRange * attackRange) * 0.3F > Mathf.Pow(targetPos.x - transform.position.x, 2))
                 {
-                    Debug.Log("사거리가 가까움");
-                    // 사거리보다 안쪽이면
+                    Debug.Log("사거리가 너무 가까움");
+                    // 사거리보다 너무 안쪽이면
                     // 타켓한테 멀어지는 방향 설정
                     if (targetPos.x > transform.position.x)
                     {
@@ -244,11 +242,20 @@ public class ArcherEnemy : EnemyBase
                     {
                         MoveDir = new Vector2(1, 0);
                     }
+                    CurrentMoveSpeed = maxMoveSpeed;
                 }
                 else
                 {
                     Debug.Log("사거리가 적절함");
                     // 공격 사거리면 대기하기
+                    if (targetPos.x > transform.position.x)
+                    {
+                        MoveDir = new Vector2(1, 0);
+                    }
+                    else
+                    {
+                        MoveDir = new Vector2(-1, 0);
+                    }
                     CurrentMoveSpeed = 0;
                 }
             }
@@ -261,7 +268,7 @@ public class ArcherEnemy : EnemyBase
         }
 
         transform.Translate(CurrentMoveSpeed * Time.deltaTime * MoveDir * 0.1f);
-        //rb.MovePosition(transform.position + (Vector3)(CurrentMoveSpeed * Time.deltaTime * moveDir));
+        
         currentChaseTime -= Time.deltaTime;
     }
 
@@ -329,9 +336,6 @@ public class ArcherEnemy : EnemyBase
         }
     }
 
-
-
-
     /// <summary>
     /// 애니메이션에 달릴 공격 이벤트 함수
     /// </summary>
@@ -355,21 +359,6 @@ public class ArcherEnemy : EnemyBase
         }
     }
 
-
-    float currentDelayTime = 0;
-    IEnumerator HitDelay(float delayTime)
-    {
-        if (currentDelayTime <= 0) currentDelayTime = delayTime;
-        while (currentDelayTime > 0)
-        {
-            currentDelayTime -= Time.deltaTime;
-            yield return null;
-        }
-        if (State != EnemyState.Dead)
-        {
-            State = preState;
-        }
-    }
 
     // 생존 기능 ----------------------------------------
 

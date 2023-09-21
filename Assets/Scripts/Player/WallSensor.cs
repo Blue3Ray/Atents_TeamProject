@@ -12,7 +12,7 @@ public class WallSensor : MonoBehaviour
 	{
 		if (collision.CompareTag("Ground"))
 		{
-			Debug.Log("ºÎ´ÚÄ§");
+			
 			OnWall?.Invoke(true);
 		}
 	}
@@ -22,7 +22,7 @@ public class WallSensor : MonoBehaviour
 	{
 		if (collision.CompareTag("Ground"))
 		{
-            Debug.Log("¶³¾îÁü");
+            
             OnWall?.Invoke(false);
 		}
 	}

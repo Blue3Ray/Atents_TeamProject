@@ -64,7 +64,6 @@ public class PlayerJS : CharacterBase, IExperience
 			if (isGrounded != value)
 			{
 				isGrounded = value;
-				//Debug.Log($"isGround = {isGrounded}");
 				anim.SetBool(Hash_Grounded, isGrounded);
 			}
 		}
@@ -308,15 +307,12 @@ public class PlayerJS : CharacterBase, IExperience
 		get => playerTouchedWall;
 		set
 		{
-			playerTouchedWall = value;
-			if(value == TouchedWall.RightWall)
+			if(playerTouchedWall != value)
 			{
-				spriteRenderer.flipX = false;
+				playerTouchedWall = value;
+				Debug.Log($"{playerTouchedWall}");
 			}
-			else if(value == TouchedWall.LeftWall)
-			{
-				spriteRenderer.flipX = true;
-			}
+			
 		}
 	}
 
@@ -332,7 +328,21 @@ public class PlayerJS : CharacterBase, IExperience
 			if(dir != value)
 			{
 				dir = value;
-				if(dir != Vector2.zero) knockBackDir = dir;
+				
+				if (dir != Vector2.zero)
+				{
+					knockBackDir = dir;
+					if (dir.x > 0)
+					{
+						spriteRenderer.flipX = false;
+					}
+					else
+					{
+						spriteRenderer.flipX = true;
+					}
+				}
+				
+				
 			}
 		}
 	}
@@ -534,12 +544,10 @@ public class PlayerJS : CharacterBase, IExperience
 				if (result.x < -0.1f)
 				{
 					attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-					spriteRenderer.flipX = true;
 				}
 				else if (result.x > 0.1f)
 				{
 					attackAreaPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-					spriteRenderer.flipX = false;
 				}
 				anim.SetInteger(Hash_AnimState, 1);
 			}
@@ -549,6 +557,11 @@ public class PlayerJS : CharacterBase, IExperience
     }
 
 
+	/// <summary>
+	/// 내려올 때 벽을 타고 내려온다.
+	/// 벽을 타고 올라가게도 만들까?
+	/// </summary>
+	/// <param name="obj"></param>
 	private void OnDash(InputAction.CallbackContext obj)
 	{
 		if (IsGrounded)
@@ -565,6 +578,17 @@ public class PlayerJS : CharacterBase, IExperience
 				}
 				anim.SetTrigger(Hash_Roll);
 			}
+			else
+			{
+				if (PlayerTouchedWall == TouchedWall.LeftWall)
+				{
+					rb.AddForce(new Vector3(2,2,0) * wallJumpForce, ForceMode2D.Impulse);
+				}
+				else if (PlayerTouchedWall == TouchedWall.RightWall)
+				{
+					rb.AddForce(new Vector3(-2, 2, 0) * wallJumpForce, ForceMode2D.Impulse);
+				}
+			}
 			
 			
 
@@ -573,11 +597,11 @@ public class PlayerJS : CharacterBase, IExperience
 		{
 			if (PlayerTouchedWall == TouchedWall.LeftWall)
 			{
-				rb.AddForce(transform.right * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(new Vector3(2, 2, 0) * wallJumpForce, ForceMode2D.Impulse);
 			}
 			else if (PlayerTouchedWall == TouchedWall.RightWall)
 			{
-				rb.AddForce(-transform.right * wallJumpForce, ForceMode2D.Impulse);
+				rb.AddForce(new Vector3(-2, 2, 0) * wallJumpForce, ForceMode2D.Impulse);
 			}
 		}
 	}

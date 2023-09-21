@@ -22,9 +22,13 @@ public class Spawner : MonoBehaviour
     }
 
 
-    public void SpawnMonster()
+    public void SpawnBoneMonster()
     { 
-
         Factory.Ins.GetObject(PoolObjectType.BoneEnemy, spawnPositions[0].position);
+    }
+
+    public void SpawnArcherMonster()
+    {
+        Factory.Ins.GetObject(PoolObjectType.ArcherEnemy, spawnPositions[0].position);
     }
 }

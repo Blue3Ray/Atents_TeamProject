@@ -260,11 +260,11 @@ MonoBehaviour:
   defenceState: 0
   elemantalAttack: 0
   elemantalDefence: 0
+  state: 1
   waitTime: 2
   experiencePoint: 10
-  maxMoveSpeed: 8
+  maxMoveSpeed: 16
   farSightRange: 5
   closeSightRange: 2
   attackMaxCoolTime: 3
-  isAttacking: 0
   waypoints: []

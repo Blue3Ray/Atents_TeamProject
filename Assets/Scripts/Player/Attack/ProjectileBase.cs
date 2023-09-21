@@ -79,6 +79,16 @@ public class ProjectileBase : PooledObject
 		transform.localScale *= new Vector2(dir.x, 1);
 	}
 
+	public virtual void OnInitialize(Vector2 dir, ElementalType type)
+	{
+        dirProjectile = dir;
+        transform.localScale *= new Vector2(dir.x, 1);
+
+		knockBackPower = dir.magnitude;
+
+		elemantalStatus.ChangeType(type);
+    }
+
 	private void Update()
 	{
 		if (MoveOrStop)
@@ -96,11 +106,8 @@ public class ProjectileBase : PooledObject
 		//Destroy(this.gameObject);
 	}
 
-
-
 	protected virtual void OnTriggerEnter2D(Collider2D collision)
 	{
-
 		CharacterBase characterTarget = collision.gameObject.GetComponent<CharacterBase>();
 		
 		if (characterTarget != null && !characterTarget.CompareTag("Player"))

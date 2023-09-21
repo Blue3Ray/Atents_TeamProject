@@ -21,6 +21,10 @@ public class ArcherEnemy : EnemyBase
     /// </summary>
     bool isAttacking = false;
 
+    /// <summary>
+    /// 화살 발사 위치
+    /// </summary>
+    Transform firePoint;
 
     // 이동 기능 ---------------------------------------------------------------
 
@@ -47,6 +51,7 @@ public class ArcherEnemy : EnemyBase
             }
         }
     }
+
 
 
     // 상태 머신 ---------------------------------------------------------------
@@ -77,6 +82,15 @@ public class ArcherEnemy : EnemyBase
                         onStateUpdate = Update_Chase;
                         break;
                     case EnemyState.Attack:
+
+                        if (chaseTarget.position.x > transform.position.x)
+                        {
+                            MoveDir = new Vector2(1, 0);
+                        }
+                        else
+                        {
+                            MoveDir = new Vector2(-1, 0);
+                        }
 
                         CurrentMoveSpeed = 0;
 
@@ -134,8 +148,7 @@ public class ArcherEnemy : EnemyBase
         //    }
         //};
 
-        // 근접 공격 범위는 근접 알아챔(?) 범위와 같음
-        // closeSightRange = Mathf.Abs(transform.position.x - attackArea.transform.position.x);
+        firePoint = transform.GetChild(2);
 
         attackCoolDown = AttackCoolDown();
 
@@ -216,7 +229,6 @@ public class ArcherEnemy : EnemyBase
 
                 if ((attackRange * attackRange) + 2 < Mathf.Pow(targetPos.x - transform.position.x, 2))
                 {
-                    Debug.Log("사거리가 멈");
                     // 사거리 보다 바깥이면
                     // 타켓한테 다가가는 방향 설정
                     if (targetPos.x > transform.position.x)
@@ -227,36 +239,44 @@ public class ArcherEnemy : EnemyBase
                     {
                         MoveDir = new Vector2(-1, 0);
                     }
-                    CurrentMoveSpeed = maxMoveSpeed;
-                }
-                else if ((attackRange * attackRange) * 0.3F > Mathf.Pow(targetPos.x - transform.position.x, 2))
-                {
-                    Debug.Log("사거리가 너무 가까움");
-                    // 사거리보다 너무 안쪽이면
-                    // 타켓한테 멀어지는 방향 설정
-                    if (targetPos.x > transform.position.x)
-                    {
-                        MoveDir = new Vector2(-1, 0);
-                    }
-                    else
-                    {
-                        MoveDir = new Vector2(1, 0);
-                    }
-                    CurrentMoveSpeed = maxMoveSpeed;
                 }
                 else
                 {
-                    Debug.Log("사거리가 적절함");
-                    // 공격 사거리면 대기하기
-                    if (targetPos.x > transform.position.x)
+                    if (attackCurrentCoolTime < 0 && Mathf.Abs(targetPos.y - transform.position.y) < 2.0f)
                     {
-                        MoveDir = new Vector2(1, 0);
+
+                        State = EnemyState.Attack;      // 공격 상태로 변경
                     }
                     else
                     {
-                        MoveDir = new Vector2(-1, 0);
+
+                        if ((attackRange * attackRange) * 0.3F > Mathf.Pow(targetPos.x - transform.position.x, 2))
+                        {
+                            // 사거리보다 너무 안쪽이면
+                            // 타켓한테 멀어지는 방향 설정
+                            if (targetPos.x > transform.position.x)
+                            {
+                                MoveDir = new Vector2(-1, 0);
+                            }
+                            else
+                            {
+                                MoveDir = new Vector2(1, 0);
+                            }
+                        }
+                        else
+                        {
+                            // 공격 사거리면 대기하기
+                            if (targetPos.x > transform.position.x)
+                            {
+                                MoveDir = new Vector2(1, 0);
+                            }
+                            else
+                            {
+                                MoveDir = new Vector2(-1, 0);
+                            }
+                            CurrentMoveSpeed = 0;
+                        }
                     }
-                    CurrentMoveSpeed = 0;
                 }
             }
             else
@@ -339,12 +359,18 @@ public class ArcherEnemy : EnemyBase
     /// <summary>
     /// 애니메이션에 달릴 공격 이벤트 함수
     /// </summary>
-    void AttackTargetInArea()
+    void FireArrow()
     {
-        if (attackTarget != null)
-        {
-            Attack(attackTarget, 5);
-        }
+        Attack(attackTarget);
+    }
+
+    public override void Attack(CharacterBase _)
+    {
+        Vector2 targetPos = chaseTarget.transform.position;
+
+        GameObject arrowObj = Factory.Ins.GetObject(PoolObjectType.Projectile_Arrow, firePoint.position);
+        ProjectileBase objProjectile = arrowObj.GetComponent<ProjectileBase>();
+        objProjectile.OnInitialize(knockBackDir, elemantalStatus.Elemantal);
     }
 
     // 방어 기능 ---------------------------------------------------------------------------------------------------------------------------------------------------

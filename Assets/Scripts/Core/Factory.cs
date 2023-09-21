@@ -9,7 +9,10 @@ public enum PoolObjectType
     Projectile_Water,
     Projectile_Thunder,
     Projectile_Wind,
-    BoneEnemy
+    Projectile_Arrow,
+    BoneEnemy,
+    ArcherEnemy
+
 }
 
 public class Factory : Singleton<Factory>
@@ -20,7 +23,9 @@ public class Factory : Singleton<Factory>
     ProjectilePool_Water projectilePool_Water;
     ProjectilePool_Thunder projectilePool_Thunder;
     ProjectilePool_Wind projectilePool_Wind;
+    ProjectilePool_Arrow projectilePool_Arrow;
     EnemyPool_BoneEnemy enemyPool_BoneEnemy;
+    EnemyPool_ArcherEnemy enemyPool_ArcherEnemy;
 
     protected override void OnInitalize()
     {
@@ -34,9 +39,13 @@ public class Factory : Singleton<Factory>
         projectilePool_Thunder?.Initialize();
         projectilePool_Wind = transform.GetChild(3).GetComponent<ProjectilePool_Wind>();
         projectilePool_Wind?.Initialize();
+        projectilePool_Arrow = transform.GetChild(4).GetComponent<ProjectilePool_Arrow>();
+        projectilePool_Arrow?.Initialize();
 
-        enemyPool_BoneEnemy = transform.GetChild(4).GetComponent<EnemyPool_BoneEnemy>();
+        enemyPool_BoneEnemy = transform.GetChild(5).GetComponent<EnemyPool_BoneEnemy>();
         enemyPool_BoneEnemy?.Initialize();
+        enemyPool_ArcherEnemy = transform.GetChild(6).GetComponent<EnemyPool_ArcherEnemy>();
+        enemyPool_ArcherEnemy?.Initialize();
 
 
     }
@@ -59,8 +68,14 @@ public class Factory : Singleton<Factory>
             case PoolObjectType.Projectile_Wind:
                 result = projectilePool_Wind.GetObject()?.gameObject;
                 break;
+            case PoolObjectType.Projectile_Arrow:
+                result = projectilePool_Arrow.GetObject()?.gameObject;
+                break;
             case PoolObjectType.BoneEnemy:
                 result = enemyPool_BoneEnemy.GetObject()?.gameObject;
+                break;
+            case PoolObjectType.ArcherEnemy:
+                result = enemyPool_ArcherEnemy.GetObject()?.gameObject;
                 break;
             default:
                 result = new GameObject();

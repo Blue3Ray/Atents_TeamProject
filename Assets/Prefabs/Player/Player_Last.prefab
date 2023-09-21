@@ -387,7 +387,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   isGrounded: 0
   moveSpeed: 10
-  jumpForce: 50
+  jumpForce: 38
   attackRange: 1
   fallSpeed: -1
   dashForce: 20

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -52,6 +53,32 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	bool isSpaceBarOn = false;
 
+	public float CoolTime = 1f;
+
+	float elapsedCoolTime = 0f;
+
+	public float ElapsedCoolTime
+	{
+		get => elapsedCoolTime;
+		set
+		{
+			elapsedCoolTime = value;
+			if(elapsedCoolTime > CoolTime)
+			{
+				isOverCoolTime = true;
+			}
+			else
+			{
+				isOverCoolTime = false;
+			}
+			
+		}
+	}
+
+	public bool isOverCoolTime = true;
+
+
+
 	/// <summary>
 	/// Ground에 닿았는지 유무에 따라
 	/// 그에 걸맞는 애니메이션을 설정하는 프로퍼티
@@ -84,7 +111,6 @@ public class PlayerJS : CharacterBase, IExperience
 				mp = value;
 				mp = Mathf.Clamp(mp, 0, maxMP);
 				onMpChange?.Invoke(mp, maxMP);
-				//Debug.Log($"마나 : {MP}");
 			}
 		}
 	}
@@ -159,6 +185,12 @@ public class PlayerJS : CharacterBase, IExperience
 			}
 		} 
 	}
+
+	ElemantalStates noneElemantalStates;
+	ElemantalStates fireElemantalStates;
+	ElemantalStates windElemantalStates;
+	ElemantalStates thunderElemantalStates;
+	ElemantalStates waterElemantalStates;
 
 	public void LevelUp()
 	{
@@ -284,6 +316,8 @@ public class PlayerJS : CharacterBase, IExperience
 			
 		}
 	}
+
+
 
 	/// <summary>
 	/// 프로퍼티가 public일 때 변수는 private이어도 되지만
@@ -447,6 +481,12 @@ public class PlayerJS : CharacterBase, IExperience
 	protected override void Awake()
 	{
 		base.Awake();
+		noneElemantalStates = new ElemantalStates();
+		fireElemantalStates = new ElemantalStates();
+		thunderElemantalStates = new ElemantalStates();
+		windElemantalStates = new ElemantalStates();
+		waterElemantalStates = new ElemantalStates();
+
 		inputActions = new ActionControl();
 		anim = GetComponent<Animator>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
@@ -503,6 +543,7 @@ public class PlayerJS : CharacterBase, IExperience
 	
 	private void FixedUpdate()
 	{
+		ElapsedCoolTime += Time.deltaTime;
 		transform.Translate(Time.fixedDeltaTime * moveSpeed * Dir);
 	}
 
@@ -679,8 +720,10 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnAttack(InputAction.CallbackContext context_)
 	{
-		if(IsAlive)
+		
+		if(IsAlive && isOverCoolTime)
 		{
+			ElapsedCoolTime = 0;
 			int randomAttackIndex;
 			randomAttackIndex = UnityEngine.Random.Range(0, 3);					//0부터 2까지 난수 저장
 			anim.SetTrigger(AttackHashes[randomAttackIndex]);					//랜덤으로 정해진 번째의 공격 애니메이션 실행
@@ -798,8 +841,28 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	public void PlayerElementalStatusChange(ElementalType elementalType)
 	{
+		
 		elemantalStatus.ChangeType(elementalType);
-		ElemantalStates = elemantalStatus;
+		ElemantalStates = TypeToSTates(elementalType);
+		switch (elementalType)
+		{
+			case ElementalType.None:
+				CoolTime = 0.1f;
+				break;
+			case ElementalType.Fire:
+				CoolTime = 1 * ElemantalStates.elemantalLevel;
+				break;
+			case ElementalType.Thunder:
+				CoolTime = 2 * ElemantalStates.elemantalLevel;
+				break;
+			case ElementalType.Water:
+				CoolTime = 1 * ElemantalStates.elemantalLevel;
+				break;
+			case ElementalType.Wind:
+				CoolTime = 1 * ElemantalStates.elemantalLevel;
+				break;
+		}
+
 	}
 
 	public override void Defence(float damage, ElemantalStates elemantal = null)
@@ -813,4 +876,30 @@ public class PlayerJS : CharacterBase, IExperience
         base.Defence(damage, knockBackDir, elemantal);
         if (IsAlive) anim.SetTrigger(Hash_Hurt);
     }
+
+	public ElemantalStates TypeToSTates(ElementalType type)
+	{
+		ElemantalStates result = noneElemantalStates;
+
+		switch (type)
+		{
+			case ElementalType.Fire:
+				result = fireElemantalStates;
+				break;
+			case ElementalType.Water:
+				result = fireElemantalStates;
+				break;
+			case ElementalType.Thunder:
+				result = fireElemantalStates;
+				break;
+			case ElementalType.Wind:
+				result = fireElemantalStates;
+				break;
+			default:
+				break;
+		
+		}
+
+		return result;
+	}
 }

@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 6439370621162037098}
   - component: {fileID: 6439370621162037097}
   - component: {fileID: 6439370621162037096}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: ArcherEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

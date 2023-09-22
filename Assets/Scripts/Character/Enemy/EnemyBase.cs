@@ -226,6 +226,7 @@ public class EnemyBase : CharacterBase
 
     public override void OnInitialize()
     {
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
         base.OnInitialize();
     }
 
@@ -281,6 +282,7 @@ public class EnemyBase : CharacterBase
     public override void Die()
     {
         base.Die();     // 죽었다라는 로그
+        gameObject.layer = LayerMask.NameToLayer("IgnorePlayer");
         GameManager.Ins.player.Experience += experiencePoint;
     }
 }

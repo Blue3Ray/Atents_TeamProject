@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 8201801826718716446}
   - component: {fileID: 8201801826718716445}
   - component: {fileID: 8201801826718716444}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: BoneEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -146,7 +146,7 @@ public class PlayerJS : CharacterBase, IExperience
 		{
 			if (IsAlive)
 			{
-				if (playerLevel != value)
+				if (playerLevel != value  && value != 1)
 				{
 					playerLevel = value;
 					onLevelUP?.Invoke(playerLevel);

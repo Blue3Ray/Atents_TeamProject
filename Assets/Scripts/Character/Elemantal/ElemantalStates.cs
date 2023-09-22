@@ -37,8 +37,9 @@ public class ElemantalStates
 
     /// <summary>
     /// 모든 원소에 대한 레벨
+    /// ElementalType의 인덱스 순서와 같음
     /// </summary>
-    int[] elemantalevels = new int[5] {0,1,1,1,1};
+    public int[] elemantalevels = new int[5] {0,1,1,1,1};
 
     /// <summary>
     /// 원소가 변경될 시 실행되는 델리게이트

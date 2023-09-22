@@ -100,8 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalType: 3
-  ProjectileSpeed: 0.2
+  ProjectileSpeed: 8
   ProjectileLife: 3
+  dirProjectile: {x: 0, y: 0, z: 0}
+  MoveOrStop: 1
 --- !u!95 &3194445642223133118
 Animator:
   serializedVersion: 5

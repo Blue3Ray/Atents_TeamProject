@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalType: 2
-  ProjectileSpeed: 0.1
+  ProjectileSpeed: 3
   ProjectileLife: 3
   dirProjectile: {x: 0, y: 0, z: 0}
   MoveOrStop: 1

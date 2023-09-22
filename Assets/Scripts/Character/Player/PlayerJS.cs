@@ -63,7 +63,7 @@ public class PlayerJS : CharacterBase, IExperience
 		set
 		{
 			elapsedCoolTime = value;
-			if(elapsedCoolTime > CoolTime)
+			if (elapsedCoolTime > CoolTime)
 			{
 				isOverCoolTime = true;
 			}
@@ -71,7 +71,7 @@ public class PlayerJS : CharacterBase, IExperience
 			{
 				isOverCoolTime = false;
 			}
-			
+
 		}
 	}
 
@@ -115,21 +115,21 @@ public class PlayerJS : CharacterBase, IExperience
 		}
 	}
 
-    float maxMP = 100;
+	float maxMP = 100;
 
-    public float MaxMP
-    {
-        get => maxMP;
+	public float MaxMP
+	{
+		get => maxMP;
 		private set
 		{
 			maxMP = value;
 		}
-    }
+	}
 
-    /// <summary>
-    /// 마나 바뀔 때 외쳐지는 델리게이트(현재 값, 최대 값)
-    /// </summary>
-    public Action<float, float> onMpChange;
+	/// <summary>
+	/// 마나 바뀔 때 외쳐지는 델리게이트(현재 값, 최대 값)
+	/// </summary>
+	public Action<float, float> onMpChange;
 
 	/// <summary>
 	/// 플레이어의 레벨
@@ -139,33 +139,33 @@ public class PlayerJS : CharacterBase, IExperience
 	/// <summary>
 	/// 플레이어 레벨의 프로퍼티
 	/// </summary>
-    public uint Level 
+	public uint Level
 	{
 		get => playerLevel;
 		set
 		{
 			if (IsAlive)
 			{
-				if (playerLevel != value)
+				if (playerLevel != value  && value != 1)
 				{
 					playerLevel = value;
 					onLevelUP?.Invoke(playerLevel);
 					//Debug.Log($"레벨 : {playerLevel}");
 				}
 			}
-		} 
+		}
 	}
 
 	/// <summary>
 	/// 플레이어의 경험치
 	/// </summary>
-	int playerEx = 0 ;
-	
+	int playerEx = 0;
+
 	/// <summary>
 	/// 플레이어 경험치의 프로퍼티
 	/// </summary>
-	public int Experience 
-	{ 
+	public int Experience
+	{
 		get => playerEx;
 		set
 		{
@@ -175,34 +175,28 @@ public class PlayerJS : CharacterBase, IExperience
 				{
 					playerEx = value;
 					//Debug.Log($"Exp : {playerEx}");
-					if (playerEx > playerExMax)		// 현재 경험치가 맥스 경험치에 도달할 때(레벨업 할 때)
+					if (playerEx > playerExMax)     // 현재 경험치가 맥스 경험치에 도달할 때(레벨업 할 때)
 					{
 						LevelUp();
 						Debug.Log("levelup");
 					}
 					onChangeEx?.Invoke(playerLevel, playerEx, playerExMax);
-                }
+				}
 			}
-		} 
+		}
 	}
-
-	ElemantalStates noneElemantalStates;
-	ElemantalStates fireElemantalStates;
-	ElemantalStates windElemantalStates;
-	ElemantalStates thunderElemantalStates;
-	ElemantalStates waterElemantalStates;
 
 	public void LevelUp()
 	{
-        Level++;
-        playerEx = 0;
-        playerExMax = playerExMax * 2;
+		Level++;
+		playerEx = 0;
+		playerExMax = playerExMax * 2;
 
 		MaxHP = MaxHP * 1.1f;
 		MaxMP = MaxMP * 1.1f;
 		HP = MaxMP;
 		MP = MaxMP;
-    }
+	}
 
 	/// <summary>
 	/// 플레이어의 경험치 최대값
@@ -212,7 +206,7 @@ public class PlayerJS : CharacterBase, IExperience
 	/// <summary>
 	/// 플레이어 경험치 최대값의 읽기 전용 프로퍼티
 	/// </summary>
-    public int ExperienceMax 
+	public int ExperienceMax
 	{
 		get => playerExMax;
 	}
@@ -222,8 +216,8 @@ public class PlayerJS : CharacterBase, IExperience
 	/// 파라메터 (레벨, 경험치, 최대 경험치)
 	/// 최대 경험치까지 같이 보내서 받은 곳에서 비율 계산한다.
 	/// </summary>
-    public Action<uint, int, int> onChangeEx {get; set; }
-    
+	public Action<uint, int, int> onChangeEx { get; set; }
+
 	/// <summary>
 	/// 플레이어가 레벨업을 했을 때 보낼 프로퍼티
 	/// </summary>
@@ -281,43 +275,6 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	public Action ActiveElementalAttack;
 
-	
-	/// <summary>
-	/// 캐릭터 스크립트에 있는 elemantalStatus에 접근할 수 있는 프로퍼티로써
-	/// elemantalStatus를 set할 때마다 원소 타입을 챙겨서 연결되는 함수를 바꾼다.
-	/// </summary>
-	public override ElemantalStates ElemantalStates
-	{
-		get => elemantalStatus;
-		set
-		{
-			switch (value.CurrentElemantal)
-			{
-				case ElementalType.Fire:
-					ActiveElementalAttack = FireAttack; 
-                    break;
-
-				case ElementalType.Thunder:
-					ActiveElementalAttack = ThunderAttack;
-					break;
-
-				case ElementalType.Water:
-					ActiveElementalAttack = WaterAttack;
-					break;
-
-				case ElementalType.Wind:
-					ActiveElementalAttack = WindAttack;
-					break;
-
-				default:
-					ActiveElementalAttack = NoneAttack;
-					break;
-			}
-			
-		}
-	}
-
-
 
 	/// <summary>
 	/// 프로퍼티가 public일 때 변수는 private이어도 되지만
@@ -341,12 +298,12 @@ public class PlayerJS : CharacterBase, IExperience
 		get => playerTouchedWall;
 		set
 		{
-			if(playerTouchedWall != value)
+			if (playerTouchedWall != value)
 			{
 				playerTouchedWall = value;
 				Debug.Log($"{playerTouchedWall}");
 			}
-			
+
 		}
 	}
 
@@ -359,10 +316,10 @@ public class PlayerJS : CharacterBase, IExperience
 		get => dir;
 		set
 		{
-			if(dir != value)
+			if (dir != value)
 			{
 				dir = value;
-				
+
 				if (dir != Vector2.zero)
 				{
 					knockBackDir = dir;
@@ -375,11 +332,13 @@ public class PlayerJS : CharacterBase, IExperience
 						spriteRenderer.flipX = true;
 					}
 				}
-				
-				
+
+
 			}
 		}
 	}
+
+	public Action[] activateAttack;
 
 	/// <summary>
 	/// 애니메이터 컴포넌트를 받아올 변수
@@ -443,10 +402,10 @@ public class PlayerJS : CharacterBase, IExperience
 
 	protected override void OnEnable()
 	{
-		EnableInputAction();											//클릭을 제외한 다른 input System 연결
-		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;		//클릭은 따로 실행해줘서 ondie때 클릭은 먹히도록 설정
+		EnableInputAction();                                            //클릭을 제외한 다른 input System 연결
+		inputActions.PlayerJM.Click.performed += OnClickMouse_Left;     //클릭은 따로 실행해줘서 ondie때 클릭은 먹히도록 설정
 	}
-    protected override void OnDisable()
+	protected override void OnDisable()
 	{
 		inputActions.PlayerJM.Click.performed -= OnClickMouse_Left;
 		DisableInputAction();
@@ -481,11 +440,15 @@ public class PlayerJS : CharacterBase, IExperience
 	protected override void Awake()
 	{
 		base.Awake();
-		noneElemantalStates = new ElemantalStates();
-		fireElemantalStates = new ElemantalStates();
-		thunderElemantalStates = new ElemantalStates();
-		windElemantalStates = new ElemantalStates();
-		waterElemantalStates = new ElemantalStates();
+		elemantalStatus= new ElemantalStates();
+		activateAttack = new Action[5];
+		activateAttack[0] += NoneAttack;
+		activateAttack[1] += FireAttack;
+		activateAttack[2] += WaterAttack;
+		activateAttack[3] += WindAttack;
+		activateAttack[4] += ThunderAttack;
+
+
 
 		inputActions = new ActionControl();
 		anim = GetComponent<Animator>();
@@ -499,7 +462,7 @@ public class PlayerJS : CharacterBase, IExperience
 		attackCollider = GetComponentInChildren<Player_AttackArea>();
 		defencSensor = transform.GetChild(5).GetComponent<DefencSensor>();
 		defencSensor.OnDefence += (demage) => Defence(demage, -Dir * 2.0f);
-		
+
 		//AttackCollider에서 들어온 것을 리스트에 추가
 		attackCollider.onCharacterEnter += (target) =>
 		{
@@ -512,11 +475,10 @@ public class PlayerJS : CharacterBase, IExperience
 			targetChars.Remove(target);
 		};
 
-		PlayerElementalStatusChange(ElementalType.None);
 
 		//죽었을 대 추가되는 람다함수입니다.
-		onDie += () => 
-		{ 
+		onDie += () =>
+		{
 			anim.SetTrigger(Hash_Death);
 			DisableInputAction();
 			Dir = Vector2.zero;
@@ -535,12 +497,12 @@ public class PlayerJS : CharacterBase, IExperience
 		wallsensor[0].OnWall += (OnOff) => SetTouchedWall_Right(OnOff);
 		wallsensor[1].OnWall += (OnOff) => SetTouchedWall_Left(OnOff);
 
-        MP = MaxMP;
-        HP = MaxHP;
-        Level = 1;
-    }
+		MP = MaxMP;
+		HP = MaxHP;
+		Level = 1;
+	}
 
-	
+
 	private void FixedUpdate()
 	{
 		ElapsedCoolTime += Time.deltaTime;
@@ -571,14 +533,14 @@ public class PlayerJS : CharacterBase, IExperience
 	{
 		Vector2 result = Vector2.zero;
 
-        if (context.canceled)
+		if (context.canceled)
 		{
 			anim.SetInteger(Hash_AnimState, 0);
 			//result = Vector2.zero;
 		}
 		else
 		{
-			
+
 			result = context.ReadValue<Vector2>();
 			if (result.x != 0)
 			{
@@ -592,10 +554,10 @@ public class PlayerJS : CharacterBase, IExperience
 				}
 				anim.SetInteger(Hash_AnimState, 1);
 			}
-            result.y = 0;
+			result.y = 0;
 		}
-        Dir = result;
-    }
+		Dir = result;
+	}
 
 
 	/// <summary>
@@ -607,7 +569,7 @@ public class PlayerJS : CharacterBase, IExperience
 	{
 		if (IsGrounded)
 		{
-			if(PlayerTouchedWall == TouchedWall.None)
+			if (PlayerTouchedWall == TouchedWall.None)
 			{
 				if (spriteRenderer.flipX == false)
 				{
@@ -623,15 +585,15 @@ public class PlayerJS : CharacterBase, IExperience
 			{
 				if (PlayerTouchedWall == TouchedWall.LeftWall)
 				{
-					rb.AddForce(new Vector3(2,2,0) * wallJumpForce, ForceMode2D.Impulse);
+					rb.AddForce(new Vector3(2, 2, 0) * wallJumpForce, ForceMode2D.Impulse);
 				}
 				else if (PlayerTouchedWall == TouchedWall.RightWall)
 				{
 					rb.AddForce(new Vector3(-2, 2, 0) * wallJumpForce, ForceMode2D.Impulse);
 				}
 			}
-			
-			
+
+
 
 		}
 		else
@@ -650,7 +612,7 @@ public class PlayerJS : CharacterBase, IExperience
 	private void OnDown(InputAction.CallbackContext context)
 	{
 
-		if(context.canceled)
+		if (context.canceled)
 		{
 			OnDownArrow = false;
 		}
@@ -658,7 +620,7 @@ public class PlayerJS : CharacterBase, IExperience
 		{
 			if (isSpaceBarOn && !isTriggerSwitch)
 			{
-				StartCoroutine(TriggerOnOff());	
+				StartCoroutine(TriggerOnOff());
 			}
 			OnDownArrow = true;
 		}
@@ -683,7 +645,7 @@ public class PlayerJS : CharacterBase, IExperience
 				}
 			}
 		}
-		
+
 	}
 
 	private void OffSpaceBar(InputAction.CallbackContext obj)
@@ -711,7 +673,7 @@ public class PlayerJS : CharacterBase, IExperience
 	IEnumerator AttackCoolTime()
 	{
 		attackCoolTime = attackCoolTimeMax;
-		while(attackCoolTime > 0)
+		while (attackCoolTime > 0)
 		{
 			attackCoolTime -= Time.deltaTime;
 			yield return null;
@@ -720,20 +682,25 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnAttack(InputAction.CallbackContext context_)
 	{
-		
-		if(IsAlive && isOverCoolTime)
+
+		if (IsAlive && isOverCoolTime)
 		{
 			ElapsedCoolTime = 0;
 			int randomAttackIndex;
-			randomAttackIndex = UnityEngine.Random.Range(0, 3);					//0부터 2까지 난수 저장
-			anim.SetTrigger(AttackHashes[randomAttackIndex]);					//랜덤으로 정해진 번째의 공격 애니메이션 실행
-			ActiveElementalAttack?.Invoke();                                    //실질적 공격 명령 함수 (연결되는 함수가 원소별로 여러가지이다.)
+			randomAttackIndex = UnityEngine.Random.Range(0, 3);                 //0부터 2까지 난수 저장
+			anim.SetTrigger(AttackHashes[randomAttackIndex]);                   //랜덤으로 정해진 번째의 공격 애니메이션 실행
+			activateAttack[(int)elemantalStatus.CurrentElemantal]?.Invoke();                                    //실질적 공격 명령 함수 (연결되는 함수가 원소별로 여러가지이다.)
 		}
+	}
+
+	public void changeActivateAttack(ElementalType elementalType)
+	{
+		elemantalStatus.ChangeType(elementalType);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.gameObject.layer == 7)
+		if (collision.gameObject.layer == 7)
 		{
 			IsHalfPlatform = true;
 		}
@@ -761,9 +728,12 @@ public class PlayerJS : CharacterBase, IExperience
 		base.Attack(target, knockBackPower);
 	}
 
+
+
+
 	private void NoneAttack()
 	{
-		foreach(var tmp in targetChars)
+		foreach (var tmp in targetChars)
 		{
 			tmp.Defence(attackState, knockBackDir);
 		}
@@ -778,30 +748,30 @@ public class PlayerJS : CharacterBase, IExperience
 	}
 	private void WaterAttack()
 	{
-        if (MP > 0)
-        {
-            FarAttack(PoolObjectType.Projectile_Water);
-            MP -= 5;
-        }
-    }
+		if (MP > 0)
+		{
+			FarAttack(PoolObjectType.Projectile_Water);
+			MP -= 5;
+		}
+	}
 
 	private void ThunderAttack()
 	{
-        if (MP > 0)
-        {
-            FarAttack(PoolObjectType.Projectile_Thunder);
-            MP -= 5;
-        }
-    }
+		if (MP > 0)
+		{
+			FarAttack(PoolObjectType.Projectile_Thunder);
+			MP -= 5;
+		}
+	}
 
 	private void WindAttack()
 	{
-        if (MP > 0)
-        {
-            FarAttack(PoolObjectType.Projectile_Wind);
-            MP -= 5;
-        }
-    }
+		if (MP > 0)
+		{
+			FarAttack(PoolObjectType.Projectile_Wind);
+			MP -= 5;
+		}
+	}
 
 
 
@@ -810,7 +780,7 @@ public class PlayerJS : CharacterBase, IExperience
 		GameObject temp = Factory.Ins.GetObject(type, attackArea.transform.position, 0);
 		ProjectileBase tempProjectile = temp.GetComponent<ProjectileBase>();
 		tempProjectile.OnInitialize(knockBackDir);
-    }
+	}
 
 	private void SetTouchedWall_Right(bool IsOn)
 	{
@@ -835,71 +805,17 @@ public class PlayerJS : CharacterBase, IExperience
 		}
 	}
 
-	/// <summary>
-	/// character 스크립트가 가진 ememetalstatus class의 change 함수를 실행하는 함수다.
-	/// player가 가진 원소타입 변수로 그 클래스의 change를 실행시키는 작업을 한다.
-	/// </summary>
-	public void PlayerElementalStatusChange(ElementalType elementalType)
-	{
-		
-		elemantalStatus.ChangeType(elementalType);
-		ElemantalStates = TypeToSTates(elementalType);
-		switch (elementalType)
-		{
-			case ElementalType.None:
-				CoolTime = 0.1f;
-				break;
-			case ElementalType.Fire:
-				CoolTime = 1 * ElemantalStates.currentElemantalLevel;
-				break;
-			case ElementalType.Thunder:
-				CoolTime = 2 * ElemantalStates.currentElemantalLevel;
-				break;
-			case ElementalType.Water:
-				CoolTime = 1 * ElemantalStates.currentElemantalLevel;
-				break;
-			case ElementalType.Wind:
-				CoolTime = 1 * ElemantalStates.currentElemantalLevel;
-				break;
-		}
-
-	}
+	
 
 	public override void Defence(float damage, ElemantalStates elemantal = null)
 	{
 		base.Defence(damage, elemantal);
-		if(IsAlive) anim.SetTrigger(Hash_Hurt);
+		if (IsAlive) anim.SetTrigger(Hash_Hurt);
 	}
 
-    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
-    {
-        base.Defence(damage, knockBackDir, elemantal);
-        if (IsAlive) anim.SetTrigger(Hash_Hurt);
-    }
-
-	public ElemantalStates TypeToSTates(ElementalType type)
+	public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
 	{
-		ElemantalStates result = noneElemantalStates;
-
-		switch (type)
-		{
-			case ElementalType.Fire:
-				result = fireElemantalStates;
-				break;
-			case ElementalType.Water:
-				result = fireElemantalStates;
-				break;
-			case ElementalType.Thunder:
-				result = fireElemantalStates;
-				break;
-			case ElementalType.Wind:
-				result = fireElemantalStates;
-				break;
-			default:
-				break;
-		
-		}
-
-		return result;
+		base.Defence(damage, knockBackDir, elemantal);
+		if (IsAlive) anim.SetTrigger(Hash_Hurt);
 	}
 }

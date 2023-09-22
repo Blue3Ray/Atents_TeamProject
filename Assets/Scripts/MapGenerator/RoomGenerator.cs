@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.Progress;
 
 
 public enum MapLayer
@@ -10,6 +9,8 @@ public enum MapLayer
     Background = 0,
     PlatForm,
     HalfPlatForm,
+    End,
+    EnemySpawn = 10,
     Exit
 }
 
@@ -22,9 +23,6 @@ public enum PassWayType
     DownLeft,
     LeftUp
 }
-
-
-
 
 public class RoomGenerator : Singleton<RoomGenerator>
 {
@@ -166,6 +164,11 @@ public class RoomGenerator : Singleton<RoomGenerator>
         */
 
     /// <summary>
+    /// 적들이 스폰될 위치, 방 생성할 때 받아온다
+    /// </summary>
+    List<Vector2Int> enemySpwanPositions;
+
+    /// <summary>
     /// 방을 생성하는 함수
     /// </summary>
     public void SetUpRooms()
@@ -173,6 +176,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);        // 맵 정보 생성
 
         makeRooms = new();      // 방 리스트 초기화
+        enemySpwanPositions = new();    // enemy스폰 위치 초기화
 
         // 시작 방 생성(시작 방은 만들어진 그리드 맵에서 가장 좌측에 있는 방의 좌측에 배치가 된다
         Vector2Int startRoomGrid = randomMap.roomList[0].gridCoord + new Vector2Int(-1, 0);
@@ -185,8 +189,6 @@ public class RoomGenerator : Singleton<RoomGenerator>
         GenerateRoom(startMakeRoom.origineCoord, startRoom);
 
         makeRooms.Add(startMakeRoom);
-
-
 
         // 방 생성하고 리스트에 등록하는 과정
         foreach (var item in randomMap.roomList)
@@ -284,9 +286,6 @@ public class RoomGenerator : Singleton<RoomGenerator>
     {
         // 출구쪽 한단계 빼기 위한 단계
         PassWay endPosByOne = endPos;
-        //PassWayType pwt = PassWayType.LeftRight;
-        //if (endPosByOne.Direction == ExitDirection.Up || endPosByOne.Direction == ExitDirection.Down) pwt = PassWayType.UpDown;
-        //endPosByOne.Pos += GeneratePass(new PassWay(endPosByOne.Pos, endPosByOne.Direction), pwt);
 
         cursor = startPos.Pos;
 
@@ -534,9 +533,9 @@ public class RoomGenerator : Singleton<RoomGenerator>
         Vector3Int decreaseFromMax = Vector3Int.zero;
 
         // 그려야 할 방향에 따라 줄이는 방향 정하기
-        if(passWayType == PassWayType.UpDown)
+        if (passWayType == PassWayType.UpDown)
         {
-            if(passPos.Direction == ExitDirection.Up) 
+            if (passPos.Direction == ExitDirection.Up)
             {
                 decreaseFromMax.y = drawOverCount;
             }
@@ -545,9 +544,9 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 decreaseFromMin.y = drawOverCount;
             }
         }
-        else if(passWayType == PassWayType.LeftRight)
+        else if (passWayType == PassWayType.LeftRight)
         {
-            if(passPos.Direction == ExitDirection.Right)
+            if (passPos.Direction == ExitDirection.Right)
             {
                 decreaseFromMax.x = drawOverCount;
             }
@@ -556,6 +555,41 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 decreaseFromMin.x = drawOverCount;
             }
         }
+        // ㄱ자도 짧게 그려지게 구현할 것!!!!
+        else if (passWayType == PassWayType.UpRight)
+        {
+            if(passPos.Direction == ExitDirection.Up)
+            {
+                decreaseFromMin.y = drawOverCount;
+            }
+            else
+            {
+                decreaseFromMin.x = drawOverCount;
+            }
+        }
+        else if (passWayType == PassWayType.RightDown)
+        {
+            if(passPos.Direction == ExitDirection.Right)
+            {
+                decreaseFromMax.x = drawOverCount;
+            }
+            else
+            {
+                decreaseFromMax.y = drawOverCount;
+            }
+        }
+        else if (passWayType == PassWayType.DownLeft)
+        {
+            if (passPos.Direction == ExitDirection.Down)
+            { 
+                
+            }
+        }
+        else if (passWayType == PassWayType.LeftUp)
+        {
+
+        }
+
 
         // 통로 그리는 부분
         for (int i = decreaseFromMin.y; i < targetData.Height - decreaseFromMax.y; i++)    // 문 높이 만큼
@@ -665,7 +699,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// <param name="index">샘플에서 생성할 레이어</param>
     void GenerateRoom(Vector3Int cursor, SampleRoomData targetRoomData)
     {
-        for(int i = 0; i < targetRoomData.tilesPos.Count - 1; i++)          // 레이어 별로 나눔(마지막꺼는 출구 레이어라 표시안함
+        for(int i = 0; i < (int) MapLayer.End; i++)          // 레이어 별로 나눔(그릴 것까지만 반복)
         {
             List<Vector3Int> poses = targetRoomData.tilesPos[i];
             foreach (Vector3Int pos in poses)                       // 레이어에 있는 타일들
@@ -673,6 +707,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 m_tileMaps[i].SetTile(pos + cursor, targetRoomData.mapLayers[i].GetTile(pos));
             }
         }
+
+        // 스포너 정보 저장하기
     }
 
     /// <summary>
@@ -758,6 +794,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         }
     }
 
+    // 맵 만들 때 수동으로 테스트 했던 함수
     //public void Test()
     //{
     //    MakeRoom test1 = new MakeRoom();

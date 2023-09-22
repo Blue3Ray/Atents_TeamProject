@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public enum ExitDirection
 {
@@ -433,7 +431,12 @@ public class GridMap
         cursor = Vector2Int.zero;
     }
 
-    
+    public void CompressMap()
+    {
+
+    }
+
+
     /// <summary>
     /// 선택한 방과 연결된 모든 방을 그리드 맵에 그리는 함수
     /// </summary>
@@ -443,14 +446,7 @@ public class GridMap
     {
         Room tempRoom = room;
 
-        //if (cursor.y >= mapGrid.GetLength(1) || cursor.x >= mapGrid.GetLength(0) || cursor.x < 0 || cursor.y < 0)
-        //{
-        //    //디버그용
-        //    int aaa = 0;
-        //}
-
         mapGrid[cursor.x, cursor.y] = tempRoom;
-
         
         for(int i = 0; i < tempRoom.connectedRooms.Count; i++)
         {
@@ -542,6 +538,9 @@ public class GridMap
         }
     }
 
+    /// <summary>
+    /// 그리드 맵에 배치된 방 정보에 좌표 등록하기
+    /// </summary>
     public void SetRoomsCoord()
     {
         for(int y = 0; y < Height; y++)
@@ -571,7 +570,6 @@ public class GridMap
         }
         return temp;
     }
-
 
     bool IsContain(Room room)
     {
@@ -668,6 +666,11 @@ public class RandomMapGenerator
     }
 
 
+    /// <summary>
+    /// 맵 정보를 받아와서 맵 크기 결정하기
+    /// </summary>
+    /// <param name="roomList">받아올 맵 정보</param>
+    /// <returns>그리드 맵의 크기</returns>
     public Vector2Int GetGridMapSize(List<Room> roomList)
     {
         int x = 0;

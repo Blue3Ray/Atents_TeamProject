@@ -61,7 +61,7 @@ public class ArcherEnemy : EnemyBase
         get => state;
         set
         {
-            if (state != value)
+            if (state != value || value == EnemyState.Hitted)
             {
                 //Debug.Log($"이전 : {state}, 이후 : {value}");
                 state = value;
@@ -82,7 +82,7 @@ public class ArcherEnemy : EnemyBase
                         onStateUpdate = Update_Chase;
                         break;
                     case EnemyState.Attack:
-
+                        isAttacking = true;
                         if (chaseTarget.position.x > transform.position.x)
                         {
                             MoveDir = new Vector2(1, 0);
@@ -338,7 +338,7 @@ public class ArcherEnemy : EnemyBase
     /// </summary>
     void AttackStart()
     {
-        isAttacking = true;
+        
     }
 
     /// <summary>

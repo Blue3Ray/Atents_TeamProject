@@ -291,7 +291,7 @@ public class PlayerJS : CharacterBase, IExperience
 		get => elemantalStatus;
 		set
 		{
-			switch (value.Elemantal)
+			switch (value.CurrentElemantal)
 			{
 				case ElementalType.Fire:
 					ActiveElementalAttack = FireAttack; 
@@ -850,16 +850,16 @@ public class PlayerJS : CharacterBase, IExperience
 				CoolTime = 0.1f;
 				break;
 			case ElementalType.Fire:
-				CoolTime = 1 * ElemantalStates.elemantalLevel;
+				CoolTime = 1 * ElemantalStates.currentElemantalLevel;
 				break;
 			case ElementalType.Thunder:
-				CoolTime = 2 * ElemantalStates.elemantalLevel;
+				CoolTime = 2 * ElemantalStates.currentElemantalLevel;
 				break;
 			case ElementalType.Water:
-				CoolTime = 1 * ElemantalStates.elemantalLevel;
+				CoolTime = 1 * ElemantalStates.currentElemantalLevel;
 				break;
 			case ElementalType.Wind:
-				CoolTime = 1 * ElemantalStates.elemantalLevel;
+				CoolTime = 1 * ElemantalStates.currentElemantalLevel;
 				break;
 		}
 

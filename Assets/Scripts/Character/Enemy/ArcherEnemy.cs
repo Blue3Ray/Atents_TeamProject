@@ -370,7 +370,7 @@ public class ArcherEnemy : EnemyBase
 
         GameObject arrowObj = Factory.Ins.GetObject(PoolObjectType.Projectile_Arrow, firePoint.position);
         ProjectileBase objProjectile = arrowObj.GetComponent<ProjectileBase>();
-        objProjectile.OnInitialize(knockBackDir, elemantalStatus.Elemantal);
+        objProjectile.OnInitialize(knockBackDir, elemantalStatus.CurrentElemantal);
     }
 
     // 방어 기능 ---------------------------------------------------------------------------------------------------------------------------------------------------

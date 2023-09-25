@@ -10,7 +10,7 @@ public enum MapLayer
     PlatForm,
     HalfPlatForm,
     End,
-    EnemySpawn = 10,
+    EnemySpawn = 4,
     Exit
 }
 
@@ -74,7 +74,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
     List<MakeRoom> makeRooms;
 
     // 초기 랜덤 맵 설정 ---------------------
-    
+    [Header("초기 랜덤 맵 설정")]
     public int width = 100;
 
     public int height = 100;
@@ -93,6 +93,9 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// 샘플 맵의 가장 큰 놈 기준 크기(정사각형 한변의 길이)
     /// </summary>
     int maxSingleRoomSize = 0;
+
+    // 스포너 설정
+    SpawnerTest spawner;
 
     // 싱글톤이기 때문에 오브젝트 찾는건 start에서 실행함
     private void Start()
@@ -128,6 +131,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         // 방과 방 사이 거리 추가해서 방 크기의 여유 두기
         maxSingleRoomSize += roomGap;
+
+        spawner = GetComponent<SpawnerTest>();
     }
 
     /*
@@ -166,7 +171,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// <summary>
     /// 적들이 스폰될 위치, 방 생성할 때 받아온다
     /// </summary>
-    List<Vector2Int> enemySpwanPositions;
+    List<Vector3Int> enemySpwanPositions;
 
     /// <summary>
     /// 방을 생성하는 함수
@@ -225,6 +230,11 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         // 시작 방과 첫방을 연결함(그리드 맵 정보에 시작방 정보가 없기 때문에 수동으로 따로 해줌)
         ConnectPassway(makeRooms[0], makeRooms[1]);
+
+        spawner.GetSpawnPoses(enemySpwanPositions);
+        spawner.SpawnEnemyAtAllPos();
+
+        spawner.SetPlayerPos();
     }
 
     /// <summary>
@@ -786,6 +796,13 @@ public class RoomGenerator : Singleton<RoomGenerator>
         }
 
         // 스포너 정보 저장하기
+
+        List<Vector3Int> spawnPos = targetRoomData.tilesPos[(int) MapLayer.EnemySpawn - 1];
+
+        foreach (var item in spawnPos)
+        {
+            enemySpwanPositions.Add(item + cursor);
+        }
     }
 
     /// <summary>

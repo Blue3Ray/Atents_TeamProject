@@ -1,33 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class SpawnerTest : MonoBehaviour
 {
-    public Transform pool;
-    public Transform[] spawnPositions;
+    public Vector3Int[] spawnPositions;
 
     private void Awake()
     {
-        pool = transform.GetChild(0);
+        //spawnPositions = new Transform[transform.childCount - 1];
 
-        spawnPositions = new Transform[transform.childCount - 1];
+        //for(int i = 1; i < transform.childCount; i++)
+        //{
+        //    spawnPositions[i - 1] = transform.GetChild(i);
+        //    Debug.Log($"{i - 1}번째에 들어간 오브젝트 이름은 {spawnPositions[i - 1].name}");
+        //}
+    }
 
-        for(int i = 1; i < transform.childCount; i++)
-        {
-            spawnPositions[i - 1] = transform.GetChild(i);
-            Debug.Log($"{i - 1}번째에 들어간 오브젝트 이름은 {spawnPositions[i - 1].name}");
+    public void SpawnEnemyAtAllPos()
+    {
+        
+        for(int i = 1; i < spawnPositions.Length; i++)
+        { 
+            Vector3 pos = spawnPositions[i];
+            if (Random.value > 0.4f)
+            {
+                SpawnBoneMonster(pos);
+            }
+            else
+            {
+                SpawnArcherMonster(pos);
+            }
         }
     }
 
-
-    public void SpawnBoneMonster()
-    { 
-        Factory.Ins.GetObject(PoolObjectType.BoneEnemy, spawnPositions[0].position);
+    public void SetPlayerPos()
+    {
+        GameManager.Ins.player.transform.position = spawnPositions[0];
     }
 
-    public void SpawnArcherMonster()
+    public void GetSpawnPoses(Vector3Int[] positions)
     {
-        Factory.Ins.GetObject(PoolObjectType.ArcherEnemy, spawnPositions[0].position);
+        spawnPositions = positions;
+    }
+
+    public void GetSpawnPoses(List<Vector3Int> positions)
+    {
+        GetSpawnPoses(positions.ToArray());
+    }
+
+
+    public void SpawnBoneMonster(Vector3 pos)
+    { 
+        Factory.Ins.GetObject(PoolObjectType.BoneEnemy, pos);
+    }
+
+    public void SpawnArcherMonster(Vector3 pos)
+    {
+        Factory.Ins.GetObject(PoolObjectType.ArcherEnemy, pos);
     }
 }

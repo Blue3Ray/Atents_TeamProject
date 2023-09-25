@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - QuickSlot
   - Wall
+  - PlatformHalf
   layers:
   - Default
   - TransparentFX
@@ -65,4 +66,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1365228583
+    locked: 0
+  - name: Enemy
+    uniqueID: 2491453571
     locked: 0

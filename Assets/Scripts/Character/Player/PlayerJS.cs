@@ -64,6 +64,9 @@ public class PlayerJS : CharacterBase, IExperience
 	[Header("<<none, fire, water, wind, thunder 순으로 쿨타임 적용>>")]
 	public float[] coolTimes;
 
+	[ColorUsageAttribute(true, true)]
+	public Color[] SwordColors;
+
 	float elapsedCoolTime = 0f;
 
 	public float ElapsedCoolTime
@@ -459,7 +462,7 @@ public class PlayerJS : CharacterBase, IExperience
 		activateAttack[3] += WindAttack;
 		activateAttack[4] += ThunderAttack;
 
-		playerShader = transform.GetComponent<Renderer>().material;
+		playerShader = transform.GetComponent<Renderer>().sharedMaterial;
 		if(playerShader != null)
 		{
 			Debug.Log("잘찾음");
@@ -712,6 +715,8 @@ public class PlayerJS : CharacterBase, IExperience
 	public void changeActivateAttack(ElementalType elementalType)
 	{
 		elemantalStatus.ChangeType(elementalType);
+		ElapsedCoolTime = 100;
+		playerShader.SetColor("_EmissionColor", SwordColors[(int)elementalType]);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)

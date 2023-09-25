@@ -1635,6 +1635,26 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: coolTimes.Array.data[0]
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: coolTimes.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: coolTimes.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: coolTimes.Array.data[3]
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: coolTimes.Array.data[4]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: SwordColors.Array.data[0].a
       value: 1
       objectReference: {fileID: 0}

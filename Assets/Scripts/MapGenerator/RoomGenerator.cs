@@ -350,21 +350,9 @@ public class RoomGenerator : Singleton<RoomGenerator>
         int a = 0;      // 무한루프 방지용
         do
         {
-            if (cursor.x == targetPos.x)        // 직선 길일 때
-            {
-                int decreasePass = Mathf.Min(Mathf.Abs(cursor.y - targetPos.y), 5);
-                lastone = PassWayType.UpDown;
-                cursor += GeneratePass(new PassWay(cursor, targetDir), PassWayType.UpDown, 5 - decreasePass);
-            }
-            else
-            {
-                int decreasePass = Mathf.Min(Mathf.Abs(cursor.x - targetPos.x), 5);
-                lastone = PassWayType.LeftRight;
-                cursor += GeneratePass(new PassWay(cursor, targetDir), PassWayType.LeftRight, 5 - decreasePass);
-            }
-            a++;
+            int decreasePass;
 
-            if (cursor == targetPos && targetPos != endPos.Pos)      // 중간 지점에 왔으면
+            if (cursor == targetPos && targetPos != endPos.Pos)      // 중간 지점에 왔으면(ㄱ자 통로 생성)
             {
                 if (wayPoints.Count > 0) targetPos = wayPoints.Dequeue();     // 최종 목적지 설정 후
                 else targetPos = endPos.Pos;
@@ -424,8 +412,44 @@ public class RoomGenerator : Singleton<RoomGenerator>
                         break;
                 }
 
-                cursor += GeneratePass(new PassWay(cursor, targetDir), passWay);        // 타일맵 생성
+                if (cursor.x == targetPos.x)
+                {
+                    decreasePass = Mathf.Min(Mathf.Abs(cursor.y - targetPos.y), 5);
+                    cursor += GeneratePass(new PassWay(cursor, targetDir), passWay, 5 - decreasePass);
 
+                }
+                else
+                {
+                    decreasePass = Mathf.Min(Mathf.Abs(cursor.x - targetPos.x), 5);
+                    cursor += GeneratePass(new PassWay(cursor, targetDir), passWay, 5 - decreasePass);
+                    //return;
+                }
+
+                // cursor += GeneratePass(new PassWay(cursor, targetDir), passWay, 5 - decreasePass);        // 타일맵 생성
+
+                // ㄱ자 통로 생성 후 다음 방향 설정
+                switch (passWay)
+                {
+                    case PassWayType.UpRight:
+                        if (targetDir == ExitDirection.Down) targetDir = ExitDirection.Right;
+                        else targetDir = ExitDirection.Up;
+                            break;
+                    case PassWayType.RightDown:
+                        if (targetDir == ExitDirection.Left) targetDir = ExitDirection.Down;
+                        else targetDir = ExitDirection.Right;
+                        break;
+                    case PassWayType.DownLeft:
+                        if (targetDir == ExitDirection.Up) targetDir = ExitDirection.Left;
+                        else targetDir = ExitDirection.Down;
+                        break;
+                    case PassWayType.LeftUp:
+                        if (targetDir == ExitDirection.Right) targetDir = ExitDirection.Up;
+                        else targetDir = ExitDirection.Left;
+                        break;
+                    default:
+                        Debug.LogWarning("ㄱ자 통로 생성 후 방향 지정 상황에서 예외 발생");
+                        break;
+                }
 
                 if (targetPos.x != cursor.x)
                 {
@@ -438,7 +462,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
                         targetDir = ExitDirection.Left;
                     }
                 }
-                else
+                else if (targetPos.y != cursor.y)
                 {
                     if (targetPos.y > cursor.y)
                     {
@@ -450,6 +474,23 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     }
                 }
             }
+            else
+            {
+
+                if (cursor.x == targetPos.x)        // 직선 길일 때
+                {
+                    decreasePass = Mathf.Min(Mathf.Abs(cursor.y - targetPos.y), 5);
+                    lastone = PassWayType.UpDown;
+                    cursor += GeneratePass(new PassWay(cursor, targetDir), PassWayType.UpDown, 5 - decreasePass);
+                }
+                else
+                {
+                    decreasePass = Mathf.Min(Mathf.Abs(cursor.x - targetPos.x), 5);
+                    lastone = PassWayType.LeftRight;
+                    cursor += GeneratePass(new PassWay(cursor, targetDir), PassWayType.LeftRight, 5 - decreasePass);
+                }
+            }
+            a++;
 
         } while (cursor != endPos.Pos && a < 100);
 
@@ -558,43 +599,76 @@ public class RoomGenerator : Singleton<RoomGenerator>
         // ㄱ자도 짧게 그려지게 구현할 것!!!!
         else if (passWayType == PassWayType.UpRight)
         {
-            if(passPos.Direction == ExitDirection.Up)
+            if(passPos.Direction == ExitDirection.Down)
             {
                 decreaseFromMin.y = drawOverCount;
             }
-            else
+            else if(passPos.Direction == ExitDirection.Left)
             {
                 decreaseFromMin.x = drawOverCount;
+            }
+            else
+            {
+                Debug.LogWarning("예외 상황 발생");
             }
         }
         else if (passWayType == PassWayType.RightDown)
         {
-            if(passPos.Direction == ExitDirection.Right)
+            if(passPos.Direction == ExitDirection.Left)
+            {
+                decreaseFromMin.y = drawOverCount;
+            }
+            else if(passPos.Direction == ExitDirection.Up)
             {
                 decreaseFromMax.x = drawOverCount;
             }
             else
             {
-                decreaseFromMax.y = drawOverCount;
+                Debug.LogWarning("예외 상황 발생");
             }
         }
         else if (passWayType == PassWayType.DownLeft)
         {
-            if (passPos.Direction == ExitDirection.Down)
-            { 
-                
+            if (passPos.Direction == ExitDirection.Up)
+            {
+                decreaseFromMax.y = drawOverCount;
+            }
+            else if(passPos.Direction == ExitDirection.Right)
+            {
+                decreaseFromMax.x = drawOverCount;
+            }
+            else
+            {
+                Debug.LogWarning("예외 상황 발생");
             }
         }
         else if (passWayType == PassWayType.LeftUp)
         {
-
+            if(passPos.Direction == ExitDirection.Right)
+            {
+                decreaseFromMax.y = drawOverCount;
+            }
+            else if(passPos.Direction == ExitDirection.Down)
+            {
+                decreaseFromMin.x = drawOverCount;
+            }
+            else
+            {
+                Debug.LogWarning("예외 상황 발생");
+            }
         }
 
+        // ㄱ자 인지 아닌지
+        bool isCorner = (passWayType != PassWayType.UpDown || passWayType != PassWayType.RightDown);
+
+        // ㄱ자가 아닐경우 그릴거는 다 그릴 예정, 그렇지 않은 경우 다음 그릴때 벽타일이 길을 막는 경우가 생겨 부족한 부분만큼은 그릴 때 덮어서 그릴예정
+        Vector3Int min = (isCorner) ? Vector3Int.zero : decreaseFromMin;
+        Vector3Int max = (isCorner) ? Vector3Int.zero : decreaseFromMax;
 
         // 통로 그리는 부분
-        for (int i = decreaseFromMin.y; i < targetData.Height - decreaseFromMax.y; i++)    // 문 높이 만큼
+        for (int i = min.y; i < targetData.Height - max.y; i++)    // 문 높이 만큼
         {
-            for (int j = decreaseFromMin.x; j < targetData.Width - decreaseFromMax.x; j++)  // 문 너비 만큼
+            for (int j = min.x; j < targetData.Width - max.x; j++)  // 문 너비 만큼
             {
                 // ******** 배경있는 곳이랑 없는곳이랑 차이 둬서 맵을 만들어야하는 알고리즘짜야됨 다시 고려할 것
                 Vector3Int plusPos = new Vector3Int(j, i);
@@ -624,6 +698,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     // 반플랫폼 칸일 때 기존에 플랫폼 칸 있으면 지움
                     targetLayer = (int)MapLayer.HalfPlatForm;
                     tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
+
                     m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
 
                     if (m_tileMaps[(int)MapLayer.PlatForm].HasTile(cursorPos + targetDrawPos))
@@ -637,6 +712,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     // 빈칸일 때 기존의 곂치는 플렛폼과 반플렛폼 지우기
                     tempTile = null;
                     targetLayer = (int)MapLayer.PlatForm;
+                    m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
+                    targetLayer = (int)MapLayer.HalfPlatForm;
                     m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
                 }
 

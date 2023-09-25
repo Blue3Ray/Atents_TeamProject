@@ -7,7 +7,6 @@ TagManager:
   - NPC
   - Ground
   - QuickSlot
-  - PlatformHalf
   - Wall
   layers:
   - Default
@@ -63,4 +62,7 @@ TagManager:
     locked: 0
   - name: Projectile
     uniqueID: 3413434059
+    locked: 0
+  - name: Player
+    uniqueID: 1365228583
     locked: 0

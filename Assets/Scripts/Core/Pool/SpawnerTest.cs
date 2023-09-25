@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class SpawnerTest : MonoBehaviour
 {
     public Transform pool;
     public Transform[] spawnPositions;
-
 
     private void Awake()
     {

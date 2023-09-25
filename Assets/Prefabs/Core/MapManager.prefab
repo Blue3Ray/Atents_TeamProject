@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4668716211989390739}
   - component: {fileID: 4668716211989390738}
   - component: {fileID: 4668716211989390737}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlatformHalf
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,7 +153,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 120
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
@@ -169,9 +169,9 @@ GameObject:
   - component: {fileID: 4668716212954486313}
   - component: {fileID: 4668716212954486312}
   - component: {fileID: 4668716212954486311}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: 4668716213070038796}
   - component: {fileID: 4668716213070038795}
   - component: {fileID: 4668716213070038797}
+  - component: {fileID: 4668716213070517650}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -373,6 +374,20 @@ MonoBehaviour:
   collecBoxBoolCount: 3
   roomCount: 8
   roomGap: 10
+--- !u!114 &4668716213070517650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4668716213070038794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f76b6ff5ba51543a383b2e939fbe18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool: {fileID: 0}
+  spawnPositions: []
 --- !u!1 &4668716213072861618
 GameObject:
   m_ObjectHideFlags: 0

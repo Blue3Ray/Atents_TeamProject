@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -53,7 +54,15 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	bool isSpaceBarOn = false;
 
-	public float CoolTime = 1f;
+	/// <summary>
+	/// None = 0
+	/// Fire = 1
+	/// Water = 2
+	/// Wind = 3
+	/// Thunder = 4
+	/// </summary>
+	[Header("<<none, fire, water, wind, thunder 순으로 쿨타임 적용>>")]
+	public float[] coolTimes;
 
 	float elapsedCoolTime = 0f;
 
@@ -63,7 +72,7 @@ public class PlayerJS : CharacterBase, IExperience
 		set
 		{
 			elapsedCoolTime = value;
-			if (elapsedCoolTime > CoolTime)
+			if (elapsedCoolTime > coolTimes[(int)ElemantalStates.CurrentElemantal])
 			{
 				isOverCoolTime = true;
 			}
@@ -400,6 +409,8 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	List<CharacterBase> targetChars = new();
 
+	Material playerShader;
+
 	protected override void OnEnable()
 	{
 		EnableInputAction();                                            //클릭을 제외한 다른 input System 연결
@@ -448,6 +459,11 @@ public class PlayerJS : CharacterBase, IExperience
 		activateAttack[3] += WindAttack;
 		activateAttack[4] += ThunderAttack;
 
+		playerShader = transform.GetComponent<Renderer>().material;
+		if(playerShader != null)
+		{
+			Debug.Log("잘찾음");
+		}
 
 
 		inputActions = new ActionControl();

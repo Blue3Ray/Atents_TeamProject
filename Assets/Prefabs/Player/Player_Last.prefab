@@ -387,7 +387,12 @@ MonoBehaviour:
   OnOffSecond: 0.3
   spriteRenderer: {fileID: 0}
   isGrounded: 0
-  CoolTime: 1
+  coolTimes:
+  - 1
+  - 2
+  - 1
+  - 3
+  - 5
   isOverCoolTime: 1
   moveSpeed: 10
   jumpForce: 50

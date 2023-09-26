@@ -389,11 +389,16 @@ MonoBehaviour:
   isGrounded: 0
   coolTimes:
   - 0.5
-  - 0.5
-  - 0.5
-  - 0.3
   - 1
-  SwordColors: []
+  - 2
+  - 0.7
+  - 3
+  SwordColors:
+  - {r: 7.999999, g: 7.999999, b: 7.999999, a: 1}
+  - {r: 7.999999, g: 0.12565443, b: 0, a: 1}
+  - {r: 0, g: 0.2883008, b: 7.7480836, a: 0}
+  - {r: 0.684966, g: 5.8085127, b: 4.9477067, a: 0}
+  - {r: 6.8831816, g: 5.8380914, b: 0.360376, a: 0}
   isOverCoolTime: 1
   moveSpeed: 10
   jumpForce: 35

@@ -287,6 +287,8 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	public Action ActiveElementalAttack;
 
+	public Action OnUsePerformed;
+
 
 	/// <summary>
 	/// 프로퍼티가 public일 때 변수는 private이어도 되지만
@@ -436,10 +438,12 @@ public class PlayerJS : CharacterBase, IExperience
 		inputActions.PlayerJM.Down.performed += OnDown;
 		inputActions.PlayerJM.Down.canceled += OnDown;
 		inputActions.PlayerJM.Dash.performed += OnDash;
+		inputActions.PlayerJM.Use.performed += OnUse;
 	}
 
 	void DisableInputAction()
 	{
+		inputActions.PlayerJM.Use.performed -= OnUse;
 		inputActions.PlayerJM.Dash.performed -= OnDash;
 		inputActions.PlayerJM.Down.performed -= OnDown;
 		inputActions.PlayerJM.Down.canceled -= OnDown;
@@ -838,5 +842,10 @@ public class PlayerJS : CharacterBase, IExperience
 	{
 		base.Defence(damage, knockBackDir, elemantal);
 		if (IsAlive) anim.SetTrigger(Hash_Hurt);
+	}
+
+	private void OnUse(InputAction.CallbackContext obj)
+	{
+		OnUsePerformed?.Invoke();
 	}
 }

@@ -712,7 +712,7 @@ public class PlayerJS : CharacterBase, IExperience
 		}
 	}
 
-	public void changeActivateAttack(ElementalType elementalType)
+	public void ChangeActivateAttack(ElementalType elementalType)
 	{
 		elemantalStatus.ChangeType(elementalType);
 		ElapsedCoolTime = 100;

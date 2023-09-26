@@ -17,22 +17,22 @@ public class  Test_PlayerAttack: TestBase
 
     protected override void Test1(InputAction.CallbackContext context)
 	{
-		player.changeActivateAttack(ElementalType.Fire);
+		player.ChangeActivateAttack(ElementalType.Fire);
 		//player.PlayerElementalStatus = 
 	}
 
 	protected override void Test2(InputAction.CallbackContext context)
 	{
-		player.changeActivateAttack(ElementalType.Water);
+		player.ChangeActivateAttack(ElementalType.Water);
 	}
 
 	protected override void Test3(InputAction.CallbackContext context)
 	{
-		player.changeActivateAttack(ElementalType.Thunder);
+		player.ChangeActivateAttack(ElementalType.Thunder);
 	}
 
 	protected override void Test4(InputAction.CallbackContext context)
 	{
-		player.changeActivateAttack(ElementalType.Wind);
+		player.ChangeActivateAttack(ElementalType.Wind);
 	}
 }

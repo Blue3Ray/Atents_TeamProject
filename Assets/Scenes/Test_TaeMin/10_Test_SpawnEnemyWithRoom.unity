@@ -437,37 +437,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
-      propertyPath: jumpForce
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
-      propertyPath: coolTimes.Array.data[0]
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
-      propertyPath: coolTimes.Array.data[1]
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
-      propertyPath: coolTimes.Array.data[2]
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
-      propertyPath: coolTimes.Array.data[3]
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
-      propertyPath: coolTimes.Array.data[4]
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2122255425316255477, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_Name
       value: Player_Last
-      objectReference: {fileID: 0}
-    - target: {fileID: 2122255425316255477, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4500016455673576098, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_RootOrder

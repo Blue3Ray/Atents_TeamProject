@@ -225,13 +225,13 @@ public class CharacterBase : PooledObject, IHealth
 	public virtual void Defence(float damage, ElemantalStates elemantal = null)
     {
         float resultDamage = 0;
-        if (elemantal == null || elemantal.Elemantal == ElementalType.None)
+        if (elemantal == null || elemantal.CurrentElemantal == ElementalType.None)
         {
             resultDamage = Mathf.Clamp(damage, 0, MaxHP);
         }
         else
         {
-            switch (elemantal.Elemantal)
+            switch (elemantal.CurrentElemantal)
             {
                 case ElementalType.Fire:
                     resultDamage = Mathf.Clamp(damage, 0, MaxHP) + 10;
@@ -262,13 +262,13 @@ public class CharacterBase : PooledObject, IHealth
             characterRigid.AddForce(knockBackDir, ForceMode2D.Impulse);
         }
 		float resultDamage = 0;
-		if (elemantal == null || elemantal.Elemantal == ElementalType.None)
+		if (elemantal == null || elemantal.CurrentElemantal == ElementalType.None)
 		{
 			resultDamage = Mathf.Clamp(damage, 0, MaxHP);
 		}
 		else
 		{
-			switch (elemantal.Elemantal)
+			switch (elemantal.CurrentElemantal)
 			{
 				case ElementalType.Fire:
 					resultDamage = Mathf.Clamp(damage, 0, MaxHP) + 10;

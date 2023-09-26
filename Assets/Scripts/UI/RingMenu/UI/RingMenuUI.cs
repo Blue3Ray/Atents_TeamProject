@@ -30,11 +30,13 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         slot[1] = test.GetChild(2).GetComponent<RingMenuSlotUI>();
         slot[2] = test.GetChild(3).GetComponent<RingMenuSlotUI>();
         slot[3] = test.GetChild(4).GetComponent<RingMenuSlotUI>();
+        slot[4] = test.GetChild(0).GetComponent<RingMenuSlotUI>();
 
         slot[0].onEnter += Onclick;
         slot[1].onEnter += Onclick;
         slot[2].onEnter += Onclick;
         slot[3].onEnter += Onclick;
+        slot[4].onEnter += Onclick;
         //canvasGroup = GetComponent<CanvasGroup>();
     }
 
@@ -100,7 +102,7 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(eventData.button == PointerEventData.InputButton.Right)
         {
             Debug.Log($"업 현재 선택된 값 : {selectIndex}");
-            player.PlayerElementalStatusChange(selectIndex);
+            player.ChangeActivateAttack(selectIndex);
         }
       
     }

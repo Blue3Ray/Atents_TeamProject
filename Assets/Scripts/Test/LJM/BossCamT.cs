@@ -9,7 +9,7 @@ public class BossCamT : MonoBehaviour
     public Transform boss;
     public float transitionTime = 5.0f; 
 
-    private bool isCameraMoving = false;
+    //private bool isCameraMoving = false;
 
     void Start()
     {
@@ -34,7 +34,7 @@ public class BossCamT : MonoBehaviour
     IEnumerator MoveCameraToBoss()
     {
         
-        isCameraMoving = true;
+        //isCameraMoving = true;
 
         
         virtualCamera.Follow = boss;
@@ -48,6 +48,6 @@ public class BossCamT : MonoBehaviour
         virtualCamera.LookAt = player;
 
         
-        isCameraMoving = false;
+        //isCameraMoving = false;
     }
 }

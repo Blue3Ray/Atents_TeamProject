@@ -48,6 +48,8 @@ MonoBehaviour:
   elementalType: 4
   ProjectileSpeed: 0
   ProjectileLife: 3
+  dirProjectile: {x: 0, y: 0, z: 0}
+  MoveOrStop: 1
 --- !u!1001 &4993585713723546835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55,6 +57,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6034700746867936635}
     m_Modifications:
+    - target: {fileID: 1960856895079186621, guid: e41fa1c95333f9349ac850e8cb90ea3e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960856895079186621, guid: e41fa1c95333f9349ac850e8cb90ea3e, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -881533237
+      objectReference: {fileID: 0}
     - target: {fileID: 1960856895079186622, guid: e41fa1c95333f9349ac850e8cb90ea3e, type: 3}
       propertyPath: m_Icon
       value: 

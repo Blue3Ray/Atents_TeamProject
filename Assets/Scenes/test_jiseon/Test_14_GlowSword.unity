@@ -1793,6 +1793,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: jumpForce
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1750009491308485901, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: m_Radius
+      value: 0.22839436
+      objectReference: {fileID: 0}
+    - target: {fileID: 1750009491308485901, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.007792214
+      objectReference: {fileID: 0}
     - target: {fileID: 2122255425316255477, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_Name
       value: Player_Last

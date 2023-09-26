@@ -34,6 +34,24 @@ public class Inventory
     /// </summary>
     public int SlotCount => slots.Length;
 
+    int money;
+
+    public System.Action<int> OnMoneyChange;
+
+    public int Money
+    {
+        get => money;
+        set
+        {
+            if(money != value)
+            {
+                money = value;
+                OnMoneyChange?.Invoke(money);
+
+            }
+        }
+    }
+
     /// <summary>
     /// 임시 슬롯(드래그나 아이템 분리작업을 할 때 사용)
     /// </summary>

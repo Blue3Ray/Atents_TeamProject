@@ -37,14 +37,14 @@ public class ProjectileBase : PooledObject
 
 	public bool MoveOrStop = true;
 
-	float status = 1f;
+	float damage = 1f;
 
-	public float PlayerStatus 
+	public float Damage 
 	{
-		get => status; 
+		get => damage; 
 		set
 		{ 
-			status = value; 
+			damage = value; 
 		} 
 	}
 	
@@ -120,7 +120,7 @@ public class ProjectileBase : PooledObject
 	protected virtual void OnAttack(CharacterBase characterTarget)
 	{
 		// characterTarget.knockBackDir = dirProjectile;
-		characterTarget.Defence(status, dirProjectile * knockBackPower, elemantalStatus);
+		characterTarget.Defence(Damage, dirProjectile * knockBackPower, elemantalStatus);
 	}
 
 

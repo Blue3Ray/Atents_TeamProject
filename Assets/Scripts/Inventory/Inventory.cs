@@ -34,10 +34,10 @@ public class Inventory
     /// </summary>
     public int SlotCount => slots.Length;
 
-    int money;
 
     public System.Action<int> OnMoneyChange;
 
+    int money;
     public int Money
     {
         get => money;

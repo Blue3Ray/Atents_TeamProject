@@ -35,4 +35,9 @@ public class  Test_PlayerAttack: TestBase
 	{
 		player.ChangeActivateAttack(ElementalType.Wind);
 	}
+
+	protected override void Test5(InputAction.CallbackContext context)
+	{
+		player.inven.Money += 100;
+	}
 }

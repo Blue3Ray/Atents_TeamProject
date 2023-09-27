@@ -13,7 +13,12 @@ public class GoldUI : MonoBehaviour
         goldIndex = child.GetComponent<TextMeshProUGUI>();
     }
 
-    public void RefreshData(int gold)
+	private void Start()
+	{
+        GameManager.Ins.player.inven.OnMoneyChange = (money) => RefreshData(money);
+	}
+
+	public void RefreshData(int gold)
     {
         
         goldIndex.text = gold.ToString();

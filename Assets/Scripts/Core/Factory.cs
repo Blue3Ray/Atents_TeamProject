@@ -10,6 +10,7 @@ public enum PoolObjectType
     Projectile_Thunder,
     Projectile_Wind,
     Projectile_Arrow,
+    Explosion,          // ∆¯∆» ¿Ã∆Â∆Æ
     BoneEnemy,
     ArcherEnemy
 
@@ -24,6 +25,7 @@ public class Factory : Singleton<Factory>
     ProjectilePool_Thunder projectilePool_Thunder;
     ProjectilePool_Wind projectilePool_Wind;
     ProjectilePool_Arrow projectilePool_Arrow;
+    ExplosionPool_Explosion explosionPool;
     EnemyPool_BoneEnemy enemyPool_BoneEnemy;
     EnemyPool_ArcherEnemy enemyPool_ArcherEnemy;
 
@@ -42,12 +44,13 @@ public class Factory : Singleton<Factory>
         projectilePool_Arrow = transform.GetChild(4).GetComponent<ProjectilePool_Arrow>();
         projectilePool_Arrow?.Initialize();
 
-        enemyPool_BoneEnemy = transform.GetChild(5).GetComponent<EnemyPool_BoneEnemy>();
+        explosionPool = transform.GetChild(5).GetComponent<ExplosionPool_Explosion>();
+        explosionPool?.Initialize();
+
+        enemyPool_BoneEnemy = transform.GetChild(6).GetComponent<EnemyPool_BoneEnemy>();
         enemyPool_BoneEnemy?.Initialize();
-        enemyPool_ArcherEnemy = transform.GetChild(6).GetComponent<EnemyPool_ArcherEnemy>();
+        enemyPool_ArcherEnemy = transform.GetChild(7).GetComponent<EnemyPool_ArcherEnemy>();
         enemyPool_ArcherEnemy?.Initialize();
-
-
     }
 
 
@@ -70,6 +73,9 @@ public class Factory : Singleton<Factory>
                 break;
             case PoolObjectType.Projectile_Arrow:
                 result = projectilePool_Arrow.GetObject()?.gameObject;
+                break;
+            case PoolObjectType.Explosion:
+                result = explosionPool.GetObject()?.gameObject;
                 break;
             case PoolObjectType.BoneEnemy:
                 result = enemyPool_BoneEnemy.GetObject()?.gameObject;

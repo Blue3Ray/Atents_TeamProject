@@ -315,7 +315,7 @@ public class PlayerJS : CharacterBase, IExperience
 			if (playerTouchedWall != value)
 			{
 				playerTouchedWall = value;
-				Debug.Log($"{playerTouchedWall}");
+				//Debug.Log($"{playerTouchedWall}");
 			}
 
 		}

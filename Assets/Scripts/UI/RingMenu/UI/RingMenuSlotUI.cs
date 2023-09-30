@@ -15,18 +15,26 @@ public class RingMenuSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     
     public System.Action<uint> onDown;
 
+    CanvasGroup canvasGroup;
+
+    private void Awake()
+    {
+        canvasGroup = transform.GetChild(0).GetComponent<CanvasGroup>();
+    }
+
+    private void Start()
+    {
+        canvasGroup.alpha = 0.0f;
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         GameObject obj = eventData.pointerCurrentRaycast.gameObject;
         if (obj != null)
         {
-            RingMenuSlotUI ringslot = obj.GetComponent<RingMenuSlotUI>();
-            if (ringslot != null)
-            {
-                onEnter?.Invoke((uint)ringslot.elementalType);
-                Debug.Log($"{ringslot.elementalType}");
-            }     
+            onEnter?.Invoke((uint)elementalType);
+            Debug.Log($"{elementalType}");
+            canvasGroup.alpha = 1.0f;
         }
         
     }
@@ -36,12 +44,8 @@ public class RingMenuSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         GameObject obj = eventData.pointerCurrentRaycast.gameObject;
         if (obj != null)
         {
-            RingMenuSlotUI ringslot = obj.GetComponent<RingMenuSlotUI>();
-            if (ringslot != null)
-            {
-                onExit?.Invoke((uint)ringslot.elementalType);
-               
-            }
+            onExit?.Invoke((uint)elementalType);
+            canvasGroup.alpha = 0.0f;
         }
 
     }

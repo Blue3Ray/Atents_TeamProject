@@ -214,6 +214,13 @@ MonoBehaviour:
   defenceState: 0
   elemantalAttack: 0
   elemantalDefence: 0
+  state: 1
+  waitTime: 2
+  experiencePoint: 10
+  maxMoveSpeed: 0
+  farSightRange: 5
+  closeSightRange: 2
+  attackMaxCoolTime: 5
 --- !u!1001 &165916512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -323,6 +330,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1621224660370502377, guid: 49c15b950b4c7e145a413a5f34c62a26, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1621224660793288006, guid: 49c15b950b4c7e145a413a5f34c62a26, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1621224660793288006, guid: 49c15b950b4c7e145a413a5f34c62a26, type: 3}

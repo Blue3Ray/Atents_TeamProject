@@ -24,8 +24,17 @@ public enum PassWayType
     LeftUp
 }
 
+
+
 public class RoomGenerator : Singleton<RoomGenerator>
 {
+    // 인스펙터에서 타일맵 플랫폼이랑 반플랫폼 한번에 묶는 좋은 방법이 없을까
+
+    public RuleTile[] platformTile;
+    public RuleTile[] halfplatformTile;
+
+    int selectTile = 0;
+
     /// <summary>
     /// 배경을 그릴 타일
     /// </summary>
@@ -100,6 +109,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
     // 싱글톤이기 때문에 오브젝트 찾는건 start에서 실행함
     private void Start()
     {
+        selectTile = platformTile.Length - 1;
+
         // 타일을 그릴 레이어 불러오는 과정
         m_tileMaps = new Tilemap[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
@@ -695,8 +706,10 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     {
                         // 플랫폼 칸일 때(반플렛폼이거나 이미 배경 타일이있으면 안함)
                         targetLayer = (int)MapLayer.PlatForm;
-                        tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
-                        m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
+                        
+                        m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, platformTile[selectTile]);
+                        
+                        //m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
                     }
                     else
                     {
@@ -709,8 +722,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
                     targetLayer = (int)MapLayer.HalfPlatForm;
                     tempTile = targetData.mapLayers[targetLayer].GetTile(targetDrawPos);
 
-                    m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, tempTile);
-
+                    m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, halfplatformTile[selectTile]);
+                    
                     if (m_tileMaps[(int)MapLayer.PlatForm].HasTile(cursorPos + targetDrawPos))
                     {
                         m_tileMaps[(int)MapLayer.PlatForm].SetTile(cursorPos + targetDrawPos, null);
@@ -730,7 +743,8 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 targetLayer = (int)MapLayer.Background;
 
                 // 배경 그리기
-                m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
+                //m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
+                m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, backgroundTile);
             }
         }
 
@@ -791,7 +805,10 @@ public class RoomGenerator : Singleton<RoomGenerator>
             List<Vector3Int> poses = targetRoomData.tilesPos[i];
             foreach (Vector3Int pos in poses)                       // 레이어에 있는 타일들
             {
-                m_tileMaps[i].SetTile(pos + cursor, targetRoomData.mapLayers[i].GetTile(pos));
+                TileBase tile = targetRoomData.mapLayers[i].GetTile(pos);
+                if ((MapLayer)i == MapLayer.PlatForm) tile = platformTile[selectTile];
+                else if((MapLayer)i == MapLayer.HalfPlatForm) tile = halfplatformTile[selectTile];
+                m_tileMaps[i].SetTile(pos + cursor, tile);
             }
         }
 

@@ -1503,6 +1503,10 @@ CompositeCollider2D:
       - {x: 25, y: -0.0428679}
       - {x: 25.00001, y: -0.5428649}
       - {x: 25.071438, y: -0.6}
+    - - {x: 19.999971, y: -3}
+      - {x: 19.999971, y: -1}
+      - {x: 18, y: -1.0000293}
+      - {x: 18.000029, y: -3}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!1839735485 &2661683875948410068
@@ -8924,6 +8928,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
+      propertyPath: tileMaps.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
+      propertyPath: platformTile.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
+      propertyPath: platformTile.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 72eaaf1c0d6cfc64a98bd5d8ff30546c, type: 2}
+    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
+      propertyPath: halfplatformTile.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
+      propertyPath: halfplatformTile.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b44443ec6e4d5254a842c9fea07f29b4, type: 2}
     - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
       propertyPath: roomSamplesWithExit.Array.size
       value: 2

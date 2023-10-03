@@ -287,7 +287,7 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	public Action ActiveElementalAttack;
 
-	public Action OnUsePerformed;
+	public Action onUsePerformed;
 
 
 	/// <summary>
@@ -846,6 +846,6 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnUse(InputAction.CallbackContext obj)
 	{
-		OnUsePerformed?.Invoke();
+		onUsePerformed?.Invoke();
 	}
 }

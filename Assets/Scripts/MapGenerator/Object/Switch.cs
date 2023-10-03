@@ -21,16 +21,12 @@ public class Switch : MonoBehaviour, IInteractable
     }
 	private void Start()
 	{
-        GameManager.Ins.Player.OnUsePerformed += Use;
+        GameManager.Ins.Player.onUsePerformed += UseSwitch;
 	}
 
-	public void Use()
+	protected virtual void UseSwitch()
     {
-        if (isPlayerIn)
-        {
-			animator.SetTrigger(Hash_Open);
-			target?.Use();
-		}
+        Use();
     }
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -48,4 +44,13 @@ public class Switch : MonoBehaviour, IInteractable
 			isPlayerIn = false;
 		}
 	}
+
+    public void Use()
+    {
+        if (isPlayerIn)
+        {
+            animator.SetTrigger(Hash_Open);
+            target?.Use();
+        }
+    }
 }

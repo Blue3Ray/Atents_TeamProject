@@ -25,17 +25,6 @@ public class BoneEnemy : EnemyBase
 
     // 이동 기능 ---------------------------------------------------------------
 
-    /// <summary>
-    /// 생성 될때 기준 좌우로 -3, 3까지
-    /// </summary>
-    [SerializeField]
-    Vector2[] waypoints;
-
-    /// <summary>
-    /// 현재 목표하는 웨이포인트 인덱스
-    /// </summary>
-    int currentWaypointIndex = 0;
-
     protected override float WaitTimer
     {
         get => waitTimer;
@@ -107,9 +96,7 @@ public class BoneEnemy : EnemyBase
         rb.bodyType = RigidbodyType2D.Dynamic;
         GetComponent<Collider2D>().isTrigger = false;
 
-        waypoints = new Vector2[2];
-        waypoints[0] = transform.position + new Vector3(3, 0);
-        waypoints[1] = transform.position + new Vector3(-3, 0);
+
 
         attackCurrentCoolTime = -1;
 
@@ -140,6 +127,9 @@ public class BoneEnemy : EnemyBase
         }
     }
 
+    float patrolTime = 2.0f;
+    float maxPatrolTime = 2.0f;
+
     protected override void Update_Patrol()
     {
         if (SearchPlayer())
@@ -150,14 +140,22 @@ public class BoneEnemy : EnemyBase
         {
             transform.Translate(CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir * 0.1f);
             //rb.MovePosition(transform.position + (Vector3) (CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir));
-            
-            if (Mathf.Abs(waypoints[currentWaypointIndex].x - transform.position.x) < 0.1f)
+
+            if (patrolTime < 0)
             {
-                currentWaypointIndex++;
-                currentWaypointIndex %= waypoints.Length;
+                patrolTime = maxPatrolTime;
                 MoveDir *= new Vector2(-1, 0);
                 State = EnemyState.Wait;
             }
+
+            patrolTime -= Time.deltaTime;
+            //if (Mathf.Abs(waypoints[currentWaypointIndex].x - transform.position.x) < 0.1f)
+            //{
+            //    currentWaypointIndex++;
+            //    currentWaypointIndex %= waypoints.Length;
+            //    MoveDir *= new Vector2(-1, 0);
+            //    State = EnemyState.Wait;
+            //}
         }
     }
 

@@ -28,16 +28,17 @@ public class ArcherEnemy : EnemyBase
 
     // 이동 기능 ---------------------------------------------------------------
 
-    /// <summary>
-    /// 생성 될때 기준 좌우로 -3, 3까지
-    /// </summary>
-    [SerializeField]
-    Vector2[] waypoints;
+    // 사용안함
+    ///// <summary>
+    ///// 생성 될때 기준 좌우로 -3, 3까지
+    ///// </summary>
+    //[SerializeField]
+    //Vector2[] waypoints;
 
-    /// <summary>
-    /// 현재 목표하는 웨이포인트 인덱스
-    /// </summary>
-    int currentWaypointIndex = 0;
+    ///// <summary>
+    ///// 현재 목표하는 웨이포인트 인덱스
+    ///// </summary>
+    //int currentWaypointIndex = 0;
 
     protected override float WaitTimer
     {
@@ -129,24 +130,6 @@ public class ArcherEnemy : EnemyBase
         base.Awake();
         
         AttackArea detectedArea = GetComponentInChildren<AttackArea>();
-        //detectedArea.onPlayerIn += (target) =>
-        //{
-        //    // Player가 인지 범위 안에 들어올 때
-        //    attackTarget = target;
-        //    State = EnemyState.Chase;
-        //};
-        //detectedArea.onPlayerOut += (target) =>
-        //{
-        //    // Player가 인지 범위 밖에 나갈 때
-        //    if (target == attackTarget)
-        //    {
-        //        attackTarget = null;
-        //        if (State != EnemyState.Dead && !isAttacking)
-        //        {
-        //            State = EnemyState.Wait;
-        //        }
-        //    }
-        //};
 
         firePoint = transform.GetChild(2);
 
@@ -162,10 +145,6 @@ public class ArcherEnemy : EnemyBase
         rb.bodyType = RigidbodyType2D.Dynamic;
         GetComponent<Collider2D>().isTrigger = false;
 
-        waypoints = new Vector2[2];
-        waypoints[0] = transform.position + new Vector3(3, 0);
-        waypoints[1] = transform.position + new Vector3(-3, 0);
-
         attackCurrentCoolTime = -1;
 
         State = EnemyState.Wait;
@@ -175,6 +154,9 @@ public class ArcherEnemy : EnemyBase
     {
         base.OnEnable();
         OnInitialize();
+        //waypoints = new Vector2[2];
+        //waypoints[0] = transform.position + new Vector3(1, 0);
+        //waypoints[1] = transform.position + new Vector3(-1, 0);
     }
 
 
@@ -187,7 +169,6 @@ public class ArcherEnemy : EnemyBase
     {
         if (SearchPlayer())
         {
-            Debug.Log("Player를 찾음");
             State = EnemyState.Chase;
         }
         else
@@ -196,24 +177,27 @@ public class ArcherEnemy : EnemyBase
         }
     }
 
+    float patrolTime = 2.0f;
+    float maxPatrolTime = 2.0f;
+
     protected override void Update_Patrol()
     {
         if (SearchPlayer())
         {
-            Debug.Log("Player를 찾음");
             State = EnemyState.Chase;
         }
         else
         {
             transform.Translate(CurrentMoveSpeed * Time.deltaTime * 0.5f * MoveDir * 0.1f);
 
-            if (Mathf.Abs(waypoints[currentWaypointIndex].x - transform.position.x) < 0.1f)
+            if (patrolTime < 0)
             {
-                currentWaypointIndex++;
-                currentWaypointIndex %= waypoints.Length;
+                patrolTime = maxPatrolTime;
                 MoveDir *= new Vector2(-1, 0);
                 State = EnemyState.Wait;
             }
+
+            patrolTime -= Time.deltaTime;
         }
     }
 

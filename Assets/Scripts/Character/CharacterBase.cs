@@ -9,6 +9,7 @@ public class CharacterBase : PooledObject, IHealth
 {
 
     // 캐릭터의 체력 부분 -----------------------------------
+    [Header("CharacterState")]
 
     /// <summary>
     /// 캐릭터의 체력

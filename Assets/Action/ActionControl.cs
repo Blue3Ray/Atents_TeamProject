@@ -386,7 +386,7 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""606fc01a-3792-4e5a-a5ac-2586b93312cb"",
-                    ""path"": ""<Keyboard>/j"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

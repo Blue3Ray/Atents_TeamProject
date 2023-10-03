@@ -16,9 +16,9 @@ public class ProjectileBase : PooledObject
 	/// <summary>
 	/// 투사체가 날아가는 속도입니다.
 	/// </summary>
-	public float ProjectileSpeed = 1;
+	public float projectileSpeed = 1;
 
-	public float ProjectileLife = 3.0f;
+	public float projectileLife = 3.0f;
 
 	/// <summary>
 	/// 투사체가 날아갈 방향입니다.
@@ -93,7 +93,7 @@ public class ProjectileBase : PooledObject
 	{
 		if (MoveOrStop)
 		{
-			transform.Translate(dirProjectile * ProjectileSpeed * Time.deltaTime);
+			transform.Translate(dirProjectile * projectileSpeed * Time.deltaTime);
 		}
 	}
 
@@ -114,7 +114,6 @@ public class ProjectileBase : PooledObject
 		{
 			OnAttack(characterTarget);
 		}
-
 	}
 
 	protected virtual void OnAttack(CharacterBase characterTarget)
@@ -126,7 +125,7 @@ public class ProjectileBase : PooledObject
 
 	IEnumerator DisableProjectile()
 	{
-		yield return (new WaitForSeconds(ProjectileLife));
+		yield return (new WaitForSeconds(projectileLife));
 		EndAttack();
 		StopAllCoroutines();
 	}

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,13 +25,15 @@ public class Boss : CharacterBase
         Die
     }
 
-
-    BossState state = BossState.Idle;
+    [SerializeField]
+    //테스트용 필드
+    BossState state = BossState.Awake;
     BossState State
     {
         get => state;
         set
         {
+            if (state == BossState.Die) return;
             if (state != value)
             {
                 state = value;
@@ -50,33 +51,98 @@ public class Boss : CharacterBase
                         onStateUpdate = Update_Idle;
                         break;
                     case BossState.Teleport:
+                        onStateUpdate = Update_Blink;
+                        Blink();
                         break;
                     case BossState.FireLaser:
                         break;
                     case BossState.FireRocket:
                         break;
                     case BossState.Die:
+                        animator.SetTrigger(Hash_Die);
+                        onStateUpdate = Update_Dead;
+                        gameObject.layer = LayerMask.NameToLayer("IgnorePlayer");
+                        
+                        // 점멸 중이거나 맞던 중인 쉐이더면 초기화
+                        StopAllCoroutines();
+                        bossShader.SetFloat(Shader_Split, MaxSplit);
+                        bossShader.SetFloat(Shader_Hit, 1);
+
                         break;
                 }
             }
         }
     }
 
+    // 공격 기능 ---------------------------------------------
+
+    public GameObject rocket;
+    public GameObject laser;
+    Transform laserFirePoint;
+    Transform rocketFirePoint;
+
+    public float attackCoolTime  = -1f;
+
+    public float maxAttackCoolTime = 4.0f;
+
     readonly int Hash_Sleep = Animator.StringToHash("Sleep");
     readonly int Hash_Awake = Animator.StringToHash("Awake");
     readonly int Hash_GetHit = Animator.StringToHash("GetHit");
     readonly int Hash_FireLaser = Animator.StringToHash("FireLaser");
     readonly int Hash_FireRocket = Animator.StringToHash("FireRocket");
-    readonly int Hash_IsDead = Animator.StringToHash("IsDead");
+    readonly int Hash_Die = Animator.StringToHash("Die");
 
+    // 이동 관련 기능(기본적으로 점멸로만 이동한다)
 
     [Header("Shader Setting")]
+
+    /// <summary>
+    /// 점멸하는 시간
+    /// </summary>
     public float phaseTime = 0.5f;
 
     const float MinSplit = -1.2f;
     const float MaxSplit = 3f;
 
-    readonly int Sharder_Split = Shader.PropertyToID("_Split");
+    readonly int Shader_Split = Shader.PropertyToID("_Split");
+    readonly int Shader_Hit = Shader.PropertyToID("_BaseAlpha");
+
+    /// <summary>
+    /// 보스가 있을 위치 인덱스
+    /// </summary>
+    int bossPosIndex = 1;
+
+    /// <summary>
+    /// 점멸 재사용 대기 남은시간
+    /// </summary>
+    float blinkCoolTime = -1.0f;
+
+    /// <summary>
+    /// 점멸 재사용 대기시간
+    /// </summary>
+    public float maxBlinkCoolTime = 5.0f;
+
+    /// <summary>
+    /// 보는 방향
+    /// </summary>
+    protected Vector2 lookDir = Vector2.right;
+    protected Vector2 LookDir
+    {
+        get => lookDir;
+        set
+        {
+            if (lookDir != value)
+            {
+                lookDir = value;
+                transform.localScale = new Vector3(lookDir.x, 1, 1);
+                if (lookDir != Vector2.zero) knockBackDir = lookDir;
+            }
+        }
+    }
+
+
+    CharacterBase player;
+
 
     System.Action onStateUpdate;
 
@@ -90,6 +156,11 @@ public class Boss : CharacterBase
         base.Awake();
         bossShader = transform.GetChild(0).GetComponent<Renderer>().sharedMaterial;
         animator = GetComponent<Animator>();
+
+        laserFirePoint = transform.GetChild(1);
+        rocketFirePoint = transform.GetChild(2);
+
+        onDie += () => State = BossState.Die;
     }
 
     private void Start()
@@ -98,6 +169,7 @@ public class Boss : CharacterBase
         //enter.onEnterPlayer += 
 
         teleport = FindObjectOfType<TeleportPos>();
+        player = GameManager.Ins.Player;
     }
 
 
@@ -135,42 +207,147 @@ public class Boss : CharacterBase
 
     void Update_Idle()
     {
+        if(player.transform.position.x > transform.position.x)
+        {
+            LookDir = new Vector2(1, 0);
+        }
+        else
+        {
+            LookDir = new Vector2(-1, 0);
+        }
 
+        
+
+        if(attackCoolTime < 0)
+        {
+            if (blinkCoolTime < 0 && Random.value > 0.3f)
+            {
+                State = BossState.Teleport;
+            }
+            else
+            {
+                Attack(player);
+            }
+        }
     }
 
-    void Update_Hitted() { }
-
+    void Update_Blink() { }
     void Update_Dead() { }
+
+    // 공격 관련 함수들 --------------------------------------
+
+
+    /// <summary>
+    /// 애니메이션 타이밍에 맞춰 로켓 프리펩을 생성하는 함수
+    /// </summary>
+    void FireRocket()
+    {
+        GameObject temp = Instantiate(rocket);
+        ProjectileBase tempObj = temp.GetComponent<ProjectileBase>();
+
+        tempObj.OnInitialize(knockBackDir, ElementalType.None);
+        temp.transform.position = rocketFirePoint.position;
+    }
+
+    /// <summary>
+    /// 공격 함수 실행시 바로 프리펩을 생성하는 함수
+    /// </summary>
+    void FireLaser()
+    {
+        GameObject temp = Instantiate(laser);
+        ProjectileBase tempObj = temp.GetComponent<ProjectileBase>();
+
+        tempObj.OnInitialize(knockBackDir, ElementalType.None);
+        temp.transform.position = laserFirePoint.position;
+    }
+
+
+    public override void Attack(CharacterBase target)
+    {
+        //State = BossState.FireRocket;
+        StartCoroutine(AttackCoolTime());
+
+        if (Mathf.Pow((target.transform.position.y + 1) - transform.position.y, 2) > 5)
+        {
+            animator.SetTrigger(Hash_FireRocket);
+        }
+        else
+        {
+            animator.SetTrigger(Hash_FireLaser);
+            FireLaser();
+        }
+    }
+
+    IEnumerator AttackCoolTime()
+    {
+        attackCoolTime = maxAttackCoolTime;
+        while (attackCoolTime > 0)
+        {
+            yield return null;
+            attackCoolTime -= Time.deltaTime;
+        }
+        attackCoolTime = -1f;
+    }
+
+    // 방어 관련 --------
+
+    public override void Defence(float damage, Vector2 knockBackDir, ElemantalStates elemantal = null)
+    {
+        base.Defence(damage, knockBackDir, elemantal);
+        // 맞을 때 깜빡거리는 이펙트 추가
+        StartCoroutine(HitEffect());
+    }
+
+    IEnumerator HitEffect()
+    {
+        bossShader.SetFloat(Shader_Hit, 0);
+        yield return new WaitForSeconds(0.1f);
+        bossShader.SetFloat(Shader_Hit, 1);
+    }
 
     // 텔레포트 관련 함수들 -----------------------------------------
 
-    int bossPos = 1;
-
-    BossPos GetTeleportPos()
+    BossPos GetNextTeleportPos()
     {
-        bossPos++;
-        if (bossPos > Enum.GetNames(typeof(BossPos)).Length) bossPos = 1;
-        return (BossPos) bossPos;
+        bossPosIndex++;
+        if (bossPosIndex > System.Enum.GetNames(typeof(BossPos)).Length) bossPosIndex = 1;
+        return (BossPos) bossPosIndex;
     }
 
 
     public void Blink()
     {
-        StartCoroutine(BlinkCoroutine(GetTeleportPos()));
+        if (blinkCoolTime < 0)
+        {
+            StartCoroutine(BlinkCoolTime());
+            StartCoroutine(BlinkCoroutine(GetNextTeleportPos()));
+        }
+    }
+
+    IEnumerator BlinkCoolTime()
+    {
+        blinkCoolTime = maxBlinkCoolTime;
+        while (blinkCoolTime > 0)
+        {
+            blinkCoolTime -= Time.deltaTime;
+            yield return null;
+        }
+        blinkCoolTime = -1;
     }
 
     IEnumerator BlinkCoroutine(BossPos pos)
     {
-        float time = 0.0f;
+        float time;
         float halfPhaseTime = phaseTime * 0.5f;
         float phaseNormalize = (MaxSplit - MinSplit) / halfPhaseTime;
+
 
         time = halfPhaseTime;
         while (time > 0)
         {
-            time -= Time.deltaTime;
-            bossShader.SetFloat(Sharder_Split, (time * phaseNormalize * 2f));
             yield return null;
+            time -= Time.deltaTime;
+            bossShader.SetFloat(Shader_Split, (time * phaseNormalize * 2f));
         }
         Teleport(pos);
         yield return null;
@@ -178,10 +355,11 @@ public class Boss : CharacterBase
         time = 0;
         while (time < halfPhaseTime)
         {
-            time += Time.deltaTime;
-            bossShader.SetFloat(Sharder_Split, (time * phaseNormalize * 2f));
             yield return null;
+            time += Time.deltaTime;
+            bossShader.SetFloat(Shader_Split, (time * phaseNormalize * 2f));
         }
+        State = BossState.Idle;
         yield return null;
     }
 

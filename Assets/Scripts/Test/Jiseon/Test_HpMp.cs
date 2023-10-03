@@ -9,7 +9,7 @@ public class Test_HpMp : TestBase
 
     void Start()
     {
-        player = GameManager.Ins.player;
+        player = GameManager.Ins.Player;
     }
 
 	protected override void Test1(InputAction.CallbackContext context)

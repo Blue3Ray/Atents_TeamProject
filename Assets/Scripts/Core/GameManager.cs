@@ -15,7 +15,8 @@ public enum Element : byte
 
 public class GameManager : Singleton<GameManager>
 {
-    public PlayerJS player;
+    PlayerJS player;
+    public PlayerJS Player => player;
     
     ItemDataManager itemDataManager;
     
@@ -36,7 +37,6 @@ public class GameManager : Singleton<GameManager>
         {
             player.inven = new Inventory(5,2);
         }
-
 	}
 
 

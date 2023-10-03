@@ -283,6 +283,6 @@ public class EnemyBase : CharacterBase
     {
         base.Die();     // 죽었다라는 로그
         gameObject.layer = LayerMask.NameToLayer("IgnorePlayer");
-        GameManager.Ins.player.Experience += experiencePoint;
+        GameManager.Ins.Player.Experience += experiencePoint;
     }
 }

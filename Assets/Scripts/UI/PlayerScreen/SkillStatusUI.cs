@@ -19,7 +19,7 @@ public class SkillStatusUI : MonoBehaviour
 
     private void Start()
     {
-        PlayerJS player = GameManager.Ins.player;
+        PlayerJS player = GameManager.Ins.Player;
         player.ElemantalStates.onElemantaltypeChange += Refresh;
         //ename.text = player.PlayerElementalStatus.ToString();
     }

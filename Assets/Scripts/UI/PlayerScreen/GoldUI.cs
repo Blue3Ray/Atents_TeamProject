@@ -15,7 +15,7 @@ public class GoldUI : MonoBehaviour
 
 	private void Start()
 	{
-        GameManager.Ins.player.inven.OnMoneyChange = (money) => RefreshData(money);
+        GameManager.Ins.Player.inven.OnMoneyChange = (money) => RefreshData(money);
 	}
 
 	public void RefreshData(int gold)

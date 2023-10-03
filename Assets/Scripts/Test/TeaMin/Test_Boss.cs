@@ -13,8 +13,6 @@ public class Test_Boss : TestBase
         boss = FindObjectOfType<Boss>();
     }
 
-    int index = 1;
-
     protected override void Test1(InputAction.CallbackContext context)
     {
         //index++;

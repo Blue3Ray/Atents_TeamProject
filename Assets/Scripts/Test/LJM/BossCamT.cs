@@ -14,7 +14,7 @@ public class BossCamT : MonoBehaviour
     void Start()
     {
 
-        player = GameManager.Ins.player.transform;
+        player = GameManager.Ins.Player.transform;
 
         virtualCamera.Follow = player;
         virtualCamera.LookAt = player;

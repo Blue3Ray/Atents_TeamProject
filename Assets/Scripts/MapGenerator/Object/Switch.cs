@@ -21,7 +21,7 @@ public class Switch : MonoBehaviour, IInteractable
     }
 	private void Start()
 	{
-        GameManager.Ins.player.OnUsePerformed += Use;
+        GameManager.Ins.Player.OnUsePerformed += Use;
 	}
 
 	public void Use()

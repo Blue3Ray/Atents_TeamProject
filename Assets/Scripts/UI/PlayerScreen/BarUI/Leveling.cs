@@ -21,7 +21,7 @@ public class Leveling : MonoBehaviour
 
     private void Start()
     {
-        PlayerJS player = GameManager.Ins.player;
+        PlayerJS player = GameManager.Ins.Player;
         RefreshData(player.Level, player.Experience, player.ExperienceMax);
         player.onChangeEx += RefreshData;
     }

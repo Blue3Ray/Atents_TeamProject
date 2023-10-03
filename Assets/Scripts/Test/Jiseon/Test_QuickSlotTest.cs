@@ -18,7 +18,7 @@ public class Test_QuickSlotTest : TestBase
 	protected override void Test1(InputAction.CallbackContext context)
 	{
 		base.Test1(context);
-		inven = GameManager.Ins.player.inven;
+		inven = GameManager.Ins.Player.inven;
 		inven.AddItem(ItemCode.Jewerly);
 	}
 

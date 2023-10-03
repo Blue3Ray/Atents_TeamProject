@@ -42,7 +42,7 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     void Start()
     {
-        player = GameManager.Ins.player;
+        player = GameManager.Ins.Player;
         test.gameObject.SetActive(false);
     }
 

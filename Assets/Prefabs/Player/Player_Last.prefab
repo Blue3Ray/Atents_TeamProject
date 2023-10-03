@@ -220,11 +220,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4500016455673576098}
+  - component: {fileID: 1024277725570728801}
   - component: {fileID: 7956635770770723410}
   - component: {fileID: 7083816544775146826}
   - component: {fileID: 3939029550013910976}
   - component: {fileID: 5382252197845652854}
-  - component: {fileID: 1024277725570728801}
   m_Layer: 9
   m_Name: Player_Last
   m_TagString: Player
@@ -255,6 +255,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1024277725570728801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122255425316255477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d8ef178d2473e34d8ac7f30e16826d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  maxHP: 100
+  knockBackDir: {x: 0, y: 0, z: 0}
+  attackState: 20
+  defenceState: 0
+  elemantalAttack: 0
+  elemantalDefence: 0
+  OnOffSecond: 0.3
+  spriteRenderer: {fileID: 0}
+  isGrounded: 0
+  coolTimes:
+  - 0.5
+  - 1
+  - 2
+  - 0.7
+  - 3
+  SwordColors:
+  - {r: 7.999999, g: 7.999999, b: 7.999999, a: 1}
+  - {r: 7.999999, g: 0.12565443, b: 0, a: 1}
+  - {r: 0, g: 0.2883008, b: 7.7480836, a: 0}
+  - {r: 0.684966, g: 5.8085127, b: 4.9477067, a: 0}
+  - {r: 6.8831816, g: 5.8380914, b: 0.360376, a: 0}
+  isOverCoolTime: 1
+  moveSpeed: 10
+  jumpForce: 35
+  attackRange: 1
+  fallSpeed: -1
+  dashForce: 20
+  wallJumpForce: 15
+  attackCoolTimeMax: 1
 --- !u!95 &7956635770770723410
 Animator:
   serializedVersion: 5
@@ -365,48 +407,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.050207734, y: 0.56165165}
   m_Size: {x: 0.5268521, y: 0.9986888}
   m_Direction: 0
---- !u!114 &1024277725570728801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2122255425316255477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d8ef178d2473e34d8ac7f30e16826d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 100
-  maxHP: 100
-  knockBackDir: {x: 0, y: 0, z: 0}
-  attackState: 20
-  defenceState: 0
-  elemantalAttack: 0
-  elemantalDefence: 0
-  OnOffSecond: 0.3
-  spriteRenderer: {fileID: 0}
-  isGrounded: 0
-  coolTimes:
-  - 0.5
-  - 1
-  - 2
-  - 0.7
-  - 3
-  SwordColors:
-  - {r: 7.999999, g: 7.999999, b: 7.999999, a: 1}
-  - {r: 7.999999, g: 0.12565443, b: 0, a: 1}
-  - {r: 0, g: 0.2883008, b: 7.7480836, a: 0}
-  - {r: 0.684966, g: 5.8085127, b: 4.9477067, a: 0}
-  - {r: 6.8831816, g: 5.8380914, b: 0.360376, a: 0}
-  isOverCoolTime: 1
-  moveSpeed: 10
-  jumpForce: 35
-  attackRange: 1
-  fallSpeed: -1
-  dashForce: 20
-  wallJumpForce: 15
-  attackCoolTimeMax: 1
 --- !u!1 &3370916673101702226
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 1273576462590451190}
   - component: {fileID: 259845190017725499}
   - component: {fileID: 1985180064698421541}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackArea
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}

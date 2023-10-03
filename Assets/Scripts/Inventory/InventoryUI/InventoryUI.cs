@@ -80,7 +80,7 @@ public class InventoryUI : MonoBehaviour
 
 	public void ConnetingSlots()
 	{
-		inventory = GameManager.Ins.player.inven;
+		inventory = GameManager.Ins.Player.inven;
 		for(int i = 0; i < inventory.SlotCount; i++)
 		{
 			UISlots[i].invenSlot = inventory[(uint)i];

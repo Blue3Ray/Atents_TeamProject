@@ -31,7 +31,7 @@ public class PlayerCameraController : MonoBehaviour
 
 	private void Start()
 	{
-		player = GameManager.Ins.player;
+		player = GameManager.Ins.Player;
 	}
 
 	private void FixedUpdate()

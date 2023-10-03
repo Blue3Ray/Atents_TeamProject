@@ -132,7 +132,6 @@ public class BoneEnemy : EnemyBase
     {
         if(SearchPlayer())
         {
-            Debug.Log("Player를 찾음");
             State = EnemyState.Chase;
         }
         else
@@ -145,7 +144,6 @@ public class BoneEnemy : EnemyBase
     {
         if (SearchPlayer())
         {
-            Debug.Log("Player를 찾음");
             State = EnemyState.Chase;
         }
         else

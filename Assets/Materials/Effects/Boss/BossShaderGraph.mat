@@ -51,9 +51,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BaseAlpha: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Split: 3
+    - _Split: 8.424983
     - _Thinkness: 0.1
     m_Colors:
     - _Color: {r: 0, g: 0.9804158, b: 1, a: 0}

@@ -38,7 +38,7 @@ public class SpawnerTest : MonoBehaviour
 
     public void SetPlayerPos()
     {
-        GameManager.Ins.player.transform.position = spawnPositions[0];
+        GameManager.Ins.Player.transform.position = spawnPositions[0];
     }
 
     public void GetSpawnPoses(Vector3Int[] positions)

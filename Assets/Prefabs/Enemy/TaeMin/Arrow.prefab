@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalType: 0
-  projectileSpeed: 1
-  projectileLife: 3
+  projectileSpeed: 15
+  projectileLife: 5
   dirProjectile: {x: 0, y: 0, z: 0}
   MoveOrStop: 1

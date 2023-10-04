@@ -138,10 +138,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalType: 0
-  ProjectileSpeed: 10
-  ProjectileLife: 3
+  projectileSpeed: 1
+  projectileLife: 3
   dirProjectile: {x: 1, y: 0, z: 0}
   MoveOrStop: 1
+  damage: 30
 --- !u!50 &924150989849254647
 Rigidbody2D:
   serializedVersion: 4

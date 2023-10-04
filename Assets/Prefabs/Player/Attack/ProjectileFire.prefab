@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -881533237
-  m_SortingLayer: 6
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -100,10 +100,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalType: 1
-  ProjectileSpeed: 0.5
-  ProjectileLife: 3
+  projectileSpeed: 1
+  projectileLife: 3
   dirProjectile: {x: 0, y: 0, z: 0}
   MoveOrStop: 1
+  damage: 10
 --- !u!95 &7017759619845434878
 Animator:
   serializedVersion: 5

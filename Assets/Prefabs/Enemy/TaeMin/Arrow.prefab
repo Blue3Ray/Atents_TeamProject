@@ -173,3 +173,4 @@ MonoBehaviour:
   projectileLife: 5
   dirProjectile: {x: 0, y: 0, z: 0}
   MoveOrStop: 1
+  damage: 10

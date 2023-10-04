@@ -37,7 +37,7 @@ public class ProjectileBase : PooledObject
 
 	public bool MoveOrStop = true;
 
-	float damage = 1f;
+	public float damage = 1f;
 
 	public float Damage 
 	{

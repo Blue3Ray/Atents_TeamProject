@@ -202,9 +202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 1
-  maxHP: 50
+  maxHP: 10
   knockBackDir: {x: 0, y: 0, z: 0}
-  attackState: 5
+  attackState: 1
   defenceState: 0
   elemantalAttack: 0
   elemantalDefence: 0
@@ -215,7 +215,6 @@ MonoBehaviour:
   farSightRange: 15
   closeSightRange: 2
   attackMaxCoolTime: 3
-  waypoints: []
 --- !u!1 &6439370621206161620
 GameObject:
   m_ObjectHideFlags: 0

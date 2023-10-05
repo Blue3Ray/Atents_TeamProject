@@ -447,14 +447,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 343475736}
     m_Modifications:
-    - target: {fileID: 1901284669, guid: 12ebce8a40bc63f41bddb8784c74c00c, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1901284669, guid: 12ebce8a40bc63f41bddb8784c74c00c, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2929728203505499112, guid: 12ebce8a40bc63f41bddb8784c74c00c, type: 3}
       propertyPath: m_Name
       value: RingMenu
@@ -612,6 +604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 501332412}
   - component: {fileID: 501332411}
+  - component: {fileID: 501332413}
   m_Layer: 0
   m_Name: Test_Spawn
   m_TagString: Untagged
@@ -631,7 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb2063c8667d2a45bfa6bceb8b907d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawner: {fileID: 0}
+  spawner: {fileID: 501332413}
 --- !u!4 &501332412
 Transform:
   m_ObjectHideFlags: 0
@@ -647,6 +640,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &501332413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501332410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f76b6ff5ba51543a383b2e939fbe18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPositions: []
 --- !u!1 &530622520
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,6 +731,37 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!1 &560740121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 560740122}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &560740122
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560740121}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &618361410
 PrefabInstance:
   m_ObjectHideFlags: 0

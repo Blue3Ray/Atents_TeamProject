@@ -12,11 +12,11 @@ public class Leveling : MonoBehaviour
 
     private void Awake()
     {
-        Transform child = transform.GetChild(1);
-        levelIndex = child.GetComponent<TextMeshProUGUI>();
-
-        child = transform.GetChild(0);
+        Transform child = transform.GetChild(0);
         slider = child.GetComponent<Slider>();
+
+        child = transform.GetChild(1);
+        levelIndex = child.GetComponent<TextMeshProUGUI>();
     }
 
     private void Start()

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
+using Unity.VisualScripting;
 
 public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -13,7 +14,9 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     CanvasGroup canvasGroup;
 
-    Transform test;
+    Transform frame;
+
+    public GameObject ringeffect;
 
     PlayerJS player;
 
@@ -25,25 +28,24 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         acionControl = new ActionControl();
         
         slot = new RingMenuSlotUI[5];
-        test = transform.GetChild(0);
-        slot[0] = test.GetChild(1).GetComponent<RingMenuSlotUI>();
-        slot[1] = test.GetChild(2).GetComponent<RingMenuSlotUI>();
-        slot[2] = test.GetChild(3).GetComponent<RingMenuSlotUI>();
-        slot[3] = test.GetChild(4).GetComponent<RingMenuSlotUI>();
-        slot[4] = test.GetChild(0).GetComponent<RingMenuSlotUI>();
+        frame = transform.GetChild(0);
+        slot[0] = frame.GetChild(1).GetComponent<RingMenuSlotUI>();
+        slot[1] = frame.GetChild(2).GetComponent<RingMenuSlotUI>();
+        slot[2] = frame.GetChild(3).GetComponent<RingMenuSlotUI>();
+        slot[3] = frame.GetChild(4).GetComponent<RingMenuSlotUI>();
+        slot[4] = frame.GetChild(0).GetComponent<RingMenuSlotUI>();
 
         slot[0].onEnter += Onclick;
         slot[1].onEnter += Onclick;
         slot[2].onEnter += Onclick;
         slot[3].onEnter += Onclick;
         slot[4].onEnter += Onclick;
-        //canvasGroup = GetComponent<CanvasGroup>();
     }
 
     void Start()
     {
         player = GameManager.Ins.Player;
-        test.gameObject.SetActive(false);
+        frame.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -70,8 +72,14 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         Vector3 mousepostion = Mouse.current.position.ReadValue();
         transform.position = mousepostion;
-        test.gameObject.SetActive(true);
-        //canvasGroup.alpha = 1.0f;
+        frame.gameObject.SetActive(true);
+
+        for (int i = 0; i < 5; i++)
+        {
+            canvasGroup = slot[i].GetComponentInChildren<CanvasGroup>();
+            canvasGroup.alpha = 0.0f;
+        }
+
     }
 
     /// <summary>
@@ -81,8 +89,8 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void RingSlotSelect(InputAction.CallbackContext context)
     {
 
-        test.gameObject.SetActive(false);
-       // canvasGroup.alpha = 0.0f;
+        frame.gameObject.SetActive(false);
+
     }
 
     public ElementalType selectIndex = 0;
@@ -90,6 +98,7 @@ public class RingMenuUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void Onclick(uint index)
     {
         selectIndex = (ElementalType)index;
+        
     }
 
     public void OnPointerDown(PointerEventData eventData)

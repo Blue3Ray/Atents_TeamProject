@@ -520,9 +520,7 @@ public class PlayerJS : CharacterBase, IExperience
 		wallsensor[0].OnWall += (OnOff) => SetTouchedWall_Right(OnOff);
 		wallsensor[1].OnWall += (OnOff) => SetTouchedWall_Left(OnOff);
 
-		MP = MaxMP;
-		HP = MaxHP;
-		Level = 1;
+		GameManager.Ins.LoadPlayerData(this);
 	}
 
 
@@ -615,9 +613,6 @@ public class PlayerJS : CharacterBase, IExperience
 					rb.AddForce(new Vector3(-2, 2, 0) * wallJumpForce, ForceMode2D.Impulse);
 				}
 			}
-
-
-
 		}
 		else
 		{
@@ -634,7 +629,6 @@ public class PlayerJS : CharacterBase, IExperience
 
 	private void OnDown(InputAction.CallbackContext context)
 	{
-
 		if (context.canceled)
 		{
 			OnDownArrow = false;
@@ -654,7 +648,6 @@ public class PlayerJS : CharacterBase, IExperience
 		isSpaceBarOn = true;
 		if (isGrounded)
 		{
-
 			if (!OnDownArrow && !isTriggerSwitch)
 			{
 				rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
@@ -668,7 +661,6 @@ public class PlayerJS : CharacterBase, IExperience
 				}
 			}
 		}
-
 	}
 
 	private void OffSpaceBar(InputAction.CallbackContext obj)
@@ -847,5 +839,35 @@ public class PlayerJS : CharacterBase, IExperience
 	private void OnUse(InputAction.CallbackContext obj)
 	{
 		onUsePerformed?.Invoke();
+	}
+
+	// 씬 넘어갈때 게임매니져에서 받아올 스텟 부여 함수
+	public void Loadtate(SaveData saveData)
+	{
+		if (saveData != null)
+		{
+			playerLevel = saveData.level;
+			playerEx = saveData.exper;
+			playerExMax = saveData.exper_max;
+			hp = saveData.hp;
+			maxHP = saveData.hp_max;
+			mp = saveData.mp;
+			maxMP = saveData.mp_max;
+
+			for (int i = 0; i < elemantalStatus.elemantalevels.Length; i++)
+			{
+				elemantalStatus.elemantalevels[i] = saveData.elementLevel[i];
+			}
+		}
+		else
+		{
+			playerLevel = 1;
+			playerExMax = 100;
+			playerEx = 0;
+			maxHP = 100;
+            HP = 100;
+            maxMP = 100;
+            MP = 100;
+        }
 	}
 }

@@ -40,4 +40,43 @@ public class GameManager : Singleton<GameManager>
 	}
 
 
+
+    SaveData saveData;
+
+    public void SavePlayerData(PlayerJS player)
+    {
+        // 저장해야 되는 데이터
+        // 현재 체력, 최대체력, 현재 마나, 최대 마나, 경험치, 최대경험치, 원소 속성별 레벨, 인벤토리,
+        saveData = new SaveData();
+        saveData.level = player.Level;
+        saveData.exper = player.Experience;
+        saveData.exper_max = player.ExperienceMax;
+        saveData.hp = player.HP;
+        saveData.hp_max = player.MaxHP;
+        saveData.mp = player.MP;
+        saveData.mp_max = player.MaxMP;
+        saveData.elementLevel = new int[player.ElemantalStates.elemantalevels.Length];
+        
+        for(int i =0; i < saveData.elementLevel.Length; i++)
+        {
+            saveData.elementLevel[i] = player.ElemantalStates.elemantalevels[i];
+        }
+    }
+
+    public void LoadPlayerData(PlayerJS player)
+    {
+        player.Loadtate(saveData);
+        saveData = null;
+    }
+}
+public class SaveData
+{
+    public uint level;
+    public int exper;
+    public int exper_max;
+    public float hp;
+    public float hp_max;
+    public float mp;
+    public float mp_max;
+    public int[] elementLevel;
 }

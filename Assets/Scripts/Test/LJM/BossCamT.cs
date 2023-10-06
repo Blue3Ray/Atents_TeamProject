@@ -25,7 +25,7 @@ public class BossCamT : MonoBehaviour
         if(enterArea != null)
         {
             enterArea.onEnterPlayer += LookBoss;
-        }  
+        }
     }
 
     public void LookBoss()

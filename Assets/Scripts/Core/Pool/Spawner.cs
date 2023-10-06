@@ -4,9 +4,13 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
-public class SpawnerTest : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
     public Vector3Int[] spawnPositions;
+
+    public GameObject portal;
+
+    List<GameObject> enemies;
 
     private void Awake()
     {
@@ -21,8 +25,9 @@ public class SpawnerTest : MonoBehaviour
 
     public void SpawnEnemyAtAllPos()
     {
-        
-        for(int i = 1; i < spawnPositions.Length; i++)
+        if(enemies != null) DeleteAllEnemies();
+        enemies = new List<GameObject>();
+        for(int i = 1; i < spawnPositions.Length - 1; i++)
         { 
             Vector3 pos = spawnPositions[i];
             if (Random.value > 0.4f)
@@ -34,11 +39,19 @@ public class SpawnerTest : MonoBehaviour
                 SpawnArcherMonster(pos);
             }
         }
+        SetPortalPos();
     }
 
     public void SetPlayerPos()
     {
+        Debug.Log($"플레이어가 바뀔 위치 : {spawnPositions[0]}");
         GameManager.Ins.Player.transform.position = spawnPositions[0];
+        Debug.Log($"플레이어가 바뀌고 난 후 위치 : {GameManager.Ins.Player.transform.position}");
+    }
+
+    public void SetPortalPos()
+    {
+        Instantiate(portal, spawnPositions[spawnPositions.Length - 1], Quaternion.identity);
     }
 
     public void GetSpawnPoses(Vector3Int[] positions)
@@ -53,12 +66,22 @@ public class SpawnerTest : MonoBehaviour
 
 
     public void SpawnBoneMonster(Vector3 pos)
-    { 
-        Factory.Ins.GetObject(PoolObjectType.BoneEnemy, pos);
+    {
+        enemies.Add(Factory.Ins.GetObject(PoolObjectType.BoneEnemy, pos));
     }
 
     public void SpawnArcherMonster(Vector3 pos)
     {
-        Factory.Ins.GetObject(PoolObjectType.ArcherEnemy, pos);
+        enemies.Add(Factory.Ins.GetObject(PoolObjectType.ArcherEnemy, pos));
+    }
+
+    public void DeleteAllEnemies()
+    {
+        if (enemies == null) return;
+        foreach (var enemy in enemies)
+        {
+            enemy.SetActive(false); 
+        }
+        enemies = null;
     }
 }

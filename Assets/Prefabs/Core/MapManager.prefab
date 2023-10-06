@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 4668716213070038796}
   - component: {fileID: 4668716213070038795}
   - component: {fileID: 4668716213070038797}
-  - component: {fileID: 4668716213070517650}
+  - component: {fileID: 3417579782903017892}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -449,6 +449,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4513b17f8398ba3459f7069bd1c0018f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  platformTile:
+  - {fileID: 11400000, guid: 583a708c867a985409f1171914ff828b, type: 2}
+  halfplatformTile:
+  - {fileID: 11400000, guid: ead9828d4ae45ab4dac0fad2bd250d09, type: 2}
   backgroundTile: {fileID: 11400000, guid: e096560c386ca154fa0101b53d52a808, type: 2}
   exitTile: {fileID: 11400000, guid: 928358ebd5abc9245b75db1a78d91ce5, type: 2}
   passWaySamples:
@@ -459,8 +463,8 @@ MonoBehaviour:
   - {fileID: 1696334468453365824, guid: c1de23d7612ae7d479086d30a8ed6d9c, type: 3}
   - {fileID: 7947880996732234699, guid: de0ad0872d95fa948b97ad654bba94ef, type: 3}
   roomSamplesWithExit:
-  - {fileID: 614984364478799997, guid: 67c462f5860f61c4bafd3e2c194f2cfa, type: 3}
-  - {fileID: 2506358168793198184, guid: 2d2f91bda49b9d44e976514f2f3ec088, type: 3}
+  - {fileID: 614984364478799997, guid: 226701395dbe02a4591a0d4e251d38f5, type: 3}
+  - {fileID: 2506358168793198184, guid: 18bf5238d0297984fb4eafaa5ecaacb8, type: 3}
   startRoom: {fileID: 3956124997088234189, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
   width: 100
   height: 100
@@ -468,7 +472,7 @@ MonoBehaviour:
   collecBoxBoolCount: 3
   roomCount: 8
   roomGap: 10
---- !u!114 &4668716213070517650
+--- !u!114 &3417579782903017892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -477,11 +481,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4668716213070038794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f76b6ff5ba51543a383b2e939fbe18, type: 3}
+  m_Script: {fileID: 11500000, guid: f89bfaf98bbad8641b3b8160a658e4af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pool: {fileID: 0}
   spawnPositions: []
+  portal: {fileID: 56036501175834630, guid: b71f6c32e77d7b44095dd363ad449e2d, type: 3}
 --- !u!1 &4668716213072861618
 GameObject:
   m_ObjectHideFlags: 0

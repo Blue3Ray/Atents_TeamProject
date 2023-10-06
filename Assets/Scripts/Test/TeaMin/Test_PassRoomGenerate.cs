@@ -11,7 +11,7 @@ public class Test_PassRoomGenerate : TestBase
     
     protected override void Test1(InputAction.CallbackContext context)
     {
-        roomGenerator.SetUpRooms();
+        roomGenerator.GenerateLevel();
         
     }
 

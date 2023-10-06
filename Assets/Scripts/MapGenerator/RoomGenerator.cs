@@ -103,11 +103,53 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// </summary>
     int maxSingleRoomSize = 0;
 
-    // 스포너 설정
-    SpawnerTest spawner;
+    /// <summary>
+    /// 몬스터를 생성할 스포너(0번은 플레이어, 마지막 인덱스는 포탈)
+    /// </summary>
+    Spawner spawner;
 
-    // 싱글톤이기 때문에 오브젝트 찾는건 start에서 실행함
+
+
+
     private void Start()
+    {
+        //if (LevelManager.Ins.Level != LevelManager.Ins.bossLevel)
+        //{
+        //    GenerateLevel();
+        //}
+    }
+
+
+    protected override void OnInitalize()
+    {
+        if (RoomGenerator.Ins != this) return;
+        base.OnInitalize();
+        MakeLevel();
+    }
+
+    public void ClearData()
+    {
+        foreach(var item in m_tileMaps)
+        {
+            item.ClearAllTiles();
+        }
+        randomMap = null;
+    }
+
+    public void MakeLevel()
+    {
+        if(randomMap == null)
+        {
+            SetUpLevel();
+        }
+
+        if (LevelManager.Ins.Level != LevelManager.Ins.bossLevel)
+        {
+            GenerateLevel();
+        }
+    }
+
+    public void SetUpLevel()
     {
         selectTile = platformTile.Length - 1;
 
@@ -143,7 +185,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         // 방과 방 사이 거리 추가해서 방 크기의 여유 두기
         maxSingleRoomSize += roomGap;
 
-        spawner = GetComponent<SpawnerTest>();
+        spawner = GetComponent<Spawner>();
     }
 
     /*
@@ -187,7 +229,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
     /// <summary>
     /// 방을 생성하는 함수
     /// </summary>
-    public void SetUpRooms()
+    public void GenerateLevel()
     {
         randomMap.SetUp(roomCount, width, height, fillRate, collecBoxBoolCount);        // 맵 정보 생성
 

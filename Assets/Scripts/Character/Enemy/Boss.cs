@@ -150,6 +150,8 @@ public class Boss : CharacterBase
     Animator animator;
     TeleportPos teleport;
 
+    GameObject portal;
+
 
     protected override void Awake()
     {
@@ -170,15 +172,21 @@ public class Boss : CharacterBase
 
         teleport = FindObjectOfType<TeleportPos>();
         player = GameManager.Ins.Player;
+
+        EnterArea enterArea = FindAnyObjectByType<EnterArea>();
+        enterArea.onEnterPlayer += () => State = BossState.Awake;
+
+        portal = FindAnyObjectByType<Portal>().gameObject;
+        portal.SetActive(false);
     }
 
 
     public override void OnInitialize()
     {
         base.OnInitialize();
-        // State = BossState.Sleep; 
+        State = BossState.Sleep; 
         // 테스트로 처음에  Idle로 시작하기
-        State = BossState.Idle;
+        //State = BossState.Idle;
     }
 
     private void Update()
@@ -378,5 +386,13 @@ public class Boss : CharacterBase
     IEnumerator BossAwake()
     {
         yield return null;
+    }
+
+    // 보스 사망 관련 함수
+
+    public override void Die()
+    {
+        base.Die();
+        if(portal != null)portal.SetActive(true);
     }
 }

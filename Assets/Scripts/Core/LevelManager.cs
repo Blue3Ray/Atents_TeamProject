@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,7 @@ public class LevelManager : Singleton<LevelManager>
         set
         {
             level = value;
+            RoomGenerator.Ins.ClearData();
             if (level > 2)
             {
                 LoadBossRoom();
@@ -33,11 +35,14 @@ public class LevelManager : Singleton<LevelManager>
     public int bossLevel;
 
 
+    
+
     /// <summary>
     /// 평상 던전 씬 불러오기
     /// </summary>
     void LoadLowLevel()
     {
+        
         GameManager.Ins.SavePlayerData(GameManager.Ins.Player);
         SceneManager.LoadScene(0);
     }

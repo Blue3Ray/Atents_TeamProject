@@ -8928,38 +8928,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: tileMaps.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: platformTile.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: platformTile.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 72eaaf1c0d6cfc64a98bd5d8ff30546c, type: 2}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: halfplatformTile.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: halfplatformTile.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: b44443ec6e4d5254a842c9fea07f29b4, type: 2}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: roomSamplesWithExit.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: roomSamplesWithExit.Array.data[0]
-      value: 
-      objectReference: {fileID: 614984364478799997, guid: 226701395dbe02a4591a0d4e251d38f5, type: 3}
-    - target: {fileID: 4668716213070038797, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
-      propertyPath: roomSamplesWithExit.Array.data[1]
-      value: 
-      objectReference: {fileID: 2506358168793198184, guid: 18bf5238d0297984fb4eafaa5ecaacb8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7fb9d4cb10f0fc41afbaef929d62abb, type: 3}
 --- !u!1 &5034119551457632094

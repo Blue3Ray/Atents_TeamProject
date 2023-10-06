@@ -11,6 +11,8 @@ public class Portal : MonoBehaviour, IInteractable
         LevelManager.Ins.Level++;
     }
 
+    // 이렇게 되면 안되는데 제길ㄴ
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

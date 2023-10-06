@@ -15,6 +15,8 @@ public class EnterArea : MonoBehaviour
         }
     }
 
+    
+
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

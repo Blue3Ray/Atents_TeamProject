@@ -427,7 +427,7 @@ public class PlayerJS : CharacterBase, IExperience
 		DisableInputAction();
 	}
 
-	void EnableInputAction()
+	public void EnableInputAction()
 	{
 		inputActions.PlayerJM.Enable();
 		inputActions.PlayerJM.Move.performed += OnMove;
@@ -441,7 +441,7 @@ public class PlayerJS : CharacterBase, IExperience
 		inputActions.PlayerJM.Use.performed += OnUse;
 	}
 
-	void DisableInputAction()
+	public void DisableInputAction()
 	{
 		inputActions.PlayerJM.Use.performed -= OnUse;
 		inputActions.PlayerJM.Dash.performed -= OnDash;

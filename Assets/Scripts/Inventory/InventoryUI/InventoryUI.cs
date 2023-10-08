@@ -167,11 +167,13 @@ public class InventoryUI : MonoBehaviour
 		canvasGroup.interactable = true;
 		canvasGroup.blocksRaycasts = true;
 		canvasGroup.alpha = 1;
+		GameManager.Ins.Player.DisableInputAction();
 	}
 	public void CloseInventory()
 	{
 		canvasGroup.interactable = false;
 		canvasGroup.blocksRaycasts = false;
 		canvasGroup.alpha = 0;
+		GameManager.Ins.Player.EnableInputAction();
 	}
 }

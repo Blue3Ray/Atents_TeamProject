@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class Merchant : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-	// Update is called once per frame
-	private void OnTriggerEnter2D(Collider2D collision)
+	Material merchantShader;
+
+	private void Awake()
 	{
-		if (collision.CompareTag("Player"))
+		merchantShader = transform.GetComponent<Renderer>().sharedMaterial;
+	}
+
+	private void Start()
+	{
+		transform.GetChild(0).GetComponent<Merchant_Sensor>().playerCloseToMerchant += (isIn) => CreatOutLine(isIn);
+	}
+
+	void CreatOutLine(bool isIn)
+	{
+		if (isIn)
 		{
-			Debug.Log("플레이어 접근");
+			merchantShader.SetFloat("_line", 0.002f);
+		}
+		else
+		{
+			merchantShader.SetFloat("_line", 0);
 		}
 	}
+
+
 }

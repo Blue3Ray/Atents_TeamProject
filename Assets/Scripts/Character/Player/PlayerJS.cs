@@ -467,10 +467,6 @@ public class PlayerJS : CharacterBase, IExperience
 		activateAttack[4] += ThunderAttack;
 
 		playerShader = transform.GetComponent<Renderer>().sharedMaterial;
-		if(playerShader != null)
-		{
-			Debug.Log("ÀßÃ£À½");
-		}
 
 
 		inputActions = new ActionControl();

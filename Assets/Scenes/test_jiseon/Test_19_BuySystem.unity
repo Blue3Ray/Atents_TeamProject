@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 22490301}
   - component: {fileID: 22490303}
   - component: {fileID: 22490302}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: MerchantSensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.21350479, y: -0.46704412}
+  m_Offset: {x: -0.083722115, y: -0.46704412}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -180,7 +180,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 12.475937, y: 3.1617465}
+  m_Size: {x: 8.1236515, y: 3.1617465}
   m_EdgeRadius: 0
 --- !u!114 &22490303
 MonoBehaviour:
@@ -1044,7 +1044,7 @@ GameObject:
   - component: {fileID: 2067920897}
   - component: {fileID: 2067920902}
   - component: {fileID: 2067920903}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Merchant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1104,7 +1104,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: bcd8875aa934d744bbeda1d641cf674e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -104,6 +104,7 @@ public class PlayerJS : CharacterBase, IExperience
 			{
 				isGrounded = value;
 				anim.SetBool(Hash_Grounded, isGrounded);
+				Debug.Log($"IsGrounded = {isGrounded}");
 			}
 		}
 	}
@@ -315,7 +316,6 @@ public class PlayerJS : CharacterBase, IExperience
 			if (playerTouchedWall != value)
 			{
 				playerTouchedWall = value;
-				Debug.Log($"{playerTouchedWall}");
 			}
 
 		}
@@ -631,11 +631,15 @@ public class PlayerJS : CharacterBase, IExperience
 		}
 		else
 		{
-			if (isSpaceBarOn && !isTriggerSwitch)
-			{
-				StartCoroutine(TriggerOnOff());
-			}
 			OnDownArrow = true;
+			if (isGrounded)
+			{
+				if (isSpaceBarOn && !isTriggerSwitch)
+				{
+					StartCoroutine(TriggerOnOff());
+				}
+
+			}
 		}
 	}
 

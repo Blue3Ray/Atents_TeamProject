@@ -315,7 +315,7 @@ public class PlayerJS : CharacterBase, IExperience
 			if (playerTouchedWall != value)
 			{
 				playerTouchedWall = value;
-				//Debug.Log($"{playerTouchedWall}");
+				Debug.Log($"{playerTouchedWall}");
 			}
 
 		}
@@ -675,21 +675,13 @@ public class PlayerJS : CharacterBase, IExperience
 		this.gameObject.layer = 8;
 		yield return new WaitForSeconds(OnOffSecond);
 		this.gameObject.layer = 9;
-		StopAllCoroutines();
 		isTriggerSwitch = false;
+		StopAllCoroutines();
 	}
 
 	float attackCoolTime = 1.0f;
 	public float attackCoolTimeMax = 1.0f;
-	IEnumerator AttackCoolTime()
-	{
-		attackCoolTime = attackCoolTimeMax;
-		while (attackCoolTime > 0)
-		{
-			attackCoolTime -= Time.deltaTime;
-			yield return null;
-		}
-	}
+
 
 	private void OnAttack(InputAction.CallbackContext context_)
 	{

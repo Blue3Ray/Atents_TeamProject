@@ -183,6 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4513b17f8398ba3459f7069bd1c0018f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  platformTile: []
+  halfplatformTile: []
   backgroundTile: {fileID: 11400000, guid: e096560c386ca154fa0101b53d52a808, type: 2}
   exitTile: {fileID: 11400000, guid: 928358ebd5abc9245b75db1a78d91ce5, type: 2}
   passWaySamples:

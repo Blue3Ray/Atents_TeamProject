@@ -213,7 +213,7 @@ public class PlayerJS : CharacterBase, IExperience
 	/// <summary>
 	/// 플레이어의 경험치 최대값
 	/// </summary>
-	int playerExMax = 100;
+	int playerExMax = 30;
 
 	/// <summary>
 	/// 플레이어 경험치 최대값의 읽기 전용 프로퍼티
@@ -858,7 +858,7 @@ public class PlayerJS : CharacterBase, IExperience
 		else
 		{
 			playerLevel = 1;
-			playerExMax = 100;
+			playerExMax = 30;
 			playerEx = 0;
 			maxHP = 100;
             HP = 100;

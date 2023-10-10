@@ -465,6 +465,7 @@ MonoBehaviour:
   roomSamplesWithExit:
   - {fileID: 614984364478799997, guid: 226701395dbe02a4591a0d4e251d38f5, type: 3}
   - {fileID: 2506358168793198184, guid: 18bf5238d0297984fb4eafaa5ecaacb8, type: 3}
+  - {fileID: 4991502941698998779, guid: 2a1646634d575074dbbbcbf6d9ebab7a, type: 3}
   startRoom: {fileID: 3956124997088234189, guid: 8d99bfebc4435084b9109644434e5709, type: 3}
   width: 100
   height: 100

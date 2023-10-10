@@ -44,9 +44,7 @@ public class Spawner : MonoBehaviour
 
     public void SetPlayerPos()
     {
-        Debug.Log($"플레이어가 바뀔 위치 : {spawnPositions[0]}");
         GameManager.Ins.Player.transform.position = spawnPositions[0];
-        Debug.Log($"플레이어가 바뀌고 난 후 위치 : {GameManager.Ins.Player.transform.position}");
     }
 
     public void SetPortalPos()

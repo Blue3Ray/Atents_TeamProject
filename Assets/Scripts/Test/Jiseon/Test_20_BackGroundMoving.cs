@@ -1,18 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class Test_20_BackGroundMoving : MonoBehaviour
+public class Test_20_BackGroundMoving : TestBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	protected override void Test1(InputAction.CallbackContext context)
+	{
+		base.Test1(context);
+		GameManager.Ins.Player.inven.Money += 20000;
+	}
 }

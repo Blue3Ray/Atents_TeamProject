@@ -393,7 +393,7 @@ MonoBehaviour:
   attackRange: 1
   fallSpeed: -1
   dashForce: 20
-  wallJumpForce: 15
+  wallJumpForce: 18
   attackCoolTimeMax: 1
 --- !u!95 &7956635770770723410
 Animator:

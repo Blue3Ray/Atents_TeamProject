@@ -17,8 +17,8 @@ public class Test_PassGenerate : TestBase
 
     protected override void Test1(InputAction.CallbackContext context)
     {
-        PassWay exit = new PassWay(new Vector3Int(-1, -10), ExitDirection.Up);
-        PassWay exit2 = new PassWay(new Vector3Int(1, 10), ExitDirection.Down);
+        PassWay exit = new PassWay(new Vector3Int(-10, -1), ExitDirection.Right);
+        PassWay exit2 = new PassWay(new Vector3Int(10, 1), ExitDirection.Left);
         roomGenerator.GeneratePassway(exit, exit2);
     }
 

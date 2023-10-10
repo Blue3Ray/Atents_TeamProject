@@ -660,7 +660,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
             }
         }
         // ㄱ자도 짧게 그려지게 구현할 것!!!!
-        else if (passWayType == PassWayType.UpRight)
+        else if (passWayType == PassWayType.UpRight)        // 버그 발생
         {
             if(passPos.Direction == ExitDirection.Down)
             {
@@ -675,7 +675,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
                 Debug.LogWarning("예외 상황 발생");
             }
         }
-        else if (passWayType == PassWayType.RightDown)
+        else if (passWayType == PassWayType.RightDown)      
         {
             if(passPos.Direction == ExitDirection.Left)
             {
@@ -694,11 +694,11 @@ public class RoomGenerator : Singleton<RoomGenerator>
         {
             if (passPos.Direction == ExitDirection.Up)
             {
-                decreaseFromMax.y = drawOverCount;
+                decreaseFromMin.x = drawOverCount;
             }
             else if(passPos.Direction == ExitDirection.Right)
             {
-                decreaseFromMax.x = drawOverCount;
+                decreaseFromMin.y = drawOverCount;
             }
             else
             {

@@ -358,7 +358,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 310085977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.79, y: -2.4, z: -10}
+  m_LocalPosition: {x: 110.5, y: 14.8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -476,30 +476,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 697557014}
     m_Modifications:
-    - target: {fileID: 4662612979545001487, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 998320949}
-    - target: {fileID: 4662612979545001487, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: MarketOff
-      objectReference: {fileID: 0}
-    - target: {fileID: 4662612979545001487, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MarketControle, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4662612979545001487, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 4662612979626541985, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4662612979626541985, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4662612979870208532, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -587,10 +563,6 @@ PrefabInstance:
     - target: {fileID: 4662612979870208533, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
       propertyPath: m_Name
       value: Market
-      objectReference: {fileID: 0}
-    - target: {fileID: 4662612980896387999, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
@@ -694,17 +666,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4662612979870208532, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
   m_PrefabInstance: {fileID: 780876862}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &998320949 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4662612979870208520, guid: 76a10bfb407132144ad52fbca1004deb, type: 3}
-  m_PrefabInstance: {fileID: 780876862}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f41cf290261e4e468669aa2387de630, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1053715840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +1103,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923143753}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.79, y: -2.4, z: -10}
+  m_LocalPosition: {x: 110.5, y: 14.8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1967,11 +1928,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4500016455673576098, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.79
+      value: 110.5
       objectReference: {fileID: 0}
     - target: {fileID: 4500016455673576098, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.4
+      value: 14.8
       objectReference: {fileID: 0}
     - target: {fileID: 4500016455673576098, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_LocalPosition.z

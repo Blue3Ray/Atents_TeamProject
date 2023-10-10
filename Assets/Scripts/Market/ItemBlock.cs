@@ -6,11 +6,15 @@ using UnityEngine.UI;
 
 public class ItemBlock : MonoBehaviour
 {
+	public uint priceOfItem = 0;
+
 	TextMeshProUGUI itemName;
 	TextMeshProUGUI itemPrice;
+	
+	Image itemImage;
+	
 	ItemCode itemcode;
 
-	Image itemImage;
 	private void Awake()
 	{
 		itemName = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
@@ -24,13 +28,18 @@ public class ItemBlock : MonoBehaviour
 	{
 		itemcode = code;
 		itemName.text = GameManager.Ins.ItemData[code].itemName;
-		itemPrice.text = GameManager.Ins.ItemData[code].price.ToString();
+		priceOfItem = GameManager.Ins.ItemData[code].price;
+		itemPrice.text = priceOfItem.ToString();
 		itemImage.sprite = GameManager.Ins.ItemData[code].itemIcon;
 		itemImage.color = Color.white;
 	}
 
 	public void Buy()
 	{
-		GameManager.Ins.Player.inven.AddItemExeptQuickSlot(itemcode);
+		if(priceOfItem < GameManager.Ins.Player.inven.Money)
+		{
+			GameManager.Ins.Player.inven.Money -= (int)priceOfItem;
+			GameManager.Ins.Player.inven.AddItemExeptQuickSlot(itemcode);
+		}
 	}
 }

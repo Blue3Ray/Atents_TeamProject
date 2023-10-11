@@ -32,6 +32,7 @@ public class NPCbase : MonoBehaviour, IClickable
 	private void CanvasOn()
 	{
 		talkCanvas.CanvasLineOn();
+		GameManager.Ins.Player.DisableInputAction();
 	}
 
 	public void OnClicking(IClickable tmp)

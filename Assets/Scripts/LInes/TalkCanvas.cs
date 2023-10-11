@@ -125,6 +125,7 @@ public class TalkCanvas : MonoBehaviour,IPointerClickHandler
 		else
 		{
 			CanvasLineOff();
+			GameManager.Ins.Player.EnableInputAction();
 		}
 		Debug.Log($"contextIndex: {contextIndex},talkIndex: {talkIndex}");
 	}

@@ -13,7 +13,6 @@ public enum PoolObjectType
     Explosion,          // ∆¯∆» ¿Ã∆Â∆Æ
     BoneEnemy,
     ArcherEnemy
-
 }
 
 public class Factory : Singleton<Factory>

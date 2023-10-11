@@ -117,6 +117,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         //{
         //    GenerateLevel();
         //}
+        
     }
 
 
@@ -290,7 +291,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         spawner.SetPlayerPos();
         spawner.SetNPCPos();
-        if(LevelManager.Ins.Level == 0)spawner.SetRiamNPCPos();
+        if(LevelManager.Ins.Level == 1)spawner.SetRiamNPCPos();
     }
 
     /// <summary>

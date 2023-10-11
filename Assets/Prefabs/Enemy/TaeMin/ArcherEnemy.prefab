@@ -202,9 +202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 1
-  maxHP: 10
+  maxHP: 50
   knockBackDir: {x: 0, y: 0, z: 0}
-  attackState: 1
+  attackState: 10
   defenceState: 0
   elemantalAttack: 0
   elemantalDefence: 0

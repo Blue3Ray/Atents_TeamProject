@@ -9,7 +9,7 @@ public class LevelManager : Singleton<LevelManager>
     /// <summary>
     /// 현재 던전 레벨
     /// </summary>
-    int level;
+    int level = 1;
 
     public int Level
     {

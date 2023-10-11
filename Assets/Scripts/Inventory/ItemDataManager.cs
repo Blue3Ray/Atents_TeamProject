@@ -20,7 +20,8 @@ public enum ItemCode
     ShortSword,
     LongSword,
     LongSword2,
-    HandBomb
+    HandBomb,
+    Coin
 }
 
 public enum ItemSortBy

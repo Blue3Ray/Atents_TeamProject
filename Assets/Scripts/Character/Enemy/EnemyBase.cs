@@ -285,5 +285,9 @@ public class EnemyBase : CharacterBase
         base.Die();     // 죽었다라는 로그
         gameObject.layer = LayerMask.NameToLayer("IgnorePlayer");
         GameManager.Ins.Player.Experience += experiencePoint;
+        GameObject dropItem = Instantiate(GameManager.Ins.ItemData[ItemCode.Potion].modelPrefab);
+        
+        dropItem.transform.position = this.transform.position;
+
     }
 }

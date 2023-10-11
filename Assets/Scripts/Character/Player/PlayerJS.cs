@@ -867,7 +867,9 @@ public class PlayerJS : CharacterBase, IExperience
 			case ItemCode.Potion:
 				HP += 30;
 				break;
-
+			case ItemCode.Coin:
+				inven.Money += (int)GameManager.Ins.ItemData[ItemCode.Coin].price;
+				break;
 			default:
 				break;
 		}

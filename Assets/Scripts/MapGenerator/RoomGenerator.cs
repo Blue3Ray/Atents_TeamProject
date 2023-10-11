@@ -122,7 +122,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
     protected override void OnInitalize()
     {
-        if (RoomGenerator.Ins != this) return;
+        if (RoomGenerator.Ins != this) return;          // 씬에 안쓰는 자기자신(GameManager에 등록이 안된)은 버리기
         base.OnInitalize();
         MakeLevel();
     }
@@ -164,6 +164,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         cursor = new Vector3Int(0, 0);
 
+        maxSingleRoomSize = 0;
 
         // 방 정보 정리하는 구간
         // 시작 방
@@ -660,15 +661,15 @@ public class RoomGenerator : Singleton<RoomGenerator>
             }
         }
         // ㄱ자도 짧게 그려지게 구현할 것!!!!
-        else if (passWayType == PassWayType.UpRight)        // 버그 발생
+        else if (passWayType == PassWayType.UpRight)
         {
             if(passPos.Direction == ExitDirection.Down)
             {
-                decreaseFromMin.y = drawOverCount;
+                decreaseFromMax.x = drawOverCount;
             }
             else if(passPos.Direction == ExitDirection.Left)
             {
-                decreaseFromMin.x = drawOverCount;
+                decreaseFromMax.y = drawOverCount;
             }
             else
             {

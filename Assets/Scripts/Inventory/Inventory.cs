@@ -61,7 +61,6 @@ public class Inventory
             {
                 money = value;
                 OnMoneyChange?.Invoke(money);
-
             }
         }
     }

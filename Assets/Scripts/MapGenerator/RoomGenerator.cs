@@ -289,6 +289,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
         spawner.SpawnEnemyAtAllPos();
 
         spawner.SetPlayerPos();
+        spawner.SetNPCPos();
     }
 
     /// <summary>
@@ -798,7 +799,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
                 // 배경 그리기
                 //m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, targetData.mapLayers[targetLayer].GetTile(targetDrawPos));
-                m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, backgroundTile);
+                 m_tileMaps[targetLayer].SetTile(cursorPos + targetDrawPos, backgroundTile);
             }
         }
 

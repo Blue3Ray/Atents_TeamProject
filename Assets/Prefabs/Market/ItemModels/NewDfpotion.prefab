@@ -75,5 +75,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewDfpotion
       objectReference: {fileID: 0}
+    - target: {fileID: 9159566784126648109, guid: e811356261ba44f42bc9322cb15215fc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e811356261ba44f42bc9322cb15215fc, type: 3}

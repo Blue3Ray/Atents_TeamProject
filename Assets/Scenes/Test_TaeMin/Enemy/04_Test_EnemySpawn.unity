@@ -656,6 +656,7 @@ MonoBehaviour:
   spawnPositions:
   - {x: 0, y: 0, z: 0}
   portal: {fileID: 0}
+  npcPrefab: {fileID: 0}
 --- !u!1 &530622520
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,7 +999,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1024277725570728801, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: attackState
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2122255425316255477, guid: 35204e1caa210194cb151e9c0aa80c2e, type: 3}
       propertyPath: m_Name

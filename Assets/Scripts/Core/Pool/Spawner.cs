@@ -9,6 +9,7 @@ public class Spawner : MonoBehaviour
     public Vector3Int[] spawnPositions;
 
     public GameObject portal;
+    public GameObject npcPrefab;
 
     List<GameObject> enemies;
 
@@ -27,7 +28,7 @@ public class Spawner : MonoBehaviour
     {
         if(enemies != null) DeleteAllEnemies();
         enemies = new List<GameObject>();
-        for(int i = 1; i < spawnPositions.Length - 1; i++)
+        for(int i = 2; i < spawnPositions.Length - 1; i++)
         { 
             Vector3 pos = spawnPositions[i];
             if (Random.value > 0.4f)
@@ -40,6 +41,13 @@ public class Spawner : MonoBehaviour
             }
         }
         SetPortalPos();
+    }
+
+    public void SetNPCPos()
+    {
+        GameObject npcObj = Instantiate(npcPrefab);
+        
+        npcObj.transform.position = spawnPositions[1];
     }
 
     public void SetPlayerPos()

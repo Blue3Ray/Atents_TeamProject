@@ -29,6 +29,17 @@ public class Inventory
     /// <returns>슬롯</returns>
     public InvenSlot this[uint index] => slots[index];
 
+    public InvenSlot FirstQuickSlot
+    {
+        get => slots[slotSize];
+    }
+
+    public InvenSlot LastQuickSlot
+    {
+        get => slots[slotSize + quickSlotSize - 1];
+    }
+
+
     /// <summary>
     /// 인벤토리 슬롯의 갯수
     /// </summary>
@@ -37,7 +48,6 @@ public class Inventory
     uint quickSlotSize;
 
     readonly int quickSlotMask = 40;
-
 
     public System.Action<int> OnMoneyChange;
 

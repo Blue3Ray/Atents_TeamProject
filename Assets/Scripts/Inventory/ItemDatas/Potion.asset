@@ -20,5 +20,5 @@ MonoBehaviour:
   itemDescription: "\uCCB4\uB825\uC744 30 \uC62C\uB824\uC90D\uB2C8\uB2E4."
   moveIncreaseRate: 0
   dfIncreaseRate: 0
-  powerIncreaseRate: 0
+  powerIncreaseRate: 30
   modelPrefab: {fileID: 7537542424625172867, guid: b3929e5b191a7ea4fa46607258e2838e, type: 3}

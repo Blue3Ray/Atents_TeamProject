@@ -32,7 +32,11 @@ public class CharacterBase : PooledObject, IHealth
                     onDie?.Invoke();
                 }
                 hp = Mathf.Clamp(hp, 0, maxHP);
-                onHealthChange?.Invoke(hp, maxHP);
+                if (CompareTag("Player"))
+                {
+					onHealthChange?.Invoke(HP, MaxHP);
+                    Debug.Log($"{HP}, {MaxHP}");
+                }
             }
 
         }

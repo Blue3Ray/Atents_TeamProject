@@ -439,10 +439,15 @@ public class PlayerJS : CharacterBase, IExperience
 		inputActions.PlayerJM.Down.canceled += OnDown;
 		inputActions.PlayerJM.Dash.performed += OnDash;
 		inputActions.PlayerJM.Use.performed += OnUse;
+		inputActions.PlayerJM.QuickSlot1.performed += OnQuickSlotUse_1;
+		inputActions.PlayerJM.QuickSlot2.performed += OnQuickSlotUse_2;
 	}
+
 
 	public void DisableInputAction()
 	{
+		inputActions.PlayerJM.QuickSlot2.performed -= OnQuickSlotUse_2;
+		inputActions.PlayerJM.QuickSlot1.performed -= OnQuickSlotUse_1;
 		inputActions.PlayerJM.Use.performed -= OnUse;
 		inputActions.PlayerJM.Dash.performed -= OnDash;
 		inputActions.PlayerJM.Down.performed -= OnDown;
@@ -831,6 +836,41 @@ public class PlayerJS : CharacterBase, IExperience
 	private void OnUse(InputAction.CallbackContext obj)
 	{
 		onUsePerformed?.Invoke();
+	}
+
+	//눌린 번호에 맞는 퀵슬롯 invenSlotUI를 가져와서 아이템코드를 통해 사용하는 메서드
+	private void OnQuickSlotUse_1(InputAction.CallbackContext obj)
+	{
+		InvenSlot quickslot_1 = inven.FirstQuickSlot;
+		if (!quickslot_1.IsEmpty)
+		{
+			UseItem(quickslot_1.ItemData.code);
+			quickslot_1.DecreaseSlotItem(1);
+		}
+	}
+
+
+	private void OnQuickSlotUse_2(InputAction.CallbackContext obj)
+	{
+		InvenSlot quickslot_2 = inven.LastQuickSlot;
+		if (!quickslot_2.IsEmpty)
+		{
+			UseItem(quickslot_2.ItemData.code);
+			quickslot_2.DecreaseSlotItem(1);
+		}
+	}
+
+	private void UseItem(ItemCode code)
+	{
+		switch (code)
+		{
+			case ItemCode.Potion:
+				HP += 30;
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	// 씬 넘어갈때 게임매니져에서 받아올 스텟 부여 함수

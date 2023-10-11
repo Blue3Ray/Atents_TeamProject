@@ -369,6 +369,24 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9d1b8e0-31d5-462c-aa68-819ec8ff86f9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""7dc9c438-530c-423f-a848-19b870a4b8b9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -534,6 +552,28 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ebe2c5f-1366-458f-aa1f-f52096f4cb95"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdc17c51-0a11-4452-a857-96745d744d0e"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -707,6 +747,8 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_PlayerJM_Down = m_PlayerJM.FindAction("Down", throwIfNotFound: true);
         m_PlayerJM_Dash = m_PlayerJM.FindAction("Dash", throwIfNotFound: true);
         m_PlayerJM_Use = m_PlayerJM.FindAction("Use", throwIfNotFound: true);
+        m_PlayerJM_QuickSlot1 = m_PlayerJM.FindAction("QuickSlot1", throwIfNotFound: true);
+        m_PlayerJM_QuickSlot2 = m_PlayerJM.FindAction("QuickSlot2", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -999,6 +1041,8 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerJM_Down;
     private readonly InputAction m_PlayerJM_Dash;
     private readonly InputAction m_PlayerJM_Use;
+    private readonly InputAction m_PlayerJM_QuickSlot1;
+    private readonly InputAction m_PlayerJM_QuickSlot2;
     public struct PlayerJMActions
     {
         private @ActionControl m_Wrapper;
@@ -1010,6 +1054,8 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         public InputAction @Down => m_Wrapper.m_PlayerJM_Down;
         public InputAction @Dash => m_Wrapper.m_PlayerJM_Dash;
         public InputAction @Use => m_Wrapper.m_PlayerJM_Use;
+        public InputAction @QuickSlot1 => m_Wrapper.m_PlayerJM_QuickSlot1;
+        public InputAction @QuickSlot2 => m_Wrapper.m_PlayerJM_QuickSlot2;
         public InputActionMap Get() { return m_Wrapper.m_PlayerJM; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1040,6 +1086,12 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Use.started += instance.OnUse;
             @Use.performed += instance.OnUse;
             @Use.canceled += instance.OnUse;
+            @QuickSlot1.started += instance.OnQuickSlot1;
+            @QuickSlot1.performed += instance.OnQuickSlot1;
+            @QuickSlot1.canceled += instance.OnQuickSlot1;
+            @QuickSlot2.started += instance.OnQuickSlot2;
+            @QuickSlot2.performed += instance.OnQuickSlot2;
+            @QuickSlot2.canceled += instance.OnQuickSlot2;
         }
 
         private void UnregisterCallbacks(IPlayerJMActions instance)
@@ -1065,6 +1117,12 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             @Use.started -= instance.OnUse;
             @Use.performed -= instance.OnUse;
             @Use.canceled -= instance.OnUse;
+            @QuickSlot1.started -= instance.OnQuickSlot1;
+            @QuickSlot1.performed -= instance.OnQuickSlot1;
+            @QuickSlot1.canceled -= instance.OnQuickSlot1;
+            @QuickSlot2.started -= instance.OnQuickSlot2;
+            @QuickSlot2.performed -= instance.OnQuickSlot2;
+            @QuickSlot2.canceled -= instance.OnQuickSlot2;
         }
 
         public void RemoveCallbacks(IPlayerJMActions instance)
@@ -1206,6 +1264,8 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         void OnDown(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnQuickSlot1(InputAction.CallbackContext context);
+        void OnQuickSlot2(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {

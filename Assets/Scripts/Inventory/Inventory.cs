@@ -34,6 +34,10 @@ public class Inventory
     /// </summary>
     public int SlotCount => slots.Length;
 
+    uint quickSlotSize;
+
+    readonly int quickSlotMask = 40;
+
 
     public System.Action<int> OnMoneyChange;
 
@@ -58,11 +62,13 @@ public class Inventory
     InvenSlot tempSlot;
     public InvenSlot TempSlot => tempSlot;
 
+
     /// <summary>
     /// 아이템 데이터 메니저(아이템 종류별 데이터를 확인할 수 있다.)
     /// </summary>
     ItemDataManager itemDataManager;
 
+    uint slotSize;
 
     /// <summary>
     /// 인벤토리 생성자
@@ -71,6 +77,8 @@ public class Inventory
     /// <param name="size">인벤토리의 크기</param>
     public Inventory(uint size = Default_Inventory_Size, uint QuickslotSize = 0)
     {
+        quickSlotSize = QuickslotSize;
+        slotSize = size;
         slots = new InvenSlot[size + QuickslotSize];
         for(uint i=0;i<size;i++)
         {
@@ -249,13 +257,45 @@ public class Inventory
     /// <param name="to">위치 변경이 끝나는 인덱스</param>
     public void MoveItem(uint from, uint to)
     {
+        Debug.Log($"from: {from}, to: {to}");
         // from지점과 to지점이 다르고 from과 to가 모두 valid해야 한다.
         if( (from != to) &&  IsValidIndex(from) && IsValidIndex(to) )
         {
-            InvenSlot fromSlot = (from == TempSlotIndex) ? TempSlot : slots[from];  // 임시 슬롯을 감안해서 삼항연산자로 처리
+
+			InvenSlot fromSlot;
+
+			if (from == TempSlotIndex)
+			{
+				fromSlot = TempSlot;
+			}
+			else if (from >= quickSlotMask && quickSlotMask + quickSlotSize > from)
+			{
+				fromSlot = slots[slotSize + (from - quickSlotMask)];
+			}
+			else
+			{
+				fromSlot = slots[from];
+			}
+			//InvenSlot fromSlot = (from == TempSlotIndex) ? TempSlot : slots[from];  // 임시 슬롯을 감안해서 삼항연산자로 처리
+
             if( !fromSlot.IsEmpty )
             {
-                InvenSlot toSlot = (to == TempSlotIndex) ? TempSlot : slots[to];
+                InvenSlot toSlot;
+
+				if (to == TempSlotIndex)
+                {
+                    toSlot = TempSlot;
+				}
+                else if (to >= quickSlotMask && quickSlotMask + quickSlotSize > to)
+                {
+                    toSlot = slots[slotSize + (to - quickSlotMask)];
+                }
+                else
+                {
+                    toSlot = slots[to];
+                }
+
+                //InvenSlot toSlot = (to == TempSlotIndex) ? TempSlot : slots[to];
                 if( fromSlot.ItemData == toSlot.ItemData )  // 같은 종류의 아이템이면
                 {
                     toSlot.IncreaseSlotItem(out uint overCount, fromSlot.ItemCount);    // 일단 from이 가진 개수만큼 to 감소 시도
@@ -432,7 +472,7 @@ public class Inventory
     /// </summary>
     /// <param name="index">확인할 인덱스</param>
     /// <returns>true면 적절한 인덱스, false면 없는 인덱스</returns>
-    bool IsValidIndex(uint index) => (index < SlotCount) || (index == TempSlotIndex);
+    bool IsValidIndex(uint index) => (index < SlotCount) || (index == TempSlotIndex) || (quickSlotMask<= index && quickSlotMask + quickSlotSize > index);
 
     /// <summary>
     /// 테스트용 : 인벤토리 안의 내용을 콘솔창에 출력하는 함수

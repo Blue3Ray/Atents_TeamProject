@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 5592562988471450518}
   m_Layer: 5
   m_Name: QuickSlot01
-  m_TagString: Untagged
+  m_TagString: QuickSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -503,7 +503,7 @@ GameObject:
   - component: {fileID: 1397544623070739667}
   m_Layer: 5
   m_Name: QuickSlot02
-  m_TagString: Untagged
+  m_TagString: QuickSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

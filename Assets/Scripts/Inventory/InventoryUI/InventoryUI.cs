@@ -122,6 +122,7 @@ public class InventoryUI : MonoBehaviour
 
 	private void OnDragExit(uint obj)
 	{
+		Debug.Log("inventoryUI - onDragExit");
 		inventory.MoveItem(tempSlotUI.invenSlot.Index, obj);
 	}
 

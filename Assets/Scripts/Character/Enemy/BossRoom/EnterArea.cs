@@ -12,6 +12,7 @@ public class EnterArea : MonoBehaviour
         if (collision.CompareTag("Player")) 
         {
             onEnterPlayer?.Invoke();
+            GameManager.Ins.Player.transform.position = transform.position + new Vector3(4,0,0);
         }
     }
 

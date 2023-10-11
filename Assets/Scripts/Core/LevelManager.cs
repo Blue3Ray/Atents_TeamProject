@@ -18,7 +18,7 @@ public class LevelManager : Singleton<LevelManager>
         {
             level = value;
             RoomGenerator.Ins.ClearData();
-            if (level > 2)
+            if (level % 3 == 0)
             {
                 LoadBossRoom();
             }

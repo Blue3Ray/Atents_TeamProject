@@ -6,6 +6,12 @@ using UnityEngine.InputSystem;
 public class Test_SpawnEnemy : TestBase
 {
     public Spawner spawner;
+    public GameObject spawnPos;
+
+    private void Start()
+    {
+
+    }
     protected override void Test1(InputAction.CallbackContext context)
     {
         spawner.SpawnBoneMonster(Vector3.zero);

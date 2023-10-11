@@ -160,7 +160,7 @@ public class ArcherEnemy : EnemyBase
     }
 
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
         onStateUpdate();
     }

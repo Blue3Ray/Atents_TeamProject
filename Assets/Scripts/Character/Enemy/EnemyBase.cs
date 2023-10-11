@@ -39,6 +39,7 @@ public class EnemyBase : CharacterBase
         {
             if (state != value)
             {
+                if (state == EnemyState.Dead) return;
                 //Debug.Log($"이전 : {state}, 이후 : {value}");
                 state = value;
 
@@ -232,7 +233,7 @@ public class EnemyBase : CharacterBase
 
     // 업데이트 함수들 -----------------------------------------------------
 
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         onStateUpdate();
     }

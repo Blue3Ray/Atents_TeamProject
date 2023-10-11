@@ -537,6 +537,7 @@ public class RoomGenerator : Singleton<RoomGenerator>
                         targetDir = ExitDirection.Down;
                     }
                 }
+
             }
             else
             {
@@ -558,7 +559,17 @@ public class RoomGenerator : Singleton<RoomGenerator>
 
         } while (cursor != endPos.Pos && a < 100);
 
+        // 위 루프 구문에서 ㄱ역자 끝나자마자 lastone을 그려야 할 때 방향이 ㄱ자 이전 방향으로 설정되어서 한번더 체크를함(이렇게 하면 마지막이 ㄱ자 이여서는 안됨)
+        if (targetDir == ExitDirection.Up || targetDir == ExitDirection.Down)
+        {
+            lastone = PassWayType.UpDown;
+        }else if(targetDir == ExitDirection.Right || targetDir == ExitDirection.Left)
+        {
+            lastone = PassWayType.LeftRight;
+        }
+
         GeneratePass(new PassWay(cursor, targetDir), lastone);        // 마지막 통로 타일맵 생성
+        
     }
 
     /// <summary>

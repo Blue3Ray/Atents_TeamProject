@@ -649,10 +649,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 501332410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f76b6ff5ba51543a383b2e939fbe18, type: 3}
+  m_Script: {fileID: 11500000, guid: f89bfaf98bbad8641b3b8160a658e4af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPositions: []
+  portal: {fileID: 0}
 --- !u!1 &530622520
 GameObject:
   m_ObjectHideFlags: 0

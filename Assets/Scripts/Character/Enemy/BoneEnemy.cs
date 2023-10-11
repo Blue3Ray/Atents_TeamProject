@@ -94,12 +94,12 @@ public class BoneEnemy : EnemyBase
         base.OnInitialize();
 
         rb.bodyType = RigidbodyType2D.Dynamic;
+
         GetComponent<Collider2D>().isTrigger = false;
-
-
 
         attackCurrentCoolTime = -1;
 
+        state = EnemyState.Hitted;
         State = EnemyState.Wait;
     }
 
@@ -110,7 +110,7 @@ public class BoneEnemy : EnemyBase
     }
 
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
         onStateUpdate();
     }

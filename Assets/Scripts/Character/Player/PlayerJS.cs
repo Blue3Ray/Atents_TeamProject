@@ -209,6 +209,8 @@ public class PlayerJS : CharacterBase, IExperience
 		MaxMP = MaxMP * 1.1f;
 		HP = MaxMP;
 		MP = MaxMP;
+
+		SkillStet++;
 	}
 
 	/// <summary>
@@ -236,10 +238,36 @@ public class PlayerJS : CharacterBase, IExperience
 	/// </summary>
 	public Action<uint> onLevelUP { get; set; }
 
-	/// <summary>
-	/// 달리는 스피드
-	/// </summary>
-	public float moveSpeed = 10f;
+    /// <summary>
+    /// 스킬 스탯
+    /// </summary>
+    int skillStet;
+
+    /// <summary>
+    /// 스킬 스탯 프로퍼티
+    /// </summary>
+    public int SkillStet
+    {
+        get => skillStet;
+        set
+        {
+            if (skillStet != value)
+            {
+                skillStet = value;
+                onChangeSkillStet?.Invoke(skillStet);
+            }
+
+        }
+    }
+    /// <summary>
+    /// 스킬 스탯 변화
+    /// </summary>
+    public Action<int> onChangeSkillStet { get; set; }
+
+    /// <summary>
+    /// 달리는 스피드
+    /// </summary>
+    public float moveSpeed = 10f;
 
 	/// <summary>
 	/// 점프 높이에 관여된 힘

@@ -25,9 +25,11 @@ public class ElemantalStausWindow : MonoBehaviour
     /// <summary>
     /// 보유 스탯 텍스트 구역
     /// </summary>
-    TextMeshProUGUI stetValue;
+    TextMeshProUGUI stetValueText;
 
     ElemantalStates elemantalStates;
+
+    CanvasGroup canvasGroup;
 
     private void Awake()
     {
@@ -42,35 +44,78 @@ public class ElemantalStausWindow : MonoBehaviour
         statusSlot[3] = statusWindow.GetChild(4).GetComponent<StatusSlot>();
 
         stetZone = statusWindow.GetChild(5);
-        stetValue = stetZone.GetChild(1).GetComponent<TextMeshProUGUI>();
-        
+        stetValueText = stetZone.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+        canvasGroup = transform.GetComponent<CanvasGroup>();
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0;
+
     }
 
     private void OnEnable()
     {
         actionControl.ElemantalStausWindow.Enable();
-        actionControl.ElemantalStausWindow.StatusWindow.performed += OpenStatusWindow;
-        actionControl.ElemantalStausWindow.StatusWindow.canceled += OpenStatusWindow;
+        actionControl.ElemantalStausWindow.StatusWindow.performed += OnOffStatusWindow;
     }
 
 
     private void OnDisable()
     {
-        actionControl.ElemantalStausWindow.StatusWindow.canceled -= OpenStatusWindow;
-        actionControl.ElemantalStausWindow.StatusWindow.performed -= OpenStatusWindow;
+        actionControl.ElemantalStausWindow.StatusWindow.performed -= OnOffStatusWindow;
         actionControl.ElemantalStausWindow.Disable();
     }
 
     private void Start()
     {
-        statusWindow.gameObject.SetActive(false);
+        PlayerJS player = GameManager.Ins.Player;
+        RefreshData(player.SkillStet);
+        player.onChangeSkillStet += RefreshData;
     }
 
-    private void OpenStatusWindow(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void StetCheck()
     {
-        
 
-        statusWindow.gameObject.SetActive(true);
+    }
+
+    public void RefreshData(int stetvalue)
+    {
+        stetValueText.text = $"{stetvalue}";
+    }
+
+    private void OnOffStatusWindow(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if (canvasGroup.interactable)
+        {
+
+            CloseStatusWindow();
+        }
+        else
+        {
+            OpenStatusWindow();
+        }
+
+    }
+
+    /// <summary>
+    /// 속성 스탯 창 Open
+    /// </summary>
+    private void OpenStatusWindow()
+    {
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = 1;
+        GameManager.Ins.Player.DisableInputAction();
+    }
+    /// <summary>
+    /// 속성 스탯 창 Close
+    /// </summary>
+    public void CloseStatusWindow()
+    {
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0;
+        GameManager.Ins.Player.EnableInputAction();
     }
 
 }

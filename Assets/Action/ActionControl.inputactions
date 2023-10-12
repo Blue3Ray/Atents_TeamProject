@@ -684,6 +684,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "ElemantalStausWindow",
+            "id": "1e4a6c02-22f4-4872-8a57-c6da24f31564",
+            "actions": [
+                {
+                    "name": "StatusWindow",
+                    "type": "Button",
+                    "id": "3af08794-e5b0-421f-84c0-ae4bd09f50e4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f64cd143-7d73-4527-80a9-3fe1a178f49f",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "K",
+                    "action": "StatusWindow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
@@ -693,6 +721,17 @@
             "devices": [
                 {
                     "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "K",
+            "bindingGroup": "K",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
                 }

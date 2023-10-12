@@ -706,6 +706,34 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""ElemantalStausWindow"",
+            ""id"": ""1e4a6c02-22f4-4872-8a57-c6da24f31564"",
+            ""actions"": [
+                {
+                    ""name"": ""StatusWindow"",
+                    ""type"": ""Button"",
+                    ""id"": ""3af08794-e5b0-421f-84c0-ae4bd09f50e4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f64cd143-7d73-4527-80a9-3fe1a178f49f"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K"",
+                    ""action"": ""StatusWindow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -715,6 +743,17 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""K"",
+            ""bindingGroup"": ""K"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -757,6 +796,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         m_Test_Test4 = m_Test.FindAction("Test4", throwIfNotFound: true);
         m_Test_Test5 = m_Test.FindAction("Test5", throwIfNotFound: true);
         m_Test_TestClick = m_Test.FindAction("TestClick", throwIfNotFound: true);
+        // ElemantalStausWindow
+        m_ElemantalStausWindow = asset.FindActionMap("ElemantalStausWindow", throwIfNotFound: true);
+        m_ElemantalStausWindow_StatusWindow = m_ElemantalStausWindow.FindAction("StatusWindow", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1226,6 +1268,52 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         }
     }
     public TestActions @Test => new TestActions(this);
+
+    // ElemantalStausWindow
+    private readonly InputActionMap m_ElemantalStausWindow;
+    private List<IElemantalStausWindowActions> m_ElemantalStausWindowActionsCallbackInterfaces = new List<IElemantalStausWindowActions>();
+    private readonly InputAction m_ElemantalStausWindow_StatusWindow;
+    public struct ElemantalStausWindowActions
+    {
+        private @ActionControl m_Wrapper;
+        public ElemantalStausWindowActions(@ActionControl wrapper) { m_Wrapper = wrapper; }
+        public InputAction @StatusWindow => m_Wrapper.m_ElemantalStausWindow_StatusWindow;
+        public InputActionMap Get() { return m_Wrapper.m_ElemantalStausWindow; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ElemantalStausWindowActions set) { return set.Get(); }
+        public void AddCallbacks(IElemantalStausWindowActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ElemantalStausWindowActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ElemantalStausWindowActionsCallbackInterfaces.Add(instance);
+            @StatusWindow.started += instance.OnStatusWindow;
+            @StatusWindow.performed += instance.OnStatusWindow;
+            @StatusWindow.canceled += instance.OnStatusWindow;
+        }
+
+        private void UnregisterCallbacks(IElemantalStausWindowActions instance)
+        {
+            @StatusWindow.started -= instance.OnStatusWindow;
+            @StatusWindow.performed -= instance.OnStatusWindow;
+            @StatusWindow.canceled -= instance.OnStatusWindow;
+        }
+
+        public void RemoveCallbacks(IElemantalStausWindowActions instance)
+        {
+            if (m_Wrapper.m_ElemantalStausWindowActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IElemantalStausWindowActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ElemantalStausWindowActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ElemantalStausWindowActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ElemantalStausWindowActions @ElemantalStausWindow => new ElemantalStausWindowActions(this);
     private int m_ClickSchemeIndex = -1;
     public InputControlScheme ClickScheme
     {
@@ -1233,6 +1321,15 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         {
             if (m_ClickSchemeIndex == -1) m_ClickSchemeIndex = asset.FindControlSchemeIndex("Click");
             return asset.controlSchemes[m_ClickSchemeIndex];
+        }
+    }
+    private int m_KSchemeIndex = -1;
+    public InputControlScheme KScheme
+    {
+        get
+        {
+            if (m_KSchemeIndex == -1) m_KSchemeIndex = asset.FindControlSchemeIndex("K");
+            return asset.controlSchemes[m_KSchemeIndex];
         }
     }
     public interface IClickActionActions
@@ -1275,5 +1372,9 @@ public partial class @ActionControl: IInputActionCollection2, IDisposable
         void OnTest4(InputAction.CallbackContext context);
         void OnTest5(InputAction.CallbackContext context);
         void OnTestClick(InputAction.CallbackContext context);
+    }
+    public interface IElemantalStausWindowActions
+    {
+        void OnStatusWindow(InputAction.CallbackContext context);
     }
 }

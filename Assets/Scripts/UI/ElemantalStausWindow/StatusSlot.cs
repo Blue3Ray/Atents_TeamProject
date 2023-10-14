@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,6 +27,17 @@ public class StatusSlot : MonoBehaviour
     /// </summary>
     int currentLevelValue = 0;
 
+    public int CurrentLevelValue
+    {
+        get => currentLevelValue;
+        set
+        {
+            currentLevelValue = value;
+            onChangeCurrentLevelValue?.Invoke(currentLevelValue);
+        }
+     }
+    public Action<int> onChangeCurrentLevelValue { get; set; }
+
     /// <summary>
     /// 속성 공격력
     /// </summary>
@@ -49,7 +61,7 @@ public class StatusSlot : MonoBehaviour
     private void Start()
     {
         PlayerJS player = GameManager.Ins.Player;
-        elemantalLevelValue.text = currentLevelValue.ToString();
+        elemantalLevelValue.text = CurrentLevelValue.ToString();
         elemantalAttackValue.text = player.elemantalAttack.ToString();
         elemantalButton.onClick.AddListener(ElemantalLevelUP);
     }
@@ -57,10 +69,11 @@ public class StatusSlot : MonoBehaviour
     public void ElemantalLevelUP()
     {
         PlayerJS player = GameManager.Ins.Player;
-        currentLevelValue++;
+        CurrentLevelValue++;
         player.elemantalAttack = player.elemantalAttack + 10.0f;
-        elemantalLevelValue.text = $"{currentLevelValue}";
+        elemantalLevelValue.text = $"{CurrentLevelValue}";
         elemantalAttackValue.text = $"{player.elemantalAttack}";
+        player.SkillStet--;
     }
 
 }

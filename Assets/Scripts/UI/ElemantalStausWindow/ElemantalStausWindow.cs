@@ -75,7 +75,8 @@ public class ElemantalStausWindow : MonoBehaviour
 
     public void StetCheck()
     {
-
+        PlayerJS player = GameManager.Ins.Player;
+        player.SkillStet--;
     }
 
     public void RefreshData(int stetvalue)
